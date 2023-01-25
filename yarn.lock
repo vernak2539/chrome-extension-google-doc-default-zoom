@@ -1165,6 +1165,13 @@
   resolved "https://registry.yarnpkg.com/@plasmohq/init/-/init-0.5.3.tgz#570161c0bd68628cd10f95c4a03287a0bc717cbf"
   integrity sha512-LA6dfrBsLSgdOhgLJr8asBcs6gQd9ehb436DU2c1XecjYEmh5vkEr/YjxyECOg7Iz/AdtfUuBXEjH3GGS6qOMg==
 
+"@plasmohq/messaging@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@plasmohq/messaging/-/messaging-0.0.2.tgz#91c8daa73f82fea2f4550fc28fd3a78efa9a5c1a"
+  integrity sha512-dM4dCfOKnIoMXkzG2N+IKCi+b/YFa6tpEZjMf4R8N5xWILI3Xwu2UMLz+TRRrc4XLJvVpFdL09IeGDh14E+Fvg==
+  dependencies:
+    webextension-polyfill "0.10.0"
+
 "@plasmohq/parcel-bundler@0.4.6":
   version "0.4.6"
   resolved "https://registry.yarnpkg.com/@plasmohq/parcel-bundler/-/parcel-bundler-0.4.6.tgz#61cde2632116b872795aaf2ee8b88681eaaa9a65"

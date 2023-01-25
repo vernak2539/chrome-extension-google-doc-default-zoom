@@ -7,6 +7,8 @@ const STORAGE_KEY = "zoomValue"
 
 const zoomValues = ["Fit", "50%", "75%", "125%", "150%", "200%"]
 
+// how to call background TS message onload of page??
+
 function IndexPopup() {
   const [defaultZoom, setDefaultZoom] = useState("100%")
 
