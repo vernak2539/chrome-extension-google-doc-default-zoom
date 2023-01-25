@@ -1,6 +1,24 @@
-import type { PlasmoMessaging } from "@plasmohq/messaging"
+import { Storage } from "@plasmohq/storage"
 
-export const handler: PlasmoMessaging.MessageHandler = async (req, res) => {
-  // eventually do something here to trigger the zoom change
-  console.log(req.body)
-}
+import { STORAGE_KEY } from "~constants"
+
+const storage = new Storage()
+
+export {}
+
+// how do this outside of chrome...??
+chrome.webNavigation.onCompleted.addListener(
+  (details) => {
+    console.log(details)
+
+    storage.get(STORAGE_KEY).then((key) => console.log(key))
+  },
+  {
+    url: [
+      {
+        // Runs on example.com, example.net, but also example.foo.com
+        hostContains: ".google."
+      }
+    ]
+  }
+)
