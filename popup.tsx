@@ -2,10 +2,7 @@ import type { ChangeEvent } from "react"
 
 import { useStorage } from "@plasmohq/storage/hook"
 
-const STORAGE_KEY = "zoomValue"
-
-const zoomValues = ["Fit", "50%", "75%", "100%", "125%", "150%", "200%"]
-const DEFAULT_ZOOM = zoomValues.at(3)
+import { DEFAULT_ZOOM, STORAGE_KEY, ZOOM_VALUES } from "./constants"
 
 // todo - build in enabled/disabled state state
 
@@ -30,7 +27,7 @@ function IndexPopup() {
       </p>
       {/*// how to load this dynamically*/}
       <select onChange={onDefaultZoomChange}>
-        {zoomValues.map((value) => {
+        {ZOOM_VALUES.map((value) => {
           const isSelected = value === defaultZoom
 
           return <option selected={isSelected}>{value}</option>
