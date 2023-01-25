@@ -52,15 +52,26 @@ sendViaRelay({ name: "get-zoom-value" }).then((response) => {
   simulateMouseEvent(zoomElement, "mousedown", coordX, coordY)
   simulateMouseEvent(zoomElement, "mouseup", coordX, coordY)
 
-  const zoomSelectDropdownElement =
-    getZoomSelectDropdownElement(zoomElement).firstChild
-  const { coordX: x, coordY: y } = getClickableElementBoundingBox(
-    zoomSelectDropdownElement
-  )
+  const zoomSelectDropdownElement = getZoomSelectDropdownElement(zoomElement)
+  const zoomOptions =
+    zoomSelectDropdownElement.querySelectorAll(".goog-menuitem")
 
-  simulateMouseEvent(zoomSelectDropdownElement, "mousedown", x, y)
-  simulateMouseEvent(zoomSelectDropdownElement, "mouseup", x, y)
-  simulateMouseEvent(zoomSelectDropdownElement, "blur", x, y)
+  let newZoomLevelElement = null
+  for (let i = 0; i < zoomOptions.length; i++) {
+    if (zoomOptions[i].firstChild.textContent === response.zoomValue) {
+      newZoomLevelElement = zoomOptions[i].firstChild
+    }
+  }
+
+  console.log(newZoomLevelElement)
+
+  const { coordX: x, coordY: y } =
+    getClickableElementBoundingBox(newZoomLevelElement)
+
+  simulateMouseEvent(newZoomLevelElement, "mousedown", x, y)
+  simulateMouseEvent(newZoomLevelElement, "mouseup", x, y)
+  simulateMouseEvent(newZoomLevelElement, "blur", x, y)
+  simulateMouseEvent(newZoomLevelElement, "blur", x, y)
 
   console.log(response)
 })
