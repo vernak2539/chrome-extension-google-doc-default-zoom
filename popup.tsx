@@ -1,31 +1,25 @@
-import { ChangeEvent, useEffect, useState } from "react"
+import type { ChangeEvent } from "react"
 
-import { Storage } from "~node_modules/@plasmohq/storage"
+import { useStorage } from "@plasmohq/storage/hook"
 
-const storage = new Storage()
 const STORAGE_KEY = "zoomValue"
 
-const zoomValues = ["Fit", "50%", "75%", "125%", "150%", "200%"]
+const zoomValues = ["Fit", "50%", "75%", "100%", "125%", "150%", "200%"]
+const DEFAULT_ZOOM = zoomValues.at(3)
 
-// how to call background TS message onload of page??
+// todo - build in enabled/disabled state state
 
 function IndexPopup() {
-  const [defaultZoom, setDefaultZoom] = useState("100%")
-
-  useEffect(() => {
-    storage.get(STORAGE_KEY).then((value) => {
-      if (value) {
-        setDefaultZoom(value)
-      }
-    })
-  }, [])
+  const [defaultZoom, setDefaultZoom] = useStorage(
+    STORAGE_KEY,
+    (storedZoom) => {
+      return typeof storedZoom === "undefined" ? DEFAULT_ZOOM : storedZoom
+    }
+  )
 
   const onDefaultZoomChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const newValue = event.target.value
     setDefaultZoom(newValue)
-    storage.set(STORAGE_KEY, newValue).then(() => {
-      console.log("storage updated")
-    })
   }
 
   return (
