@@ -16,6 +16,8 @@ export const simulateMouseEvent = (element, eventName, coordX, coordY) => {
   )
 }
 
+// Google Docs is weird about this. A `.click()` execution or dispatching a `MouseEvent` doesn't "count" as a click
+// in the menu
 export const simulateClick = (element, coordX, coordY) => {
   simulateMouseEvent(element, "mousedown", coordX, coordY)
   simulateMouseEvent(element, "mouseup", coordX, coordY)
