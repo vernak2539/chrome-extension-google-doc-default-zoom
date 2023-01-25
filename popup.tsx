@@ -1,19 +1,29 @@
-import { ChangeEvent, useState } from "react"
+import { ChangeEvent, useEffect, useState } from "react"
 
 import { Storage } from "~node_modules/@plasmohq/storage"
 
 const storage = new Storage()
-
-// todo
-// - select selected things based on saved value
+const STORAGE_KEY = "zoomValue"
 
 const zoomValues = ["Fit", "50%", "75%", "125%", "150%", "200%"]
 
 function IndexPopup() {
   const [defaultZoom, setDefaultZoom] = useState("100%")
 
+  useEffect(() => {
+    storage.get(STORAGE_KEY).then((value) => {
+      if (value) {
+        setDefaultZoom(value)
+      }
+    })
+  }, [])
+
   const onChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    setDefaultZoom(event.target.value)
+    const newValue = event.target.value
+    setDefaultZoom(newValue)
+    storage.set(STORAGE_KEY, newValue).then(() => {
+      console.log("storage updated")
+    })
   }
 
   return (
