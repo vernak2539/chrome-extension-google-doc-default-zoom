@@ -1,4 +1,4 @@
-import type { PlasmoContentScript } from "plasmo"
+// import type { PlasmoContentScript } from "plasmo"
 
 import { relay, sendViaRelay } from "@plasmohq/messaging"
 
@@ -13,10 +13,26 @@ import {
   simulateMouseEvent
 } from "~ui-helpers"
 
-export const config: PlasmoContentScript = {
-  matches: ["https://docs.google.com/*"]
-}
+// export const config: PlasmoContentScript = {
+//   matches: ["https://docs.google.com/*"]
+// }
 
+// IS ACTIVE RELAY (i.e. will this be used)
+relay(
+  {
+    name: "is-extension-active"
+  },
+  () => {
+    console.log("is-extension-active-relay")
+  }
+)
+
+sendViaRelay({
+  name: "is-extension-active",
+  body: { url: window.location.href }
+})
+
+// ZOOM SETTING RELAY
 // create and "register" the relay
 relay({
   name: "get-zoom-value"

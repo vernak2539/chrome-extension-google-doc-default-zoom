@@ -1,14 +1,17 @@
 import type { PlasmoMessaging } from "@plasmohq/messaging"
 import { Storage } from "@plasmohq/storage"
 
-import { ZOOM_VALUE_STORAGE_KEY } from "~constants"
+import { IS_ACTIVE_STORAGE_KEY } from "~constants"
 
 const storage = new Storage()
 
 export const handler: PlasmoMessaging.MessageHandler = async (req, res) => {
-  storage.get(ZOOM_VALUE_STORAGE_KEY).then((zoomValue) => {
+  const currentUrl = new URL(req.body.url)
+  const isActive = currentUrl.host === "docs.google.com"
+
+  storage.set(IS_ACTIVE_STORAGE_KEY, isActive).then(() => {
     res.send({
-      zoomValue
+      isActive
     })
   })
 }

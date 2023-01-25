@@ -2,13 +2,24 @@ import type { ChangeEvent } from "react"
 
 import { useStorage } from "@plasmohq/storage/hook"
 
-import { DEFAULT_ZOOM, STORAGE_KEY, ZOOM_VALUES } from "./constants"
-
-// todo - build in enabled/disabled state state
+import {
+  DEFAULT_ZOOM,
+  IS_ACTIVE_STORAGE_KEY,
+  ZOOM_VALUES,
+  ZOOM_VALUE_STORAGE_KEY
+} from "./constants"
 
 function IndexPopup() {
+  const [activeState] = useStorage(
+    IS_ACTIVE_STORAGE_KEY,
+    (storedActiveState) => {
+      return typeof storedActiveState === "undefined"
+        ? false
+        : storedActiveState
+    }
+  )
   const [defaultZoom, setDefaultZoom] = useStorage(
-    STORAGE_KEY,
+    ZOOM_VALUE_STORAGE_KEY,
     (storedZoom) => {
       return typeof storedZoom === "undefined" ? DEFAULT_ZOOM : storedZoom
     }
@@ -22,6 +33,7 @@ function IndexPopup() {
   return (
     <div style={{ minWidth: "250px" }}>
       <h2>Default Google Docs Zoom</h2>
+      <p>Available: {activeState ? "enabled" : "disabled"}</p>
       <p>
         Select the default zoom that you'd like Google Docs to use when it first
         loads.
