@@ -1,21 +1,11 @@
-// import type { PlasmoContentScript } from "plasmo"
-
 import { relay, sendViaRelay } from "@plasmohq/messaging"
 
-// export const config: PlasmoContentScript = {
-//     matches: ["http://www.plasmo.com/*"] // Only relay messages from this domain
-// }
+// create and "register" the relay
+relay({
+  name: "get-zoom-value"
+})
 
-console.log("content SCRIPT")
-
-relay(
-  {
-    name: "get-zoom-value"
-  },
-  async (payload) => {
-    console.log("onMessage - Contents")
-    console.log(payload)
-  }
-)
-
-sendViaRelay({ name: "get-zoom-value" })
+// use the relay
+sendViaRelay({ name: "get-zoom-value" }).then((response) => {
+  console.log(response)
+})

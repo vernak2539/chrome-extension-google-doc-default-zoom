@@ -1,0 +1,1 @@
+import "@plasmohq/messaging/background"

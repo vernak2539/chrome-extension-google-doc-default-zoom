@@ -6,11 +6,9 @@ import { STORAGE_KEY } from "~constants"
 const storage = new Storage()
 
 export const handler: PlasmoMessaging.MessageHandler = async (req, res) => {
-  storage.get(STORAGE_KEY).then((value) => {
-    // execute content script now?
-    console.log("onUpdated", value)
+  storage.get(STORAGE_KEY).then((zoomValue) => {
     res.send({
-      message: value
+      zoomValue
     })
   })
 }
