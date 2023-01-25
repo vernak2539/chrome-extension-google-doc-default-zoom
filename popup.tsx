@@ -20,10 +20,11 @@ function IndexPopup() {
   }
 
   return (
-    <div>
-      <h1>Default Google Docs Zoom</h1>
+    <div style={{ minWidth: "250px" }}>
+      <h2>Default Google Docs Zoom</h2>
       <p>
-        Select the default zoom that you'd like Google Docs to use when loading.
+        Select the default zoom that you'd like Google Docs to use when it first
+        loads.
       </p>
       {/*// how to load this dynamically*/}
       <select onChange={onDefaultZoomChange}>
