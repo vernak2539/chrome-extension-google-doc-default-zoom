@@ -23,7 +23,7 @@ function IndexPopup() {
 
   return (
     <div style={{ minWidth: "250px" }}>
-      <h2>Default Google Docs Zoom</h2>
+      <h2>Google Docs Zoom Default</h2>
       <p>
         Select the default zoom that you'd like Google Docs to use when it first
         loads.
