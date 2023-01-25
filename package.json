@@ -1,8 +1,8 @@
 {
   "name": "google-zoom",
-  "displayName": "Google zoom",
+  "displayName": "Default Google Docs Zoom",
   "version": "0.0.0",
-  "description": "A basic Plasmo extension.",
+  "description": "Set the default zoom of your Google Doc when first loading the page.",
   "author": "vernacchia",
   "scripts": {
     "dev": "plasmo dev",
