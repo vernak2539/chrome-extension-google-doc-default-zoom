@@ -6,6 +6,8 @@ import { DEFAULT_ZOOM, STORAGE_KEY, ZOOM_VALUES } from "./constants"
 
 // todo - build in enabled/disabled state state
 
+// Icon used in Favicon was created by https://www.flaticon.com/authors/royyan-wijaya
+
 function IndexPopup() {
   const [defaultZoom, setDefaultZoom] = useStorage(
     STORAGE_KEY,
