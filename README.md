@@ -1,33 +1,31 @@
-This is a [Plasmo extension](https://docs.plasmo.com/) project bootstrapped with [`plasmo init`](https://www.npmjs.com/package/plasmo).
+# Google Docs Zoom Default
 
-## Getting Started
+## Motivation
 
-First, run the development server:
+I'm getting old (or my monitor is has too much resolution), which makes it harder to see the small text in Google Docs.
 
-```bash
-pnpm dev
-# or
-npm run dev
-```
+There are two ways to increase the size:
 
-Open your browser and load the appropriate development build. For example, if you are developing for the chrome browser, using manifest v3, use: `build/chrome-mv3-dev`.
+1. Use the "Zoom" feature in the Google Doc via the menu
+2. Use the browser's zoom function
 
-You can start editing the popup by modifying `popup.tsx`. It should auto-update as you make changes. To add an options page, simply add a `options.tsx` file to the root of the project, with a react component default exported. Likewise to add a content page, add a `content.ts` file to the root of the project, importing some module and do some logic, then reload the extension on your browser.
+I don't like using the latter due to it changing zoom across loads of webpages. So, I tried to figure out how to progress
+with the former (option #1 :wink:) via a Chrome Extension.
 
-For further guidance, [visit our Documentation](https://docs.plasmo.com/)
+## Actually Doing It
 
-## Making production build
+I ended up using [Plasmo](https://docs.plasmo.com/) to get up and running quickly. Chrome Extensions are new to me, so
+this allowed me to get started pretty quickly (still figuring out the messaging aspect between content scripts, background,
+and popup :grimacing:).
 
-Run the following:
+Ended up getting a simple prototype built in a couple hours and submitted to the Webstore :crossed_fingers: (will update
+if / when approved).
 
-```bash
-pnpm build
-# or
-npm run build
-```
+It's pretty bare bones now and likely will have some quirks. This is likely due to how Google Docs:
 
-This should create a production bundle for your extension, ready to be zipped and published to the stores.
+1. Doesn't provide a JS SDK to programmatically do things in Google Docs
+   - If it does, please message me or open an Issue!
+2. Is quite finicky when you try to simulate events (due to the first point)
 
-## Submit to the webstores
-
-The easiest way to deploy your Plasmo extension is to use the built-in [bpp](https://bpp.browser.market) GitHub action. Prior to using this action however, make sure to build your extension and upload the first version to the store to establish the basic credentials. Then, simply follow [this setup instruction](https://docs.plasmo.com/framework/workflows/submit) and you should be on your way for automated submission!
+Issues are always appreciated, and I'll try to answer accordingly. Please remember that I do this in my spare time and
+Chrome Extensions and Plasmo are quite new to me.
