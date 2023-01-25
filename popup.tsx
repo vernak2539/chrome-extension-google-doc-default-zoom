@@ -18,7 +18,7 @@ function IndexPopup() {
     })
   }, [])
 
-  const onChange = (event: ChangeEvent<HTMLSelectElement>) => {
+  const onDefaultZoomChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const newValue = event.target.value
     setDefaultZoom(newValue)
     storage.set(STORAGE_KEY, newValue).then(() => {
@@ -33,7 +33,7 @@ function IndexPopup() {
         Select the default zoom that you'd like Google Docs to use when loading.
       </p>
       {/*// how to load this dynamically*/}
-      <select onChange={onChange}>
+      <select onChange={onDefaultZoomChange}>
         {zoomValues.map((value) => {
           const isSelected = value === defaultZoom
 
