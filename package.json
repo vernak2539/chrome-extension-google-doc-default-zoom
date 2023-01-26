@@ -28,7 +28,6 @@
   "manifest": {
     "host_permissions": [
       "http://*.google.com/"
-    ],
-    "permissions": ["scripting"]
+    ]
   }
 }
