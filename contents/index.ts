@@ -59,10 +59,7 @@ sendViaRelay({ name: "get-zoom-value" }).then((response) => {
   simulateClick(newZoomLevelElement, newZoomOptionX, newZoomOptionY)
 
   // close dropdown with blur event (may need to check again to see if it's closed)
-  simulateMouseEvent(
-    newZoomLevelElement,
-    "blur",
-    newZoomOptionX,
-    newZoomOptionY
-  )
+  setTimeout(() => {
+    simulateClick(getDOMElement("body"), 1, 1)
+  }, 100)
 })

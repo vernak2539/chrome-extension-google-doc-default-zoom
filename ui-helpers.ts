@@ -21,6 +21,7 @@ export const simulateMouseEvent = (element, eventName, coordX, coordY) => {
 export const simulateClick = (element, coordX, coordY) => {
   simulateMouseEvent(element, "mousedown", coordX, coordY)
   simulateMouseEvent(element, "mouseup", coordX, coordY)
+  simulateMouseEvent(element, "click", coordX, coordY)
 }
 
 export const getDOMElement = (selector: string) => {
