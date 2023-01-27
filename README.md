@@ -1,5 +1,7 @@
 # Google Docs Zoom Default
 
+[Find it on Chrome Web Store](https://chrome.google.com/webstore/detail/google-docs-zoom-default/nflkcdlimipkgbacnfnhfecjgmojhklo)
+
 ## Motivation
 
 I'm getting old (or my monitor is has too much resolution), which makes it harder to see the small text in Google Docs.
