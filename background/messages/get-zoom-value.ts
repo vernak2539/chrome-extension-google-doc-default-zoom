@@ -5,10 +5,12 @@ import { STORAGE_KEY } from "~constants"
 
 const storage = new Storage()
 
-export const handler: PlasmoMessaging.MessageHandler = async (req, res) => {
+const handler: PlasmoMessaging.MessageHandler = async (req, res) => {
   storage.get(STORAGE_KEY).then((zoomValue) => {
     res.send({
       zoomValue
     })
   })
 }
+
+export default handler

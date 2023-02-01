@@ -1,4 +1,4 @@
-import type { PlasmoContentScript } from "plasmo"
+import type { PlasmoCSConfig } from "plasmo"
 
 import { relay, sendViaRelay } from "@plasmohq/messaging"
 
@@ -13,7 +13,7 @@ import {
   simulateMouseEvent
 } from "~ui-helpers"
 
-export const config: PlasmoContentScript = {
+export const config: PlasmoCSConfig = {
   matches: ["https://docs.google.com/*"]
 }
 
