@@ -9,8 +9,7 @@ import {
 import {
   getDOMElement,
   getDOMElementCoordinates,
-  simulateClick,
-  simulateMouseEvent
+  simulateClick
 } from "~ui-helpers"
 
 export const config: PlasmoCSConfig = {

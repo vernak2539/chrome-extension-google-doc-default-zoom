@@ -3,7 +3,7 @@ interface Coordinates {
   y: number
 }
 
-export const simulateMouseEvent = (element, eventName, coordX, coordY) => {
+const simulateMouseEvent = (element, eventName, coordX, coordY) => {
   element.dispatchEvent(
     new MouseEvent(eventName, {
       view: window,
