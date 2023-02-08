@@ -4,8 +4,10 @@ import { relay, sendViaRelay } from "@plasmohq/messaging"
 
 import {
   CLICKABLE_ZOOM_OPTION_CLASS,
-  CLICKABLE_ZOOM_SELECT_ID
+  CLICKABLE_ZOOM_SELECT_ID,
+  OBSERVE_EXECUTION_LIMIT
 } from "~constants"
+import counterFactory from "~counter-factory"
 import {
   getDOMElement,
   getDOMElementCoordinates,
@@ -73,23 +75,10 @@ const getIsZoomSelectUIDisabled = () => {
   return zoomSelect.classList.contains("goog-toolbar-combo-button-disabled")
 }
 
-const counterFactory = () => {
-  let count = 0
-
-  return {
-    getCount: () => count,
-    increment: () => {
-      count++
-    }
-  }
-}
-
-const countLimit = 1000
-
 const counter = counterFactory()
 const observer = new MutationObserver((_mutationList, observer) => {
   const zoomIsDisabled = getIsZoomSelectUIDisabled()
-  const isExecutionCountOverLimit = counter.getCount() > countLimit
+  const isExecutionCountOverLimit = counter.getCount() > OBSERVE_EXECUTION_LIMIT
 
   if (isExecutionCountOverLimit) {
     observer.disconnect()
