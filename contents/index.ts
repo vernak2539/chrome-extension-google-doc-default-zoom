@@ -100,14 +100,11 @@ const observer = new MutationObserver((_mutationList, observer) => {
 const zoomIsDisabled = getIsZoomSelectUIDisabled()
 
 if (zoomIsDisabled) {
-  console.log("OBSERVE")
   observer.observe(document.getElementById("docs-toolbar"), {
     attributes: true,
     childList: true
   })
 } else {
-  console.log("immediate")
-
   getZoomValue().then((zoomValue) => {
     changeZoom(zoomValue)
   })
