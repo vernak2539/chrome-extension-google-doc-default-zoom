@@ -21,8 +21,15 @@ relay({
   name: "get-zoom-value"
 })
 
-// use the relay
-sendViaRelay({ name: "get-zoom-value" }).then((response) => {
+const getZoomValue = () => {
+  return new Promise((resolve) => {
+    sendViaRelay({ name: "get-zoom-value" }).then((response) => {
+      resolve(response.zoomValue)
+    })
+  })
+}
+
+const changeZoom = (zoomValue) => {
   // get menu element responsible for changing zoom
   const zoomInput = getDOMElement(CLICKABLE_ZOOM_SELECT_ID)
   const { x: zoomInputX, y: zoomInputY } = getDOMElementCoordinates(zoomInput)
@@ -40,9 +47,7 @@ sendViaRelay({ name: "get-zoom-value" }).then((response) => {
   )
   let newZoomLevelElement = null
   for (let i = 0; i < zoomInputSelectOptions.length; i++) {
-    if (
-      zoomInputSelectOptions[i].firstChild.textContent === response.zoomValue
-    ) {
+    if (zoomInputSelectOptions[i].firstChild.textContent === zoomValue) {
       newZoomLevelElement = zoomInputSelectOptions[i].firstChild
     }
   }
@@ -61,4 +66,35 @@ sendViaRelay({ name: "get-zoom-value" }).then((response) => {
   setTimeout(() => {
     simulateClick(getDOMElement("body"), 1, 1)
   }, 100)
+}
+
+const getIsZoomDisabled = () => {
+  const zoomSelect = getDOMElement(CLICKABLE_ZOOM_SELECT_ID)
+  return zoomSelect.classList.contains("goog-toolbar-combo-button-disabled")
+}
+
+const observer = new MutationObserver((_mutationList, observer) => {
+  const zoomIsDisabled = getIsZoomDisabled()
+
+  if (!zoomIsDisabled) {
+    getZoomValue().then((zoomValue) => {
+      changeZoom(zoomValue)
+    })
+
+    observer.disconnect()
+  }
 })
+
+// initial kick-off
+const zoomIsDisabled = getIsZoomDisabled()
+
+if (zoomIsDisabled) {
+  observer.observe(document.getElementById("docs-toolbar"), {
+    attributes: true,
+    childList: true
+  })
+} else {
+  getZoomValue().then((zoomValue) => {
+    changeZoom(zoomValue)
+  })
+}
