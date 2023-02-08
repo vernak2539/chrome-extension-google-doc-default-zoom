@@ -68,13 +68,13 @@ const changeZoom = (zoomValue) => {
   }, 100)
 }
 
-const getIsZoomDisabled = () => {
+const getIsZoomSelectUIDisabled = () => {
   const zoomSelect = getDOMElement(CLICKABLE_ZOOM_SELECT_ID)
   return zoomSelect.classList.contains("goog-toolbar-combo-button-disabled")
 }
 
 const observer = new MutationObserver((_mutationList, observer) => {
-  const zoomIsDisabled = getIsZoomDisabled()
+  const zoomIsDisabled = getIsZoomSelectUIDisabled()
 
   if (!zoomIsDisabled) {
     getZoomValue().then((zoomValue) => {
@@ -86,7 +86,7 @@ const observer = new MutationObserver((_mutationList, observer) => {
 })
 
 // initial kick-off
-const zoomIsDisabled = getIsZoomDisabled()
+const zoomIsDisabled = getIsZoomSelectUIDisabled()
 
 if (zoomIsDisabled) {
   observer.observe(document.getElementById("docs-toolbar"), {
