@@ -5,6 +5,7 @@ import { relay, sendViaRelay } from "@plasmohq/messaging"
 import {
   CLICKABLE_ZOOM_OPTION_CLASS,
   CLICKABLE_ZOOM_SELECT_ID,
+  DEFAULT_ZOOM,
   OBSERVE_EXECUTION_LIMIT
 } from "~constants"
 import counterFactory from "~counter-factory"
@@ -32,6 +33,11 @@ const getZoomValue = () => {
 }
 
 const changeZoom = (zoomValue) => {
+  // don't do anything if zoom level is set to default value
+  if (zoomValue === DEFAULT_ZOOM) {
+    return
+  }
+
   // get menu element responsible for changing zoom
   const zoomInput = getDOMElement(CLICKABLE_ZOOM_SELECT_ID)
   const { x: zoomInputX, y: zoomInputY } = getDOMElementCoordinates(zoomInput)
