@@ -2,6 +2,8 @@
 
 [Find it on Chrome Web Store](https://chrome.google.com/webstore/detail/google-docs-zoom-default/nflkcdlimipkgbacnfnhfecjgmojhklo)
 
+👉 I wrote a bit more about it on my [blog](https://words.byvernacchia.com/blog/my-first-chrome-extension/) (yes, another one)
+
 ## Motivation
 
 I'm getting old (or my monitor is has too much resolution), which makes it harder to see the small text in Google Docs.
