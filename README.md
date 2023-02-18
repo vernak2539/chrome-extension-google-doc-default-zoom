@@ -33,3 +33,7 @@ It's pretty bare bones now and likely will have some quirks. This is likely due 
 
 Issues are always appreciated, and I'll try to answer accordingly. Please remember that I do this in my spare time and
 Chrome Extensions and Plasmo are quite new to me.
+
+## Data Privacy
+
+This Chrome Extension will never collect or transmit any personal data.
