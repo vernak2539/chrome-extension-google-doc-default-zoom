@@ -72,8 +72,8 @@ const changeZoom = (zoomValue) => {
 
   // close dropdown with blur event (may need to check again to see if it's closed)
   setTimeout(() => {
-    simulateClick(getDOMElement("body"), 1, 1)
-  }, 100)
+    simulateClick(getDOMElement("canvas"), 0, 0)
+  }, 500)
 }
 
 const getIsZoomSelectUIDisabled = () => {
