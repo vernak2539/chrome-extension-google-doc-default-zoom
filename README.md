@@ -4,6 +4,19 @@
 
 👉 I wrote a bit more about it on my [blog](https://words.byvernacchia.com/blog/my-first-chrome-extension/) (yes, another one)
 
+## Does it work with the Google Docs redesign?
+
+Yes, it should work with the new design! I didn't even have to do anything. I'll continue to monitor this as we go, but
+if you see any problems please submit an issue!
+
+**New Design**
+
+![](./docs/img/google-docs-new-design.png)
+
+**Current/Old Design**
+
+![](./docs/img/google-docs-current-old-design.png)
+
 ## Motivation
 
 I'm getting old (or my monitor is has too much resolution), which makes it harder to see the small text in Google Docs.
