@@ -4,6 +4,13 @@
 
 👉 I wrote a bit more about it on my [blog](https://words.byvernacchia.com/blog/my-first-chrome-extension/) (yes, another one)
 
+Supported Google Workspace Products:
+
+- [x] Google Docs
+- [ ] Google Docs (view only permissions)
+- [ ] Google Sheets
+- [ ] Google Slides (maybe)
+
 ## Does it work with the Google Docs redesign?
 
 Yes, it should work with the new design! I didn't even have to do anything. I'll continue to monitor this as we go, but
