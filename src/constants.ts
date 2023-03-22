@@ -1,6 +1,4 @@
 export const STORAGE_KEY = "zoomValue"
-export const ZOOM_VALUES = ["Fit", "50%", "75%", "100%", "125%", "150%", "200%"]
-export const DEFAULT_ZOOM = ZOOM_VALUES.at(3)
 export const OBSERVE_EXECUTION_LIMIT = 1000
 
 // UI Selectors
