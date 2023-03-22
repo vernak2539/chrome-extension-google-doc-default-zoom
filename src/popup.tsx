@@ -3,6 +3,8 @@ import type { ChangeEvent } from "react"
 
 import { useStorage } from "@plasmohq/storage/hook"
 
+import WorkplaceApplicationSelect from "~components/WorkplaceApplicationSelect"
+import WorkplaceApplicationSelectOption from "~components/WorkplaceApplicationSelectOption"
 import {
   DEFAULT_ZOOM as DOCS_DEFAULT_ZOOM,
   STORAGE_KEY as DOCS_STORAGE_KEY,
@@ -25,18 +27,20 @@ function IndexPopup() {
   }
 
   return (
-    <div style={{ minWidth: "250px" }}>
-      <h2>Google Docs Zoom Default</h2>
+    <div style={{ minWidth: "310px" }}>
+      <h2>Google Workspace Zoom Default</h2>
       <p>
         Select the default zoom you'd like your Google Workspace applications to
         use when they first load.
       </p>
-      {/*// how to load this dynamically*/}
-      <select onChange={onDefaultZoomChange} value={defaultZoom}>
-        {DOCS_ZOOM_VALUES.map((value) => {
-          return <option>{value}</option>
-        })}
-      </select>
+      <WorkplaceApplicationSelect>
+        <WorkplaceApplicationSelectOption
+          application="Docs"
+          values={DOCS_ZOOM_VALUES}
+          selectedValue={defaultZoom}
+          onDefaultZoomChange={onDefaultZoomChange} // needs to be abstracted to handle other applications
+        />
+      </WorkplaceApplicationSelect>
     </div>
   )
 }
