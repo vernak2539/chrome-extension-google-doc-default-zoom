@@ -1,6 +1,6 @@
 import type { PlasmoCSConfig } from "plasmo"
 
-import { relay, sendViaRelay } from "@plasmohq/messaging"
+import { relayMessage, sendToBackgroundViaRelay } from "@plasmohq/messaging"
 
 import { OBSERVE_EXECUTION_LIMIT } from "~constants"
 import counterFactory from "~counter-factory"
@@ -11,13 +11,13 @@ export const config: PlasmoCSConfig = {
 }
 
 // create and "register" the relay
-relay({
+relayMessage({
   name: "get-zoom-value"
 })
 
 const getZoomValue: () => Promise<string> = () => {
   return new Promise((resolve) => {
-    sendViaRelay({ name: "get-zoom-value" }).then((response) => {
+    sendToBackgroundViaRelay({ name: "get-zoom-value" }).then((response) => {
       resolve(response.zoomValue)
     })
   })
