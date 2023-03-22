@@ -4,6 +4,8 @@ import { useStorage } from "@plasmohq/storage/hook"
 
 import { DEFAULT_ZOOM, STORAGE_KEY, ZOOM_VALUES } from "./constants"
 
+// UPDATE HERE the usage of constants (static methods??)
+
 // todo - build in enabled/disabled state state
 
 // Icon used in Favicon was created by https://www.flaticon.com/authors/royyan-wijaya

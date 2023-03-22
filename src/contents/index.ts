@@ -5,6 +5,7 @@ import { relayMessage, sendToBackgroundViaRelay } from "@plasmohq/messaging"
 import { OBSERVE_EXECUTION_LIMIT } from "~constants"
 import counterFactory from "~counter-factory"
 import DocsStrategy from "~strategies/docs"
+import type { GetZoomValueRequestBody, GetZoomValueResponseBody } from "~types"
 
 export const config: PlasmoCSConfig = {
   matches: ["https://docs.google.com/*"]
@@ -15,15 +16,17 @@ relayMessage({
   name: "get-zoom-value"
 })
 
+const strategy = new DocsStrategy({ isViewOnly: false })
+
 const getZoomValue: () => Promise<string> = () => {
   return new Promise((resolve) => {
-    sendToBackgroundViaRelay({ name: "get-zoom-value" }).then((response) => {
+    sendToBackgroundViaRelay<GetZoomValueRequestBody, GetZoomValueResponseBody>(
+      { name: "get-zoom-value", body: { storageKey: strategy.STORAGE_KEY } }
+    ).then((response) => {
       resolve(response.zoomValue)
     })
   })
 }
-
-const strategy = new DocsStrategy({ isViewOnly: false })
 
 const counter = counterFactory()
 const observer = new MutationObserver((_mutationList, observer) => {

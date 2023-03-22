@@ -1,12 +1,15 @@
 import type { PlasmoMessaging } from "@plasmohq/messaging"
 import { Storage } from "@plasmohq/storage"
 
-import { STORAGE_KEY } from "~constants"
+import type { GetZoomValueRequestBody, GetZoomValueResponseBody } from "~types"
 
 const storage = new Storage()
 
-const handler: PlasmoMessaging.MessageHandler = async (req, res) => {
-  storage.get(STORAGE_KEY).then((zoomValue) => {
+const handler: PlasmoMessaging.MessageHandler<
+  GetZoomValueRequestBody,
+  GetZoomValueResponseBody
+> = async (req, res) => {
+  storage.get(req.body.storageKey).then((zoomValue) => {
     res.send({
       zoomValue
     })
