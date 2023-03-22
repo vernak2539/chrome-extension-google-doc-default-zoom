@@ -9,16 +9,17 @@ interface BaseStrategy {
   getIsZoomSelectorDisabled: () => void
 }
 
-const ZOOM_VALUES = ["Fit", "50%", "75%", "100%", "125%", "150%", "200%"]
-const DEFAULT_ZOOM = ZOOM_VALUES.at(3)
+export const STORAGE_KEY = "zoomValue"
+export const ZOOM_VALUES = ["Fit", "50%", "75%", "100%", "125%", "150%", "200%"]
+export const DEFAULT_ZOOM = ZOOM_VALUES.at(3)
 
 // UI Selectors
-export const CLICKABLE_ZOOM_SELECT_ID = "#zoomSelect"
-export const CLICKABLE_ZOOM_OPTION_CLASS = ".goog-menuitem"
+const CLICKABLE_ZOOM_SELECT_ID = "#zoomSelect"
+const CLICKABLE_ZOOM_OPTION_CLASS = ".goog-menuitem"
 
 class DocsStrategy implements BaseStrategy {
   private isViewOnly: boolean
-  public readonly STORAGE_KEY: string = "zoomValue"
+  public readonly STORAGE_KEY: string = STORAGE_KEY
 
   constructor({ isViewOnly }) {
     this.isViewOnly = isViewOnly

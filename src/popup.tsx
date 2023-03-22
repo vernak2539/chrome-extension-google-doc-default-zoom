@@ -1,20 +1,21 @@
+// Icon used in Favicon was created by https://www.flaticon.com/authors/royyan-wijaya
 import type { ChangeEvent } from "react"
 
 import { useStorage } from "@plasmohq/storage/hook"
 
-import { DEFAULT_ZOOM, STORAGE_KEY, ZOOM_VALUES } from "./constants"
-
-// UPDATE HERE the usage of constants (static methods??)
+import {
+  DEFAULT_ZOOM as DOCS_DEFAULT_ZOOM,
+  STORAGE_KEY as DOCS_STORAGE_KEY,
+  ZOOM_VALUES as DOCS_ZOOM_VALUES
+} from "~strategies/docs"
 
 // todo - build in enabled/disabled state state
 
-// Icon used in Favicon was created by https://www.flaticon.com/authors/royyan-wijaya
-
 function IndexPopup() {
   const [defaultZoom, setDefaultZoom] = useStorage(
-    STORAGE_KEY,
+    DOCS_STORAGE_KEY,
     (storedZoom) => {
-      return typeof storedZoom === "undefined" ? DEFAULT_ZOOM : storedZoom
+      return typeof storedZoom === "undefined" ? DOCS_DEFAULT_ZOOM : storedZoom
     }
   )
 
@@ -31,11 +32,9 @@ function IndexPopup() {
         loads.
       </p>
       {/*// how to load this dynamically*/}
-      <select onChange={onDefaultZoomChange}>
-        {ZOOM_VALUES.map((value) => {
-          const isSelected = value === defaultZoom
-
-          return <option selected={isSelected}>{value}</option>
+      <select onChange={onDefaultZoomChange} value={defaultZoom}>
+        {DOCS_ZOOM_VALUES.map((value) => {
+          return <option>{value}</option>
         })}
       </select>
     </div>
