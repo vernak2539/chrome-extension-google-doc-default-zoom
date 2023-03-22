@@ -4,7 +4,7 @@ import { relay, sendViaRelay } from "@plasmohq/messaging"
 
 import { OBSERVE_EXECUTION_LIMIT } from "~constants"
 import counterFactory from "~counter-factory"
-import DocsStrategy from "~src/strategies/docs"
+import DocsStrategy from "~strategies/docs"
 
 export const config: PlasmoCSConfig = {
   matches: ["https://docs.google.com/*"]
