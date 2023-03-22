@@ -2,7 +2,10 @@ import type { PlasmoCSConfig } from "plasmo"
 
 import { relayMessage, sendToBackgroundViaRelay } from "@plasmohq/messaging"
 
-import { OBSERVE_EXECUTION_LIMIT } from "~constants"
+import {
+  OBSERVE_EXECUTION_LIMIT,
+  RELAY_GET_ZOOM_VALUE_FROM_STORAGE
+} from "~constants"
 import counterFactory from "~counter-factory"
 import DocsStrategy from "~strategies/docs"
 import type { GetZoomValueRequestBody, GetZoomValueResponseBody } from "~types"
@@ -12,16 +15,17 @@ export const config: PlasmoCSConfig = {
 }
 
 // create and "register" the relay
-relayMessage({
-  name: "get-zoom-value"
-})
+relayMessage({ name: RELAY_GET_ZOOM_VALUE_FROM_STORAGE })
 
 const strategy = new DocsStrategy({ isViewOnly: false })
 
 const getZoomValue: () => Promise<string> = () => {
   return new Promise((resolve) => {
     sendToBackgroundViaRelay<GetZoomValueRequestBody, GetZoomValueResponseBody>(
-      { name: "get-zoom-value", body: { storageKey: strategy.STORAGE_KEY } }
+      {
+        name: RELAY_GET_ZOOM_VALUE_FROM_STORAGE,
+        body: { storageKey: strategy.STORAGE_KEY }
+      }
     ).then((response) => {
       resolve(response.zoomValue)
     })
