@@ -1,6 +1,6 @@
 import type { PlasmoCSConfig } from "plasmo"
 
-import { relayMessage, sendToBackgroundViaRelay } from "@plasmohq/messaging"
+import { relayMessage } from "@plasmohq/messaging"
 
 import {
   OBSERVE_EXECUTION_LIMIT,
@@ -8,7 +8,6 @@ import {
 } from "~constants"
 import counterFactory from "~counter-factory"
 import DocsStrategy from "~strategies/docs"
-import Logger from "~utils/logger"
 
 export const config: PlasmoCSConfig = {
   matches: ["https://docs.google.com/*"]
