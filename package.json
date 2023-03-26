@@ -1,8 +1,8 @@
 {
   "name": "google-zoom",
-  "displayName": "Google Docs Zoom Default",
+  "displayName": "Google Workspace Zoom Default",
   "version": "0.1.4",
-  "description": "Set the default zoom of your Google Doc when first loading the page.",
+  "description": "Set the default zoom of your Google Workplace application when first loading it.",
   "author": "vernak2539",
   "scripts": {
     "dev": "plasmo dev",
