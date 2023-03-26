@@ -1,3 +1,4 @@
+import { useId } from "react"
 import type { ChangeEvent } from "react"
 
 interface Props {
@@ -17,7 +18,7 @@ const Index = ({
       {application}{" "}
       <select onChange={onDefaultZoomChange} value={selectedValue}>
         {values.map((value) => {
-          return <option>{value}</option>
+          return <option key={useId()}>{value}</option>
         })}
       </select>
     </li>

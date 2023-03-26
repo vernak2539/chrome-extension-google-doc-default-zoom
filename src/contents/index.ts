@@ -1,3 +1,4 @@
+import styleText from "data-text:../style.module.css"
 import type { PlasmoCSConfig } from "plasmo"
 
 import { relayMessage } from "@plasmohq/messaging"
@@ -11,6 +12,12 @@ import counterFactory from "~utils/counter-factory"
 
 export const config: PlasmoCSConfig = {
   matches: ["https://docs.google.com/*"]
+}
+
+export const getStyle = () => {
+  const style = document.createElement("style")
+  style.textContent = styleText
+  return style
 }
 
 // create and "register" the relay
