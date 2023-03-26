@@ -1,7 +1,7 @@
 {
   "name": "google-zoom",
   "displayName": "Google Workspace Zoom Default",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Set the default zoom of your Google Workspace application when first loading it.",
   "author": "vernak2539",
   "scripts": {
