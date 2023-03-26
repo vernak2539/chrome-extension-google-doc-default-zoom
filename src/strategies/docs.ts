@@ -5,6 +5,7 @@ import {
   simulateClick
 } from "~ui-helpers"
 import getZoomValueFromStorage from "~utils/get-zoom-value-from-storage"
+import Logger from "~utils/logger"
 
 export const STORAGE_KEY = "zoomValue"
 export const ZOOM_VALUES = ["Fit", "50%", "75%", "100%", "125%", "150%", "200%"]
@@ -16,10 +17,12 @@ const CLICKABLE_ZOOM_OPTION_CLASS = ".goog-menuitem"
 
 class DocsStrategy implements BaseStrategy {
   private isViewOnly: boolean
+  private readonly logger: Logger
   public readonly STORAGE_KEY: string = STORAGE_KEY
 
   constructor({ isViewOnly }) {
     this.isViewOnly = isViewOnly
+    this.logger = new Logger("Docs")
   }
 
   getIsZoomSelectorDisabled() {
@@ -27,10 +30,13 @@ class DocsStrategy implements BaseStrategy {
     return zoomSelect.classList.contains("goog-toolbar-combo-button-disabled")
   }
 
-  execute() {
-    return this._getZoomValueFromStorage().then((zoomValue) =>
+  execute(executionLocation: string) {
+    this._getZoomValueFromStorage().then((zoomValue) => {
       this._executeUIFlow(zoomValue)
-    )
+      this.logger.info(
+        `Zoom executed. Method: ${executionLocation}. Zoom Value: ${zoomValue}`
+      )
+    })
   }
 
   _getZoomValueFromStorage() {

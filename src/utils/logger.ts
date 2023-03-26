@@ -1,12 +1,12 @@
 class Logger {
   private workplaceApp: string
 
-  setWorkplaceApp(name: string) {
+  constructor(name: string) {
     this.workplaceApp = name
   }
 
-  info(...msg) {
-    console.log("Google Workspace Zoom Default: ", msg)
+  info(msg) {
+    console.log(`Google Workspace Zoom Default: ${msg}`)
   }
 }
 

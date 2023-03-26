@@ -14,13 +14,10 @@ export const config: PlasmoCSConfig = {
   matches: ["https://docs.google.com/*"]
 }
 
-const logger = new Logger()
-
 // create and "register" the relay
 relayMessage({ name: RELAY_GET_ZOOM_VALUE_FROM_STORAGE })
 
 const strategy = new DocsStrategy({ isViewOnly: false })
-logger.setWorkplaceApp("Docs")
 
 const counter = counterFactory()
 const observer = new MutationObserver((_mutationList, observer) => {
@@ -34,9 +31,7 @@ const observer = new MutationObserver((_mutationList, observer) => {
 
   if (!zoomIsDisabled) {
     observer.disconnect()
-    strategy.execute().then(() => {
-      console.log("Zoom executed. Method: observer")
-    })
+    strategy.execute("observer")
   }
 
   counter.increment()
@@ -51,7 +46,5 @@ if (zoomIsDisabled) {
     childList: true
   })
 } else {
-  strategy.execute().then(() => {
-    console.log("Zoom executed. Method: inline")
-  })
+  strategy.execute("inline")
 }
