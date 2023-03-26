@@ -9,7 +9,7 @@ interface Props {
   selectedValue: string
   onDefaultZoomChange: (event: ChangeEvent<HTMLSelectElement>) => void
 }
-const Index = ({
+const WorkspaceApplication = ({
   application,
   values,
   selectedValue,
@@ -27,4 +27,4 @@ const Index = ({
   )
 }
 
-export default Index
+export default WorkspaceApplication

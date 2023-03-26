@@ -1,8 +1,8 @@
 class Logger {
-  private workplaceApp: string
+  private workspaceApp: string
 
   constructor(name: string) {
-    this.workplaceApp = name
+    this.workspaceApp = name
   }
 
   info(msg) {

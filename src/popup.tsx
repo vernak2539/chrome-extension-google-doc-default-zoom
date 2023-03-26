@@ -3,8 +3,8 @@ import type { ChangeEvent } from "react"
 
 import { useStorage } from "@plasmohq/storage/hook"
 
-import WorkplaceApplicationSelect from "~components/WorkplaceApplication"
-import WorkplaceApplicationSelectList from "~components/WorkplaceApplicationList"
+import WorkspaceApplication from "~components/WorkspaceApplication"
+import WorkspaceApplicationList from "~components/WorkspaceApplicationList"
 import {
   DEFAULT_ZOOM as DOCS_DEFAULT_ZOOM,
   STORAGE_KEY as DOCS_STORAGE_KEY,
@@ -34,14 +34,14 @@ function IndexPopup() {
         use when they first load.
       </p>
       <h3 style={{ marginBottom: 0 }}>Applications</h3>
-      <WorkplaceApplicationSelectList>
-        <WorkplaceApplicationSelect
+      <WorkspaceApplicationList>
+        <WorkspaceApplication
           application="Docs"
           values={DOCS_ZOOM_VALUES}
           selectedValue={defaultZoom}
           onDefaultZoomChange={onDefaultZoomChange} // needs to be abstracted to handle other applications
         />
-      </WorkplaceApplicationSelectList>
+      </WorkspaceApplicationList>
     </div>
   )
 }
