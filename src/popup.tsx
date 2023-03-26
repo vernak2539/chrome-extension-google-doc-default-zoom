@@ -3,8 +3,8 @@ import type { ChangeEvent } from "react"
 
 import { useStorage } from "@plasmohq/storage/hook"
 
-import WorkplaceApplicationSelect from "~components/WorkplaceApplicationSelect"
-import WorkplaceApplicationSelectList from "~components/WorkplaceApplicationSelectList"
+import WorkplaceApplicationSelect from "~components/WorkplaceApplication"
+import WorkplaceApplicationSelectList from "~components/WorkplaceApplicationList"
 import {
   DEFAULT_ZOOM as DOCS_DEFAULT_ZOOM,
   STORAGE_KEY as DOCS_STORAGE_KEY,
@@ -33,6 +33,7 @@ function IndexPopup() {
         Select the default zoom you'd like your Google Workspace applications to
         use when they first load.
       </p>
+      <h3 style={{ marginBottom: 0 }}>Applications</h3>
       <WorkplaceApplicationSelectList>
         <WorkplaceApplicationSelect
           application="Docs"

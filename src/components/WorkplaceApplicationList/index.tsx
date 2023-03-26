@@ -4,7 +4,7 @@ interface Props {
   children: JSX.Element
 }
 const Index = ({ children }: Props) => {
-  return <ul className={style.header}>{children}</ul>
+  return <ul className={style.applicationList}>{children}</ul>
 }
 
 export default Index

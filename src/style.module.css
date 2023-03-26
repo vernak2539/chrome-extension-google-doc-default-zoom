@@ -1,3 +1,18 @@
-.header {
-    color: red;
+.applicationList {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.applicationListItem {
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+}
+
+.applicationTitle {
+    margin-right: 10px;
+    font-weight: bold;
+    color: #666;
 }
