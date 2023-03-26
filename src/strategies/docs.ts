@@ -3,10 +3,13 @@ import {
   getDOMElementCoordinates,
   simulateClick
 } from "~ui-helpers"
+import getZoomValueFromStorage from "~utils/get-zoom-value-from-storage"
 
 interface BaseStrategy {
-  execute: (zoomValue: string) => void
+  execute: () => Promise<void>
   getIsZoomSelectorDisabled: () => void
+  _getZoomValueFromStorage: () => Promise<string>
+  _executeUIFlow: (zoomValue: string) => void
 }
 
 export const STORAGE_KEY = "zoomValue"
@@ -30,7 +33,17 @@ class DocsStrategy implements BaseStrategy {
     return zoomSelect.classList.contains("goog-toolbar-combo-button-disabled")
   }
 
-  execute(zoomValue: string) {
+  execute() {
+    return this._getZoomValueFromStorage().then((zoomValue) =>
+      this._executeUIFlow(zoomValue)
+    )
+  }
+
+  _getZoomValueFromStorage() {
+    return getZoomValueFromStorage(this.STORAGE_KEY)
+  }
+
+  _executeUIFlow(zoomValue: string) {
     // don't do anything if zoom level is set to default value
     if (zoomValue === DEFAULT_ZOOM) {
       return

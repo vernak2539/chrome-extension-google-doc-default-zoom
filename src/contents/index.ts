@@ -8,29 +8,19 @@ import {
 } from "~constants"
 import counterFactory from "~counter-factory"
 import DocsStrategy from "~strategies/docs"
-import type { GetZoomValueRequestBody, GetZoomValueResponseBody } from "~types"
+import Logger from "~utils/logger"
 
 export const config: PlasmoCSConfig = {
   matches: ["https://docs.google.com/*"]
 }
 
+const logger = new Logger()
+
 // create and "register" the relay
 relayMessage({ name: RELAY_GET_ZOOM_VALUE_FROM_STORAGE })
 
 const strategy = new DocsStrategy({ isViewOnly: false })
-
-const getZoomValue: () => Promise<string> = () => {
-  return new Promise((resolve) => {
-    sendToBackgroundViaRelay<GetZoomValueRequestBody, GetZoomValueResponseBody>(
-      {
-        name: RELAY_GET_ZOOM_VALUE_FROM_STORAGE,
-        body: { storageKey: strategy.STORAGE_KEY }
-      }
-    ).then((response) => {
-      resolve(response.zoomValue)
-    })
-  })
-}
+logger.setWorkplaceApp("Docs")
 
 const counter = counterFactory()
 const observer = new MutationObserver((_mutationList, observer) => {
@@ -43,11 +33,10 @@ const observer = new MutationObserver((_mutationList, observer) => {
   }
 
   if (!zoomIsDisabled) {
-    getZoomValue().then((zoomValue) => {
-      strategy.execute(zoomValue)
-    })
-
     observer.disconnect()
+    strategy.execute().then(() => {
+      console.log("Zoom executed. Method: observer")
+    })
   }
 
   counter.increment()
@@ -62,7 +51,7 @@ if (zoomIsDisabled) {
     childList: true
   })
 } else {
-  getZoomValue().then((zoomValue) => {
-    strategy.execute(zoomValue)
+  strategy.execute().then(() => {
+    console.log("Zoom executed. Method: inline")
   })
 }
