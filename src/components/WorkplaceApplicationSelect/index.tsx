@@ -1,14 +1,26 @@
+import type { ChangeEvent } from "react"
+
 interface Props {
-  children: JSX.Element
+  application: "Docs"
+  values: string[]
+  selectedValue: string
+  onDefaultZoomChange: (event: ChangeEvent<HTMLSelectElement>) => void
 }
-const Index = ({ children }: Props) => {
+const Index = ({
+  application,
+  values,
+  selectedValue,
+  onDefaultZoomChange
+}: Props) => {
   return (
-    <ul
-      style={{
-        margin: 0
-      }}>
-      {children}
-    </ul>
+    <li>
+      {application}{" "}
+      <select onChange={onDefaultZoomChange} value={selectedValue}>
+        {values.map((value) => {
+          return <option>{value}</option>
+        })}
+      </select>
+    </li>
   )
 }
 
