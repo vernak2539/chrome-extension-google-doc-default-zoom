@@ -1,16 +1,10 @@
+import type { BaseStrategy } from "~strategies/base"
 import {
   getDOMElement,
   getDOMElementCoordinates,
   simulateClick
 } from "~ui-helpers"
 import getZoomValueFromStorage from "~utils/get-zoom-value-from-storage"
-
-interface BaseStrategy {
-  execute: () => Promise<void>
-  getIsZoomSelectorDisabled: () => void
-  _getZoomValueFromStorage: () => Promise<string>
-  _executeUIFlow: (zoomValue: string) => void
-}
 
 export const STORAGE_KEY = "zoomValue"
 export const ZOOM_VALUES = ["Fit", "50%", "75%", "100%", "125%", "150%", "200%"]
