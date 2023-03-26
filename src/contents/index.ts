@@ -6,8 +6,8 @@ import {
   OBSERVE_EXECUTION_LIMIT,
   RELAY_GET_ZOOM_VALUE_FROM_STORAGE
 } from "~constants"
-import counterFactory from "~counter-factory"
 import DocsStrategy from "~strategies/docs"
+import counterFactory from "~utils/counter-factory"
 
 export const config: PlasmoCSConfig = {
   matches: ["https://docs.google.com/*"]

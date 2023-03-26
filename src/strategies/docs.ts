@@ -1,11 +1,11 @@
 import type { BaseStrategy } from "~strategies/base"
+import getZoomValueFromStorage from "~utils/get-zoom-value-from-storage"
+import Logger from "~utils/logger"
 import {
   getDOMElement,
   getDOMElementCoordinates,
   simulateClick
-} from "~ui-helpers"
-import getZoomValueFromStorage from "~utils/get-zoom-value-from-storage"
-import Logger from "~utils/logger"
+} from "~utils/ui-helpers"
 
 export const STORAGE_KEY = "zoomValue"
 export const ZOOM_VALUES = ["Fit", "50%", "75%", "100%", "125%", "150%", "200%"]
