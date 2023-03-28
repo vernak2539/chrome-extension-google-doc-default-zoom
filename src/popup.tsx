@@ -10,6 +10,7 @@ import {
   STORAGE_KEY as DOCS_STORAGE_KEY,
   ZOOM_VALUES as DOCS_ZOOM_VALUES
 } from "~strategies/docs"
+import workspaceApps from "~workspace-apps"
 
 // todo - build in enabled/disabled state state
 
@@ -35,12 +36,16 @@ function IndexPopup() {
       </p>
       <h3 style={{ marginBottom: 0 }}>Applications</h3>
       <WorkspaceApplicationList>
-        <WorkspaceApplication
-          application="Docs"
-          values={DOCS_ZOOM_VALUES}
-          selectedValue={defaultZoom}
-          onDefaultZoomChange={onDefaultZoomChange} // needs to be abstracted to handle other applications
-        />
+        {workspaceApps
+          .filter((app) => app.isEnabled)
+          .map((app) => (
+            <WorkspaceApplication
+              application={app.name}
+              values={app.zoomValues}
+              selectedValue={defaultZoom}
+              onDefaultZoomChange={onDefaultZoomChange} // needs to be abstracted to handle other applications
+            />
+          ))}
       </WorkspaceApplicationList>
     </div>
   )

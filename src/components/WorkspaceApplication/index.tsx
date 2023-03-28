@@ -4,7 +4,7 @@ import type { ChangeEvent } from "react"
 import * as style from "../../style.module.css"
 
 interface Props {
-  application: "Docs"
+  application: string
   values: string[]
   selectedValue: string
   onDefaultZoomChange: (event: ChangeEvent<HTMLSelectElement>) => void
