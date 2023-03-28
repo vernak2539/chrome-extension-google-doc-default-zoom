@@ -3,7 +3,7 @@ import type { ChangeEvent } from "react"
 
 import { useStorage } from "@plasmohq/storage/hook"
 
-import type { WorkspaceApp } from "~workspace-apps"
+import type { WorkspaceApp } from "~types"
 
 import * as style from "../../style.module.css"
 
