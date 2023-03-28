@@ -1,25 +1,34 @@
 import { useId } from "react"
 import type { ChangeEvent } from "react"
 
+import { useStorage } from "@plasmohq/storage/hook"
+
+import type { WorkspaceApp } from "~workspace-apps"
+
 import * as style from "../../style.module.css"
 
-interface Props {
-  application: string
-  values: string[]
-  selectedValue: string
-  onDefaultZoomChange: (event: ChangeEvent<HTMLSelectElement>) => void
-}
+type Props = Omit<WorkspaceApp, "isEnabled">
+
 const WorkspaceApplication = ({
-  application,
-  values,
-  selectedValue,
-  onDefaultZoomChange
+  name,
+  zoomValues,
+  defaultZoom,
+  storageKey
 }: Props) => {
+  const [zoom, setZoom] = useStorage(storageKey, (storedZoom) => {
+    return typeof storedZoom === "undefined" ? defaultZoom : storedZoom
+  })
+
+  const onDefaultZoomChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    const newValue = event.target.value
+    setZoom(newValue)
+  }
+
   return (
     <li className={style.applicationListItem}>
-      <span className={style.applicationTitle}>{application} </span>
-      <select onChange={onDefaultZoomChange} value={selectedValue}>
-        {values.map((value) => {
+      <span className={style.applicationTitle}>{name} </span>
+      <select onChange={onDefaultZoomChange} value={zoom}>
+        {zoomValues.map((value) => {
           return <option key={useId()}>{value}</option>
         })}
       </select>

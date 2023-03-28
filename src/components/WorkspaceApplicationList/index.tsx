@@ -6,7 +6,12 @@ interface Props {
   children: React.ReactNode
 }
 const WorkspaceApplicationList = ({ children }: Props) => {
-  return <ul className={style.applicationList}>{children}</ul>
+  return (
+    <>
+      <h3 style={{ marginBottom: 0 }}>Applications</h3>
+      <ul className={style.applicationList}>{children}</ul>
+    </>
+  )
 }
 
 export default WorkspaceApplicationList
