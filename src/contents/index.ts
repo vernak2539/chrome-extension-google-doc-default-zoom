@@ -8,7 +8,9 @@ import {
   RELAY_GET_ZOOM_VALUE_FROM_STORAGE
 } from "~constants"
 import DocsStrategy from "~strategies/docs"
+import SheetsStrategy from "~strategies/sheets"
 import counterFactory from "~utils/counter-factory"
+import getCurrentApp from "~utils/get-current-app"
 
 export const config: PlasmoCSConfig = {
   matches: ["https://docs.google.com/*"]
@@ -23,7 +25,22 @@ export const getStyle = () => {
 // create and "register" the relay
 relayMessage({ name: RELAY_GET_ZOOM_VALUE_FROM_STORAGE })
 
-const strategy = new DocsStrategy({ isViewOnly: false })
+const currentApp = getCurrentApp()
+let strategy;
+
+switch(currentApp) {
+  case "Docs":
+    strategy = new DocsStrategy({ isViewOnly: false })
+    break;
+  case "Sheets":
+    strategy = new SheetsStrategy({ isViewOnly: false })
+    break;
+}
+
+if(!strategy) {
+  // @ts-ignore
+  return;
+}
 
 const counter = counterFactory()
 const observer = new MutationObserver((_mutationList, observer) => {

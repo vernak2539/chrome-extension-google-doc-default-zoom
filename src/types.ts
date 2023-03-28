@@ -6,9 +6,11 @@ export interface GetZoomValueResponseBody {
   zoomValue: string
 }
 
+export type WorkplaceAppName = "Docs" | "Sheets"
+
 export interface WorkspaceApp {
   /* Name of the Google Workspace Application */
-  name: string
+  name: WorkplaceAppName
 
   /*
    * Zoom level to be used by default (i.e. prior to custom selection)
