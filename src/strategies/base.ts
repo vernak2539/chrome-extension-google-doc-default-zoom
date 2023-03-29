@@ -4,4 +4,3 @@ export interface BaseStrategy {
   _getZoomValueFromStorage: () => Promise<string>
   _executeUIFlow: (zoomValue: string) => void
 }
-

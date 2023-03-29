@@ -26,48 +26,46 @@ export const getStyle = () => {
 relayMessage({ name: RELAY_GET_ZOOM_VALUE_FROM_STORAGE })
 
 const currentApp = getCurrentApp()
-let strategy;
+let strategy
 
-switch(currentApp) {
+switch (currentApp) {
   case "Docs":
     strategy = new DocsStrategy({ isViewOnly: false })
-    break;
+    break
   case "Sheets":
     strategy = new SheetsStrategy({ isViewOnly: false })
-    break;
+    break
 }
 
-if(!strategy) {
-  // @ts-ignore
-  return;
-}
+if (strategy) {
+  const counter = counterFactory()
+  const observer = new MutationObserver((_mutationList, observer) => {
+    const zoomIsDisabled = strategy.getIsZoomSelectorDisabled()
+    const isExecutionCountOverLimit =
+      counter.getCount() > OBSERVE_EXECUTION_LIMIT
 
-const counter = counterFactory()
-const observer = new MutationObserver((_mutationList, observer) => {
-  const zoomIsDisabled = strategy.getIsZoomSelectorDisabled()
-  const isExecutionCountOverLimit = counter.getCount() > OBSERVE_EXECUTION_LIMIT
+    if (isExecutionCountOverLimit) {
+      observer.disconnect()
+      return
+    }
 
-  if (isExecutionCountOverLimit) {
-    observer.disconnect()
-    return
-  }
+    if (!zoomIsDisabled) {
+      observer.disconnect()
+      strategy.execute("observer")
+    }
 
-  if (!zoomIsDisabled) {
-    observer.disconnect()
-    strategy.execute("observer")
-  }
-
-  counter.increment()
-})
-
-// initial kick-off
-const zoomIsDisabled = strategy.getIsZoomSelectorDisabled()
-
-if (zoomIsDisabled) {
-  observer.observe(document.getElementById("docs-toolbar"), {
-    attributes: true,
-    childList: true
+    counter.increment()
   })
-} else {
-  strategy.execute("inline")
+
+  // initial kick-off
+  const zoomIsDisabled = strategy.getIsZoomSelectorDisabled()
+
+  if (zoomIsDisabled) {
+    observer.observe(document.getElementById("docs-toolbar"), {
+      attributes: true,
+      childList: true
+    })
+  } else {
+    strategy.execute("inline")
+  }
 }
