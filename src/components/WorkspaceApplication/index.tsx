@@ -1,3 +1,4 @@
+import classnames from "classnames"
 import { useId } from "react"
 import type { ChangeEvent } from "react"
 
@@ -25,6 +26,12 @@ const WorkspaceApplication = ({
 
   return (
     <li className={style.applicationListItem}>
+      <span
+        className={classnames(style.applicationIcon, {
+          [style.applicationImageDocs]: name === "Docs",
+          [style.applicationImageSheets]: name === "Sheets"
+        })}
+      />
       <span className={style.applicationTitle}>{name} </span>
       <select onChange={onDefaultZoomChange} value={zoom}>
         {zoomValues.map((value) => {
