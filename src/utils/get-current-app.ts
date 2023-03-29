@@ -1,4 +1,4 @@
-import type { WorkplaceAppName } from "~types"
+import type { WorkspaceAppName } from "~types"
 
 const docsUrlRegex = new RegExp(
   /https:\/\/docs\.google\.com\/document\/d\/(.*?)\/.*?/g
@@ -7,7 +7,7 @@ const sheetsUrlRegex = new RegExp(
   /https:\/\/docs\.google\.com\/spreadsheets\/d\/(.*?)\/.*?/g
 )
 
-const getCurrentApp = (): WorkplaceAppName | null => {
+const getCurrentApp = (): WorkspaceAppName | null => {
   const url = new URL(window.location.href)
 
   if (docsUrlRegex.test(url.href)) {
