@@ -32,7 +32,7 @@ class DocsStrategy implements BaseStrategy {
 
   execute(executionLocation: string) {
     this._getZoomValueFromStorage().then((zoomValue) => {
-      // this._executeUIFlow(zoomValue)
+      this._executeUIFlow(zoomValue)
       this.logger.info(
         `Zoom executed. Method: ${executionLocation}. Zoom Value: ${zoomValue}`
       )
@@ -54,32 +54,33 @@ class DocsStrategy implements BaseStrategy {
     const { x: zoomInputX, y: zoomInputY } = getDOMElementCoordinates(zoomInput)
     simulateClick(zoomInput, zoomInputX, zoomInputY)
 
-    // // get zoom menu element dropdown
-    // const zoomInputAriaOwns = zoomInput.attributes["aria-owns"].value // this is the link
-    // const zoomInputSelect = getDOMElement(
-    //   `.goog-menu.goog-menu-vertical[aria-activedescendant="${zoomInputAriaOwns}"]`
-    // )
-    //
-    // // figure out zoom value to select
-    // const zoomInputSelectOptions = zoomInputSelect.querySelectorAll(
-    //   CLICKABLE_ZOOM_OPTION_CLASS
-    // )
-    // let newZoomLevelElement = null
-    // for (let i = 0; i < zoomInputSelectOptions.length; i++) {
-    //   if (zoomInputSelectOptions[i].firstChild.textContent === zoomValue) {
-    //     newZoomLevelElement = zoomInputSelectOptions[i].firstChild
-    //   }
-    // }
-    //
-    // // somehow we may not have matched the right element
-    // if (!newZoomLevelElement) {
-    //   return
-    // }
-    //
-    // // select new zoom level
-    // const { x: newZoomOptionX, y: newZoomOptionY } =
-    //   getDOMElementCoordinates(newZoomLevelElement)
-    // simulateClick(newZoomLevelElement, newZoomOptionX, newZoomOptionY)
+    // get zoom menu element dropdown
+    const zoomInputAriaOwns = zoomInput.attributes["aria-owns"].value // this is the link
+    const zoomInputSelect = getDOMElement(
+      `.goog-menu.goog-menu-vertical[aria-activedescendant="${zoomInputAriaOwns}"]`
+    )
+
+    // figure out zoom value to select
+    const zoomInputSelectOptions = zoomInputSelect.querySelectorAll(
+      CLICKABLE_ZOOM_OPTION_CLASS
+    )
+
+    let newZoomLevelElement = null
+    for (let i = 0; i < zoomInputSelectOptions.length; i++) {
+      if (zoomInputSelectOptions[i].firstChild.textContent === zoomValue) {
+        newZoomLevelElement = zoomInputSelectOptions[i].firstChild
+      }
+    }
+
+    // somehow we may not have matched the right element
+    if (!newZoomLevelElement) {
+      return
+    }
+
+    // select new zoom level
+    const { x: newZoomOptionX, y: newZoomOptionY } =
+      getDOMElementCoordinates(newZoomLevelElement)
+    simulateClick(newZoomLevelElement, newZoomOptionX, newZoomOptionY)
 
     // close dropdown with blur event (may need to check again to see if it's closed)
     setTimeout(() => {

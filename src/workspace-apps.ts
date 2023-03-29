@@ -23,7 +23,7 @@ const workspaceApps: WorkspaceApp[] = [
     defaultZoom: SHEETS_DEFAULT_ZOOM,
     zoomValues: SHEETS_ZOOM_VALUES,
     storageKey: SHEETS_STORAGE_KEY,
-    isEnabled: false
+    isEnabled: true
   }
 ]
 
