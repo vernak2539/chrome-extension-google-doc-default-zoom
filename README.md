@@ -12,6 +12,10 @@ Supported Google Workspace Products:
 - [ ] Google Sheets (view only permissions)
 - [ ] Google Slides (maybe)
 
+| Google Docs                         | Google Sheets                         |
+|-------------------------------------|---------------------------------------|
+| ![](./docs/img/docs-screenshot.png) | ![](./docs/img/sheets-screenshot.png) |
+
 ## Does it work with the Google Docs redesign?
 
 Yes, it should work with the new design! I didn't even have to do anything. I'll continue to monitor this as we go, but
