@@ -1,18 +1,41 @@
 .applicationList {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    width: 100%;
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .applicationListItem {
-    padding: 10px 0;
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 20px;
 }
 
 .applicationTitle {
-    margin-right: 10px;
-    font-weight: bold;
-    color: #666;
+  margin: 0 10px 0 0;
+  min-width: 45px;
+  font-weight: bold;
+  color: #666;
+}
+
+.applicationIcon {
+  width: 25px;
+  height: 25px;
+  background-size: contain;
+  background-position: center center;
+  background-repeat: no-repeat;
+  margin: 0 5px 0 10px;
+  padding: 5px 0;
+}
+
+.applicationImageDocs {
+  background-image: url("/assets/popup_icons/docs.svg");
+}
+
+.applicationImageSheets {
+  background-image: url("/assets/popup_icons/sheets.svg");
 }

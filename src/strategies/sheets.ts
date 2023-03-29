@@ -7,12 +7,12 @@ import {
   simulateClick
 } from "~utils/ui-helpers"
 
-export const STORAGE_KEY = "zoomValue"
-export const ZOOM_VALUES = ["Fit", "50%", "75%", "100%", "125%", "150%", "200%"]
+export const STORAGE_KEY = "sheets:zoomValue"
+export const ZOOM_VALUES = ["50%", "75%", "90%", "100%", "125%", "150%", "200%"]
 export const DEFAULT_ZOOM = ZOOM_VALUES.at(3)
 
 // UI Selectors
-const CLICKABLE_ZOOM_SELECT_ID = "#zoomSelect"
+const CLICKABLE_ZOOM_SELECT_ID = "#t-zoom"
 const CLICKABLE_ZOOM_OPTION_CLASS = ".goog-menuitem"
 
 class DocsStrategy implements BaseStrategy {
@@ -22,7 +22,7 @@ class DocsStrategy implements BaseStrategy {
 
   constructor({ isViewOnly }) {
     this.isViewOnly = isViewOnly
-    this.logger = new Logger("Docs")
+    this.logger = new Logger("Sheets")
   }
 
   getIsZoomSelectorDisabled() {
@@ -43,9 +43,6 @@ class DocsStrategy implements BaseStrategy {
     return getZoomValueFromStorage(this.STORAGE_KEY)
   }
 
-  /* while this method is the same as "sheets" want to keep them separate based on if the "view only" implementation
-   * is different.
-   */
   _executeUIFlow(zoomValue: string) {
     // don't do anything if zoom level is set to default value
     if (zoomValue === DEFAULT_ZOOM) {
@@ -67,6 +64,7 @@ class DocsStrategy implements BaseStrategy {
     const zoomInputSelectOptions = zoomInputSelect.querySelectorAll(
       CLICKABLE_ZOOM_OPTION_CLASS
     )
+
     let newZoomLevelElement = null
     for (let i = 0; i < zoomInputSelectOptions.length; i++) {
       if (zoomInputSelectOptions[i].firstChild.textContent === zoomValue) {

@@ -8,7 +8,9 @@ import {
   RELAY_GET_ZOOM_VALUE_FROM_STORAGE
 } from "~constants"
 import DocsStrategy from "~strategies/docs"
+import SheetsStrategy from "~strategies/sheets"
 import counterFactory from "~utils/counter-factory"
+import getCurrentApp from "~utils/get-current-app"
 
 export const config: PlasmoCSConfig = {
   matches: ["https://docs.google.com/*"]
@@ -23,34 +25,47 @@ export const getStyle = () => {
 // create and "register" the relay
 relayMessage({ name: RELAY_GET_ZOOM_VALUE_FROM_STORAGE })
 
-const strategy = new DocsStrategy({ isViewOnly: false })
+const currentApp = getCurrentApp()
+let strategy
 
-const counter = counterFactory()
-const observer = new MutationObserver((_mutationList, observer) => {
-  const zoomIsDisabled = strategy.getIsZoomSelectorDisabled()
-  const isExecutionCountOverLimit = counter.getCount() > OBSERVE_EXECUTION_LIMIT
+switch (currentApp) {
+  case "Docs":
+    strategy = new DocsStrategy({ isViewOnly: false })
+    break
+  case "Sheets":
+    strategy = new SheetsStrategy({ isViewOnly: false })
+    break
+}
 
-  if (isExecutionCountOverLimit) {
-    observer.disconnect()
-    return
-  }
+if (strategy) {
+  const counter = counterFactory()
+  const observer = new MutationObserver((_mutationList, observer) => {
+    const zoomIsDisabled = strategy.getIsZoomSelectorDisabled()
+    const isExecutionCountOverLimit =
+      counter.getCount() > OBSERVE_EXECUTION_LIMIT
 
-  if (!zoomIsDisabled) {
-    observer.disconnect()
-    strategy.execute("observer")
-  }
+    if (isExecutionCountOverLimit) {
+      observer.disconnect()
+      return
+    }
 
-  counter.increment()
-})
+    if (!zoomIsDisabled) {
+      observer.disconnect()
+      strategy.execute("observer")
+    }
 
-// initial kick-off
-const zoomIsDisabled = strategy.getIsZoomSelectorDisabled()
-
-if (zoomIsDisabled) {
-  observer.observe(document.getElementById("docs-toolbar"), {
-    attributes: true,
-    childList: true
+    counter.increment()
   })
-} else {
-  strategy.execute("inline")
+
+  // initial kick-off
+  const zoomIsDisabled = strategy.getIsZoomSelectorDisabled()
+
+  if (zoomIsDisabled) {
+    observer.observe(document.getElementById("docs-toolbar"), {
+      attributes: true,
+      childList: true
+    })
+  } else {
+    strategy.execute("inline")
+  }
 }

@@ -1,4 +1,4 @@
-# Google Docs Zoom Default
+# Google Workspace Zoom Default
 
 [Find it on Chrome Web Store](https://chrome.google.com/webstore/detail/google-docs-zoom-default/nflkcdlimipkgbacnfnhfecjgmojhklo)
 
@@ -7,9 +7,14 @@
 Supported Google Workspace Products:
 
 - [x] Google Docs
+- [x] Google Sheets
 - [ ] Google Docs (view only permissions)
-- [ ] Google Sheets
+- [ ] Google Sheets (view only permissions)
 - [ ] Google Slides (maybe)
+
+| Google Docs                         | Google Sheets                         |
+|-------------------------------------|---------------------------------------|
+| ![](./docs/img/docs-screenshot.png) | ![](./docs/img/sheets-screenshot.png) |
 
 ## Does it work with the Google Docs redesign?
 
