@@ -18,7 +18,7 @@ Supported Google Workspace Products:
 
 See it in action below or on [YouTube](https://youtu.be/ZbcpamEBEPU)
 
-![](./docs/video/demo.mp4)
+![](./docs/video/demo.mov)
 
 ## Does it work with the Google Docs redesign?
 
