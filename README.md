@@ -20,7 +20,7 @@ See it in action below or on [YouTube](https://youtu.be/ZbcpamEBEPU)
 
 <details>
 <summary>Video Demo</summary>
-![](./docs/video/demo.mp4
+![](./docs/video/demo.mp4)
 </details>
 
 ## Does it work with the Google Docs redesign?
