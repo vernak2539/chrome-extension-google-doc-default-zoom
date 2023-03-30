@@ -10,7 +10,7 @@ specifiers:
   '@types/react-dom': 18.0.11
   classnames: ^2.3.2
   plasmo: 0.65.0
-  prettier: 2.8.4
+  prettier: 2.8.7
   react: 18.2.0
   react-dom: 18.2.0
   typescript: 4.9.5
@@ -24,12 +24,12 @@ dependencies:
   react-dom: 18.2.0_react@18.2.0
 
 devDependencies:
-  '@plasmohq/prettier-plugin-sort-imports': 3.6.3_prettier@2.8.4
+  '@plasmohq/prettier-plugin-sort-imports': 3.6.3_prettier@2.8.7
   '@types/chrome': 0.0.227
   '@types/node': 18.15.11
   '@types/react': 18.0.31
   '@types/react-dom': 18.0.11
-  prettier: 2.8.4
+  prettier: 2.8.7
   typescript: 4.9.5
 
 packages:
@@ -1890,7 +1890,7 @@ packages:
       - whiskers
     dev: false
 
-  /@plasmohq/prettier-plugin-sort-imports/3.6.3_prettier@2.8.4:
+  /@plasmohq/prettier-plugin-sort-imports/3.6.3_prettier@2.8.7:
     resolution: {integrity: sha512-cbg9vPAbPOzp9Jl0QARtf+pG2f57Mim/Tq+YS+J5VU5ZYTbOF6U+aRfgoMZLM1sdk8BxB5Bh/2tohUY7X3Syfw==}
     peerDependencies:
       prettier: 2.x
@@ -1903,7 +1903,7 @@ packages:
       javascript-natural-sort: 0.7.1
       lodash.clone: 4.5.0
       lodash.isequal: 4.5.0
-      prettier: 2.8.4
+      prettier: 2.8.7
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -4518,8 +4518,8 @@ packages:
       tunnel-agent: 0.6.0
     dev: false
 
-  /prettier/2.8.4:
-    resolution: {integrity: sha512-vIS4Rlc2FNh0BySk3Wkd6xmwxB0FpOndW5fisM5H8hsZSxU2VWVB5CWIkIjWvrHjIhxk2g3bfMKM87zNTrZddw==}
+  /prettier/2.8.7:
+    resolution: {integrity: sha512-yPngTo3aXUUmyuTjeTUT75txrf+aMh9FiD7q9ZE/i6r0bPb22g4FsE6Y338PQX1bmfy08i9QQCB7/rcUAVntfw==}
     engines: {node: '>=10.13.0'}
     hasBin: true
     dev: true
