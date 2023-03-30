@@ -4,6 +4,8 @@
 
 👉 I wrote a bit more about it on my [blog](https://words.byvernacchia.com/blog/my-first-chrome-extension/) (yes, another one)
 
+See it in action on [YouTube](https://youtu.be/ZbcpamEBEPU)!
+
 Supported Google Workspace Products:
 
 - [x] Google Docs
@@ -15,10 +17,6 @@ Supported Google Workspace Products:
 | Google Docs                         | Google Sheets                         |
 |-------------------------------------|---------------------------------------|
 | ![](./docs/img/docs-screenshot.png) | ![](./docs/img/sheets-screenshot.png) |
-
-See it in action below or on [YouTube](https://youtu.be/ZbcpamEBEPU)
-
-![](./docs/video/demo.mov)
 
 ## Does it work with the Google Docs redesign?
 
