@@ -2,7 +2,8 @@
 
 [Find it on Chrome Web Store](https://chrome.google.com/webstore/detail/google-docs-zoom-default/nflkcdlimipkgbacnfnhfecjgmojhklo)
 
-👉 I wrote a bit more about it on my [blog](https://words.byvernacchia.com/blog/my-first-chrome-extension/) (yes, another one)
+👉 I wrote a bit more about it on my blog both [when I first released it](https://words.byvernacchia.com/blog/my-first-chrome-extension/)
+and [when I updated it](https://words.byvernacchia.com/blog/2023/03/introducing-google-workspace-zoom-default/)
 
 See it in action on [YouTube](https://youtu.be/ZbcpamEBEPU)!
 
