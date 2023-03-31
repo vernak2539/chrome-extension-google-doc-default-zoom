@@ -22,7 +22,7 @@ assignees: vernak2539
 
 ### Image for Context
 
-![]()
+![](./img-localisation-context.png)
 
 ### Localisation Values
 

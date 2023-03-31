@@ -8,7 +8,9 @@ interface Props {
 const WorkspaceApplicationList = ({ children }: Props) => {
   return (
     <>
-      <h3 style={{ marginBottom: 0 }}>Applications</h3>
+      <h3 style={{ marginBottom: 0 }}>
+        {chrome.i18n.getMessage("popupApplicationsSectionTitle")}
+      </h3>
       <ul className={style.applicationList}>{children}</ul>
     </>
   )

@@ -19,6 +19,15 @@ Supported Google Workspace Products:
 |-------------------------------------|---------------------------------------|
 | ![](./docs/img/docs-screenshot.png) | ![](./docs/img/sheets-screenshot.png) |
 
+## Localisation
+
+I'm a native English speaker, but want to provide this Chrome Extension for everyone. That being said,
+I've used Google Translate the values for the Spanish language. I know they're probably not correct.
+
+If you feel like helping me out, would be much appreciated if you could submit a new issue, using the
+"[Update/Add Locale Information](https://github.com/vernak2539/chrome-extension-google-doc-default-zoom/issues/new/choose)"
+issue template. Or, reach out to me, and we can have a chat!
+
 ## Does it work with the Google Docs redesign?
 
 Yes, it should work with the new design! I didn't even have to do anything. I'll continue to monitor this as we go, but
