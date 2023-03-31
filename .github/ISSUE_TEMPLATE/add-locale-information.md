@@ -1,5 +1,5 @@
 ---
-name: Add Locale Information
+name: Update/Add Locale Information
 about: Use this issue type to update translations and/or add new locale support
 title: Add Locale Information for XX locale
 labels: localisation
