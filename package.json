@@ -1,8 +1,8 @@
 {
   "name": "google-zoom",
-  "displayName": "Google Workspace Zoom Default",
+  "displayName": "__MSG_extensionName__",
   "version": "0.2.1",
-  "description": "Set the default zoom of your Google Workspace application when first loading it.",
+  "description": "__MSG_extensionDescription__",
   "author": "vernak2539",
   "scripts": {
     "dev": "plasmo dev",
@@ -28,6 +28,8 @@
     "typescript": "5.0.2"
   },
   "manifest": {
+    "name": "__MSG_extensionName__",
+    "default_locale": "en",
     "host_permissions": [
       "http://*.google.com/"
     ]

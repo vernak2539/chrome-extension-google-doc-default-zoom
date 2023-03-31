@@ -8,16 +8,14 @@ import workspaceApps from "~workspace-apps"
 function IndexPopup() {
   return (
     <div style={{ minWidth: "310px" }}>
-      <h2>Google Workspace Zoom Default</h2>
-      <p>
-        Select the default zoom you'd like your Google Workspace applications to
-        use when they first load.
-      </p>
+      <h2>{chrome.i18n.getMessage("extensionName")}</h2>
+      <p>{chrome.i18n.getMessage("popupMainSectionDescription")}</p>
       <WorkspaceApplicationList>
         {workspaceApps
           .filter((app) => app.isEnabled)
           .map((app) => (
             <WorkspaceApplication
+              key={app.name}
               name={app.name}
               zoomValues={app.zoomValues}
               defaultZoom={app.defaultZoom}
