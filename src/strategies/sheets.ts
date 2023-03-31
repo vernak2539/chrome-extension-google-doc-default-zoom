@@ -44,8 +44,8 @@ class DocsStrategy implements BaseStrategy {
   }
 
   _executeUIFlow(zoomValue: string) {
-    // don't do anything if zoom level is set to default value
-    if (zoomValue === DEFAULT_ZOOM) {
+    // don't do anything if zoom level is set to default value or not set
+    if (!zoomValue || zoomValue === DEFAULT_ZOOM) {
       return
     }
 
