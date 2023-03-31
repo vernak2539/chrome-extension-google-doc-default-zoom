@@ -1,0 +1,18 @@
+{
+  "extensionName": {
+    "message": "Google Workspace Zoom Default",
+    "description": "Name of the extension."
+  },
+  "extensionDescription": {
+    "message": "Set the default zoom of your Google Workspace application when first loading it.",
+    "description": "Description of extension"
+  },
+  "popupMainSectionDescription": {
+    "message": "Select the zoom level you'd like your Google Workspace Applications to use when they first load.",
+    "description": "Tells the user to select their zoom level for individual applications."
+  },
+  "popupApplicationsSectionTitle": {
+    "message": "Applications",
+    "description": "Header for the 'Application's section"
+  }
+}
