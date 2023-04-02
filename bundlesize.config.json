@@ -1,0 +1,12 @@
+{
+  "files": [
+    {
+      "path": "build/chrome-mv3-prod/popup*.js",
+      "maxSize": "99 kB"
+    },
+    {
+      "path": "build/chrome-mv3-prod/!(popup)*.js",
+      "maxSize": "4 kB"
+    }
+  ]
+}
