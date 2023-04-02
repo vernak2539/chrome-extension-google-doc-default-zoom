@@ -28,6 +28,8 @@ jobs:
           cache: "pnpm"
       - name: Build the extension
         run: pnpm build
+      - name: Check file sizes
+        run: pnpm bundlesize
       - name: Package extension artifact
         run: pnpm package
       - name: Browser Platform Publish
