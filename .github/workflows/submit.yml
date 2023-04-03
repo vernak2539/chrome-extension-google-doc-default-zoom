@@ -31,7 +31,7 @@ jobs:
           node-version: 16.x
           cache: "pnpm"
       - name: Build the extension
-        run: pnpm build
+        run: pnpm build --source-maps
       - name: Check file sizes
         run: pnpm bundlesize
       - name: Create Sentry release
@@ -44,6 +44,8 @@ jobs:
           environment: production
           sourcemaps: './build/chrome-mv3-prod'
           ignore_empty: true
+      - name: Remove sourcemaps from bundle
+        run: rm ./build/chrome-mv3-prod/*.map
       - name: Package extension artifact
         run: pnpm package
 
