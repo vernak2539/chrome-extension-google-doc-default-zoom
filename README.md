@@ -74,3 +74,6 @@ Chrome Extensions and Plasmo are quite new to me.
 ## Data Privacy
 
 This Chrome Extension will never collect or transmit any personal data.
+
+I do use [Sentry](https://sentry.io/welcome/) for error monitoring in diagnose and fix errors more easily. This, in turn,
+makes this extension better. There is no personal data transmitted to them and never will be.
