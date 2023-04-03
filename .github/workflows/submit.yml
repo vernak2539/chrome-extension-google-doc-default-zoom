@@ -48,12 +48,6 @@ jobs:
         run: rm ./build/chrome-mv3-prod/*.map
       - name: Package extension artifact
         run: pnpm package
-
-  publish:
-    needs: build
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    steps:
       - name: Browser Platform Publish
         uses: PlasmoHQ/bpp@v3
         with:
