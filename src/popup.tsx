@@ -10,7 +10,7 @@ import packageJson from "../package.json"
 // todo - build in enabled/disabled state state
 
 Sentry.init({
-  dsn: "https://cda13d29c40d43ceb0009522544cc911@o1429321.ingest.sentry.io/4504945222483968",
+  dsn: process.env.PLASMO_PUBLIC_SENTRY_DSN,
   integrations: [],
 
   // We recommend adjusting this value in production, or using tracesSampler

@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: build-package
+    env:
+      PLASMO_PUBLIC_SENTRY_DSN: ${{ vars.PLASMO_PUBLIC_SENTRY_DSN }}
     steps:
       - uses: actions/checkout@v3
       - name: Cache pnpm modules
