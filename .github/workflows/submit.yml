@@ -30,8 +30,23 @@ jobs:
         run: pnpm build
       - name: Check file sizes
         run: pnpm bundlesize
+      - name: Create Sentry release
+        uses: getsentry/action-release@v1
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+        with:
+          environment: production
+          sourcemaps: './build/chrome-mv3-prod'
       - name: Package extension artifact
         run: pnpm package
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
       - name: Browser Platform Publish
         uses: PlasmoHQ/bpp@v3
         with:

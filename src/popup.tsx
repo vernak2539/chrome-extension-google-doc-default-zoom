@@ -5,20 +5,25 @@ import WorkspaceApplication from "~components/WorkspaceApplication"
 import WorkspaceApplicationList from "~components/WorkspaceApplicationList"
 import workspaceApps from "~workspace-apps"
 
+import packageJson from "../package.json"
+
 // todo - build in enabled/disabled state state
 
 Sentry.init({
-  dsn: "https://260475a282fd46fea6f005adc7f1ec26@o1429321.ingest.sentry.io/6779964",
+  dsn: "https://cda13d29c40d43ceb0009522544cc911@o1429321.ingest.sentry.io/4504945222483968",
   integrations: [],
 
   // We recommend adjusting this value in production, or using tracesSampler
   // for finer control
   tracesSampleRate: 1.0,
-  environment: process.env.NODE_ENV
+  environment: process.env.NODE_ENV,
+  release: `${packageJson.name}@${packageJson.version}`
 })
 
-Sentry.setTags({
-  source: "popup"
+Sentry.configureScope((scope) => {
+  scope.setTags({
+    source: "popup"
+  })
 })
 
 const ErrorFallback = () => (

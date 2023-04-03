@@ -6,6 +6,8 @@ interface Props {
   children: React.ReactNode
 }
 const WorkspaceApplicationList = ({ children }: Props) => {
+  throw new Error("test")
+
   return (
     <>
       <h3 style={{ marginBottom: 0 }}>
