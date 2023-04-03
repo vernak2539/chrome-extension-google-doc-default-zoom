@@ -3,28 +3,12 @@ import * as Sentry from "@sentry/react"
 
 import WorkspaceApplication from "~components/WorkspaceApplication"
 import WorkspaceApplicationList from "~components/WorkspaceApplicationList"
+import { setupSentry } from "~utils/sentry"
 import workspaceApps from "~workspace-apps"
-
-import packageJson from "../package.json"
 
 // todo - build in enabled/disabled state state
 
-Sentry.init({
-  dsn: process.env.PLASMO_PUBLIC_SENTRY_DSN,
-  integrations: [],
-
-  // We recommend adjusting this value in production, or using tracesSampler
-  // for finer control
-  tracesSampleRate: 1.0,
-  environment: process.env.NODE_ENV,
-  release: `${packageJson.name}@${packageJson.version}`
-})
-
-Sentry.configureScope((scope) => {
-  scope.setTags({
-    source: "popup"
-  })
-})
+setupSentry("popup")
 
 const ErrorFallback = () => (
   <p>
