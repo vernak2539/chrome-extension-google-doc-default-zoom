@@ -27,3 +27,5 @@ export interface WorkspaceApp {
   /* If the app is enabled in the extension */
   isEnabled: boolean
 }
+
+export type ExtensionFileSource = "popup" | "content" | "background"

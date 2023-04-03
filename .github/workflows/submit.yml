@@ -43,6 +43,7 @@ jobs:
         with:
           environment: production
           sourcemaps: './build/chrome-mv3-prod'
+          ignore_empty: true
       - name: Package extension artifact
         run: pnpm package
 
