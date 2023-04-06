@@ -4,6 +4,7 @@ specifiers:
   '@plasmohq/messaging': ^0.1.7
   '@plasmohq/prettier-plugin-sort-imports': 3.6.3
   '@plasmohq/storage': ^1.4.0
+  '@sentry/browser': ^7.46.0
   '@sentry/react': ^7.46.0
   '@types/chrome': 0.0.227
   '@types/node': 18.15.11
@@ -20,6 +21,7 @@ specifiers:
 dependencies:
   '@plasmohq/messaging': 0.1.7_react@18.2.0
   '@plasmohq/storage': 1.4.0_react@18.2.0
+  '@sentry/browser': 7.46.0
   '@sentry/react': 7.46.0_react@18.2.0
   classnames: 2.3.2
   plasmo: 0.67.4_biqbaboplfbrettd7655fr4n2y
