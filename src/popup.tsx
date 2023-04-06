@@ -8,7 +8,7 @@ import workspaceApps from "~workspace-apps"
 
 // todo - build in enabled/disabled state state
 
-setupSentry("popup")
+setupSentry(Sentry, "popup")
 
 const ErrorFallback = () => (
   <p>

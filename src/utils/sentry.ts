@@ -1,10 +1,8 @@
-import * as Sentry from "@sentry/react"
-
 import type { ExtensionFileSource } from "~types"
 
 import packageJson from "../../package.json"
 
-export const setupSentry = (source: ExtensionFileSource) => {
+export const setupSentry = (Sentry, source: ExtensionFileSource) => {
   Sentry.init({
     dsn: process.env.PLASMO_PUBLIC_SENTRY_DSN,
     integrations: [],
