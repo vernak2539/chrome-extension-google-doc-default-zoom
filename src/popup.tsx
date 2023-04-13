@@ -1,14 +1,12 @@
 // Icon used in Favicon was created by https://www.flaticon.com/authors/royyan-wijaya
-import * as Sentry from "@sentry/react"
-
 import WorkspaceApplication from "~components/WorkspaceApplication"
 import WorkspaceApplicationList from "~components/WorkspaceApplicationList"
-import { setupSentry } from "~utils/sentry"
+import { setupSentry } from "~utils/sentry-popup"
 import workspaceApps from "~workspace-apps"
 
 // todo - build in enabled/disabled state state
 
-setupSentry(Sentry, "popup")
+const ErrorBoundary = setupSentry("popup")
 
 const ErrorFallback = () => (
   <p>
@@ -23,7 +21,7 @@ const ErrorFallback = () => (
 function IndexPopup() {
   return (
     <div style={{ minWidth: "310px" }}>
-      <Sentry.ErrorBoundary
+      <ErrorBoundary
         fallback={<ErrorFallback />}
         beforeCapture={(scope) => {
           scope.setTag("locale", chrome.i18n.getUILanguage())
@@ -43,7 +41,7 @@ function IndexPopup() {
               />
             ))}
         </WorkspaceApplicationList>
-      </Sentry.ErrorBoundary>
+      </ErrorBoundary>
     </div>
   )
 }
