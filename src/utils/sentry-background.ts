@@ -1,8 +1,10 @@
+import * as Sentry from "@sentry/browser"
+
 import type { ExtensionFileSource } from "~types"
 
 import packageJson from "../../package.json"
 
-export const setupSentry = (Sentry, source: ExtensionFileSource) => {
+export const setupSentry = (source: ExtensionFileSource) => {
   Sentry.init({
     dsn: process.env.PLASMO_PUBLIC_SENTRY_DSN,
     integrations: [],
@@ -17,4 +19,6 @@ export const setupSentry = (Sentry, source: ExtensionFileSource) => {
   Sentry.configureScope((scope) => {
     scope.setTags({ source })
   })
+
+  return Sentry.wrap
 }
