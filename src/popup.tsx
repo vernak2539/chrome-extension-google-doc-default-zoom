@@ -21,12 +21,12 @@ const ErrorFallback = () => (
 function IndexPopup() {
   return (
     <div style={{ minWidth: "310px" }}>
+      <h2>{chrome.i18n.getMessage("extensionName")}</h2>
       <ErrorBoundary
         fallback={<ErrorFallback />}
         beforeCapture={(scope) => {
           scope.setTag("locale", chrome.i18n.getUILanguage())
         }}>
-        <h2>{chrome.i18n.getMessage("extensionName")}</h2>
         <p>{chrome.i18n.getMessage("popupMainSectionDescription")}</p>
         <WorkspaceApplicationList>
           {workspaceApps
