@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react"
 
 import WorkspaceApplication from "../components/WorkspaceApplication"
+import WorkspaceApplicationList from "../components/WorkspaceApplicationList"
 import {
   DEFAULT_ZOOM as DOCS_DEFAULT_ZOOM,
   STORAGE_KEY as DOCS_STORAGE_KEY,
@@ -16,7 +17,14 @@ import {
 const meta = {
   title: "WorkspaceApplication",
   component: WorkspaceApplication,
-  tags: ["autodocs"]
+  tags: ["autodocs"],
+  decorators: [
+    (StoryPartial) => (
+      <WorkspaceApplicationList>
+        <StoryPartial />
+      </WorkspaceApplicationList>
+    )
+  ]
 } satisfies Meta<typeof WorkspaceApplication>
 
 export default meta
