@@ -1,6 +1,7 @@
 // Icon used in Favicon was created by https://www.flaticon.com/authors/royyan-wijaya
 import WorkspaceApplication from "./components/WorkspaceApplication"
 import WorkspaceApplicationList from "./components/WorkspaceApplicationList"
+import localise from "./utils/localise"
 import { setupSentry } from "./utils/sentry-popup"
 import workspaceApps from "./workspace-apps"
 
@@ -21,13 +22,13 @@ const ErrorFallback = () => (
 function IndexPopup() {
   return (
     <div style={{ minWidth: "310px" }}>
-      <h2>{chrome.i18n.getMessage("extensionName")}</h2>
+      <h2>{localise("extensionName")}</h2>
       <ErrorBoundary
         fallback={<ErrorFallback />}
         beforeCapture={(scope) => {
           scope.setTag("locale", chrome.i18n.getUILanguage())
         }}>
-        <p>{chrome.i18n.getMessage("popupMainSectionDescription")}</p>
+        <p>{localise("popupMainSectionDescription")}</p>
         <WorkspaceApplicationList>
           {workspaceApps
             .filter((app) => app.isEnabled)

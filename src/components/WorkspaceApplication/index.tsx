@@ -6,6 +6,7 @@ import { useStorage } from "@plasmohq/storage/hook"
 
 import * as style from "../../style.module.css"
 import type { WorkspaceApp } from "../../types"
+import localise from "../../utils/localise"
 
 type Props = Omit<WorkspaceApp, "isEnabled">
 
@@ -33,7 +34,10 @@ const WorkspaceApplication = ({
         })}
       />
       <span className={style.applicationTitle}>{name} </span>
-      <select onChange={onDefaultZoomChange} value={zoom}>
+      <select
+        aria-label={localise("popupApplicationZoomSelectAriaLabel")}
+        onChange={onDefaultZoomChange}
+        value={zoom}>
         {zoomValues.map((value) => {
           return <option key={useId()}>{value}</option>
         })}

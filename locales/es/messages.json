@@ -14,5 +14,9 @@
   "popupApplicationsSectionTitle": {
     "message": "Aplicaciones",
     "description": "Header for the 'Applications' section"
+  },
+  "popupApplicationZoomSelectAriaLabel": {
+    "message": "Valores de zoom disponibles",
+    "description": "Possible zoom values from which to select"
   }
 }
