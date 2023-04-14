@@ -23,7 +23,7 @@ jobs:
             ${{ runner.os }}-
       - uses: pnpm/action-setup@v2.2.4
         with:
-          version: 7.26.0
+          version: 8.2.0
           run_install: true
       - name: Use Node.js 16.x
         uses: actions/setup-node@v3.4.1
