@@ -1,11 +1,11 @@
-import type { BaseStrategy } from "~strategies/base"
-import getZoomValueFromStorage from "~utils/get-zoom-value-from-storage"
-import Logger from "~utils/logger"
+import getZoomValueFromStorage from "../utils/get-zoom-value-from-storage"
+import Logger from "../utils/logger"
 import {
   getDOMElement,
   getDOMElementCoordinates,
   simulateClick
-} from "~utils/ui-helpers"
+} from "../utils/ui-helpers"
+import type { BaseStrategy } from "./base"
 
 export const STORAGE_KEY = "sheets:zoomValue"
 export const ZOOM_VALUES = ["50%", "75%", "90%", "100%", "125%", "150%", "200%"]

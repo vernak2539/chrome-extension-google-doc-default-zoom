@@ -1,8 +1,7 @@
 import * as Sentry from "@sentry/react"
 
-import type { ExtensionFileSource } from "~types"
-
 import packageJson from "../../package.json"
+import type { ExtensionFileSource } from "../types"
 
 export const setupSentry = (source: ExtensionFileSource) => {
   Sentry.init({

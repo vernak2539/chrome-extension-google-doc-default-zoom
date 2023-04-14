@@ -1,8 +1,11 @@
 import type { PlasmoMessaging } from "@plasmohq/messaging"
 import { Storage } from "@plasmohq/storage"
 
-import type { GetZoomValueRequestBody, GetZoomValueResponseBody } from "~types"
-import { setupSentry } from "~utils/sentry-background"
+import type {
+  GetZoomValueRequestBody,
+  GetZoomValueResponseBody
+} from "../../types"
+import { setupSentry } from "../../utils/sentry-background"
 
 const sentryWrap = setupSentry("background")
 

@@ -1,44 +1,42 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from "@storybook/react"
 
-import { Button } from './Button';
+import WorkspaceApplication from "../components/WorkspaceApplication"
+import {
+  DEFAULT_ZOOM as DOCS_DEFAULT_ZOOM,
+  STORAGE_KEY as DOCS_STORAGE_KEY,
+  ZOOM_VALUES as DOCS_ZOOM_VALUES
+} from "../strategies/docs"
+import {
+  DEFAULT_ZOOM as SHEETS_DEFAULT_ZOOM,
+  STORAGE_KEY as SHEETS_STORAGE_KEY,
+  ZOOM_VALUES as SHEETS_ZOOM_VALUES
+} from "../strategies/sheets"
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta = {
-  title: 'Example/Button',
-  component: Button,
-  tags: ['autodocs'],
-  argTypes: {
-    backgroundColor: { control: 'color' },
-  },
-} satisfies Meta<typeof Button>;
+  title: "WorkspaceApplication",
+  component: WorkspaceApplication,
+  tags: ["autodocs"]
+} satisfies Meta<typeof WorkspaceApplication>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
-export const Primary: Story = {
+export const GoogleDocs: Story = {
   args: {
-    primary: true,
-    label: 'Button',
-  },
-};
+    name: "Docs",
+    zoomValues: DOCS_ZOOM_VALUES,
+    defaultZoom: DOCS_DEFAULT_ZOOM,
+    storageKey: DOCS_STORAGE_KEY
+  }
+}
 
-export const Secondary: Story = {
+export const GoogleSheets: Story = {
   args: {
-    label: 'Button',
-  },
-};
-
-export const Large: Story = {
-  args: {
-    size: 'large',
-    label: 'Button',
-  },
-};
-
-export const Small: Story = {
-  args: {
-    size: 'small',
-    label: 'Button',
-  },
-};
+    name: "Sheets",
+    zoomValues: SHEETS_ZOOM_VALUES,
+    defaultZoom: SHEETS_DEFAULT_ZOOM,
+    storageKey: SHEETS_STORAGE_KEY
+  }
+}

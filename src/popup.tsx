@@ -1,8 +1,8 @@
 // Icon used in Favicon was created by https://www.flaticon.com/authors/royyan-wijaya
-import WorkspaceApplication from "~components/WorkspaceApplication"
-import WorkspaceApplicationList from "~components/WorkspaceApplicationList"
-import { setupSentry } from "~utils/sentry-popup"
-import workspaceApps from "~workspace-apps"
+import WorkspaceApplication from "./components/WorkspaceApplication"
+import WorkspaceApplicationList from "./components/WorkspaceApplicationList"
+import { setupSentry } from "./utils/sentry-popup"
+import workspaceApps from "./workspace-apps"
 
 // todo - build in enabled/disabled state state
 

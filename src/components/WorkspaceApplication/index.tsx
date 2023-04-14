@@ -4,8 +4,8 @@ import type { ChangeEvent } from "react"
 
 import { useStorage } from "@plasmohq/storage/hook"
 
-import * as style from "~style.module.css"
-import type { WorkspaceApp } from "~types"
+import * as style from "../../style.module.css"
+import type { WorkspaceApp } from "../../types"
 
 type Props = Omit<WorkspaceApp, "isEnabled">
 
