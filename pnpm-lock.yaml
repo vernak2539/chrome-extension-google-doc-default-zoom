@@ -30,6 +30,12 @@ devDependencies:
   '@plasmohq/prettier-plugin-sort-imports':
     specifier: 3.6.3
     version: 3.6.3(prettier@2.8.7)
+  '@storybook/addon-a11y':
+    specifier: ^7.0.4
+    version: 7.0.4(react-dom@18.2.0)(react@18.2.0)
+  '@storybook/addon-console':
+    specifier: ^1.2.3
+    version: 1.2.3(@storybook/addon-actions@7.0.4)
   '@storybook/addon-essentials':
     specifier: ^7.0.4
     version: 7.0.4(react-dom@18.2.0)(react@18.2.0)
@@ -3499,6 +3505,34 @@ packages:
     engines: {node: '>=14.16'}
     dev: false
 
+  /@storybook/addon-a11y@7.0.4(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-4plAdmN2Sf0RBBq/d4jTfc2bz0A3inKKRM0VLojPprUzhOgz4wfdqYXLGaTR195a4IyNP/LPwaYzB71dUT6SAQ==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+    peerDependenciesMeta:
+      react:
+        optional: true
+      react-dom:
+        optional: true
+    dependencies:
+      '@storybook/addon-highlight': 7.0.4
+      '@storybook/channels': 7.0.4
+      '@storybook/client-logger': 7.0.4
+      '@storybook/components': 7.0.4(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/core-events': 7.0.4
+      '@storybook/global': 5.0.0
+      '@storybook/manager-api': 7.0.4(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/preview-api': 7.0.4
+      '@storybook/theming': 7.0.4(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/types': 7.0.4
+      axe-core: 4.6.3
+      lodash: 4.17.21
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      react-resize-detector: 7.1.2(react-dom@18.2.0)(react@18.2.0)
+    dev: true
+
   /@storybook/addon-actions@7.0.4(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-fYnYYU2QW1FWJbKchhH4fFHM9V2CFGqYNQ+T65+fBGrR6vtE/+yPqozCOHcmeZ6f5i6xeHuQfKiFInDNZC4AzA==}
     peerDependencies:
@@ -3553,6 +3587,15 @@ packages:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       ts-dedent: 2.2.0
+    dev: true
+
+  /@storybook/addon-console@1.2.3(@storybook/addon-actions@7.0.4):
+    resolution: {integrity: sha512-w5uCUwECA28fdZWoa+A4e/RS9XzBStdd3TwwmpSM5m4fjURJI7Qr+uVq30UeRdgZRH1K7CdWzYUE6RxWXMdVyw==}
+    peerDependencies:
+      '@storybook/addon-actions': '*'
+    dependencies:
+      '@storybook/addon-actions': 7.0.4(react-dom@18.2.0)(react@18.2.0)
+      global: 4.4.0
     dev: true
 
   /@storybook/addon-controls@7.0.4(react-dom@18.2.0)(react@18.2.0):
@@ -4556,7 +4599,7 @@ packages:
     resolution: {integrity: sha512-+n8dL/9GWblDO0iU6eZAwEIJVr5DWigtle+Q6HLOrh/pdbXOhOtqzq8VPPE2zvNJzSKY4vH/z3iT3tn0A3ypiQ==}
     dependencies:
       '@babel/parser': 7.21.3
-      '@babel/types': 7.21.3
+      '@babel/types': 7.21.4
       '@types/babel__generator': 7.6.4
       '@types/babel__template': 7.4.1
       '@types/babel__traverse': 7.18.3
@@ -5118,6 +5161,11 @@ packages:
   /available-typed-arrays@1.0.5:
     resolution: {integrity: sha512-DMD0KiN46eipeziST1LPP/STfDU0sufISXmjSgvVsoU2tqxctQeASejWcfNtxYKqETM1UxQ8sp2OrSBWpHY6sw==}
     engines: {node: '>= 0.4'}
+    dev: true
+
+  /axe-core@4.6.3:
+    resolution: {integrity: sha512-/BQzOX780JhsxDnPpH4ZiyrJAzcd8AfzFPkv+89veFSr1rcMjuq2JDCwypKaPeB6ljHp9KjXhPpjgCvQlWYuqg==}
+    engines: {node: '>=4'}
     dev: true
 
   /babel-core@7.0.0-bridge.0(@babel/core@7.21.3):
@@ -6099,6 +6147,10 @@ packages:
       entities: 2.2.0
     dev: false
 
+  /dom-walk@0.1.2:
+    resolution: {integrity: sha512-6QvTW9mrGeIegrFXdtQi9pk7O/nSK6lSdXW2eqUspN5LWD7UTji2Fqw5V2YLjBpHEoU9Xl/eUWNpDeZvoyOv2w==}
+    dev: true
+
   /domelementtype@2.3.0:
     resolution: {integrity: sha512-OLETBj6w0OsagBwdXnPdN0cnMfF9opN69co+7ZrbfPGrdpPVNBUj02spi6B1N7wChLQiPn4CSH/zJvXw56gmHw==}
     dev: false
@@ -6826,6 +6878,13 @@ packages:
       inherits: 2.0.4
       minimatch: 5.1.6
       once: 1.4.0
+    dev: true
+
+  /global@4.4.0:
+    resolution: {integrity: sha512-wv/LAoHdRE3BeTGz53FAamhGlPLhlssK45usmGFThIi4XqnBmjKQ16u+RNbP7WvigRZDxUsM0J3gcQ5yicaL0w==}
+    dependencies:
+      min-document: 2.19.0
+      process: 0.11.10
     dev: true
 
   /globals@11.12.0:
@@ -8088,6 +8147,12 @@ packages:
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     dev: false
 
+  /min-document@2.19.0:
+    resolution: {integrity: sha512-9Wy1B3m3f66bPPmU5hdA4DR4PB2OfDU/+GS3yAB7IQozE3tqXaVv2zOjgla7MEGSRv95+ILmOuvhLkOK6wJtCQ==}
+    dependencies:
+      dom-walk: 0.1.2
+    dev: true
+
   /min-indent@1.0.1:
     resolution: {integrity: sha512-I9jwMn07Sy/IwOj3zVkVik2JTvgpaykDZEigL6Rx6N9LbMywwUSMtxET+7lVoDLLd3O3IXwJwvuuns8UB/HeAg==}
     engines: {node: '>=4'}
@@ -9115,6 +9180,17 @@ packages:
     resolution: {integrity: sha512-Gvzk7OZpiqKSkxsQvO/mbTN1poglhmAV7gR/DdIrRrSMXraRQQlfikRJOr3Nb9GTMPC5kof948Zy6jJZIFtDvQ==}
     engines: {node: '>=0.10.0'}
     dev: false
+
+  /react-resize-detector@7.1.2(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-zXnPJ2m8+6oq9Nn8zsep/orts9vQv3elrpA+R8XTcW7DVVUJ9vwDwMXaBtykAYjMnkCIaOoK9vObyR7ZgFNlOw==}
+    peerDependencies:
+      react: ^16.0.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.0.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      lodash: 4.17.21
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: true
 
   /react@18.2.0:
     resolution: {integrity: sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==}
