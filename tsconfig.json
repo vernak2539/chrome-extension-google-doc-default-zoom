@@ -14,5 +14,6 @@
       "~*": ["./src/*"]
     },
     "baseUrl": "."
-  }
+  },
+  "references": [{ "path": "./tsconfig.node.json" }]
 }
