@@ -1,3 +1,4 @@
+import type { SheetsStorageKey, SheetsZoomValues, StorageKey } from "../types"
 import getZoomValueFromStorage from "../utils/get-zoom-value-from-storage"
 import Logger from "../utils/logger"
 import {
@@ -7,8 +8,16 @@ import {
 } from "../utils/ui-helpers"
 import type { BaseStrategy } from "./base"
 
-export const STORAGE_KEY = "sheets:zoomValue"
-export const ZOOM_VALUES = ["50%", "75%", "90%", "100%", "125%", "150%", "200%"]
+export const STORAGE_KEY: SheetsStorageKey = "sheets:zoomValue"
+export const ZOOM_VALUES: SheetsZoomValues = [
+  "50%",
+  "75%",
+  "90%",
+  "100%",
+  "125%",
+  "150%",
+  "200%"
+]
 export const DEFAULT_ZOOM = ZOOM_VALUES.at(3)
 
 // UI Selectors
@@ -18,7 +27,7 @@ const CLICKABLE_ZOOM_OPTION_CLASS = ".goog-menuitem"
 class DocsStrategy implements BaseStrategy {
   private isViewOnly: boolean
   private readonly logger: Logger
-  public readonly STORAGE_KEY: string = STORAGE_KEY
+  public readonly STORAGE_KEY: StorageKey = STORAGE_KEY
 
   constructor({ isViewOnly }) {
     this.isViewOnly = isViewOnly
