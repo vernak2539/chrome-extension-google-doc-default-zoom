@@ -22,7 +22,6 @@ const WorkspaceApplication = ({
 
   const updateValue = useCallback(
     (value) => {
-      console.log(value)
       if (value) {
         setZoom(value)
       } else {
