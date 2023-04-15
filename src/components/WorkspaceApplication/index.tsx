@@ -1,5 +1,5 @@
 import classnames from "classnames"
-import { useId } from "react"
+import React, { useCallback, useId, useState } from "react"
 import type { ChangeEvent } from "react"
 
 import { useStorage } from "@plasmohq/storage/hook"
@@ -7,6 +7,7 @@ import { useStorage } from "@plasmohq/storage/hook"
 import * as style from "../../style.module.css"
 import type { WorkspaceApp } from "../../types"
 import localize from "../../utils/localize"
+import CustomZoomInput from "../CustomZoomInput"
 
 type Props = Omit<WorkspaceApp, "isEnabled">
 
@@ -19,6 +20,7 @@ const WorkspaceApplication = ({
   const [zoom, setZoom] = useStorage(storageKey, (storedZoom) => {
     return typeof storedZoom === "undefined" ? defaultZoom : storedZoom
   })
+  const [customZoomInput, setCustomZoomInput] = useState(zoom)
 
   const onDefaultZoomChangeViaSelect = (
     event: ChangeEvent<HTMLSelectElement>
@@ -27,7 +29,21 @@ const WorkspaceApplication = ({
     setZoom(newValue)
   }
 
-  const selectValueIsSelected = zoomValues.includes(zoom) || !zoom
+  const onDefaultZoomChangeViaInput = (
+    event: React.FocusEvent<HTMLInputElement>
+  ) => {
+    const newValue = event.target.value
+    setZoom(`${newValue}%`)
+  }
+
+  const updateValue = useCallback(
+    (value) => {
+      setZoom(value)
+    },
+    [setZoom]
+  )
+
+  const isCustomZoom = zoom && !zoomValues.includes(zoom)
 
   return (
     <li className={style.applicationListItem}>
@@ -44,7 +60,7 @@ const WorkspaceApplication = ({
             style.applicationZoomInputBase,
             style.applicationZoomSelectInput,
             {
-              [style.applicationActiveZoomInput]: selectValueIsSelected
+              [style.applicationActiveZoomInput]: !isCustomZoom
             }
           )}
           aria-label={localize("popupApplicationZoomSelectAriaLabel")}
@@ -54,18 +70,10 @@ const WorkspaceApplication = ({
             return <option key={useId()}>{value}</option>
           })}
         </select>
-        <input
-          placeholder="Custom Zoom" // TODO: Localise this
-          value={selectValueIsSelected ? "" : zoom}
-          maxLength={3}
-          minLength={2}
-          className={classnames(
-            style.applicationZoomInputBase,
-            style.applicationZoomCustomInput,
-            {
-              [style.applicationActiveZoomInput]: !selectValueIsSelected
-            }
-          )}
+        <CustomZoomInput
+          isCustomValue={isCustomZoom}
+          updateValue={updateValue}
+          zoomValue={zoom}
         />
       </div>
     </li>
