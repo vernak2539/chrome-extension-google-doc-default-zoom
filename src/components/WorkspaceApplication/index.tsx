@@ -8,6 +8,7 @@ import * as style from "../../style.module.css"
 import type { WorkspaceApp } from "../../types"
 import localize from "../../utils/localize"
 import CustomZoomInput from "../CustomZoomInput"
+import SelectZoomInput from "../SelectZoomInput"
 
 type Props = Omit<WorkspaceApp, "isEnabled">
 
@@ -20,21 +21,6 @@ const WorkspaceApplication = ({
   const [zoom, setZoom] = useStorage(storageKey, (storedZoom) => {
     return typeof storedZoom === "undefined" ? defaultZoom : storedZoom
   })
-  const [customZoomInput, setCustomZoomInput] = useState(zoom)
-
-  const onDefaultZoomChangeViaSelect = (
-    event: ChangeEvent<HTMLSelectElement>
-  ) => {
-    const newValue = event.target.value
-    setZoom(newValue)
-  }
-
-  const onDefaultZoomChangeViaInput = (
-    event: React.FocusEvent<HTMLInputElement>
-  ) => {
-    const newValue = event.target.value
-    setZoom(`${newValue}%`)
-  }
 
   const updateValue = useCallback(
     (value) => {
@@ -55,25 +41,16 @@ const WorkspaceApplication = ({
       />
       <span className={style.applicationTitle}>{name} </span>
       <div className={style.applicationInputContainer}>
-        <select
-          className={classnames(
-            style.applicationZoomInputBase,
-            style.applicationZoomSelectInput,
-            {
-              [style.applicationActiveZoomInput]: !isCustomZoom
-            }
-          )}
-          aria-label={localize("popupApplicationZoomSelectAriaLabel")}
-          onChange={onDefaultZoomChangeViaSelect}
-          value={zoom || defaultZoom}>
-          {zoomValues.map((value) => {
-            return <option key={useId()}>{value}</option>
-          })}
-        </select>
+        <SelectZoomInput
+          isCustomValue={isCustomZoom}
+          updateValue={updateValue}
+          zoomValue={zoom || defaultZoom}
+          zoomValues={zoomValues}
+        />
         <CustomZoomInput
           isCustomValue={isCustomZoom}
           updateValue={updateValue}
-          zoomValue={zoom}
+          zoomValue={isCustomZoom ? zoom : ""}
         />
       </div>
     </li>
