@@ -11,6 +11,7 @@ import DocsStrategy from "../strategies/docs"
 import SheetsStrategy from "../strategies/sheets"
 import counterFactory from "../utils/counter-factory"
 import getCurrentApp from "../utils/get-current-app"
+import { workspaceAppUiStrategyConfigs } from "../workspace-apps"
 
 export const config: PlasmoCSConfig = {
   matches: ["https://docs.google.com/*"]
@@ -30,10 +31,10 @@ let strategy
 
 switch (currentApp) {
   case "Docs":
-    strategy = new DocsStrategy({ isViewOnly: false })
+    strategy = new DocsStrategy(workspaceAppUiStrategyConfigs["Docs"])
     break
   case "Sheets":
-    strategy = new SheetsStrategy({ isViewOnly: false })
+    strategy = new SheetsStrategy(workspaceAppUiStrategyConfigs["Sheets"])
     break
 }
 
