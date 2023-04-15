@@ -51,7 +51,6 @@ const WorkspaceApplication = ({
           zoomValues={zoomValues}
         />
         <CustomZoomInput
-          defaultZoom={defaultZoom}
           isCustomValue={isCustomZoom}
           updateValue={updateValue}
           zoomValue={zoom}
