@@ -20,7 +20,9 @@ const WorkspaceApplication = ({
     return typeof storedZoom === "undefined" ? defaultZoom : storedZoom
   })
 
-  const onDefaultZoomChange = (event: ChangeEvent<HTMLSelectElement>) => {
+  const onDefaultZoomChangeViaSelect = (
+    event: ChangeEvent<HTMLSelectElement>
+  ) => {
     const newValue = event.target.value
     setZoom(newValue)
   }
@@ -46,7 +48,7 @@ const WorkspaceApplication = ({
             }
           )}
           aria-label={localize("popupApplicationZoomSelectAriaLabel")}
-          onChange={onDefaultZoomChange}
+          onChange={onDefaultZoomChangeViaSelect}
           value={zoom || defaultZoom}>
           {zoomValues.map((value) => {
             return <option key={useId()}>{value}</option>
