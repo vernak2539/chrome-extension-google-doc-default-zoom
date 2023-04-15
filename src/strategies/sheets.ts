@@ -3,8 +3,7 @@ import type {
   SheetsZoomValues,
   UiStrategyConfig
 } from "../types"
-import { getDOMElement } from "../utils/ui-helpers"
-import { BaseStrategy } from "./base"
+import { AbstractBaseStrategy, BaseStrategy } from "./base"
 
 export const STORAGE_KEY: SheetsStorageKey = "sheets:zoomValue"
 export const ZOOM_VALUES: SheetsZoomValues = [
@@ -18,12 +17,12 @@ export const ZOOM_VALUES: SheetsZoomValues = [
 ]
 export const DEFAULT_ZOOM = ZOOM_VALUES.at(3)
 
-class SheetsStrategy extends BaseStrategy {
+class SheetsStrategy extends BaseStrategy implements AbstractBaseStrategy {
   constructor(config: UiStrategyConfig) {
     super(config)
   }
 
-  execute() {
+  execute(executionLocation: string) {
     this.getZoomValueFromStorage().then((zoomValue) => {
       this.uiExecuteFlow(zoomValue)
     })

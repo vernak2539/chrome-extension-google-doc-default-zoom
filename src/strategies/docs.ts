@@ -1,6 +1,6 @@
 import type { DocsStorageKey, DocsZoomValues, StorageKey } from "../types"
 import type { UiStrategyConfig } from "../types"
-import { BaseStrategy } from "./base"
+import { AbstractBaseStrategy, BaseStrategy } from "./base"
 
 export const STORAGE_KEY: DocsStorageKey = "zoomValue"
 export const ZOOM_VALUES: DocsZoomValues = [
@@ -14,12 +14,12 @@ export const ZOOM_VALUES: DocsZoomValues = [
 ]
 export const DEFAULT_ZOOM = ZOOM_VALUES.at(3)
 
-class DocsStrategy extends BaseStrategy {
+class DocsStrategy extends BaseStrategy implements AbstractBaseStrategy {
   constructor(config: UiStrategyConfig) {
     super(config)
   }
 
-  public execute() {
+  public execute(executionLocation: string) {
     this.getZoomValueFromStorage().then((zoomValue) => {
       this.uiExecuteFlow(zoomValue)
     })
