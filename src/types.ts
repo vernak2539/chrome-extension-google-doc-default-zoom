@@ -53,3 +53,15 @@ export interface WorkspaceApp {
 }
 
 export type ExtensionFileSource = "popup" | "content" | "background"
+
+export interface UiStrategyConfig {
+  application: WorkspaceAppName
+  storageKey: StorageKey
+  uiElements: {
+    clickableZoomSelectId: string
+    clickableZoomOptionClass: string
+  }
+  zoom: {
+    defaultZoom: string
+  }
+}

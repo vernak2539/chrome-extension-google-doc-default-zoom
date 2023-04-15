@@ -8,9 +8,9 @@ import {
   STORAGE_KEY as SHEETS_STORAGE_KEY,
   ZOOM_VALUES as SHEETS_ZOOM_VALUES
 } from "./strategies/sheets"
-import type { WorkspaceApp } from "./types"
+import type { UiStrategyConfig, WorkspaceApp, WorkspaceAppName } from "./types"
 
-const workspaceApps: WorkspaceApp[] = [
+export const workspaceApps: WorkspaceApp[] = [
   {
     name: "Docs",
     defaultZoom: DOCS_DEFAULT_ZOOM,
@@ -27,4 +27,30 @@ const workspaceApps: WorkspaceApp[] = [
   }
 ]
 
-export default workspaceApps
+export const workspaceAppUiStrategyConfigs: Record<
+  WorkspaceAppName,
+  UiStrategyConfig
+> = {
+  Docs: {
+    application: "Docs",
+    storageKey: DOCS_STORAGE_KEY,
+    uiElements: {
+      clickableZoomSelectId: "#zoomSelect",
+      clickableZoomOptionClass: ".goog-menuitem"
+    },
+    zoom: {
+      defaultZoom: DOCS_DEFAULT_ZOOM
+    }
+  },
+  Sheets: {
+    application: "Sheets",
+    storageKey: SHEETS_STORAGE_KEY,
+    uiElements: {
+      clickableZoomSelectId: "#t-zoom",
+      clickableZoomOptionClass: ".goog-menuitem"
+    },
+    zoom: {
+      defaultZoom: SHEETS_DEFAULT_ZOOM
+    }
+  }
+}
