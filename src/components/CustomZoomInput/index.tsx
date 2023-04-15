@@ -2,7 +2,6 @@ import classnames from "classnames"
 import React, { useEffect, useState } from "react"
 
 import * as style from "../../style.module.css"
-import type { WorkspaceApp } from "../../types"
 import type { ZoomInputProps } from "../shared-props"
 
 const CustomZoomInput = ({
