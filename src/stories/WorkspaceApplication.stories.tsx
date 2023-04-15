@@ -12,6 +12,7 @@ import {
   STORAGE_KEY as SHEETS_STORAGE_KEY,
   ZOOM_VALUES as SHEETS_ZOOM_VALUES
 } from "../strategies/sheets"
+import * as styles from "../style.module.css"
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta = {
@@ -20,9 +21,11 @@ const meta = {
   tags: ["autodocs"],
   decorators: [
     (StoryPartial) => (
-      <WorkspaceApplicationList>
-        <StoryPartial />
-      </WorkspaceApplicationList>
+      <div className={styles.popupContainer}>
+        <WorkspaceApplicationList>
+          <StoryPartial />
+        </WorkspaceApplicationList>
+      </div>
     )
   ]
 } satisfies Meta<typeof WorkspaceApplication>

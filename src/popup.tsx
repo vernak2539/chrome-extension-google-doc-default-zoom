@@ -1,6 +1,7 @@
 // Icon used in Favicon was created by https://www.flaticon.com/authors/royyan-wijaya
 import WorkspaceApplication from "./components/WorkspaceApplication"
 import WorkspaceApplicationList from "./components/WorkspaceApplicationList"
+import * as styles from "./style.module.css"
 import localize from "./utils/localize"
 import { setupSentry } from "./utils/sentry-popup"
 import workspaceApps from "./workspace-apps"
@@ -21,7 +22,7 @@ const ErrorFallback = () => (
 
 function IndexPopup() {
   return (
-    <div style={{ minWidth: "310px" }}>
+    <div className={styles.popupContainer}>
       <h2>{localize("extensionName")}</h2>
       <ErrorBoundary
         fallback={<ErrorFallback />}
