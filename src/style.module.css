@@ -23,10 +23,10 @@
 
 .applicationTitle {
   margin: 0 10px 0 0;
-  min-width: 45px;
+  min-width: 50px;
   font-weight: bold;
   color: #666;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
 }
 
 .applicationIcon {
