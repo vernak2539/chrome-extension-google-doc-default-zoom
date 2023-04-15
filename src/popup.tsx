@@ -1,8 +1,9 @@
 // Icon used in Favicon was created by https://www.flaticon.com/authors/royyan-wijaya
-import WorkspaceApplication from "~components/WorkspaceApplication"
-import WorkspaceApplicationList from "~components/WorkspaceApplicationList"
-import { setupSentry } from "~utils/sentry-popup"
-import workspaceApps from "~workspace-apps"
+import WorkspaceApplication from "./components/WorkspaceApplication"
+import WorkspaceApplicationList from "./components/WorkspaceApplicationList"
+import localize from "./utils/localize"
+import { setupSentry } from "./utils/sentry-popup"
+import workspaceApps from "./workspace-apps"
 
 // todo - build in enabled/disabled state state
 
@@ -21,13 +22,13 @@ const ErrorFallback = () => (
 function IndexPopup() {
   return (
     <div style={{ minWidth: "310px" }}>
-      <h2>{chrome.i18n.getMessage("extensionName")}</h2>
+      <h2>{localize("extensionName")}</h2>
       <ErrorBoundary
         fallback={<ErrorFallback />}
         beforeCapture={(scope) => {
           scope.setTag("locale", chrome.i18n.getUILanguage())
         }}>
-        <p>{chrome.i18n.getMessage("popupMainSectionDescription")}</p>
+        <p>{localize("popupMainSectionDescription")}</p>
         <WorkspaceApplicationList>
           {workspaceApps
             .filter((app) => app.isEnabled)

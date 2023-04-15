@@ -4,8 +4,9 @@ import type { ChangeEvent } from "react"
 
 import { useStorage } from "@plasmohq/storage/hook"
 
-import * as style from "~style.module.css"
-import type { WorkspaceApp } from "~types"
+import * as style from "../../style.module.css"
+import type { WorkspaceApp } from "../../types"
+import localize from "../../utils/localize"
 
 type Props = Omit<WorkspaceApp, "isEnabled">
 
@@ -33,7 +34,10 @@ const WorkspaceApplication = ({
         })}
       />
       <span className={style.applicationTitle}>{name} </span>
-      <select onChange={onDefaultZoomChange} value={zoom}>
+      <select
+        aria-label={localize("popupApplicationZoomSelectAriaLabel")}
+        onChange={onDefaultZoomChange}
+        value={zoom}>
         {zoomValues.map((value) => {
           return <option key={useId()}>{value}</option>
         })}

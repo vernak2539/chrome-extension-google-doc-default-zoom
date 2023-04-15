@@ -11,8 +11,9 @@
   ],
   "compilerOptions": {
     "paths": {
-      "~*": ["./src/*"]
+//      "~*": ["./src/*"]
     },
     "baseUrl": "."
-  }
+  },
+  "references": [{ "path": "./tsconfig.node.json" }]
 }

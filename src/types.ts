@@ -8,6 +8,30 @@ export interface GetZoomValueResponseBody {
 
 export type WorkspaceAppName = "Docs" | "Sheets"
 
+export type DocsStorageKey = "zoomValue"
+export type DocsZoomValues = [
+  "Fit",
+  "50%",
+  "75%",
+  "100%",
+  "125%",
+  "150%",
+  "200%"
+]
+
+export type SheetsStorageKey = "sheets:zoomValue"
+export type SheetsZoomValues = [
+  "50%",
+  "75%",
+  "90%",
+  "100%",
+  "125%",
+  "150%",
+  "200%"
+]
+
+export type StorageKey = DocsStorageKey | SheetsStorageKey
+
 export interface WorkspaceApp {
   /* Name of the Google Workspace Application */
   name: WorkspaceAppName
@@ -19,7 +43,7 @@ export interface WorkspaceApp {
   defaultZoom: string
 
   /* Possible values to zoom (i.e. zoom values in dropdown list) */
-  zoomValues: string[]
+  zoomValues: DocsZoomValues | SheetsZoomValues
 
   /* Key defining where the zoom value is stored in chrome.storage */
   storageKey: string

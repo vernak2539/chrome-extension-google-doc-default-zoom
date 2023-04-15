@@ -1,4 +1,4 @@
-import type { WorkspaceAppName } from "~types"
+import type { WorkspaceAppName } from "../types"
 
 const docsUrlRegex = new RegExp(
   /https:\/\/docs\.google\.com\/document\/d\/(.*?)\/.*?/g

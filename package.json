@@ -9,7 +9,9 @@
     "build": "plasmo build",
     "package": "plasmo package",
     "prettier": "prettier ./src/** -w",
-    "bundlesize": "bundlesize"
+    "bundlesize": "bundlesize",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@plasmohq/messaging": "^0.1.7",
@@ -23,13 +25,26 @@
   },
   "devDependencies": {
     "@plasmohq/prettier-plugin-sort-imports": "3.6.3",
+    "@storybook/addon-a11y": "^7.0.4",
+    "@storybook/addon-console": "^1.2.3",
+    "@storybook/addon-essentials": "^7.0.4",
+    "@storybook/addon-interactions": "^7.0.4",
+    "@storybook/addon-links": "^7.0.4",
+    "@storybook/blocks": "^7.0.4",
+    "@storybook/react": "^7.0.4",
+    "@storybook/react-vite": "^7.0.4",
+    "@storybook/testing-library": "^0.0.14-next.2",
     "@types/chrome": "0.0.227",
     "@types/node": "18.15.11",
     "@types/react": "18.0.31",
     "@types/react-dom": "18.0.11",
+    "@vitejs/plugin-react": "^3.1.0",
     "bundlesize2": "^0.0.31",
     "prettier": "2.8.7",
-    "typescript": "5.0.2"
+    "prop-types": "^15.8.1",
+    "storybook": "^7.0.4",
+    "typescript": "5.0.2",
+    "vite": "^4.2.0"
   },
   "manifest": {
     "name": "__MSG_extensionName__",
