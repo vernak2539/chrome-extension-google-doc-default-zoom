@@ -2,13 +2,19 @@ import classnames from "classnames"
 import React, { useEffect, useState } from "react"
 
 import * as style from "../../style.module.css"
+import type { WorkspaceApp } from "../../types"
 import type { ZoomInputProps } from "../shared-props"
+
+type Props = ZoomInputProps & {
+  defaultZoom: WorkspaceApp["defaultZoom"]
+}
 
 const CustomZoomInput = ({
   zoomValue,
   isCustomValue,
-  updateValue
-}: ZoomInputProps) => {
+  updateValue,
+  defaultZoom
+}: Props) => {
   const [localZoom, setLocalZoom] = useState(zoomValue || "")
 
   useEffect(() => {
@@ -30,11 +36,38 @@ const CustomZoomInput = ({
           [style.applicationActiveZoomInput]: isCustomValue
         }
       )}
-      onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+      onFocus={(event) => {
+        const value = event.target.value
+        if (value.includes("%")) {
+          setLocalZoom(value.replace(/%/g, ""))
+        }
+      }}
+      onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
+        const allowedKeys = [
+          "Clear",
+          "Backspace",
+          "Delete",
+          "EraseEof",
+          "Undo",
+          "ArrowDown",
+          "ArrowLeft",
+          "ArrowRight",
+          "ArrowUp"
+        ]
+
+        if (/[0-9]/.test(event.key) || allowedKeys.includes(event.key)) {
+          return
+        }
+        event.preventDefault()
+      }}
+      onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
         setLocalZoom(event.target.value)
-      }
+      }}
       onBlur={(event: React.FocusEvent<HTMLInputElement>) => {
-        const newValue = `${event.target.value}%`
+        const newValue = Boolean(event.target.value)
+          ? `${event.target.value}%`
+          : ""
+
         setLocalZoom(newValue)
         updateValue(newValue)
       }}

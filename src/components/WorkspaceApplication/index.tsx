@@ -24,7 +24,12 @@ const WorkspaceApplication = ({
 
   const updateValue = useCallback(
     (value) => {
-      setZoom(value)
+      console.log(value)
+      if (value) {
+        setZoom(value)
+      } else {
+        setZoom(defaultZoom)
+      }
     },
     [setZoom]
   )
@@ -48,6 +53,7 @@ const WorkspaceApplication = ({
           zoomValues={zoomValues}
         />
         <CustomZoomInput
+          defaultZoom={defaultZoom}
           isCustomValue={isCustomZoom}
           updateValue={updateValue}
           zoomValue={isCustomZoom ? zoom : ""}
