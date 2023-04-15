@@ -1,16 +1,21 @@
 import classnames from "classnames"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 
 import * as style from "../../style.module.css"
+import type { ZoomInputProps } from "../shared-props"
 
-interface Props {
-  isCustomValue: boolean
-  updateValue: (newZoomValue: string) => void
-  zoomValue: string
-}
-
-const CustomZoomInput = ({ zoomValue, isCustomValue, updateValue }: Props) => {
+const CustomZoomInput = ({
+  zoomValue,
+  isCustomValue,
+  updateValue
+}: ZoomInputProps) => {
   const [localZoom, setLocalZoom] = useState(zoomValue || "")
+
+  useEffect(() => {
+    if (!isCustomValue) {
+      setLocalZoom("")
+    }
+  }, [isCustomValue])
 
   return (
     <input
