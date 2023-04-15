@@ -1,12 +1,12 @@
 import classnames from "classnames"
-import { useId } from "react"
-import type { ChangeEvent } from "react"
+import { useCallback } from "react"
 
 import { useStorage } from "@plasmohq/storage/hook"
 
 import * as style from "../../style.module.css"
 import type { WorkspaceApp } from "../../types"
-import localize from "../../utils/localize"
+import CustomZoomInput from "../CustomZoomInput"
+import SelectZoomInput from "../SelectZoomInput"
 
 type Props = Omit<WorkspaceApp, "isEnabled">
 
@@ -16,14 +16,23 @@ const WorkspaceApplication = ({
   defaultZoom,
   storageKey
 }: Props) => {
+  const enabled = false
   const [zoom, setZoom] = useStorage(storageKey, (storedZoom) => {
     return typeof storedZoom === "undefined" ? defaultZoom : storedZoom
   })
 
-  const onDefaultZoomChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    const newValue = event.target.value
-    setZoom(newValue)
-  }
+  const updateValue = useCallback(
+    (value) => {
+      if (value) {
+        setZoom(value)
+      } else {
+        setZoom(defaultZoom)
+      }
+    },
+    [setZoom]
+  )
+
+  const isCustomZoom = zoom && !zoomValues.includes(zoom)
 
   return (
     <li className={style.applicationListItem}>
@@ -34,14 +43,21 @@ const WorkspaceApplication = ({
         })}
       />
       <span className={style.applicationTitle}>{name} </span>
-      <select
-        aria-label={localize("popupApplicationZoomSelectAriaLabel")}
-        onChange={onDefaultZoomChange}
-        value={zoom}>
-        {zoomValues.map((value) => {
-          return <option key={useId()}>{value}</option>
-        })}
-      </select>
+      <div className={style.applicationInputContainer}>
+        <SelectZoomInput
+          isCustomValue={isCustomZoom}
+          updateValue={updateValue}
+          zoomValue={zoom || defaultZoom}
+          zoomValues={zoomValues}
+        />
+        {enabled && (
+          <CustomZoomInput
+            isCustomValue={isCustomZoom}
+            updateValue={updateValue}
+            zoomValue={zoom}
+          />
+        )}
+      </div>
     </li>
   )
 }

@@ -1,6 +1,7 @@
 .popupContainer {
   min-width: 310px;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
 .applicationList {
@@ -25,7 +26,7 @@
   min-width: 45px;
   font-weight: bold;
   color: #666;
-  font-size: .9rem;
+  font-size: 0.9rem;
 }
 
 .applicationIcon {
@@ -44,4 +45,35 @@
 
 .applicationImageSheets {
   background-image: url("/assets/popup_icons/sheets.svg");
+}
+
+.applicationInputContainer {
+  display: flex;
+}
+
+.applicationZoomInputBase {
+  border: 1px solid #999;
+  border-radius: 5px;
+  padding: 3px 5px;
+  font-size: 0.75rem;
+}
+
+.applicationZoomCustomInput {
+  width: auto;
+  text-align: center;
+  margin-left: 10px;
+}
+
+.applicationZoomSelectInput {
+  appearance: auto;
+  -webkit-appearance: button;
+  cursor: pointer;
+}
+
+.applicationActiveZoomInput {
+  background: #82bdda;
+  background: rgba(130, 189, 218, 0.4);
+  border: 1px solid #3f7e9b !important;
+  color: #000 !important;
+  font-weight: bold;
 }
