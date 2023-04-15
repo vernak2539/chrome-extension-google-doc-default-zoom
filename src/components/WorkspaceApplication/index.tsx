@@ -1,5 +1,5 @@
 import classnames from "classnames"
-import React, { useCallback } from "react"
+import { useCallback } from "react"
 
 import { useStorage } from "@plasmohq/storage/hook"
 
