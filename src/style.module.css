@@ -73,7 +73,7 @@
 .applicationActiveZoomInput {
   background: #82bdda;
   background: rgba(130, 189, 218, 0.4);
-  border: 2px solid #3f7e9b !important;
+  border: 1px solid #3f7e9b !important;
   color: #000 !important;
   font-weight: bold;
 }
