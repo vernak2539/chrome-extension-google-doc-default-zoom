@@ -25,6 +25,8 @@ const WorkspaceApplication = ({
     setZoom(newValue)
   }
 
+  const selectValueIsSelected = zoomValues.includes(zoom) || !zoom
+
   return (
     <li className={style.applicationListItem}>
       <span
@@ -34,14 +36,36 @@ const WorkspaceApplication = ({
         })}
       />
       <span className={style.applicationTitle}>{name} </span>
-      <select
-        aria-label={localize("popupApplicationZoomSelectAriaLabel")}
-        onChange={onDefaultZoomChange}
-        value={zoom}>
-        {zoomValues.map((value) => {
-          return <option key={useId()}>{value}</option>
-        })}
-      </select>
+      <div className={style.applicationInputContainer}>
+        <select
+          className={classnames(
+            style.applicationZoomInputBase,
+            style.applicationZoomSelectInput,
+            {
+              [style.applicationActiveZoomInput]: selectValueIsSelected
+            }
+          )}
+          aria-label={localize("popupApplicationZoomSelectAriaLabel")}
+          onChange={onDefaultZoomChange}
+          value={zoom || defaultZoom}>
+          {zoomValues.map((value) => {
+            return <option key={useId()}>{value}</option>
+          })}
+        </select>
+        <input
+          placeholder="Custom Zoom" // TODO: Localise this
+          value={selectValueIsSelected ? "" : zoom}
+          maxLength={3}
+          minLength={2}
+          className={classnames(
+            style.applicationZoomInputBase,
+            style.applicationZoomCustomInput,
+            {
+              [style.applicationActiveZoomInput]: !selectValueIsSelected
+            }
+          )}
+        />
+      </div>
     </li>
   )
 }

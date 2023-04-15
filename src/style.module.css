@@ -45,3 +45,34 @@
 .applicationImageSheets {
   background-image: url("/assets/popup_icons/sheets.svg");
 }
+
+.applicationInputContainer {
+  display: flex;
+}
+
+.applicationZoomInputBase {
+  border: 1px solid #999;
+  border-radius: 5px;
+  padding: 3px 5px;
+  font-size: .75rem;
+}
+
+.applicationZoomCustomInput {
+  width: auto;
+  text-align: center;
+  margin-left: 10px;
+}
+
+.applicationZoomSelectInput {
+  appearance: auto;
+  -webkit-appearance: button;
+  cursor: pointer;
+}
+
+.applicationActiveZoomInput {
+  background: #82BDDA;
+  background: rgba(130, 189, 218, 0.4);
+  border: 1px solid #3F7E9B !important;
+  color: #000 !important;
+  font-weight: bold;
+}
