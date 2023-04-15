@@ -1,7 +1,7 @@
 import React from "react"
 
 import * as style from "../../style.module.css"
-import localise from "../../utils/localise"
+import localize from "../../utils/localize"
 
 interface Props {
   children: React.ReactNode
@@ -10,7 +10,7 @@ const WorkspaceApplicationList = ({ children }: Props) => {
   return (
     <>
       <h3 style={{ marginBottom: 0 }}>
-        {localise("popupApplicationsSectionTitle")}
+        {localize("popupApplicationsSectionTitle")}
       </h3>
       <ul className={style.applicationList}>{children}</ul>
     </>
