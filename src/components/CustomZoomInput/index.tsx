@@ -5,16 +5,11 @@ import * as style from "../../style.module.css"
 import type { WorkspaceApp } from "../../types"
 import type { ZoomInputProps } from "../shared-props"
 
-type Props = ZoomInputProps & {
-  defaultZoom: WorkspaceApp["defaultZoom"]
-}
-
 const CustomZoomInput = ({
   zoomValue,
   isCustomValue,
-  updateValue,
-  defaultZoom
-}: Props) => {
+  updateValue
+}: ZoomInputProps) => {
   const [localZoom, setLocalZoom] = useState(zoomValue || "")
 
   useEffect(() => {
@@ -67,6 +62,11 @@ const CustomZoomInput = ({
         const newValue = Boolean(event.target.value)
           ? `${event.target.value}%`
           : ""
+
+        // don't update the values if we've remove the value and we're using the select box values
+        if (newValue === "" && !isCustomValue) {
+          return
+        }
 
         setLocalZoom(newValue)
         updateValue(newValue)

@@ -1,12 +1,10 @@
 import classnames from "classnames"
-import React, { useCallback, useId, useState } from "react"
-import type { ChangeEvent } from "react"
+import React, { useCallback } from "react"
 
 import { useStorage } from "@plasmohq/storage/hook"
 
 import * as style from "../../style.module.css"
 import type { WorkspaceApp } from "../../types"
-import localize from "../../utils/localize"
 import CustomZoomInput from "../CustomZoomInput"
 import SelectZoomInput from "../SelectZoomInput"
 
@@ -56,7 +54,7 @@ const WorkspaceApplication = ({
           defaultZoom={defaultZoom}
           isCustomValue={isCustomZoom}
           updateValue={updateValue}
-          zoomValue={isCustomZoom ? zoom : ""}
+          zoomValue={zoom}
         />
       </div>
     </li>
