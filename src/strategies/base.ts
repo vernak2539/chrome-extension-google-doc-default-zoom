@@ -6,17 +6,17 @@ import {
   simulateClick
 } from "../utils/ui-helpers"
 
-export interface AbstractBaseStrategy {
+export interface AbstractBaseStrategyImpl {
   execute: (executionLocation: string) => void
   getIsZoomSelectorDisabled: () => boolean
-  // These values need to be implemented... but TS interfaces
+  // These values need to be implemented on the abstract class... but TS interfaces
   // getIsViewOnly: () => boolean
   // config: UiStrategyConfig
   // getZoomValueFromStorage: () => Promise<string>
   // uiExecuteFlow: (zoomValue: string) => void
 }
 
-export abstract class BaseStrategy implements AbstractBaseStrategy {
+export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
   protected readonly config: UiStrategyConfig
   public abstract execute(executionLocation: string): void
   // protected abstract getIsViewOnly(): boolean

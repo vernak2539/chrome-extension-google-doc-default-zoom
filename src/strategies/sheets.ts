@@ -3,7 +3,7 @@ import type {
   SheetsZoomValues,
   UiStrategyConfig
 } from "../types"
-import { AbstractBaseStrategy, BaseStrategy } from "./base"
+import { AbstractBaseStrategy, AbstractBaseStrategyImpl } from "./base"
 
 export const STORAGE_KEY: SheetsStorageKey = "sheets:zoomValue"
 export const ZOOM_VALUES: SheetsZoomValues = [
@@ -17,7 +17,10 @@ export const ZOOM_VALUES: SheetsZoomValues = [
 ]
 export const DEFAULT_ZOOM = ZOOM_VALUES.at(3)
 
-class SheetsStrategy extends BaseStrategy implements AbstractBaseStrategy {
+class SheetsStrategy
+  extends AbstractBaseStrategy
+  implements AbstractBaseStrategyImpl
+{
   constructor(config: UiStrategyConfig) {
     super(config)
   }
