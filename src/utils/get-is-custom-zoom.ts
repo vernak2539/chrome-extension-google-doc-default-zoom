@@ -1,5 +1,4 @@
-import { ZOOM_VALUES as DOCS_ZOOM_VALUES } from "../strategies/docs"
-import { ZOOM_VALUES as SHEETS_ZOOM_VALUES } from "../strategies/sheets"
+import { DOCS_ZOOM_VALUES, SHEETS_ZOOM_VALUES } from "../constants"
 
 const getIsCustomZoom = (zoomValue: any) => {
   if (SHEETS_ZOOM_VALUES.includes(zoomValue)) {
