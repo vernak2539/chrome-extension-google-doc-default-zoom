@@ -37,9 +37,9 @@ export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
     }
 
     if (getIsCustomZoom(zoomValue)) {
-      this.uiExecuteDefinedZoomFlow(zoomValue)
-    } else {
       this.uiExecuteCustomZoomFlow(zoomValue)
+    } else {
+      this.uiExecuteDefinedZoomFlow(zoomValue)
     }
   }
 
