@@ -14,7 +14,8 @@ const WorkspaceApplication = ({
   name,
   zoomValues,
   defaultZoom,
-  storageKey
+  storageKey,
+  features
 }: Props) => {
   const enabled = false
   const [zoom, setZoom] = useStorage(storageKey, (storedZoom) => {
@@ -50,7 +51,7 @@ const WorkspaceApplication = ({
           zoomValue={zoom || defaultZoom}
           zoomValues={zoomValues}
         />
-        {enabled && (
+        {features.customZoomInput && (
           <CustomZoomInput
             isCustomValue={isCustomZoom}
             updateValue={updateValue}

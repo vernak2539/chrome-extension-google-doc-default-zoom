@@ -14,14 +14,20 @@ export const workspaceApps: WorkspaceApp[] = [
     defaultZoom: DOCS_DEFAULT_ZOOM,
     zoomValues: DOCS_ZOOM_VALUES,
     storageKey: DOCS_STORAGE_KEY,
-    isEnabled: true
+    isEnabled: true,
+    features: {
+      customZoomInput: true
+    }
   },
   {
     name: "Sheets",
     defaultZoom: SHEETS_DEFAULT_ZOOM,
     zoomValues: SHEETS_ZOOM_VALUES,
     storageKey: SHEETS_STORAGE_KEY,
-    isEnabled: true
+    isEnabled: true,
+    features: {
+      customZoomInput: false
+    }
   }
 ]
 

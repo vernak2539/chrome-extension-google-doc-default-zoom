@@ -40,6 +40,7 @@ function IndexPopup() {
                 zoomValues={app.zoomValues}
                 defaultZoom={app.defaultZoom}
                 storageKey={app.storageKey}
+                features={app.features}
               />
             ))}
         </WorkspaceApplicationList>
