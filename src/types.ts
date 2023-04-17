@@ -66,6 +66,7 @@ export interface UiStrategyConfig {
   uiElements: {
     clickableZoomSelectId: string
     clickableZoomOptionClass: string
+    toolbarHelpMenuId?: string
   }
   zoom: {
     defaultZoom: string

@@ -2,7 +2,10 @@ import type {
   DocsStorageKey,
   DocsZoomValues,
   SheetsStorageKey,
-  SheetsZoomValues
+  SheetsZoomValues,
+  UiStrategyConfig,
+  WorkspaceApp,
+  WorkspaceAppName
 } from "./types"
 
 export const OBSERVE_EXECUTION_LIMIT = 1000
@@ -10,7 +13,7 @@ export const OBSERVE_EXECUTION_LIMIT = 1000
 // This needs to match the file name ./src/background/messages/get-zoom-value.ts
 export const RELAY_GET_ZOOM_VALUE_FROM_STORAGE = "get-zoom-value"
 
-// Workspace Application: Docs
+/**  Workspace Application: Docs - Start **/
 export const DOCS_STORAGE_KEY: DocsStorageKey = "zoomValue"
 export const DOCS_ZOOM_VALUES: DocsZoomValues = [
   "Fit",
@@ -22,8 +25,9 @@ export const DOCS_ZOOM_VALUES: DocsZoomValues = [
   "200%"
 ]
 export const DOCS_DEFAULT_ZOOM = DOCS_ZOOM_VALUES.at(3)
+/**  Workspace Application: Docs - End **/
 
-// Workspace Application: Sheets
+/**  Workspace Application: Sheets - Start **/
 export const SHEETS_STORAGE_KEY: SheetsStorageKey = "sheets:zoomValue"
 export const SHEETS_ZOOM_VALUES: SheetsZoomValues = [
   "50%",
@@ -35,3 +39,55 @@ export const SHEETS_ZOOM_VALUES: SheetsZoomValues = [
   "200%"
 ]
 export const SHEETS_DEFAULT_ZOOM = SHEETS_ZOOM_VALUES.at(3)
+/**  Workspace Application: Sheets - End **/
+
+export const workspaceApps: WorkspaceApp[] = [
+  {
+    name: "Docs",
+    defaultZoom: DOCS_DEFAULT_ZOOM,
+    zoomValues: DOCS_ZOOM_VALUES,
+    storageKey: DOCS_STORAGE_KEY,
+    isEnabled: true,
+    features: {
+      customZoomInput: true
+    }
+  },
+  {
+    name: "Sheets",
+    defaultZoom: SHEETS_DEFAULT_ZOOM,
+    zoomValues: SHEETS_ZOOM_VALUES,
+    storageKey: SHEETS_STORAGE_KEY,
+    isEnabled: true,
+    features: {
+      customZoomInput: false
+    }
+  }
+]
+export const workspaceAppUiStrategyConfigs: Record<
+  WorkspaceAppName,
+  UiStrategyConfig
+> = {
+  Docs: {
+    application: "Docs",
+    storageKey: DOCS_STORAGE_KEY,
+    uiElements: {
+      clickableZoomSelectId: "#zoomSelect",
+      clickableZoomOptionClass: ".goog-menuitem",
+      toolbarHelpMenuId: "#docs-help-menu" // this is required for features.customZoomInput = true
+    },
+    zoom: {
+      defaultZoom: DOCS_DEFAULT_ZOOM
+    }
+  },
+  Sheets: {
+    application: "Sheets",
+    storageKey: SHEETS_STORAGE_KEY,
+    uiElements: {
+      clickableZoomSelectId: "#t-zoom",
+      clickableZoomOptionClass: ".goog-menuitem"
+    },
+    zoom: {
+      defaultZoom: SHEETS_DEFAULT_ZOOM
+    }
+  }
+}

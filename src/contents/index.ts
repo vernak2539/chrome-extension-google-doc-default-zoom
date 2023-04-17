@@ -5,13 +5,13 @@ import { relayMessage } from "@plasmohq/messaging"
 
 import {
   OBSERVE_EXECUTION_LIMIT,
-  RELAY_GET_ZOOM_VALUE_FROM_STORAGE
+  RELAY_GET_ZOOM_VALUE_FROM_STORAGE,
+  workspaceAppUiStrategyConfigs
 } from "../constants"
 import DocsStrategy from "../strategies/docs"
 import SheetsStrategy from "../strategies/sheets"
 import counterFactory from "../utils/counter-factory"
 import getCurrentApp from "../utils/get-current-app"
-import { workspaceAppUiStrategyConfigs } from "../workspace-apps"
 
 export const config: PlasmoCSConfig = {
   matches: ["https://docs.google.com/*"]
