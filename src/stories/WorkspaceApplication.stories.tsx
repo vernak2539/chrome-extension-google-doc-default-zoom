@@ -3,15 +3,13 @@ import type { Meta, StoryObj } from "@storybook/react"
 import WorkspaceApplication from "../components/WorkspaceApplication"
 import WorkspaceApplicationList from "../components/WorkspaceApplicationList"
 import {
-  DEFAULT_ZOOM as DOCS_DEFAULT_ZOOM,
-  STORAGE_KEY as DOCS_STORAGE_KEY,
-  ZOOM_VALUES as DOCS_ZOOM_VALUES
-} from "../strategies/docs"
-import {
-  DEFAULT_ZOOM as SHEETS_DEFAULT_ZOOM,
-  STORAGE_KEY as SHEETS_STORAGE_KEY,
-  ZOOM_VALUES as SHEETS_ZOOM_VALUES
-} from "../strategies/sheets"
+  DOCS_DEFAULT_ZOOM,
+  DOCS_STORAGE_KEY,
+  DOCS_ZOOM_VALUES,
+  SHEETS_DEFAULT_ZOOM,
+  SHEETS_STORAGE_KEY,
+  SHEETS_ZOOM_VALUES
+} from "../constants"
 import * as styles from "../style.module.css"
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction

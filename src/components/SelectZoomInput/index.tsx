@@ -10,6 +10,24 @@ type Props = ZoomInputProps & {
   zoomValues: WorkspaceApp["zoomValues"]
 }
 
+const SelectOptions = ({ zoomValues }) => {
+  return (
+    <>
+      {zoomValues.map((value) => {
+        return <option key={useId()}>{value}</option>
+      })}
+    </>
+  )
+}
+const SelectOptionsWithNa = ({ zoomValues }) => {
+  return (
+    <>
+      <option key={useId()}>N/A</option>
+      <SelectOptions zoomValues={zoomValues} />
+    </>
+  )
+}
+
 const SelectZoomInput = ({
   zoomValue,
   isCustomValue,
@@ -31,9 +49,8 @@ const SelectZoomInput = ({
         updateValue(newValue)
       }}
       value={zoomValue}>
-      {zoomValues.map((value) => {
-        return <option key={useId()}>{value}</option>
-      })}
+      {!isCustomValue && <SelectOptions zoomValues={zoomValues} />}
+      {isCustomValue && <SelectOptionsWithNa zoomValues={zoomValues} />}
     </select>
   )
 }

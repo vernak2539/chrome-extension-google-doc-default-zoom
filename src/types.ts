@@ -50,6 +50,25 @@ export interface WorkspaceApp {
 
   /* If the app is enabled in the extension */
   isEnabled: boolean
+
+  /* Features for the app and their state of enablement */
+  features: {
+    /* Whether to enable the custom zoom input for an application */
+    customZoomInput: boolean
+  }
 }
 
 export type ExtensionFileSource = "popup" | "content" | "background"
+
+export interface UiStrategyConfig {
+  application: WorkspaceAppName
+  storageKey: StorageKey
+  uiElements: {
+    clickableZoomSelectId: string
+    clickableZoomOptionClass: string
+    toolbarHelpMenuId?: string
+  }
+  zoom: {
+    defaultZoom: string
+  }
+}

@@ -1,5 +1,5 @@
 .popupContainer {
-  min-width: 310px;
+  min-width: 350px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
     Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
@@ -23,10 +23,10 @@
 
 .applicationTitle {
   margin: 0 10px 0 0;
-  min-width: 45px;
+  min-width: 50px;
   font-weight: bold;
   color: #666;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
 }
 
 .applicationIcon {
@@ -72,7 +72,7 @@
 
 .applicationActiveZoomInput {
   background: #82bdda;
-  background: rgba(130, 189, 218, 0.4);
+  background: rgba(130, 189, 218, 0.3);
   border: 1px solid #3f7e9b !important;
   color: #000 !important;
   font-weight: bold;

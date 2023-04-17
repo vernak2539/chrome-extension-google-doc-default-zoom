@@ -1,10 +1,10 @@
 // Icon used in Favicon was created by https://www.flaticon.com/authors/royyan-wijaya
 import WorkspaceApplication from "./components/WorkspaceApplication"
 import WorkspaceApplicationList from "./components/WorkspaceApplicationList"
+import { workspaceApps } from "./constants"
 import * as styles from "./style.module.css"
 import localize from "./utils/localize"
 import { setupSentry } from "./utils/sentry-popup"
-import workspaceApps from "./workspace-apps"
 
 // todo - build in enabled/disabled state state
 
@@ -40,6 +40,7 @@ function IndexPopup() {
                 zoomValues={app.zoomValues}
                 defaultZoom={app.defaultZoom}
                 storageKey={app.storageKey}
+                features={app.features}
               />
             ))}
         </WorkspaceApplicationList>

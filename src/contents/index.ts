@@ -5,7 +5,8 @@ import { relayMessage } from "@plasmohq/messaging"
 
 import {
   OBSERVE_EXECUTION_LIMIT,
-  RELAY_GET_ZOOM_VALUE_FROM_STORAGE
+  RELAY_GET_ZOOM_VALUE_FROM_STORAGE,
+  workspaceAppUiStrategyConfigs
 } from "../constants"
 import DocsStrategy from "../strategies/docs"
 import SheetsStrategy from "../strategies/sheets"
@@ -30,10 +31,10 @@ let strategy
 
 switch (currentApp) {
   case "Docs":
-    strategy = new DocsStrategy({ isViewOnly: false })
+    strategy = new DocsStrategy(workspaceAppUiStrategyConfigs["Docs"])
     break
   case "Sheets":
-    strategy = new SheetsStrategy({ isViewOnly: false })
+    strategy = new SheetsStrategy(workspaceAppUiStrategyConfigs["Sheets"])
     break
 }
 
