@@ -1,5 +1,6 @@
 import type { UiStrategyConfig } from "../types"
 import getIsCustomZoom from "../utils/get-is-custom-zoom"
+import getNumericZoom from "../utils/get-numeric-zoom"
 import getZoomValueFromStorage from "../utils/get-zoom-value-from-storage"
 import {
   getDOMElement,
@@ -88,10 +89,47 @@ export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
   }
 
   private uiExecuteCustomZoomFlow(zoomValue: string) {
+    // THIS IS IMPOSSIBLE AT THE TIME DUE TO NOT BEING ABLE TO TRIGGER EVENTS BASED ON INPUTS CHANGING
+    // WILL BE LEAVING THIS HERE FOR NOW...
+
     // open help menu
+    const helpMenu = getDOMElement(this.config.uiElements.toolbarHelpMenuId)
+    const { x: zoomInputX, y: zoomInputY } = getDOMElementCoordinates(helpMenu)
+    simulateClick(helpMenu, zoomInputX, zoomInputY)
+
+    // - find the dropdown due to client height - document.querySelectorAll(".docs-omnibox-input.jfk-textinput.label-input-label")
+
+    // find the dropdown that is visible after clicking "help"
+    const allDropdownMenus = document.querySelectorAll(
+      ".goog-menu.goog-menu-vertical.docs-material.ia-menu.ia-primary-menu"
+    )
+    console.log(allDropdownMenus)
+    const helpDropdownMenuIndex = Array.from(allDropdownMenus).findIndex(
+      (menu) => Boolean(menu.clientHeight)
+    )
+    const helpDropdownMenu = allDropdownMenus[helpDropdownMenuIndex]
+
+    console.log(helpDropdownMenu)
+    console.log(helpDropdownMenu.querySelectorAll("input"))
+
+    const helpDropdownInput = helpDropdownMenu.querySelectorAll("input")[0]
+
     // type in "zoom 113"
+    setTimeout(() => {
+      helpDropdownInput.value = `zoom ${getNumericZoom(zoomValue)}`
+      // helpDropdownInput.select()
+      helpDropdownInput.focus()
+
+      helpDropdownInput.dispatchEvent(new InputEvent("input"))
+      helpDropdownInput.dispatchEvent(
+        new KeyboardEvent("keyup", { key: "Enter" })
+      )
+    }, 1000)
+
     // set small timeout for dropdown / observer
+
     // click first thing in dropdown
+
     // thing should close
   }
 
