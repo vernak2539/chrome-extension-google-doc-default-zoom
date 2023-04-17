@@ -49,7 +49,7 @@ export const workspaceApps: WorkspaceApp[] = [
     storageKey: DOCS_STORAGE_KEY,
     isEnabled: true,
     features: {
-      customZoomInput: true
+      customZoomInput: false
     }
   },
   {
