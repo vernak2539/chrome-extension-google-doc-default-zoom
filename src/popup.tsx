@@ -44,6 +44,14 @@ function IndexPopup() {
               />
             ))}
         </WorkspaceApplicationList>
+        <button
+          onClick={() => {
+            chrome.tabs.create({
+              url: "./tabs/info.html"
+            })
+          }}>
+          open tab page
+        </button>
       </ErrorBoundary>
     </div>
   )
