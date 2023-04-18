@@ -1,4 +1,11 @@
+import { sendToBackgroundViaRelay } from "@plasmohq/messaging"
+
+import {
+  RELAY_EXECUTE_ENTER,
+  RELAY_GET_ZOOM_VALUE_FROM_STORAGE
+} from "../constants"
 import type { Feature, UiStrategyConfig } from "../types"
+import { GetZoomValueRequestBody, GetZoomValueResponseBody } from "../types"
 import getIsCustomZoom from "../utils/get-is-custom-zoom"
 import getNumericZoom from "../utils/get-numeric-zoom"
 import getZoomValueFromStorage from "../utils/get-zoom-value-from-storage"
@@ -101,6 +108,21 @@ export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
     // remove percentage value, convert back to string
     const zoomInput = zoomInputContainer.querySelector("input")
     zoomInput.value = getNumericZoom(zoomValue).toString()
+    // zoomInput.focus()
+    // zoomInput.select()
+
+    zoomInput.addEventListener("keydown", (event) => {
+      console.log(event)
+    })
+    zoomInput.addEventListener("keyup", (event) => {
+      console.log(event)
+    })
+
+    // setTimeout(() => {
+    sendToBackgroundViaRelay({
+      name: RELAY_EXECUTE_ENTER
+    }).then((res) => console.log(res))
+    // }, 1000)
   }
 
   private isFeatureEnabled(feature: Feature): boolean {

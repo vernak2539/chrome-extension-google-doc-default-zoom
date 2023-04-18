@@ -5,6 +5,7 @@ import { relayMessage } from "@plasmohq/messaging"
 
 import {
   OBSERVE_EXECUTION_LIMIT,
+  RELAY_EXECUTE_ENTER,
   RELAY_GET_ZOOM_VALUE_FROM_STORAGE,
   workspaceAppUiStrategyConfigs
 } from "../constants"
@@ -25,6 +26,7 @@ export const getStyle = () => {
 
 // create and "register" the relay
 relayMessage({ name: RELAY_GET_ZOOM_VALUE_FROM_STORAGE })
+relayMessage({ name: RELAY_EXECUTE_ENTER })
 
 const currentApp = getCurrentApp()
 let strategy

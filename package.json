@@ -51,6 +51,10 @@
     "default_locale": "en",
     "host_permissions": [
       "http://*.google.com/"
+    ],
+    "permissions": [
+      "debugger",
+      "activeTab"
     ]
   }
 }
