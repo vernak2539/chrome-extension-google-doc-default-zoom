@@ -1,4 +1,4 @@
-import type { UiStrategyConfig, WorkspaceApp } from "../types"
+import type { Feature, UiStrategyConfig } from "../types"
 import getIsCustomZoom from "../utils/get-is-custom-zoom"
 import getNumericZoom from "../utils/get-numeric-zoom"
 import getZoomValueFromStorage from "../utils/get-zoom-value-from-storage"
@@ -17,8 +17,6 @@ export interface AbstractBaseStrategyImpl {
   // getZoomValueFromStorage: () => Promise<string>
   // uiExecuteFlow: (zoomValue: string) => void
 }
-
-type Features = keyof WorkspaceApp["features"]
 
 export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
   protected readonly config: UiStrategyConfig
@@ -105,7 +103,7 @@ export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
     zoomInput.value = getNumericZoom(zoomValue).toString()
   }
 
-  private isFeatureEnabled(feature: Features): boolean {
+  private isFeatureEnabled(feature: Feature): boolean {
     return Boolean(this.config.features[feature])
   }
 

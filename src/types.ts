@@ -73,3 +73,5 @@ export interface UiStrategyConfig {
     defaultZoom: string
   }
 }
+
+export type Feature = keyof WorkspaceApp["features"]
