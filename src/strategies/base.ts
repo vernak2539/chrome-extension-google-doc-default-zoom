@@ -1,4 +1,4 @@
-import type { UiStrategyConfig } from "../types"
+import type { UiStrategyConfig, WorkspaceApp } from "../types"
 import getIsCustomZoom from "../utils/get-is-custom-zoom"
 import getNumericZoom from "../utils/get-numeric-zoom"
 import getZoomValueFromStorage from "../utils/get-zoom-value-from-storage"
@@ -17,6 +17,8 @@ export interface AbstractBaseStrategyImpl {
   // getZoomValueFromStorage: () => Promise<string>
   // uiExecuteFlow: (zoomValue: string) => void
 }
+
+type Features = keyof WorkspaceApp["features"]
 
 export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
   protected readonly config: UiStrategyConfig
@@ -46,7 +48,10 @@ export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
     simulateClick(zoomInputContainer, zoomInputContainerX, zoomInputContainerY)
 
     // add check for if strategy is supported or not for app
-    if (getIsCustomZoom(zoomValue)) {
+    if (
+      this.isFeatureEnabled("customZoomInput") &&
+      getIsCustomZoom(zoomValue)
+    ) {
       this.uiExecuteCustomZoomFlow(zoomInputContainer, zoomValue)
     } else {
       this.uiExecuteDefinedZoomFlow(zoomInputContainer, zoomValue)
@@ -100,7 +105,8 @@ export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
     zoomInput.value = getNumericZoom(zoomValue).toString()
   }
 
-    // thing should close
+  private isFeatureEnabled(feature: Features): boolean {
+    return Boolean(this.config.features[feature])
   }
 
   public getIsZoomSelectorDisabled() {

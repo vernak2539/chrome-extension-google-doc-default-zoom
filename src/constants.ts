@@ -49,7 +49,7 @@ export const workspaceApps: WorkspaceApp[] = [
     storageKey: DOCS_STORAGE_KEY,
     isEnabled: true,
     features: {
-      customZoomInput: false
+      customZoomInput: true
     }
   },
   {
@@ -69,6 +69,7 @@ export const workspaceAppUiStrategyConfigs: Record<
 > = {
   Docs: {
     application: "Docs",
+    features: workspaceApps.find((app) => app.name === "Docs").features,
     storageKey: DOCS_STORAGE_KEY,
     uiElements: {
       clickableZoomSelectId: "#zoomSelect",
@@ -81,6 +82,7 @@ export const workspaceAppUiStrategyConfigs: Record<
   },
   Sheets: {
     application: "Sheets",
+    features: workspaceApps.find((app) => app.name === "Sheets").features,
     storageKey: SHEETS_STORAGE_KEY,
     uiElements: {
       clickableZoomSelectId: "#t-zoom",

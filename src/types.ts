@@ -62,6 +62,7 @@ export type ExtensionFileSource = "popup" | "content" | "background"
 
 export interface UiStrategyConfig {
   application: WorkspaceAppName
+  features: WorkspaceApp["features"]
   storageKey: StorageKey
   uiElements: {
     clickableZoomSelectId: string
