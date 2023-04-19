@@ -1,13 +1,12 @@
 import { sendToBackgroundViaRelay } from "@plasmohq/messaging"
 
-import {
-  RELAY_EXECUTE_ENTER,
-  RELAY_GET_ZOOM_VALUE_FROM_STORAGE
-} from "../constants"
-import type { Feature, UiStrategyConfig } from "../types"
-import { GetZoomValueRequestBody, GetZoomValueResponseBody } from "../types"
+import { RELAY_EXECUTE_ENTER } from "../constants"
+import type {
+  ExecuteEnterRequestBody,
+  Feature,
+  UiStrategyConfig
+} from "../types"
 import getIsCustomZoom from "../utils/get-is-custom-zoom"
-import getNumericZoom from "../utils/get-numeric-zoom"
 import getZoomValueFromStorage from "../utils/get-zoom-value-from-storage"
 import {
   getDOMElement,
@@ -18,11 +17,6 @@ import {
 export interface AbstractBaseStrategyImpl {
   execute: (executionLocation: string) => void
   getIsZoomSelectorDisabled: () => boolean
-  // These values need to be implemented on the abstract class... but TS interfaces
-  // getIsViewOnly: () => boolean
-  // config: UiStrategyConfig
-  // getZoomValueFromStorage: () => Promise<string>
-  // uiExecuteFlow: (zoomValue: string) => void
 }
 
 export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
@@ -95,34 +89,32 @@ export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
       getDOMElementCoordinates(newZoomLevelElement)
     simulateClick(newZoomLevelElement, newZoomOptionX, newZoomOptionY)
 
-    // close dropdown with blur event (may need to check again to see if it's closed)
-    setTimeout(() => {
-      simulateClick(getDOMElement("canvas"), 0, 0)
-    }, 500)
+    this.closeDropdown()
   }
 
   private uiExecuteCustomZoomFlow(
     zoomInputContainer: Element,
     zoomValue: string
   ) {
-    // remove percentage value, convert back to string
     const zoomInput = zoomInputContainer.querySelector("input")
-    zoomInput.value = getNumericZoom(zoomValue).toString()
-    // zoomInput.focus()
-    // zoomInput.select()
+    zoomInput.focus()
+    zoomInput.select()
 
-    zoomInput.addEventListener("keydown", (event) => {
-      console.log(event)
+    sendToBackgroundViaRelay<ExecuteEnterRequestBody>({
+      name: RELAY_EXECUTE_ENTER,
+      body: {
+        zoomValue
+      }
+    }).then(() => {
+      this.closeDropdown()
     })
-    zoomInput.addEventListener("keyup", (event) => {
-      console.log(event)
-    })
+  }
 
-    // setTimeout(() => {
-    sendToBackgroundViaRelay({
-      name: RELAY_EXECUTE_ENTER
-    }).then((res) => console.log(res))
-    // }, 1000)
+  private closeDropdown() {
+    // close dropdown with blur event (may need to check again to see if it's closed)
+    setTimeout(() => {
+      simulateClick(getDOMElement("canvas"), 0, 0)
+    }, 500)
   }
 
   private isFeatureEnabled(feature: Feature): boolean {

@@ -6,6 +6,10 @@ export interface GetZoomValueResponseBody {
   zoomValue: string
 }
 
+export interface ExecuteEnterRequestBody {
+  zoomValue: string
+}
+
 export type WorkspaceAppName = "Docs" | "Sheets"
 
 export type DocsStorageKey = "zoomValue"
