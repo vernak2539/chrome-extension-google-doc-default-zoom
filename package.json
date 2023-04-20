@@ -53,8 +53,7 @@
       "http://*.google.com/"
     ],
     "permissions": [
-      "debugger",
-      "activeTab"
+      "debugger"
     ]
   }
 }
