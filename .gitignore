@@ -40,3 +40,6 @@ keys.json
 
 # typescript
 .tsbuildinfo
+
+# backup files when using sed
+*.bak
