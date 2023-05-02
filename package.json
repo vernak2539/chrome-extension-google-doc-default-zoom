@@ -1,7 +1,7 @@
 {
   "name": "google-workspace-zoom-default-extended",
   "displayName": "__MSG_extensionNameExtended__",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "__MSG_extensionDescription__",
   "author": "vernak2539",
   "scripts": {
