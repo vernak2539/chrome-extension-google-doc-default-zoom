@@ -35,6 +35,3 @@ assert.equal(newPkg.name, "google-workspace-zoom-default")
 assert.equal(newPkg.displayName, "__MSG_extensionName__")
 assert.equal(newPkg.manifest.name, "__MSG_extensionName__")
 assert.equal(newPkg.manifest.permissions.length, 0)
-
-// TODO
-// add translations for all languages with key "__MSG_extensionNameExtended__"

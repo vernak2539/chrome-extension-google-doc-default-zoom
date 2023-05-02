@@ -3,6 +3,10 @@
     "message": "Zoom predeterminado de Google Workspace",
     "description": "Name of the extension."
   },
+  "extensionNameExtended": {
+    "message": "Zoom predeterminado de Google Workspace - Extendido",
+    "description": "Name of the extension with extra features requiring higher permissions"
+  },
   "extensionDescription": {
     "message": "Establezca el zoom predeterminado de su aplicación de Google Workspace cuando se carga por primera vez.",
     "description": "Description of extension"

@@ -3,6 +3,10 @@
     "message": "Google Workspace Standard-Zoom",
     "description": "Name of the extension."
   },
+  "extensionNameExtended": {
+    "message": "Google Workspace Standard-Zoom – Erweitert",
+    "description": "Name of the extension with extra features requiring higher permissions"
+  },
   "extensionDescription": {
     "message": "Legen Sie den Standardzoom Ihrer Google Workspace-Anwendung beim ersten Laden fest.",
     "description": "Description of extension"

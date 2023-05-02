@@ -3,6 +3,10 @@
     "message": "Google Workspace ズームのデフォルト",
     "description": "Name of the extension."
   },
+  "extensionNameExtended": {
+    "message": "Google Workspace Zoom デフォルト - 拡張",
+    "description": "Name of the extension with extra features requiring higher permissions"
+  },
   "extensionDescription": {
     "message": "Google Workspaceアプリを初めて読み込むときにデフォルトのズームを設定します。",
     "description": "Description of extension"
