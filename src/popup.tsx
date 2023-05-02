@@ -24,7 +24,7 @@ function IndexPopup() {
   return (
     <div className={styles.popupContainer}>
       {/* "extensionName"/"extensionNameExtended" WILL BE CHANGED. DON'T CHANGE WITHOUT MAKING OTHER CHANGES */}
-      <h2>{localize("extensionName")}</h2>
+      <h2>{localize("extensionNameExtended")}</h2>
       <ErrorBoundary
         fallback={<ErrorFallback />}
         beforeCapture={(scope) => {
