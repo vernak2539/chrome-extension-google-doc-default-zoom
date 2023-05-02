@@ -9,7 +9,7 @@
  * 6. Disable "features.customZoomInput" for both "workspaceApps" in constants.ts
  * */
 
-import { execaCommandSync } from "execa"
+import { execaSync } from "execa"
 import jsonfile from "jsonfile"
 import assert from "node:assert"
 import path, { dirname } from "path"
@@ -27,9 +27,7 @@ originalPkg.displayName = "__MSG_extensionName__"
 originalPkg.manifest.name = "__MSG_extensionName__"
 originalPkg.manifest.permissions = []
 
-execaCommandSync(
-  "sed -i '' 's/customZoomInput: true/customZoomInput: false/' src/constants.ts"
-)
+execaSync(path.resolve(__dirname, "./disable-features.sh"))
 
 jsonfile.writeFileSync(pkgPath, originalPkg, { spaces: 2 })
 
