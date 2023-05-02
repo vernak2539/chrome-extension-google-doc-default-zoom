@@ -1,0 +1,22 @@
+{
+  "extensionName": {
+    "message": "Google Workspace ズームのデフォルト",
+    "description": "Name of the extension."
+  },
+  "extensionDescription": {
+    "message": "Google Workspaceアプリを初めて読み込むときにデフォルトのズームを設定します。",
+    "description": "Description of extension"
+  },
+  "popupMainSectionDescription": {
+    "message": "Google Workspaceアプリケーションが初めて読み込まれたときに使用する拡大率を選択します。",
+    "description": "Tells the user to select their zoom level for individual applications."
+  },
+  "popupApplicationsSectionTitle": {
+    "message": "アプリケーション",
+    "description": "Header for the 'Applications' section"
+  },
+  "popupApplicationZoomSelectAriaLabel": {
+    "message": "使用可能なズーム値",
+    "description": "Possible zoom values from which to select"
+  }
+}
