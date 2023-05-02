@@ -1,6 +1,12 @@
-import type { UiStrategyConfig, WorkspaceApp } from "../types"
+import { sendToBackgroundViaRelay } from "@plasmohq/messaging"
+
+import { RELAY_EXECUTE_ENTER } from "../constants"
+import type {
+  ExecuteEnterRequestBody,
+  Feature,
+  UiStrategyConfig
+} from "../types"
 import getIsCustomZoom from "../utils/get-is-custom-zoom"
-import getNumericZoom from "../utils/get-numeric-zoom"
 import getZoomValueFromStorage from "../utils/get-zoom-value-from-storage"
 import {
   getDOMElement,
@@ -11,14 +17,7 @@ import {
 export interface AbstractBaseStrategyImpl {
   execute: (executionLocation: string) => void
   getIsZoomSelectorDisabled: () => boolean
-  // These values need to be implemented on the abstract class... but TS interfaces
-  // getIsViewOnly: () => boolean
-  // config: UiStrategyConfig
-  // getZoomValueFromStorage: () => Promise<string>
-  // uiExecuteFlow: (zoomValue: string) => void
 }
-
-type Features = keyof WorkspaceApp["features"]
 
 export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
   protected readonly config: UiStrategyConfig
@@ -90,22 +89,35 @@ export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
       getDOMElementCoordinates(newZoomLevelElement)
     simulateClick(newZoomLevelElement, newZoomOptionX, newZoomOptionY)
 
-    // close dropdown with blur event (may need to check again to see if it's closed)
-    setTimeout(() => {
-      simulateClick(getDOMElement("canvas"), 0, 0)
-    }, 500)
+    this.closeDropdown()
   }
 
   private uiExecuteCustomZoomFlow(
     zoomInputContainer: Element,
     zoomValue: string
   ) {
-    // remove percentage value, convert back to string
     const zoomInput = zoomInputContainer.querySelector("input")
-    zoomInput.value = getNumericZoom(zoomValue).toString()
+    zoomInput.focus()
+    zoomInput.select()
+
+    sendToBackgroundViaRelay<ExecuteEnterRequestBody>({
+      name: RELAY_EXECUTE_ENTER,
+      body: {
+        zoomValue
+      }
+    }).then(() => {
+      this.closeDropdown()
+    })
   }
 
-  private isFeatureEnabled(feature: Features): boolean {
+  private closeDropdown() {
+    // close dropdown with blur event (may need to check again to see if it's closed)
+    setTimeout(() => {
+      simulateClick(getDOMElement("canvas"), 0, 0)
+    }, 500)
+  }
+
+  private isFeatureEnabled(feature: Feature): boolean {
     return Boolean(this.config.features[feature])
   }
 
