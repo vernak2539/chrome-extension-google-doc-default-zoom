@@ -50,7 +50,7 @@ export const workspaceApps: WorkspaceApp[] = [
     storageKey: DOCS_STORAGE_KEY,
     isEnabled: true,
     features: {
-      customZoomInput: false // CHANGE TO TRUE WHEN OTHER EXTENSION
+      customZoomInput: true // CHANGE TO FALSE WITH BASE EXTENSION
     }
   },
   {
@@ -60,7 +60,7 @@ export const workspaceApps: WorkspaceApp[] = [
     storageKey: SHEETS_STORAGE_KEY,
     isEnabled: true,
     features: {
-      customZoomInput: false // CHANGE TO TRUE WHEN OTHER EXTENSION
+      customZoomInput: true // CHANGE TO FALSE WITH BASE EXTENSION
     }
   }
 ]
