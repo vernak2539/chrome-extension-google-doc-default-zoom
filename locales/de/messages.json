@@ -1,0 +1,22 @@
+{
+  "extensionName": {
+    "message": "Google Workspace Standard-Zoom",
+    "description": "Name of the extension."
+  },
+  "extensionDescription": {
+    "message": "Legen Sie den Standardzoom Ihrer Google Workspace-Anwendung beim ersten Laden fest.",
+    "description": "Description of extension"
+  },
+  "popupMainSectionDescription": {
+    "message": "Wählen Sie die Zoomstufe aus, die Ihre Google Workspace-Anwendungen beim ersten Laden verwenden sollen.",
+    "description": "Tells the user to select their zoom level for individual applications."
+  },
+  "popupApplicationsSectionTitle": {
+    "message": "Anwendungen",
+    "description": "Header for the 'Applications' section"
+  },
+  "popupApplicationZoomSelectAriaLabel": {
+    "message": "Verfügbare Zoomwerte",
+    "description": "Possible zoom values from which to select"
+  }
+}
