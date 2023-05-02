@@ -4,11 +4,11 @@
     "description": "Name of the extension."
   },
   "extensionDescription": {
-    "message": "Configure el zoom predeterminado de su aplicación Google Workspace cuando la cargue por primera vez.",
+    "message": "Establezca el zoom predeterminado de su aplicación de Google Workspace cuando se carga por primera vez.",
     "description": "Description of extension"
   },
   "popupMainSectionDescription": {
-    "message": "Seleccione el nivel de zoom que desea que utilicen sus aplicaciones de Google Workspace cuando se carguen por primera vez.",
+    "message": "Seleccione el nivel de zoom que desea utilizar para sus aplicaciones de Google Workspace cuando se cargan por primera vez.",
     "description": "Tells the user to select their zoom level for individual applications."
   },
   "popupApplicationsSectionTitle": {
@@ -16,7 +16,7 @@
     "description": "Header for the 'Applications' section"
   },
   "popupApplicationZoomSelectAriaLabel": {
-    "message": "Valores de zoom disponibles",
+    "message": "Valores de zoom disponible",
     "description": "Possible zoom values from which to select"
   }
 }
