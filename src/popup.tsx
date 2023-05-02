@@ -23,8 +23,8 @@ const ErrorFallback = () => (
 function IndexPopup() {
   return (
     <div className={styles.popupContainer}>
-      {/*  "extensionNameExtended" WILL BE REPLACED. DON'T CHANGE WITHOUT MAKING OTHER CHANGES */}
-      <h2>{localize("extensionNameExtended")}</h2>
+      {/* "extensionName"/"extensionNameExtended" WILL BE CHANGED. DON'T CHANGE WITHOUT MAKING OTHER CHANGES */}
+      <h2>{localize("extensionName")}</h2>
       <ErrorBoundary
         fallback={<ErrorFallback />}
         beforeCapture={(scope) => {
