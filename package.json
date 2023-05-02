@@ -1,6 +1,6 @@
 {
-  "name": "google-workspace-zoom-default",
-  "displayName": "__MSG_extensionName__",
+  "name": "google-workspace-zoom-default-extended",
+  "displayName": "__MSG_extensionNameExtended__",
   "version": "0.4.1",
   "description": "__MSG_extensionDescription__",
   "author": "vernak2539",
@@ -25,6 +25,7 @@
   },
   "devDependencies": {
     "@plasmohq/prettier-plugin-sort-imports": "3.6.3",
+    "@rogerpence/edit-package-json": "^1.1.1",
     "@storybook/addon-a11y": "^7.0.4",
     "@storybook/addon-console": "^1.2.3",
     "@storybook/addon-essentials": "^7.0.4",
