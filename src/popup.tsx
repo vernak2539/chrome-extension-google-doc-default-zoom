@@ -23,6 +23,7 @@ const ErrorFallback = () => (
 function IndexPopup() {
   return (
     <div className={styles.popupContainer}>
+      {/*  "extensionName" WILL BE REPLACED. DON'T CHANGE WITHOUT MAKING OTHER CHANGES */}
       <h2>{localize("extensionName")}</h2>
       <ErrorBoundary
         fallback={<ErrorFallback />}

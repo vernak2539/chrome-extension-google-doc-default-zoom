@@ -27,7 +27,7 @@ originalPkg.displayName = "__MSG_extensionName__"
 originalPkg.manifest.name = "__MSG_extensionName__"
 originalPkg.manifest.permissions = []
 
-execaSync(path.resolve(__dirname, "./disable-features.sh"))
+execaSync(path.resolve(__dirname, "./update-code-files.sh"))
 
 jsonfile.writeFileSync(pkgPath, originalPkg, { spaces: 2 })
 
