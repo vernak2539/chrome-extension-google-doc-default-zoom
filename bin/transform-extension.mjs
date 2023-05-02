@@ -26,7 +26,7 @@ originalPkg.displayName = "__MSG_extensionName__"
 originalPkg.manifest.name = "__MSG_extensionName__"
 originalPkg.manifest.permissions = []
 
-jsonfile.writeFileSync(pkgPath, originalPkg)
+jsonfile.writeFileSync(pkgPath, originalPkg, { spaces: 2 })
 
 // verify package.json is how it should look
 const newPkg = jsonfile.readFileSync(pkgPath)
@@ -34,7 +34,7 @@ const newPkg = jsonfile.readFileSync(pkgPath)
 assert.equal(newPkg.name, "google-workspace-zoom-default")
 assert.equal(newPkg.displayName, "__MSG_extensionName__")
 assert.equal(newPkg.manifest.name, "__MSG_extensionName__")
-assert.equal(newPkg.manifest.permissions, [])
+assert.equal(newPkg.manifest.permissions.length, 0)
 
 // TODO
 // add translations for all languages with key "__MSG_extensionNameExtended__"
