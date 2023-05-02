@@ -9,41 +9,32 @@
  * 6. Disable "features.customZoomInput" for both "workspaceApps" in constants.ts
  * */
 
-import { fileURLToPath } from 'url';
-import path, { dirname } from 'path';
-import assert from "node:assert";
-import editPackageJson from '@rogerpence/edit-package-json'
+import jsonfile from "jsonfile"
+import assert from "node:assert"
+import path, { dirname } from "path"
+import { fileURLToPath } from "url"
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+const pkgPath = path.resolve(__dirname, "../package.json")
 
-// change things
-const updateManifestPermissionsArgs = {
-  key: 'mainfest:permissions',
-  value: [],
-  force: true
-}
+// Update package.json fields
+const originalPkg = jsonfile.readFileSync(pkgPath)
 
-editPackageJson(updateManifestPermissionsArgs)
-// editPackageJson(updateManifestPermissionsArgs)
-// editPackageJson(updateManifestPermissionsArgs)
-// editPackageJson(updateManifestPermissionsArgs)
+originalPkg.name = "google-workspace-zoom-default"
+originalPkg.displayName = "__MSG_extensionName__"
+originalPkg.manifest.name = "__MSG_extensionName__"
+originalPkg.manifest.permissions = []
 
+jsonfile.writeFileSync(pkgPath, originalPkg)
 
 // verify package.json is how it should look
-;(async () => {
-  const pkgPath = path.resolve(__dirname, "../package.json")
-  const pkgImport = await import(pkgPath, { assert: { type: "json" }})
-  const pkg = pkgImport.default
+const newPkg = jsonfile.readFileSync(pkgPath)
 
-  console.log(pkg.default)
-
-
-  assert.equal(pkg.name, "google-workspace-zoom-default")
-  assert.equal(pkg.displayName, "__MSG_extensionName__")
-  assert.equal(pkg.manifest.name, "__MSG_extensionName__")
-  assert.equal(pkg.manifest.permissions, [])
-})()
+assert.equal(newPkg.name, "google-workspace-zoom-default")
+assert.equal(newPkg.displayName, "__MSG_extensionName__")
+assert.equal(newPkg.manifest.name, "__MSG_extensionName__")
+assert.equal(newPkg.manifest.permissions, [])
 
 // TODO
 // add translations for all languages with key "__MSG_extensionNameExtended__"

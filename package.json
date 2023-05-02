@@ -25,7 +25,6 @@
   },
   "devDependencies": {
     "@plasmohq/prettier-plugin-sort-imports": "3.6.3",
-    "@rogerpence/edit-package-json": "^1.1.1",
     "@storybook/addon-a11y": "^7.0.4",
     "@storybook/addon-console": "^1.2.3",
     "@storybook/addon-essentials": "^7.0.4",
@@ -41,6 +40,7 @@
     "@types/react-dom": "18.0.11",
     "@vitejs/plugin-react": "^3.1.0",
     "bundlesize2": "^0.0.31",
+    "jsonfile": "^6.1.0",
     "prettier": "2.8.7",
     "prop-types": "^15.8.1",
     "storybook": "^7.0.4",
