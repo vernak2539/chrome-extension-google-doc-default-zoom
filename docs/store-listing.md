@@ -19,8 +19,9 @@ Note: My first extension and still working on it. I primarily do work on a Mac, 
 
 Esta extensión te permitirá establecer un "zoom predeterminado" para las siguientes Aplicaciones de Google Workspace:
 
-Google Docs
-Google Sheets
+- Google Docs
+- Google Sheets
+
 Una vez que establezcas tu nivel de zoom deseado, el nivel de zoom se cambiará cada vez que cargues una Aplicación de Google Workspace.
 
 Si quieres ayudarme a traducir esto a idiomas distintos del inglés, ¡por favor ponte en contacto conmigo!
@@ -33,8 +34,9 @@ Google Workspaceアプリケーションを初めて読み込むときに、テ�
 
 この拡張機能を使用すると、次のGoogle Workspaceアプリケーションの「デフォルトのズーム」を設定することができます。
 
-Googleドキュメント
-Googleシート
+- Googleドキュメント
+- Googleシート
+
 希望するズームレベルを設定すると、Google Workspaceアプリケーションを読み込むたびにズームレベルが変更されます。
 
 英語以外の言語でこれを翻訳するのを手伝っていただける場合は、お気軽にお問い合わせください！！
@@ -47,8 +49,9 @@ Sind Sie es leid, den Zoom in Ihren Google Workspace-Anwendungen jedes Mal ände
 
 Mit dieser Erweiterung können Sie einen "Standardzoom" für die folgenden Google Workspace-Anwendungen festlegen:
 
-Google Docs
-Google Sheets
+- Google Docs
+- Google Sheets
+
 Sobald Sie die gewünschte Zoomstufe festgelegt haben, wird die Zoomstufe jedes Mal geändert, wenn Sie eine Google Workspace-Anwendung laden.
 
 Wenn Sie mir helfen möchten, dies in anderen Sprachen als Englisch zu übersetzen, nehmen Sie bitte Kontakt mit mir auf!!
@@ -58,13 +61,13 @@ Hinweis: Meine erste Erweiterung und ich arbeite immer noch daran. Ich arbeite h
 ## French (fr)
 
 Fatigué de devoir changer le zoom de vos applications Google Workspace lorsqu'elles se chargent pour la première fois parce que le texte est trop petit ? Eh bien,
-
 cela devrait aider.
 
 Cette extension vous permettra de définir un "zoom par défaut" pour les applications Google Workspace suivantes :
 
-Google Docs
-Google Sheets
+- Google Docs
+- Google Sheets
+
 Une fois que vous avez défini le niveau de zoom souhaité, le niveau de zoom sera modifié chaque fois que vous chargez une application Google Workspace.
 
 Si vous souhaitez m'aider à traduire ceci dans des langues autres que l'anglais, n'hésitez pas à me contacter !!
