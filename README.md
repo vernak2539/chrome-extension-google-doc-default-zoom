@@ -22,7 +22,7 @@ Supported Google Workspace Products:
 ## Localisation
 
 I'm a native English speaker, but want to provide this Chrome Extension for everyone. That being said,
-I've used Google Translate the values for the Spanish language. I know they're probably not correct.
+I've used Google Translate the values for non-English languages. I know they're probably not correct.
 
 If you feel like helping me out, would be much appreciated if you could submit a new issue, using the
 "[Update/Add Locale Information](https://github.com/vernak2539/chrome-extension-google-doc-default-zoom/issues/new/choose)"
