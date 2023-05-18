@@ -14,17 +14,17 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
-    "@plasmohq/messaging": "^0.1.8",
+    "@plasmohq/messaging": "^0.3.0",
     "@plasmohq/storage": "^1.6.0",
     "@sentry/browser": "^7.52.1",
     "@sentry/react": "^7.52.1",
     "classnames": "^2.3.2",
-    "plasmo": "0.67.4",
+    "plasmo": "0.71.0",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
   "devDependencies": {
-    "@plasmohq/prettier-plugin-sort-imports": "3.6.3",
+    "@plasmohq/prettier-plugin-sort-imports": "3.6.4",
     "@storybook/addon-a11y": "^7.0.12",
     "@storybook/addon-console": "^1.2.3",
     "@storybook/addon-essentials": "^7.0.12",
@@ -45,7 +45,7 @@
     "prettier": "2.8.7",
     "prop-types": "^15.8.1",
     "storybook": "^7.0.12",
-    "typescript": "5.0.2",
+    "typescript": "5.0.4",
     "vite": "^4.3.8"
   },
   "manifest": {
