@@ -2,11 +2,11 @@ lockfileVersion: '6.0'
 
 dependencies:
   '@plasmohq/messaging':
-    specifier: ^0.1.7
-    version: 0.1.7(react@18.2.0)
+    specifier: ^0.1.8
+    version: 0.1.8(react@18.2.0)
   '@plasmohq/storage':
-    specifier: ^1.5.0
-    version: 1.5.0(react@18.2.0)
+    specifier: ^1.6.0
+    version: 1.6.0(react@18.2.0)
   '@sentry/browser':
     specifier: ^7.52.1
     version: 7.52.1
@@ -3592,8 +3592,8 @@ packages:
     resolution: {integrity: sha512-4fA29jzUU5tHpsJ3rpUEbt/jme/aCDIqolAbTWd6F7M4rJ/33q4mVQ6eIflWjUhVNcygjpjMApdT2gIrNQi0fw==}
     dev: false
 
-  /@plasmohq/messaging@0.1.7(react@18.2.0):
-    resolution: {integrity: sha512-6B6Udnf3nmMCra0dVfPAyZWQtSxhZQVAW4Hdxfj//kXtnGD+glkqw1xhE+FQzv2AZTGlV7KBGpgyBmB0DpzRdg==}
+  /@plasmohq/messaging@0.1.8(react@18.2.0):
+    resolution: {integrity: sha512-DXaFLR7O/QJc6TlOqTJV4uM029AaejE+bbqIDsxK+fp5k7u1xlDjdPORkN5BCKcpHVUH2GpPYO9zUrPy+5o12g==}
     peerDependencies:
       react: ^16.8.6 || ^17 || ^18
     peerDependenciesMeta:
@@ -3933,8 +3933,8 @@ packages:
       - supports-color
     dev: true
 
-  /@plasmohq/storage@1.5.0(react@18.2.0):
-    resolution: {integrity: sha512-OJ9w5Umen/zD9Oba2G7xiLNBSiJhuD+Zshi+iQZq6HQmRfmT3NM+xq41CP0v/PE3tutRZZR+oxp4fszvxUi3vQ==}
+  /@plasmohq/storage@1.6.0(react@18.2.0):
+    resolution: {integrity: sha512-7IUEVxLT8aDfhlX5U8BKvJVHclJbtI2GN2yLw5ULs1R51mM7YkAoacHP6kGQof4JD15yb4dutLLZi+O2LArlcw==}
     peerDependencies:
       react: ^16.8.6 || ^17 || ^18
     peerDependenciesMeta:
