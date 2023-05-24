@@ -1,6 +1,6 @@
 {
-  "name": "google-workspace-zoom-default-extended",
-  "displayName": "__MSG_extensionNameExtended__",
+  "name": "google-workspace-zoom-default",
+  "displayName": "__MSG_extensionName__",
   "version": "0.5.0",
   "description": "__MSG_extensionDescription__",
   "author": "vernak2539",
@@ -11,7 +11,8 @@
     "prettier": "prettier ./src/** -w",
     "bundlesize": "bundlesize",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "transform-ext": "node bin/transform-extension.mjs"
   },
   "dependencies": {
     "@plasmohq/messaging": "^0.3.0",
@@ -54,8 +55,6 @@
     "host_permissions": [
       "http://*.google.com/"
     ],
-    "permissions": [
-      "debugger"
-    ]
+    "permissions": []
   }
 }

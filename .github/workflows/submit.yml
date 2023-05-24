@@ -31,7 +31,7 @@ jobs:
           node-version: 16.x
           cache: "pnpm"
       - name: Transform to "Google Workspace Zoom Default"
-        run: node bin/transform-extension.mjs
+        run: pnpm transform-ext
       - name: Build the extension
         run: pnpm build --source-maps
       - name: Check file sizes
