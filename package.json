@@ -55,6 +55,8 @@
     "host_permissions": [
       "http://*.google.com/"
     ],
-    "permissions": []
+    "permissions": [
+      "debugger"
+    ]
   }
 }
