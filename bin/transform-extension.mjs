@@ -28,6 +28,7 @@ originalPkg.manifest.name = "__MSG_extensionName__"
 originalPkg.manifest.permissions = []
 
 execaSync(path.resolve(__dirname, "./update-code-files.sh"))
+execaSync(path.resolve(__dirname, "./update-icons.sh"))
 
 jsonfile.writeFileSync(pkgPath, originalPkg, { spaces: 2 })
 
