@@ -1,4 +1,4 @@
-#This is exactly the same as the default one minus the "Transform to "Google Workspace Zoom Default"" step
+#This is exactly the same as the default one minus the "Transform to "Google Workspace Zoom Default"" and Sentry steps
 name: "(extended) Submit to Web Store"
 on:
   workflow_dispatch:
@@ -35,20 +35,6 @@ jobs:
         run: pnpm build --source-maps
       - name: Check file sizes
         run: pnpm bundlesize
-      - name: get-npm-version
-        id: package-version
-        uses: martinbeentjes/npm-get-version-action@v1.3.1
-      - name: Create Sentry release
-        uses: getsentry/action-release@v1
-        env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
-          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
-        with:
-          environment: production
-          sourcemaps: './build/chrome-mv3-prod'
-          ignore_empty: true
-          version: ${{ steps.package-version.outputs.current-version }}
       - name: Remove sourcemaps from bundle
         run: rm ./build/chrome-mv3-prod/*.map
       - name: Package extension artifact
@@ -56,5 +42,5 @@ jobs:
       - name: Browser Platform Publish
         uses: PlasmoHQ/bpp@v3
         with:
-          keys: ${{ secrets.SUBMIT_KEYS }}
+          keys: ${{ secrets.SUBMIT_KEYS_EXTENDED }}
           artifact: build/chrome-mv3-prod.zip
