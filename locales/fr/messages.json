@@ -22,5 +22,33 @@
   "popupApplicationZoomSelectAriaLabel": {
     "message": "Valeurs de zoom disponibles",
     "description": "Possible zoom values from which to select"
+  },
+  "popupToExtensionVersionsTab": {
+    "message": "Découvrez les différentes versions de cette extension",
+    "description": "Lien depuis la fenêtre contextuelle vers l'onglet détaillant les différentes versions de l'extension"
+  },
+  "ExtVersionsTabHeader": {
+    "message": "Versions de cette extension",
+    "description": "En-tête pour la page d'onglet expliquant les différentes versions de l'extension"
+  },
+  "ExtVersionsTabAppsSupportedHeader": {
+    "message": "Applications Google Workspace prises en charge",
+    "description": "En-tête pour la section des applications Google Workspace prises en charge"
+  },
+  "ExtVersionsTabFunctionalityIncludedHeader": {
+    "message": "Fonctionnalités incluses",
+    "description": "En-tête pour les fonctionnalités incluses dans chaque extension"
+  },
+  "ExtVersionsTabFunctionalityIncludedStandardZoom": {
+    "message": "Niveaux de zoom standard",
+    "description": "Fonctionnalité des niveaux de zoom standard"
+  },
+  "ExtVersionsTabFunctionalityIncludedCustomZoom": {
+    "message": "Niveaux de zoom personnalisés",
+    "description": "Fonctionnalité des niveaux de zoom personnalisés"
+  },
+  "ExtVersionsTabExtendedPermissionExplanation": {
+    "message": "L'autorisation élevée est requise pour définir des valeurs de zoom personnalisées",
+    "description": "Informations supplémentaires expliquant pourquoi l'autorisation élevée est requise"
   }
 }

@@ -22,5 +22,33 @@
   "popupApplicationZoomSelectAriaLabel": {
     "message": "使用可能なズーム値",
     "description": "Possible zoom values from which to select"
+  },
+  "popupToExtensionVersionsTab": {
+    "message": "この拡張機能の異なるバージョンについて学ぶ",
+    "description": "Link from popup to tab that details different versions of extension"
+  },
+  "ExtVersionsTabHeader": {
+    "message": "この拡張機能のバージョン",
+    "description": "Header for tab page explaining different versions of the extension"
+  },
+  "ExtVersionsTabAppsSupportedHeader": {
+    "message": "サポートされているGoogle Workspaceアプリ",
+    "description": "Header for supported Google Workspace Application section"
+  },
+  "ExtVersionsTabFunctionalityIncludedHeader": {
+    "message": "含まれる機能",
+    "description": "Header for what functionality is included in each extension"
+  },
+  "ExtVersionsTabFunctionalityIncludedStandardZoom": {
+    "message": "標準ズームレベル",
+    "description": "standard zoom level functionality"
+  },
+  "ExtVersionsTabFunctionalityIncludedCustomZoom": {
+    "message": "カスタムズームレベル",
+    "description": "custom zoom level functionality"
+  },
+  "ExtVersionsTabExtendedPermissionExplanation": {
+    "message": "カスタムズーム値を設定するためには、高度な権限が必要です",
+    "description": "Extra information saying why the elevated permission is required"
   }
 }

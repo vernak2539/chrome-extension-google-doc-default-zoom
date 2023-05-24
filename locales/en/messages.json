@@ -25,30 +25,30 @@
   },
   "popupToExtensionVersionsTab": {
     "message": "Learn about the different versions of this extension",
-    "description": ""
+    "description": "Link from popup to tab that details different versions of extension"
   },
   "ExtVersionsTabHeader": {
     "message": "Versions of This Extension",
-    "description": ""
+    "description": "Header for tab page explaining different versions of the extension"
   },
   "ExtVersionsTabAppsSupportedHeader": {
-    "message": "Supported Workspace Apps",
-    "description": ""
+    "message": "Supported Google Workspace Apps",
+    "description": "Header for supported Google Workspace Application section"
   },
   "ExtVersionsTabFunctionalityIncludedHeader": {
     "message": "Functionality Included",
-    "description": ""
+    "description": "Header for what functionality is included in each extension"
   },
   "ExtVersionsTabFunctionalityIncludedStandardZoom": {
     "message": "Standard Zoom Levels",
-    "description": ""
+    "description": "standard zoom level functionality"
   },
   "ExtVersionsTabFunctionalityIncludedCustomZoom": {
     "message": "Custom Zoom Levels",
-    "description": ""
+    "description": "custom zoom level functionality"
   },
   "ExtVersionsTabExtendedPermissionExplanation": {
     "message": "The elevated permission is required to set custom zoom values",
-    "description": ""
+    "description": "Extra information saying why the elevated permission is required"
   }
 }
