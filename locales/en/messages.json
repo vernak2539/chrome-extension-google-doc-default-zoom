@@ -22,5 +22,29 @@
   "popupApplicationZoomSelectAriaLabel": {
     "message": "Available zoom values",
     "description": "Possible zoom values from which to select"
+  },
+  "ExtVersionsTabHeader": {
+    "message": "Versions of This Extension",
+    "description": ""
+  },
+  "ExtVersionsTabAppsSupportedHeader": {
+    "message": "Supported Workspace Apps",
+    "description": ""
+  },
+  "ExtVersionsTabFunctionalityIncludedHeader": {
+    "message": "Functionality Included",
+    "description": ""
+  },
+  "ExtVersionsTabFunctionalityIncludedStandardZoom": {
+    "message": "Standard Zoom Levels",
+    "description": ""
+  },
+  "ExtVersionsTabFunctionalityIncludedCustomZoom": {
+    "message": "Custom Zoom Levels",
+    "description": ""
+  },
+  "ExtVersionsTabExtendedPermissionExplanation": {
+    "message": "The elevated permission is required to set custom zoom values",
+    "description": ""
   }
 }
