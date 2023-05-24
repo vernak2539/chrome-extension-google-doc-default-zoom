@@ -45,6 +45,17 @@ function IndexPopup() {
               />
             ))}
         </WorkspaceApplicationList>
+        <p>
+          <a
+            href="#"
+            onClick={() => {
+              chrome.tabs.create({
+                url: "./tabs/ext-versions.html"
+              })
+            }}>
+            <small>{localize("popupToExtensionVersionsTab")}</small>
+          </a>
+        </p>
       </ErrorBoundary>
     </div>
   )
