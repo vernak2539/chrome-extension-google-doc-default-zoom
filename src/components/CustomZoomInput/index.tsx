@@ -17,6 +17,7 @@ const CustomZoomInput = ({
     }
   }, [isCustomValue])
 
+  // TODO: only allow max of 200 for custom zoom value
   return (
     <input
       placeholder="Custom Zoom" // TODO: Localise this
