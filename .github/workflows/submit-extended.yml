@@ -1,4 +1,4 @@
-name: "(default) Submit to Web Store"
+name: "(extended) Submit to Web Store"
 on:
   workflow_dispatch:
   push:
@@ -30,8 +30,6 @@ jobs:
         with:
           node-version: 16.x
           cache: "pnpm"
-      - name: Transform to "Google Workspace Zoom Default"
-        run: pnpm transform-ext
       - name: Build the extension
         run: pnpm build --source-maps
       - name: Check file sizes
