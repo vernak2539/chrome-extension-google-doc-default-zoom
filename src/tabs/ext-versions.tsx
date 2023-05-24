@@ -70,6 +70,9 @@ const ExtensionVersionsPage = () => {
     <>
       <h1>{localize("ExtVersionsTabHeader")}</h1>
       <h2>{localize("extensionName")}</h2>
+      <a href="https://chrome.google.com/webstore/detail/google-workspace-zoom-def/nflkcdlimipkgbacnfnhfecjgmojhklo">
+        https://chrome.google.com/webstore/detail/google-workspace-zoom-def/nflkcdlimipkgbacnfnhfecjgmojhklo
+      </a>
       <CheckList
         title={localize("ExtVersionsTabAppsSupportedHeader")}
         data={supportedWorkspaceApps}
@@ -79,8 +82,13 @@ const ExtensionVersionsPage = () => {
         data={extDefaultFunctionality}
       />
       <RequiredPermissions permissions={[]} />
+
       <br />
+
       <h2>{localize("extensionNameExtended")}</h2>
+      <a href="https://chrome.google.com/webstore/detail/google-workspace-zoom-def/nflkcdlimipkgbacnfnhfecjgmojhklo">
+        https://chrome.google.com/webstore/detail/google-workspace-zoom-def/nflkcdlimipkgbacnfnhfecjgmojhklo
+      </a>
       <CheckList
         title={localize("ExtVersionsTabAppsSupportedHeader")}
         data={supportedWorkspaceApps}
