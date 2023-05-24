@@ -9,7 +9,7 @@ const handler: PlasmoMessaging.MessageHandler<ExecuteEnterRequestBody> = async (
   req
 ) => {
   sentryWrap(() => {
-    const target = { tabId: req.tabId }
+    const target = { tabId: req.sender.tab.id }
 
     chrome.debugger.attach(target, "1.0")
 
