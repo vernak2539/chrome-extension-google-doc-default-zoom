@@ -86,8 +86,8 @@ const ExtensionVersionsPage = () => {
       <br />
 
       <h2>{localize("extensionNameExtended")}</h2>
-      <a href="https://chrome.google.com/webstore/detail/google-workspace-zoom-def/nflkcdlimipkgbacnfnhfecjgmojhklo">
-        https://chrome.google.com/webstore/detail/google-workspace-zoom-def/nflkcdlimipkgbacnfnhfecjgmojhklo
+      <a href="https://chrome.google.com/webstore/detail/google-workspace-zoom-def/mdgikencgfhineaememjagpkiclbdkka">
+        https://chrome.google.com/webstore/detail/google-workspace-zoom-def/mdgikencgfhineaememjagpkiclbdkka
       </a>
       <CheckList
         title={localize("ExtVersionsTabAppsSupportedHeader")}
