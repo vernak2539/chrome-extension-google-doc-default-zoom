@@ -1,7 +1,5 @@
 # Google Workspace Zoom Default
 
-[Find it on Chrome Web Store](https://chrome.google.com/webstore/detail/google-docs-zoom-default/nflkcdlimipkgbacnfnhfecjgmojhklo)
-
 👉 I wrote a bit more about it on my blog both [when I first released it](https://words.byvernacchia.com/blog/my-first-chrome-extension/)
 and [when I updated it](https://words.byvernacchia.com/blog/2023/03/introducing-google-workspace-zoom-default/)
 
@@ -18,6 +16,12 @@ Supported Google Workspace Products:
 | Google Docs                         | Google Sheets                         |
 |-------------------------------------|---------------------------------------|
 | ![](./docs/img/docs-screenshot.png) | ![](./docs/img/sheets-screenshot.png) |
+
+## Find it on Chrome Web Store
+
+- [Google Workspace Zoom Default](https://chrome.google.com/webstore/detail/google-docs-zoom-default/nflkcdlimipkgbacnfnhfecjgmojhklo)
+- [Google Workspace Zoom Default - Extended](https://chrome.google.com/webstore/detail/google-workspace-zoom-def/mdgikencgfhineaememjagpkiclbdkka)
+    - In exchange for allowing elevated permissions, this extension provides ability to set custom zoom levels (as opposed to only predefined values)
 
 ## Localisation
 
