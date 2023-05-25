@@ -2,6 +2,7 @@ import classnames from "classnames"
 import React, { useEffect, useState } from "react"
 
 import * as style from "../../style.module.css"
+import localize from "../../utils/localize"
 import type { ZoomInputProps } from "../shared-props"
 
 const CustomZoomInput = ({
@@ -23,7 +24,7 @@ const CustomZoomInput = ({
   //  - allow for value update on "Enter"
   return (
     <input
-      placeholder="Custom Zoom" // TODO: Localise this
+      placeholder={localize("popupApplicationCustomZoomInputPlaceholder")}
       value={localZoom}
       maxLength={3}
       minLength={2}

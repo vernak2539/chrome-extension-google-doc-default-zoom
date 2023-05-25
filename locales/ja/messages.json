@@ -23,6 +23,10 @@
     "message": "使用可能なズーム値",
     "description": "Possible zoom values from which to select"
   },
+  "popupApplicationCustomZoomInputPlaceholder": {
+    "message": "カスタムズーム",
+    "description": "Placeholder used in the custom zoom input box"
+  },
   "popupToExtensionVersionsTab": {
     "message": "この拡張機能の異なるバージョンについて学ぶ",
     "description": "Link from popup to tab that details different versions of extension"

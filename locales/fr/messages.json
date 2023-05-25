@@ -23,6 +23,10 @@
     "message": "Valeurs de zoom disponibles",
     "description": "Possible zoom values from which to select"
   },
+  "popupApplicationCustomZoomInputPlaceholder": {
+    "message": "Zoom personnalisé",
+    "description": "Placeholder used in the custom zoom input box"
+  },
   "popupToExtensionVersionsTab": {
     "message": "Découvrez les différentes versions de cette extension",
     "description": "Lien depuis la fenêtre contextuelle vers l'onglet détaillant les différentes versions de l'extension"
