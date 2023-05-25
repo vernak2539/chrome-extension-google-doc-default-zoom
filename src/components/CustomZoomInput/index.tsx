@@ -2,11 +2,13 @@ import classnames from "classnames"
 import React, { useCallback, useEffect, useState } from "react"
 
 import * as style from "../../style.module.css"
+import type { WorkspaceApp } from "../../types"
 import localize from "../../utils/localize"
 import type { ZoomInputProps } from "../shared-props"
 
 const CustomZoomInput = ({
   zoomValue,
+  zoomValues,
   isCustomValue,
   updateValue
 }: ZoomInputProps) => {
@@ -20,17 +22,38 @@ const CustomZoomInput = ({
 
   const updateZoom = useCallback(
     (value) => {
-      const newValue = Boolean(value) ? `${value}%` : ""
+      let boundedValue = null
+      const lowerBound = 50
+      const upperBound = 200
+
+      if (value) {
+        boundedValue = value
+        if (value < lowerBound) {
+          boundedValue = lowerBound
+        }
+
+        if (value > upperBound) {
+          boundedValue = upperBound
+        }
+      }
+
+      const newValue = Boolean(boundedValue) ? `${boundedValue}%` : ""
 
       // don't update the values if we've remove the value and we're using the select box values
       if (newValue === "" && !isCustomValue) {
         return
       }
 
-      setLocalZoom(newValue)
+      // @ts-ignore
+      if (zoomValues.includes(newValue)) {
+        setLocalZoom("")
+      } else {
+        setLocalZoom(newValue)
+      }
+
       updateValue(newValue)
     },
-    [setLocalZoom, updateValue]
+    [isCustomValue, setLocalZoom, updateValue]
   )
 
   // TODO:

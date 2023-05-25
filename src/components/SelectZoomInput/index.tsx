@@ -1,14 +1,11 @@
 import classnames from "classnames"
-import React, { ChangeEvent, useId } from "react"
+import React, { useId } from "react"
+import type { ChangeEvent } from "react"
 
 import * as style from "../../style.module.css"
 import type { WorkspaceApp } from "../../types"
 import localize from "../../utils/localize"
 import type { ZoomInputProps } from "../shared-props"
-
-type Props = ZoomInputProps & {
-  zoomValues: WorkspaceApp["zoomValues"]
-}
 
 const SelectOptions = ({ zoomValues }) => {
   return (
@@ -33,7 +30,7 @@ const SelectZoomInput = ({
   isCustomValue,
   updateValue,
   zoomValues
-}: Props) => {
+}: ZoomInputProps) => {
   return (
     <select
       className={classnames(
