@@ -1,5 +1,5 @@
 import classnames from "classnames"
-import React, {useCallback, useEffect, useState} from "react"
+import React, { useCallback, useEffect, useState } from "react"
 
 import * as style from "../../style.module.css"
 import localize from "../../utils/localize"
@@ -18,19 +18,20 @@ const CustomZoomInput = ({
     }
   }, [isCustomValue])
 
-  const updateZoom = useCallback((value) => {
-    const newValue = Boolean(value)
-        ? `${value}%`
-        : ""
+  const updateZoom = useCallback(
+    (value) => {
+      const newValue = Boolean(value) ? `${value}%` : ""
 
-    // don't update the values if we've remove the value and we're using the select box values
-    if (newValue === "" && !isCustomValue) {
-      return
-    }
+      // don't update the values if we've remove the value and we're using the select box values
+      if (newValue === "" && !isCustomValue) {
+        return
+      }
 
-    setLocalZoom(newValue)
-    updateValue(newValue)
-  }, [setLocalZoom, updateValue])
+      setLocalZoom(newValue)
+      updateValue(newValue)
+    },
+    [setLocalZoom, updateValue]
+  )
 
   // TODO:
   //  - only allow values between 50 and 200 for custom zoom value
@@ -56,7 +57,8 @@ const CustomZoomInput = ({
         }
       }}
       onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
-        const allowedKeys = [
+        const allowedUpdateTriggers = ["Enter", "Tab"]
+        const allowedInputKeys = [
           "Clear",
           "Backspace",
           "Delete",
@@ -68,11 +70,13 @@ const CustomZoomInput = ({
           "ArrowUp"
         ]
 
-        // check if enter
-        // update value
-        // blur input
+        if (allowedUpdateTriggers.includes(event.key)) {
+          updateZoom(event.currentTarget.value)
+          event.currentTarget.blur()
+          return
+        }
 
-        if (/[0-9]/.test(event.key) || allowedKeys.includes(event.key)) {
+        if (/[0-9]/.test(event.key) || allowedInputKeys.includes(event.key)) {
           return
         }
         event.preventDefault()
