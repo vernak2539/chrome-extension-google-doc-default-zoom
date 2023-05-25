@@ -1,5 +1,5 @@
 import classnames from "classnames"
-import React, { useEffect, useState } from "react"
+import React, {useCallback, useEffect, useState} from "react"
 
 import * as style from "../../style.module.css"
 import localize from "../../utils/localize"
@@ -17,6 +17,20 @@ const CustomZoomInput = ({
       setLocalZoom("")
     }
   }, [isCustomValue])
+
+  const updateZoom = useCallback((value) => {
+    const newValue = Boolean(value)
+        ? `${value}%`
+        : ""
+
+    // don't update the values if we've remove the value and we're using the select box values
+    if (newValue === "" && !isCustomValue) {
+      return
+    }
+
+    setLocalZoom(newValue)
+    updateValue(newValue)
+  }, [setLocalZoom, updateValue])
 
   // TODO:
   //  - only allow values between 50 and 200 for custom zoom value
@@ -54,6 +68,10 @@ const CustomZoomInput = ({
           "ArrowUp"
         ]
 
+        // check if enter
+        // update value
+        // blur input
+
         if (/[0-9]/.test(event.key) || allowedKeys.includes(event.key)) {
           return
         }
@@ -63,17 +81,7 @@ const CustomZoomInput = ({
         setLocalZoom(event.target.value)
       }}
       onBlur={(event: React.FocusEvent<HTMLInputElement>) => {
-        const newValue = Boolean(event.target.value)
-          ? `${event.target.value}%`
-          : ""
-
-        // don't update the values if we've remove the value and we're using the select box values
-        if (newValue === "" && !isCustomValue) {
-          return
-        }
-
-        setLocalZoom(newValue)
-        updateValue(newValue)
+        updateZoom(event.target.value)
       }}
     />
   )
