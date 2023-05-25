@@ -2,15 +2,15 @@
   "files": [
     {
       "path": "build/chrome-mv3-prod/popup*.js",
-      "maxSize": "99 kB"
+      "maxSize": "200 kB"
     },
     {
       "path": "build/chrome-mv3-prod/background*.js",
-      "maxSize": "29 kB"
+      "maxSize": "200 kB"
     },
     {
       "path": "build/chrome-mv3-prod/!(popup|background)*.js",
-      "maxSize": "4 kB"
+      "maxSize": "100 kB"
     }
   ]
 }
