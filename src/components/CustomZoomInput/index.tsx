@@ -56,8 +56,6 @@ const CustomZoomInput = ({
     [isCustomValue, setLocalZoom, updateValue]
   )
 
-  // TODO:
-  //  - only allow values between 50 and 200 for custom zoom value
   return (
     <input
       placeholder={localize("popupApplicationCustomZoomInputPlaceholder")}
