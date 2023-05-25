@@ -35,8 +35,6 @@ const CustomZoomInput = ({
 
   // TODO:
   //  - only allow values between 50 and 200 for custom zoom value
-  //  - only allow integers...
-  //  - allow for value update on "Enter"
   return (
     <input
       placeholder={localize("popupApplicationCustomZoomInputPlaceholder")}
