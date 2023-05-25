@@ -59,7 +59,7 @@
 }
 
 .applicationZoomCustomInput {
-  width: auto;
+  width: 100px;
   text-align: center;
   margin-left: 10px;
 }
