@@ -1,9 +1,7 @@
 # Google Workspace Zoom Default
 
 👉 I wrote a bit more about it on my blog both [when I first released it](https://words.byvernacchia.com/blog/my-first-chrome-extension/)
-and [when I updated it](https://words.byvernacchia.com/blog/2023/03/introducing-google-workspace-zoom-default/)
-
-See it in action on [YouTube](https://www.youtube.com/watch?v=WYmmMaQXE7Y)!
+and [when I updated it](https://words.byvernacchia.com/blog/2023/03/introducing-google-workspace-zoom-default/). You can also see it in action on [YouTube](https://www.youtube.com/watch?v=WYmmMaQXE7Y)!
 
 Supported Google Workspace Products:
 
