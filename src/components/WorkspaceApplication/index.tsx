@@ -71,6 +71,7 @@ const WorkspaceApplication = ({
             isCustomValue={isCustomZoom}
             updateValue={updateValue}
             zoomValue={zoom}
+            zoomValues={zoomValues}
           />
         )}
       </div>

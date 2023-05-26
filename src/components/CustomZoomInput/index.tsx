@@ -1,12 +1,14 @@
 import classnames from "classnames"
-import React, { useEffect, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 
 import * as style from "../../style.module.css"
+import type { WorkspaceApp } from "../../types"
 import localize from "../../utils/localize"
 import type { ZoomInputProps } from "../shared-props"
 
 const CustomZoomInput = ({
   zoomValue,
+  zoomValues,
   isCustomValue,
   updateValue
 }: ZoomInputProps) => {
@@ -18,10 +20,42 @@ const CustomZoomInput = ({
     }
   }, [isCustomValue])
 
-  // TODO:
-  //  - only allow values between 50 and 200 for custom zoom value
-  //  - only allow integers...
-  //  - allow for value update on "Enter"
+  const updateZoom = useCallback(
+    (value) => {
+      let boundedValue = null
+      const lowerBound = 50
+      const upperBound = 200
+
+      if (value) {
+        boundedValue = value
+        if (value < lowerBound) {
+          boundedValue = lowerBound
+        }
+
+        if (value > upperBound) {
+          boundedValue = upperBound
+        }
+      }
+
+      const newValue = Boolean(boundedValue) ? `${boundedValue}%` : ""
+
+      // don't update the values if we've remove the value and we're using the select box values
+      if (newValue === "" && !isCustomValue) {
+        return
+      }
+
+      // @ts-ignore
+      if (zoomValues.includes(newValue)) {
+        setLocalZoom("")
+      } else {
+        setLocalZoom(newValue)
+      }
+
+      updateValue(newValue)
+    },
+    [isCustomValue, setLocalZoom, updateValue]
+  )
+
   return (
     <input
       placeholder={localize("popupApplicationCustomZoomInputPlaceholder")}
@@ -42,7 +76,8 @@ const CustomZoomInput = ({
         }
       }}
       onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
-        const allowedKeys = [
+        const allowedUpdateTriggers = ["Enter", "Tab"]
+        const allowedInputKeys = [
           "Clear",
           "Backspace",
           "Delete",
@@ -54,7 +89,13 @@ const CustomZoomInput = ({
           "ArrowUp"
         ]
 
-        if (/[0-9]/.test(event.key) || allowedKeys.includes(event.key)) {
+        if (allowedUpdateTriggers.includes(event.key)) {
+          updateZoom(event.currentTarget.value)
+          event.currentTarget.blur()
+          return
+        }
+
+        if (/[0-9]/.test(event.key) || allowedInputKeys.includes(event.key)) {
           return
         }
         event.preventDefault()
@@ -63,17 +104,7 @@ const CustomZoomInput = ({
         setLocalZoom(event.target.value)
       }}
       onBlur={(event: React.FocusEvent<HTMLInputElement>) => {
-        const newValue = Boolean(event.target.value)
-          ? `${event.target.value}%`
-          : ""
-
-        // don't update the values if we've remove the value and we're using the select box values
-        if (newValue === "" && !isCustomValue) {
-          return
-        }
-
-        setLocalZoom(newValue)
-        updateValue(newValue)
+        updateZoom(event.target.value)
       }}
     />
   )
