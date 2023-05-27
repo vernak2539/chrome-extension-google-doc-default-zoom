@@ -15,10 +15,10 @@
     "transform-ext": "node bin/transform-extension.mjs"
   },
   "dependencies": {
-    "@plasmohq/messaging": "^0.3.0",
-    "@plasmohq/storage": "^1.6.0",
-    "@sentry/browser": "^7.52.1",
-    "@sentry/react": "^7.52.1",
+    "@plasmohq/messaging": "^0.3.3",
+    "@plasmohq/storage": "^1.6.1",
+    "@sentry/browser": "^7.53.1",
+    "@sentry/react": "^7.53.1",
     "classnames": "^2.3.2",
     "plasmo": "0.71.0",
     "react": "18.2.0",
@@ -26,14 +26,14 @@
   },
   "devDependencies": {
     "@plasmohq/prettier-plugin-sort-imports": "3.6.4",
-    "@storybook/addon-a11y": "^7.0.12",
+    "@storybook/addon-a11y": "^7.0.18",
     "@storybook/addon-console": "^2.0.0",
-    "@storybook/addon-essentials": "^7.0.12",
-    "@storybook/addon-interactions": "^7.0.12",
-    "@storybook/addon-links": "^7.0.12",
-    "@storybook/blocks": "^7.0.12",
-    "@storybook/react": "^7.0.12",
-    "@storybook/react-vite": "^7.0.12",
+    "@storybook/addon-essentials": "^7.0.18",
+    "@storybook/addon-interactions": "^7.0.18",
+    "@storybook/addon-links": "^7.0.18",
+    "@storybook/blocks": "^7.0.18",
+    "@storybook/react": "^7.0.18",
+    "@storybook/react-vite": "^7.0.18",
     "@storybook/testing-library": "^0.1.0",
     "@types/chrome": "0.0.236",
     "@types/node": "20.2.1",
@@ -45,9 +45,9 @@
     "jsonfile": "^6.1.0",
     "prettier": "2.8.8",
     "prop-types": "^15.8.1",
-    "storybook": "^7.0.12",
+    "storybook": "^7.0.18",
     "typescript": "5.0.4",
-    "vite": "^4.3.8"
+    "vite": "^4.3.9"
   },
   "manifest": {
     "name": "__MSG_extensionNameExtended__",
