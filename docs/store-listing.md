@@ -11,6 +11,8 @@ Once you set your desired zoom level, the level of zoom will be changed whenever
 
 If you'd like to help me translate this for languages other than English, please reach out!!
 
+If you'd like to use your own custom zoom values, please checkout my other extension (https://chrome.google.com/webstore/detail/google-workspace-zoom-def/mdgikencgfhineaememjagpkiclbdkka).
+
 ## Spanish (es)
 
 ¿Cansado de tener que cambiar el zoom en tus Aplicaciones de Google Workspace cuando se cargan por primera vez porque el texto es demasiado pequeño? Bueno, esto debería ayudar.
@@ -23,6 +25,8 @@ Esta extensión te permitirá establecer un "zoom predeterminado" para las sigui
 Una vez que establezcas tu nivel de zoom deseado, el nivel de zoom se cambiará cada vez que cargues una Aplicación de Google Workspace.
 
 Si quieres ayudarme a traducir esto a idiomas distintos del inglés, ¡por favor ponte en contacto conmigo!
+
+Si desea utilizar sus propios valores de zoom personalizados, consulte mi otra extensión (https://chrome.google.com/webstore/detail/google-workspace-zoom-def/mdgikencgfhineaememjagpkiclbdkka).
 
 ## Japanese (ja)
 
@@ -37,6 +41,8 @@ Google Workspaceアプリケーションを初めて読み込むときに、テ�
 
 英語以外の言語でこれを翻訳するのを手伝っていただける場合は、お気軽にお問い合わせください！！
 
+独自のズーム値を使用したい場合は、私の他の拡張機能をチェックしてください。 (https://chrome.google.com/webstore/detail/google-workspace-zoom-def/mdgikencgfhineaememjagpkiclbdkka).
+
 ## German (de)
 
 Sind Sie es leid, den Zoom in Ihren Google Workspace-Anwendungen jedes Mal ändern zu müssen, wenn sie zum ersten Mal geladen werden, weil der Text zu klein ist? Nun, das sollte helfen.
@@ -49,6 +55,8 @@ Mit dieser Erweiterung können Sie einen "Standardzoom" für die folgenden Googl
 Sobald Sie die gewünschte Zoomstufe festgelegt haben, wird die Zoomstufe jedes Mal geändert, wenn Sie eine Google Workspace-Anwendung laden.
 
 Wenn Sie mir helfen möchten, dies in anderen Sprachen als Englisch zu übersetzen, nehmen Sie bitte Kontakt mit mir auf!!
+
+Wenn Sie Ihre eigenen benutzerdefinierten Zoomwerte verwenden möchten, besuchen Sie bitte meine andere Erweiterung (https://chrome.google.com/webstore/detail/google-workspace-zoom-def/mdgikencgfhineaememjagpkiclbdkka).
 
 ## French (fr)
 
@@ -63,3 +71,5 @@ Cette extension vous permettra de définir un "zoom par défaut" pour les applic
 Une fois que vous avez défini le niveau de zoom souhaité, le niveau de zoom sera modifié chaque fois que vous chargez une application Google Workspace.
 
 Si vous souhaitez m'aider à traduire ceci dans des langues autres que l'anglais, n'hésitez pas à me contacter !!
+
+Si vous souhaitez utiliser vos propres valeurs de zoom personnalisées, veuillez consulter mon autre extension (https://chrome.google.com/webstore/detail/google-workspace-zoom-def/mdgikencgfhineaememjagpkiclbdkka).
