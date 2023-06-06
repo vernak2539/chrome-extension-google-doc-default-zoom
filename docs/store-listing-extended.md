@@ -30,8 +30,6 @@ Si quieres ayudarme a traducir esto a idiomas distintos del inglés, ¡por favor
 
 Esta versión incluye funcionalidad para permitir niveles de zoom personalizados. Para hacer esto, la extensión requiere permisos elevados.
 
-Nota: Mi primera extensión y todavía estoy trabajando en ella. Principalmente trabajo en una Mac, así que si hay problemas en otras plataformas, por favor envía un problema. Intentaré encontrar una solución.
-
 ## Japanese (ja)
 
 Google Workspaceアプリケーションを初めて読み込むときに、テキストが小さすぎるためにズームを変更する必要があるのにうんざりしていますか？ それなら、これが役立つはずです。
@@ -46,8 +44,6 @@ Google Workspaceアプリケーションを初めて読み込むときに、テ�
 英語以外の言語でこれを翻訳するのを手伝っていただける場合は、お気軽にお問い合わせください！！
 
 このバージョンには、カスタムズームレベルを許可する機能が含まれています。これを行うためには、拡張機能には高度な権限が必要です。
-
-注意: 私の初めての拡張機能で、まだ作業中です。主にMacで作業しているので、他のプラットフォームで問題がある場合は、問題を提出してください。何か解決策を考えます。
 
 ## German (de)
 
@@ -64,8 +60,6 @@ Wenn Sie mir helfen möchten, dies in anderen Sprachen als Englisch zu übersetz
 
 Diese Version enthält eine Funktionalität, um benutzerdefinierte Zoomstufen zu ermöglichen. Hierfür erfordert die Erweiterung erhöhte Berechtigungen.
 
-Hinweis: Meine erste Erweiterung und ich arbeite immer noch daran. Ich arbeite hauptsächlich auf einem Mac, daher bitte ich Sie, bei Problemen auf anderen Plattformen ein Issue einzureichen. Ich werde versuchen, eine Lösung zu finden.
-
 ## French (fr)
 
 Fatigué de devoir changer le zoom de vos applications Google Workspace lorsqu'elles se chargent pour la première fois parce que le texte est trop petit ? Eh bien,
@@ -81,5 +75,3 @@ Une fois que vous avez défini le niveau de zoom souhaité, le niveau de zoom se
 Si vous souhaitez m'aider à traduire ceci dans des langues autres que l'anglais, n'hésitez pas à me contacter !!
 
 Cette version inclut une fonctionnalité permettant des niveaux de zoom personnalisés. Pour cela, l'extension nécessite des autorisations élevées.
-
-Remarque : Ma première extension et je travaille toujours dessus. Je travaille principalement sur un Mac, donc s'il y a des problèmes sur d'autres plateformes, veuillez soumettre un problème. J'essaierai de trouver une solution.
