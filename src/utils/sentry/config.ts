@@ -9,7 +9,7 @@ export const sentryConfig: BrowserOptions = {
   // for finer control
   tracesSampleRate: 1.0,
   environment: process.env.NODE_ENV,
-  release: `${packageJson.name}@${packageJson.version}`
+  release: packageJson.version
 }
 
 export const getDefaultTags = () => ({
