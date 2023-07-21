@@ -1,7 +1,7 @@
 import type { PlasmoMessaging } from "@plasmohq/messaging"
 
 import type { ExecuteEnterRequestBody } from "../../types"
-import { setupSentry } from "../../utils/sentry-background"
+import { setupSentry } from "../../utils/sentry/background"
 
 const sentryWrap = setupSentry("background")
 

@@ -4,7 +4,7 @@ import WorkspaceApplicationList from "./components/WorkspaceApplicationList"
 import { workspaceApps } from "./constants"
 import * as styles from "./style.module.css"
 import localize from "./utils/localize"
-import { setupSentry } from "./utils/sentry-popup"
+import { setupSentry } from "./utils/sentry/popup"
 
 // todo - build in enabled/disabled state state
 
