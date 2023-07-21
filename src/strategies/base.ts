@@ -122,10 +122,13 @@ export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
   }
 
   /*
-   * This method is used to determine if the page is loading or not.
-   * If we have a zoom selector, we want to use that to determine if the page is loading. This will help us understand
-   * if we can modify the zoom.
-   * IF there is no zoom selector, that's a pretty good sign that we're in a view only situation (at least on Docs)
+   * This method is used to determine if the page is loading or not (i.e. things are disabled and interaction needs
+   * to pause for a moment).
+   *
+   * In both situations, we want to check if element on the page, which we'll use to do the zooming, is disabled.
+   *
+   * If we have a zoom selector, we want to use that to determine if the page is loading.
+   * If there is no zoom selector, we have to use the menu bar to indicate if the page is loading or not
    */
   public getIsPageLoading() {
     const zoomSelect = getDOMElement(
