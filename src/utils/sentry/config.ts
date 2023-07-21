@@ -11,3 +11,7 @@ export const sentryConfig: BrowserOptions = {
   environment: process.env.NODE_ENV,
   release: `${packageJson.name}@${packageJson.version}`
 }
+
+export const getDefaultTags = () => ({
+  extension: packageJson.name
+})
