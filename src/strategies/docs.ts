@@ -29,7 +29,11 @@ class DocsStrategy
   }
 
   private uiExecuteDocsViewOnlyFlow(zoomValue: string) {
-    // find closes zoom value if custom
+    // view only Docs don't allow for custom zoom levels, but rather only allow the predefined ones
+    // 1. check if zoom value is included in predefined list
+    // 2. if not, find the closes zoom value (bias to towards higher)\
+    // 3. set zoom value (new flow)
+
     console.log("VIEW ONLY")
   }
 }
