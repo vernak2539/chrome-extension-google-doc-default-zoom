@@ -16,7 +16,7 @@ import {
 
 export interface AbstractBaseStrategyImpl {
   execute: (executionLocation: string) => void
-  getIsZoomSelectorDisabled: () => boolean
+  getIsPageLoading: () => { isLoading: boolean; elementIdToWatch: string }
 }
 
 export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
@@ -121,10 +121,27 @@ export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
     return Boolean(this.config.features[feature])
   }
 
-  public getIsZoomSelectorDisabled() {
+  public getIsPageLoading() {
     const zoomSelect = getDOMElement(
       this.config.uiElements.clickableZoomSelectId
     )
-    return zoomSelect.classList.contains("goog-toolbar-combo-button-disabled")
+
+    if (zoomSelect) {
+      return {
+        isLoading: zoomSelect.classList.contains(
+          "goog-toolbar-combo-button-disabled"
+        ),
+        elementIdToWatch: "docs-toolbar"
+      }
+    }
+
+    const menuBarFileTab = getDOMElement(
+      this.config.uiElements.menubarFileTabId
+    )
+
+    return {
+      isLoading: menuBarFileTab.classList.contains(".goog-control-disabled"),
+      elementIdToWatch: "docs-file-menu"
+    }
   }
 }

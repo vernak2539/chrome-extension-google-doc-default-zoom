@@ -43,7 +43,7 @@ switch (currentApp) {
 if (strategy) {
   const counter = counterFactory()
   const observer = new MutationObserver((_mutationList, observer) => {
-    const zoomIsDisabled = strategy.getIsZoomSelectorDisabled()
+    const { isLoading } = strategy.getIsPageLoading()
     const isExecutionCountOverLimit =
       counter.getCount() > OBSERVE_EXECUTION_LIMIT
 
@@ -52,7 +52,7 @@ if (strategy) {
       return
     }
 
-    if (!zoomIsDisabled) {
+    if (!isLoading) {
       observer.disconnect()
       strategy.execute("observer")
     }
@@ -61,10 +61,10 @@ if (strategy) {
   })
 
   // initial kick-off
-  const zoomIsDisabled = strategy.getIsZoomSelectorDisabled()
+  const { isLoading, elementIdToWatch } = strategy.getIsPageLoading()
 
-  if (zoomIsDisabled) {
-    observer.observe(document.getElementById("docs-toolbar"), {
+  if (isLoading) {
+    observer.observe(document.getElementById(elementIdToWatch), {
       attributes: true,
       childList: true
     })
