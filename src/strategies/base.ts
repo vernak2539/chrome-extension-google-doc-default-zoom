@@ -121,6 +121,12 @@ export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
     return Boolean(this.config.features[feature])
   }
 
+  /*
+   * This method is used to determine if the page is loading or not.
+   * If we have a zoom selector, we want to use that to determine if the page is loading. This will help us understand
+   * if we can modify the zoom.
+   * IF there is no zoom selector, that's a pretty good sign that we're in a view only situation (at least on Docs)
+   */
   public getIsPageLoading() {
     const zoomSelect = getDOMElement(
       this.config.uiElements.clickableZoomSelectId
