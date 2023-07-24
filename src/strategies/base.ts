@@ -148,14 +148,14 @@ export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
       }
     }
 
-    const menuBarFileTab = getDOMElement(
-      this.config.uiElements.menubarFileTabId
+    const menuBarViewTab = getDOMElement(
+      this.config.uiElements.menubarViewTabId
     )
 
     return {
-      isLoading: menuBarFileTab.classList.contains("goog-control-disabled"),
+      isLoading: menuBarViewTab.classList.contains("goog-control-disabled"),
       getElementToWatch: () =>
-        getDOMElement(this.config.uiElements.menubarFileTabId)
+        getDOMElement(this.config.uiElements.menubarViewTabId)
     }
   }
 }

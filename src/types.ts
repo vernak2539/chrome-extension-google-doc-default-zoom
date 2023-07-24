@@ -73,7 +73,7 @@ export interface UiStrategyConfig {
     clickableZoomOptionClass: string
     toolbarHelpMenuId?: string
     toolbarId?: string
-    menubarFileTabId?: string
+    menubarViewTabId?: string
   }
   zoom: {
     defaultZoom: string
