@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+'
+      - "v[0-9]+.[0-9]+.[0-9]+"
 
 jobs:
   build:
@@ -35,6 +35,20 @@ jobs:
         run: pnpm build --source-maps
       - name: Check file sizes
         run: pnpm bundlesize
+      - name: get-npm-version
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@v1.3.1
+      - name: Create Sentry release
+        uses: getsentry/action-release@v1
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ vars.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ vars.SENTRY_PROJECT }}
+        with:
+          environment: production
+          sourcemaps: "./build/chrome-mv3-prod"
+          ignore_empty: true
+          version: ${{ steps.package-version.outputs.current-version }}
       - name: Remove sourcemaps from bundle
         run: rm ./build/chrome-mv3-prod/*.map
       - name: Package extension artifact
