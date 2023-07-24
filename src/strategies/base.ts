@@ -152,7 +152,7 @@ export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
     )
 
     return {
-      isLoading: menuBarFileTab.classList.contains(".goog-control-disabled"),
+      isLoading: menuBarFileTab.classList.contains("goog-control-disabled"),
       getElementToWatch: () =>
         getDOMElement(this.config.uiElements.menubarFileTabId)
     }
