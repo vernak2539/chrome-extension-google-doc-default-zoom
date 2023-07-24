@@ -57,10 +57,10 @@ class DocsStrategy
     pause(1000)
       .then(() => {
         let selector = "span[aria-label^='Zoom']"
-        const selectorExists = getDOMElement(selector)
+        const zoomRowElement = getDOMElement(selector)
 
-        if (selectorExists) {
-          getDOMElementAndClick(selector)
+        if (zoomRowElement) {
+          clickDOMElement(zoomRowElement)
           return
         }
 
