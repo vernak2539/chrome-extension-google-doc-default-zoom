@@ -30,6 +30,7 @@ class DocsStrategy
   }
 
   private isViewOnly() {
+    // should there be a "feature flag" to enable, as it's a bit wonky?? Yes...
     const zoomInputContainer = document.querySelector(
       this.config.uiElements.clickableZoomSelectId
     )
