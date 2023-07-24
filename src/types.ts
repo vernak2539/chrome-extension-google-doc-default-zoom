@@ -77,6 +77,7 @@ export interface UiStrategyConfig {
   }
   zoom: {
     defaultZoom: string
+    zoomValues: DocsZoomValues | SheetsZoomValues
   }
 }
 

@@ -80,7 +80,8 @@ export const workspaceAppUiStrategyConfigs: Record<
       menubarViewTabId: "#docs-view-menu"
     },
     zoom: {
-      defaultZoom: DOCS_DEFAULT_ZOOM
+      defaultZoom: DOCS_DEFAULT_ZOOM,
+      zoomValues: DOCS_ZOOM_VALUES
     }
   },
   Sheets: {
@@ -92,7 +93,8 @@ export const workspaceAppUiStrategyConfigs: Record<
       clickableZoomOptionClass: ".goog-menuitem"
     },
     zoom: {
-      defaultZoom: SHEETS_DEFAULT_ZOOM
+      defaultZoom: SHEETS_DEFAULT_ZOOM,
+      zoomValues: SHEETS_ZOOM_VALUES
     }
   }
 }
