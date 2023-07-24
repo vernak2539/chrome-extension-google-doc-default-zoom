@@ -18,13 +18,15 @@ const meta = {
   component: WorkspaceApplication,
   tags: ["autodocs"],
   decorators: [
-    (StoryPartial) => (
-      <div className={styles.popupContainer}>
-        <WorkspaceApplicationList>
-          <StoryPartial />
-        </WorkspaceApplicationList>
-      </div>
-    )
+    (StoryPartial) => {
+      return (
+        <div style={{ maxWidth: "300px" }} className={styles.popupContainer}>
+          <WorkspaceApplicationList>
+            <StoryPartial />
+          </WorkspaceApplicationList>
+        </div>
+      )
+    }
   ]
 } satisfies Meta<typeof WorkspaceApplication>
 
@@ -37,7 +39,11 @@ export const GoogleDocs: Story = {
     name: "Docs",
     zoomValues: DOCS_ZOOM_VALUES,
     defaultZoom: DOCS_DEFAULT_ZOOM,
-    storageKey: DOCS_STORAGE_KEY
+    storageKey: DOCS_STORAGE_KEY,
+    features: {
+      customZoomInput: false,
+      enableViewOnlyToggle: false
+    }
   }
 }
 
@@ -46,6 +52,10 @@ export const GoogleSheets: Story = {
     name: "Sheets",
     zoomValues: SHEETS_ZOOM_VALUES,
     defaultZoom: SHEETS_DEFAULT_ZOOM,
-    storageKey: SHEETS_STORAGE_KEY
+    storageKey: SHEETS_STORAGE_KEY,
+    features: {
+      customZoomInput: false,
+      enableViewOnlyToggle: false
+    }
   }
 }

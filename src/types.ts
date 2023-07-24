@@ -59,6 +59,9 @@ export interface WorkspaceApp {
   features: {
     /* Whether to enable the custom zoom input for an application */
     customZoomInput: boolean
+
+    /* Whether to enable the view only toggle for an application */
+    enableViewOnlyToggle: boolean
   }
 }
 
