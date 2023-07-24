@@ -47,6 +47,32 @@ export const GoogleDocs: Story = {
   }
 }
 
+export const GoogleDocsCustomZoom: Story = {
+  args: {
+    name: "Docs",
+    zoomValues: DOCS_ZOOM_VALUES,
+    defaultZoom: DOCS_DEFAULT_ZOOM,
+    storageKey: DOCS_STORAGE_KEY,
+    features: {
+      customZoomInput: true,
+      enableViewOnlyToggle: false
+    }
+  }
+}
+
+export const GoogleDocsViewOnlyEnablement: Story = {
+  args: {
+    name: "Docs",
+    zoomValues: DOCS_ZOOM_VALUES,
+    defaultZoom: DOCS_DEFAULT_ZOOM,
+    storageKey: DOCS_STORAGE_KEY,
+    features: {
+      customZoomInput: true,
+      enableViewOnlyToggle: true
+    }
+  }
+}
+
 export const GoogleSheets: Story = {
   args: {
     name: "Sheets",
@@ -55,6 +81,19 @@ export const GoogleSheets: Story = {
     storageKey: SHEETS_STORAGE_KEY,
     features: {
       customZoomInput: false,
+      enableViewOnlyToggle: false
+    }
+  }
+}
+
+export const GoogleSheetsCustomZoom: Story = {
+  args: {
+    name: "Sheets",
+    zoomValues: SHEETS_ZOOM_VALUES,
+    defaultZoom: SHEETS_DEFAULT_ZOOM,
+    storageKey: SHEETS_STORAGE_KEY,
+    features: {
+      customZoomInput: true,
       enableViewOnlyToggle: false
     }
   }
