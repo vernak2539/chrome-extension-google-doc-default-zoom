@@ -64,12 +64,13 @@ class DocsStrategy
           return
         }
 
-        // This selector would work as well, but want to get the value of the box
+        // fallback selector (trying to account for potential translation differences)
         selector =
           ".docs-icon-img-container.docs-icon-img.docs-icon-editors-ia-zoom-in"
         getDOMElementAndClick(selector)
       })
       .then(() => {
+        // This is hacky, not sure a better way to do this...
         const zoomValueContainer = getDOMElement('[aria-label^="Fit"]').closest(
           ".goog-menu"
         )
@@ -85,7 +86,7 @@ class DocsStrategy
         }
 
         if (!newZoomLevelElement) {
-          // TODO: Close dropdowns
+          getDOMElementAndClick("body")
           return
         }
 
