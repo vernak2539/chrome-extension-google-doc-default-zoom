@@ -5,9 +5,7 @@ import { AbstractBaseStrategy } from "./base"
 import {
   clickDOMElement,
   getDOMElement,
-  getDOMElementAndClick,
-  getDOMElementCoordinates,
-  simulateClick
+  getDOMElementAndClick
 } from "src/utils/ui-helpers"
 import { pause } from "src/utils/pause"
 
