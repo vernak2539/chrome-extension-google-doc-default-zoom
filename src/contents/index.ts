@@ -61,10 +61,10 @@ if (strategy) {
   })
 
   // initial kick-off
-  const { isLoading, elementIdToWatch } = strategy.getIsPageLoading()
+  const { isLoading, getElementToWatch } = strategy.getIsPageLoading()
 
   if (isLoading) {
-    observer.observe(document.getElementById(elementIdToWatch), {
+    observer.observe(getElementToWatch(), {
       attributes: true,
       childList: true
     })

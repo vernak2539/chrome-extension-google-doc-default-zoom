@@ -72,6 +72,7 @@ export interface UiStrategyConfig {
     clickableZoomSelectId: string
     clickableZoomOptionClass: string
     toolbarHelpMenuId?: string
+    toolbarId?: string
     menubarFileTabId?: string
   }
   zoom: {

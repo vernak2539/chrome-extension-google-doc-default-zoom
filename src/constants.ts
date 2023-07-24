@@ -76,6 +76,7 @@ export const workspaceAppUiStrategyConfigs: Record<
       clickableZoomSelectId: "#zoomSelect",
       clickableZoomOptionClass: ".goog-menuitem",
       toolbarHelpMenuId: "#docs-help-menu", // this is required for features.customZoomInput = true
+      toolbarId: "#docs-toolbar",
       menubarFileTabId: "#docs-file-menu"
     },
     zoom: {
