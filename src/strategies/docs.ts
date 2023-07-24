@@ -53,7 +53,8 @@ class DocsStrategy
     // 3. set zoom value (new flow)
     getDOMElementAndClick(this.config.uiElements.menubarViewTabId)
 
-    pause(500)
+    // this may need to change depending on how quickly the menu loads
+    pause(1000)
       .then(() => {
         let selector = "span[aria-label^='Zoom']"
         const selectorExists = getDOMElement(selector)

@@ -10,9 +10,9 @@ import type {
 import getIsCustomZoom from "../utils/get-is-custom-zoom"
 import getZoomValueFromStorage from "../utils/get-zoom-value-from-storage"
 import {
+  clickDOMElement,
   getDOMElement,
-  getDOMElementCoordinates,
-  simulateClick
+  getDOMElementAndClick
 } from "../utils/ui-helpers"
 
 export interface AbstractBaseStrategyImpl {
@@ -43,12 +43,9 @@ export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
     }
 
     // get menu element responsible for changing zoom
-    const zoomInputContainer = getDOMElement(
+    const zoomInputContainer = getDOMElementAndClick(
       this.config.uiElements.clickableZoomSelectId
     )
-    const { x: zoomInputContainerX, y: zoomInputContainerY } =
-      getDOMElementCoordinates(zoomInputContainer)
-    simulateClick(zoomInputContainer, zoomInputContainerX, zoomInputContainerY)
 
     // add check for if strategy is supported or not for app
     if (
@@ -89,9 +86,7 @@ export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
     }
 
     // select new zoom level
-    const { x: newZoomOptionX, y: newZoomOptionY } =
-      getDOMElementCoordinates(newZoomLevelElement)
-    simulateClick(newZoomLevelElement, newZoomOptionX, newZoomOptionY)
+    clickDOMElement(newZoomLevelElement)
 
     this.closeDropdown()
   }
@@ -117,7 +112,7 @@ export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
   private closeDropdown() {
     // close dropdown with blur event (may need to check again to see if it's closed)
     setTimeout(() => {
-      simulateClick(getDOMElement("canvas"), 0, 0)
+      getDOMElementAndClick("canvas")
     }, 500)
   }
 
