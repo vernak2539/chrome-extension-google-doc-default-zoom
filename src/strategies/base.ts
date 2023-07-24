@@ -3,6 +3,7 @@ import { sendToBackgroundViaRelay } from "@plasmohq/messaging"
 import { RELAY_EXECUTE_ENTER } from "../constants"
 import type {
   ExecuteEnterRequestBody,
+  ExecutionLocation,
   Feature,
   UiStrategyConfig
 } from "../types"
@@ -15,7 +16,7 @@ import {
 } from "../utils/ui-helpers"
 
 export interface AbstractBaseStrategyImpl {
-  execute: (executionLocation: string) => void
+  execute: (executionLocation: ExecutionLocation) => void
   getIsPageLoading: () => {
     isLoading: boolean
     getElementToWatch: () => Element

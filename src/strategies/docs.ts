@@ -1,4 +1,4 @@
-import type { UiStrategyConfig } from "../types"
+import type { ExecutionLocation, UiStrategyConfig } from "../types"
 import type { AbstractBaseStrategyImpl } from "./base"
 import { AbstractBaseStrategy } from "./base"
 
@@ -10,7 +10,7 @@ class DocsStrategy
     super(config)
   }
 
-  public execute(executionLocation: string) {
+  public execute(executionLocation: ExecutionLocation) {
     this.getZoomValueFromStorage().then((zoomValue) => {
       if (this.isViewOnly()) {
         this.uiExecuteDocsViewOnlyFlow(zoomValue)

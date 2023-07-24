@@ -81,3 +81,5 @@ export interface UiStrategyConfig {
 }
 
 export type Feature = keyof WorkspaceApp["features"]
+
+export type ExecutionLocation = "observer" | "inline"
