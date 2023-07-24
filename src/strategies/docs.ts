@@ -3,10 +3,13 @@ import type { ExecutionLocation, UiStrategyConfig } from "../types"
 import type { AbstractBaseStrategyImpl } from "./base"
 import { AbstractBaseStrategy } from "./base"
 import {
+  clickDOMElement,
   getDOMElement,
+  getDOMElementAndClick,
   getDOMElementCoordinates,
   simulateClick
 } from "src/utils/ui-helpers"
+import { pause } from "src/utils/pause"
 
 class DocsStrategy
   extends AbstractBaseStrategy
@@ -49,15 +52,45 @@ class DocsStrategy
     }
 
     // 3. set zoom value (new flow)
-    const viewMenuBarBtn = getDOMElement(
-      this.config.uiElements.menubarViewTabId
-    )
-    const { x: viewMenuBarBtnX, y: viewMenuBarBtnY } =
-      getDOMElementCoordinates(viewMenuBarBtn)
+    getDOMElementAndClick(this.config.uiElements.menubarViewTabId)
 
-    simulateClick(viewMenuBarBtn, viewMenuBarBtnX, viewMenuBarBtnY)
+    pause(500)
+      .then(() => {
+        let selector = "span[aria-label^='Zoom']"
+        const selectorExists = getDOMElement(selector)
 
-    console.log("VIEW ONLY")
+        if (selectorExists) {
+          getDOMElementAndClick(selector)
+          return
+        }
+
+        // This selector would work as well, but want to get the value of the box
+        selector =
+          ".docs-icon-img-container.docs-icon-img.docs-icon-editors-ia-zoom-in"
+        getDOMElementAndClick(selector)
+      })
+      .then(() => {
+        const zoomValueContainer = getDOMElement('[aria-label^="Fit"]').closest(
+          ".goog-menu"
+        )
+        const zoomValueRows = zoomValueContainer.querySelectorAll(
+          ".goog-menuitem.apps-menuitem"
+        )
+
+        let newZoomLevelElement = null
+        for (let i = 0; i < zoomValueRows.length; i++) {
+          if (zoomValueRows[i].firstChild.textContent === zoomValue) {
+            newZoomLevelElement = zoomValueRows[i].firstChild
+          }
+        }
+
+        if (!newZoomLevelElement) {
+          // TODO: Close dropdowns
+          return
+        }
+
+        clickDOMElement(newZoomLevelElement)
+      })
   }
 }
 
