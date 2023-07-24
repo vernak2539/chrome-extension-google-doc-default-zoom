@@ -20,7 +20,7 @@ const meta = {
   decorators: [
     (StoryPartial) => {
       return (
-        <div style={{ maxWidth: "300px" }} className={styles.popupContainer}>
+        <div style={{ maxWidth: "500px" }} className={styles.popupContainer}>
           <WorkspaceApplicationList>
             <StoryPartial />
           </WorkspaceApplicationList>
@@ -60,7 +60,7 @@ export const GoogleDocsCustomZoom: Story = {
   }
 }
 
-export const GoogleDocsViewOnlyEnablement: Story = {
+export const GoogleDocsViewOnly: Story = {
   args: {
     name: "Docs",
     zoomValues: DOCS_ZOOM_VALUES,

@@ -77,3 +77,10 @@
   color: #000 !important;
   font-weight: bold;
 }
+
+.applicationCheckbox {
+  display: flex;
+  font-size: 0.8rem;
+  align-items: center;
+  margin-left: 10px;
+}
