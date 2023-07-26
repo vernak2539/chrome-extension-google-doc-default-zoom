@@ -4,12 +4,15 @@ import CustomZoomInput from "../CustomZoomInput"
 import SelectZoomInput from "../SelectZoomInput"
 
 import * as style from "../../style.module.css"
-import type { ZoomInputProps } from "../shared-props"
 
-type Props = ZoomInputProps & {
-  name: WorkspaceAppName
+type PropsNew = {
+  applicationName: WorkspaceAppName
+  zoomLevel: string
+  zoomLevelCustom: string
+  zoomValues: WorkspaceApp["zoomValues"]
   features: WorkspaceApp["features"]
-  zoomValueCustom: string
+  isCustomZoomLevel: boolean
+  updateZoomLevel: (newZoomValue: string) => void
 }
 
 // Checkbox component that takes isChecked and onChange props
@@ -29,35 +32,35 @@ type Props = ZoomInputProps & {
 // }
 
 const WorkspaceApplicationComponent = ({
-  name,
-  isCustomValue,
-  zoomValue,
-  zoomValueCustom,
+  applicationName,
+  isCustomZoomLevel,
+  zoomLevel,
+  zoomLevelCustom,
   zoomValues,
   features,
-  updateValue
-}: Props) => {
+  updateZoomLevel
+}: PropsNew) => {
   return (
     <li className={style.applicationListItem}>
       <span
         className={classnames(style.applicationIcon, {
-          [style.applicationImageDocs]: name === "Docs",
-          [style.applicationImageSheets]: name === "Sheets"
+          [style.applicationImageDocs]: applicationName === "Docs",
+          [style.applicationImageSheets]: applicationName === "Sheets"
         })}
       />
-      <span className={style.applicationTitle}>{name}</span>
+      <span className={style.applicationTitle}>{applicationName}</span>
       <div className={style.applicationInputContainer}>
         <SelectZoomInput
-          isCustomValue={isCustomValue}
-          updateValue={updateValue}
-          zoomValue={zoomValue}
+          isCustomValue={isCustomZoomLevel}
+          updateValue={updateZoomLevel}
+          zoomValue={zoomLevel}
           zoomValues={zoomValues}
         />
         {features.customZoomInput && (
           <CustomZoomInput
-            isCustomValue={isCustomValue}
-            updateValue={updateValue}
-            zoomValue={zoomValueCustom}
+            isCustomValue={isCustomZoomLevel}
+            updateValue={updateZoomLevel}
+            zoomValue={zoomLevelCustom}
             zoomValues={zoomValues}
           />
         )}

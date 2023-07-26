@@ -74,12 +74,12 @@ const WorkspaceApplication = ({
 
   return (
     <WorkspaceApplicationComponent
-      isCustomValue={isCustomZoom}
-      updateValue={updateZoomValue} // change this to updateZoomValue
-      zoomValue={zoom || defaultZoom}
-      zoomValueCustom={zoom}
+      applicationName={name}
+      isCustomZoomLevel={isCustomZoom}
+      updateZoomLevel={updateZoomValue}
+      zoomLevel={zoom || defaultZoom}
+      zoomLevelCustom={zoom}
       zoomValues={zoomValues}
-      name={name}
       features={features}
     />
   )

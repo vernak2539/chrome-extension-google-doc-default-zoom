@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react"
 
-import WorkspaceApplication from "../components/WorkspaceApplication"
+import WorkspaceApplication from "../components/WorkspaceApplication/component"
 import WorkspaceApplicationList from "../components/WorkspaceApplicationList"
 import {
   DOCS_DEFAULT_ZOOM,
@@ -36,10 +36,12 @@ type Story = StoryObj<typeof meta>
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 export const GoogleDocs: Story = {
   args: {
-    name: "Docs",
+    applicationName: "Docs",
+    isCustomZoomLevel: false,
+    updateZoomLevel: () => {},
+    zoomLevel: DOCS_DEFAULT_ZOOM,
+    zoomLevelCustom: "",
     zoomValues: DOCS_ZOOM_VALUES,
-    defaultZoom: DOCS_DEFAULT_ZOOM,
-    storageKey: DOCS_STORAGE_KEY,
     features: {
       customZoomInput: false,
       enableViewOnlyToggle: false
@@ -49,10 +51,12 @@ export const GoogleDocs: Story = {
 
 export const GoogleDocsCustomZoom: Story = {
   args: {
-    name: "Docs",
+    applicationName: "Docs",
+    isCustomZoomLevel: true,
+    updateZoomLevel: () => {},
+    zoomLevel: "",
+    zoomLevelCustom: "123%",
     zoomValues: DOCS_ZOOM_VALUES,
-    defaultZoom: DOCS_DEFAULT_ZOOM,
-    storageKey: DOCS_STORAGE_KEY,
     features: {
       customZoomInput: true,
       enableViewOnlyToggle: false
@@ -60,25 +64,14 @@ export const GoogleDocsCustomZoom: Story = {
   }
 }
 
-export const GoogleDocsViewOnly: Story = {
-  args: {
-    name: "Docs",
-    zoomValues: DOCS_ZOOM_VALUES,
-    defaultZoom: DOCS_DEFAULT_ZOOM,
-    storageKey: DOCS_STORAGE_KEY,
-    features: {
-      customZoomInput: true,
-      enableViewOnlyToggle: true
-    }
-  }
-}
-
 export const GoogleSheets: Story = {
   args: {
-    name: "Sheets",
+    applicationName: "Sheets",
+    isCustomZoomLevel: false,
+    updateZoomLevel: () => {},
+    zoomLevel: SHEETS_DEFAULT_ZOOM,
+    zoomLevelCustom: "",
     zoomValues: SHEETS_ZOOM_VALUES,
-    defaultZoom: SHEETS_DEFAULT_ZOOM,
-    storageKey: SHEETS_STORAGE_KEY,
     features: {
       customZoomInput: false,
       enableViewOnlyToggle: false
@@ -88,13 +81,28 @@ export const GoogleSheets: Story = {
 
 export const GoogleSheetsCustomZoom: Story = {
   args: {
-    name: "Sheets",
+    applicationName: "Sheets",
+    isCustomZoomLevel: true,
+    updateZoomLevel: () => {},
+    zoomLevel: "",
+    zoomLevelCustom: "123%",
     zoomValues: SHEETS_ZOOM_VALUES,
-    defaultZoom: SHEETS_DEFAULT_ZOOM,
-    storageKey: SHEETS_STORAGE_KEY,
     features: {
       customZoomInput: true,
       enableViewOnlyToggle: false
     }
   }
 }
+
+// export const GoogleDocsViewOnly: Story = {
+//   args: {
+//     name: "Docs",
+//     zoomValues: DOCS_ZOOM_VALUES,
+//     defaultZoom: DOCS_DEFAULT_ZOOM,
+//     storageKey: DOCS_STORAGE_KEY,
+//     features: {
+//       customZoomInput: true,
+//       enableViewOnlyToggle: true
+//     }
+//   }
+// }
