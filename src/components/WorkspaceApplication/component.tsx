@@ -17,6 +17,12 @@ type PropsNew = {
 
 // Checkbox component that takes isChecked and onChange props
 const Checkbox = ({ isChecked, onChange }) => {
+  const onEduClick = () => {
+    chrome.tabs.create({
+      url: "./tabs/experimental-features.html#docs-view-only"
+    })
+  }
+
   return (
     <label className={style.applicationCheckbox}>
       <input
@@ -26,7 +32,13 @@ const Checkbox = ({ isChecked, onChange }) => {
           onChange(event.target.checked)
         }}
       />
-      <span>(experimental) Enable for view-only Docs</span>
+      <span>
+        (
+        <a href="#" onClick={onEduClick}>
+          experimental
+        </a>
+        ) Enable for view-only Docs
+      </span>
     </label>
   )
 }
