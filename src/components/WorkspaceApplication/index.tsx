@@ -2,6 +2,7 @@ import { useCallback } from "react"
 import { useStorage } from "@plasmohq/storage/hook"
 import type { WorkspaceApp } from "../../types"
 import WorkspaceApplicationComponent from "./component"
+import { getFeatureViewOnlyStorageKey } from "src/constants"
 
 type Props = Omit<WorkspaceApp, "isEnabled">
 
@@ -27,8 +28,11 @@ const WorkspaceApplication = ({
     }
   })
 
+  // Note: this will set up a false zoom value for Sheets by default.
+  // This shouldn't be a problem as view only for sheets is already handled in the main flow (and
+  // I won't be checking storage for it)
   const [viewOnly, setViewOnly] = useStorage(
-    `${storageKey}:viewOnly`,
+    getFeatureViewOnlyStorageKey(storageKey),
     (storedViewOnly, isHydrating) => {
       // Helpful post https://discord.com/channels/946290204443025438/1080875092667551824/1080875092667551824
       if (storedViewOnly) {

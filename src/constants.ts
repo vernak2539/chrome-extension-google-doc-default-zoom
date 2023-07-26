@@ -42,6 +42,9 @@ export const SHEETS_ZOOM_VALUES: SheetsZoomValues = [
 export const SHEETS_DEFAULT_ZOOM = SHEETS_ZOOM_VALUES.at(3)
 /**  Workspace Application: Sheets - End **/
 
+export const getFeatureViewOnlyStorageKey = (storageKey: string) =>
+  `${storageKey}:viewOnly`
+
 export const workspaceApps: WorkspaceApp[] = [
   {
     name: "Docs",
