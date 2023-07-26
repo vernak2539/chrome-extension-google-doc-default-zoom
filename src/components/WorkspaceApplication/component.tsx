@@ -2,6 +2,7 @@ import classnames from "classnames"
 import type { WorkspaceApp, WorkspaceAppName } from "src/types"
 import CustomZoomInput from "../CustomZoomInput"
 import SelectZoomInput from "../SelectZoomInput"
+import localize from "../../utils/localize"
 
 import * as style from "../../style.module.css"
 
@@ -35,9 +36,9 @@ const Checkbox = ({ isChecked, onChange }) => {
       <span>
         (
         <a href="#" onClick={onEduClick}>
-          experimental
+          {localize("popupViewOnlyDocsExperimentalLabel")}
         </a>
-        ) Enable for view-only Docs
+        ) {localize("popupViewOnlyDocsExperimentalContent")}
       </span>
     </label>
   )
