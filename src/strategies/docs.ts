@@ -19,11 +19,13 @@ class DocsStrategy
 
   public execute(executionLocation: ExecutionLocation) {
     this.getZoomValueFromStorage().then((zoomValue) => {
-      if (this.isViewOnly()) {
-        this.uiExecuteDocsViewOnlyFlow(zoomValue)
-      } else {
-        this.uiExecuteFlow(zoomValue)
-      }
+      this.getIsViewOnlyEnabled().then((isViewOnlyEnabled) => {
+        if (isViewOnlyEnabled && this.isViewOnly()) {
+          this.uiExecuteDocsViewOnlyFlow(zoomValue)
+        } else {
+          this.uiExecuteFlow(zoomValue)
+        }
+      })
     })
   }
 
@@ -34,6 +36,12 @@ class DocsStrategy
     )
 
     return !zoomInputContainer
+  }
+
+  private getIsViewOnlyEnabled() {
+    // 1. check if feature is enabled (can maybe skip this as this is docs only strategy)
+    // 2. get "enablement" from storage
+    return Promise.resolve(false)
   }
 
   private uiExecuteDocsViewOnlyFlow(zoomValue: string) {
