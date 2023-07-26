@@ -31,6 +31,14 @@
     "message": "この拡張機能の異なるバージョンについて学ぶ",
     "description": "Link from popup to tab that details different versions of extension"
   },
+  "popupViewOnlyDocsExperimentalLabel": {
+    "message": "実験中",
+    "description": "Label for view only docs experimental feature"
+  },
+  "popupViewOnlyDocsExperimentalContent": {
+    "message": "表示のみのドキュメント用に有効にする",
+    "description": "Content for view only docs experimental feature"
+  },
   "ExtVersionsTabHeader": {
     "message": "この拡張機能のバージョン",
     "description": "Header for tab page explaining different versions of the extension"

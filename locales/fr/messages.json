@@ -31,6 +31,14 @@
     "message": "Découvrez les différentes versions de cette extension",
     "description": "Lien depuis la fenêtre contextuelle vers l'onglet détaillant les différentes versions de l'extension"
   },
+  "popupViewOnlyDocsExperimentalLabel": {
+    "message": "expérimental",
+    "description": "Label for view only docs experimental feature"
+  },
+  "popupViewOnlyDocsExperimentalContent": {
+    "message": "Activer pour les documents en lecture seule",
+    "description": "Content for view only docs experimental feature"
+  },
   "ExtVersionsTabHeader": {
     "message": "Versions de cette extension",
     "description": "En-tête pour la page d'onglet expliquant les différentes versions de l'extension"
