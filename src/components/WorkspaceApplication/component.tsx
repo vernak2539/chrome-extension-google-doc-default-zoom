@@ -16,20 +16,20 @@ type PropsNew = {
 }
 
 // Checkbox component that takes isChecked and onChange props
-// const Checkbox = ({ isChecked, onChange }) => {
-//   return (
-//     <label className={style.applicationCheckbox}>
-//       <input
-//         type="checkbox"
-//         checked={isChecked}
-//         onChange={(event) => {
-//           onChange(event.target.checked)
-//         }}
-//       />
-//       <span>Enable View Only</span>
-//     </label>
-//   )
-// }
+const Checkbox = ({ isChecked, onChange }) => {
+  return (
+    <label className={style.applicationCheckbox}>
+      <input
+        type="checkbox"
+        checked={isChecked}
+        onChange={(event) => {
+          onChange(event.target.checked)
+        }}
+      />
+      <span>(experimental) Enable for view-only Docs</span>
+    </label>
+  )
+}
 
 const WorkspaceApplicationComponent = ({
   applicationName,
@@ -42,32 +42,37 @@ const WorkspaceApplicationComponent = ({
 }: PropsNew) => {
   return (
     <li className={style.applicationListItem}>
-      <span
-        className={classnames(style.applicationIcon, {
-          [style.applicationImageDocs]: applicationName === "Docs",
-          [style.applicationImageSheets]: applicationName === "Sheets"
-        })}
-      />
-      <span className={style.applicationTitle}>{applicationName}</span>
-      <div className={style.applicationInputContainer}>
-        <SelectZoomInput
-          isCustomValue={isCustomZoomLevel}
-          updateValue={updateZoomLevel}
-          zoomValue={zoomLevel}
-          zoomValues={zoomValues}
+      <div className={style.applicationListItemRow}>
+        <span
+          className={classnames(style.applicationIcon, {
+            [style.applicationImageDocs]: applicationName === "Docs",
+            [style.applicationImageSheets]: applicationName === "Sheets"
+          })}
         />
-        {features.customZoomInput && (
-          <CustomZoomInput
+        <span className={style.applicationTitle}>{applicationName}</span>
+        <div className={style.applicationInputContainer}>
+          <SelectZoomInput
             isCustomValue={isCustomZoomLevel}
             updateValue={updateZoomLevel}
-            zoomValue={zoomLevelCustom}
+            zoomValue={zoomLevel}
             zoomValues={zoomValues}
           />
-        )}
-        {/* {features.enableViewOnlyToggle && (
-          <Checkbox isChecked={viewOnly} onChange={updateViewOnlyValue} />
-        )} */}
+          {features.customZoomInput && (
+            <CustomZoomInput
+              isCustomValue={isCustomZoomLevel}
+              updateValue={updateZoomLevel}
+              zoomValue={zoomLevelCustom}
+              zoomValues={zoomValues}
+            />
+          )}
+        </div>
       </div>
+      {features.enableViewOnlyToggle && (
+        <div className={style.applicationListItemRow}>
+          <span className={style.applicationItemRowSpacer} />
+          <Checkbox isChecked={false} onChange={() => {}} />
+        </div>
+      )}
     </li>
   )
 }

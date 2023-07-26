@@ -64,6 +64,21 @@ export const GoogleDocsCustomZoom: Story = {
   }
 }
 
+export const GoogleDocsViewOnly: Story = {
+  args: {
+    applicationName: "Docs",
+    isCustomZoomLevel: false,
+    updateZoomLevel: () => {},
+    zoomLevel: "100%",
+    zoomLevelCustom: "",
+    zoomValues: DOCS_ZOOM_VALUES,
+    features: {
+      customZoomInput: false,
+      enableViewOnlyToggle: true
+    }
+  }
+}
+
 export const GoogleSheets: Story = {
   args: {
     applicationName: "Sheets",
@@ -93,16 +108,3 @@ export const GoogleSheetsCustomZoom: Story = {
     }
   }
 }
-
-// export const GoogleDocsViewOnly: Story = {
-//   args: {
-//     name: "Docs",
-//     zoomValues: DOCS_ZOOM_VALUES,
-//     defaultZoom: DOCS_DEFAULT_ZOOM,
-//     storageKey: DOCS_STORAGE_KEY,
-//     features: {
-//       customZoomInput: true,
-//       enableViewOnlyToggle: true
-//     }
-//   }
-// }
