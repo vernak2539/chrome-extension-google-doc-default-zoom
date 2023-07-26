@@ -12,8 +12,10 @@ type PropsNew = {
   zoomLevelCustom: string
   zoomValues: WorkspaceApp["zoomValues"]
   features: WorkspaceApp["features"]
+  featureDocsViewOnlyEnabled: boolean
   isCustomZoomLevel: boolean
   updateZoomLevel: (newZoomValue: string) => void
+  updateDocsViewOnly: (newDocsViewOnlyValue: boolean) => void
 }
 
 // Checkbox component that takes isChecked and onChange props
@@ -51,7 +53,9 @@ const WorkspaceApplicationComponent = ({
   zoomLevelCustom,
   zoomValues,
   features,
-  updateZoomLevel
+  updateZoomLevel,
+  updateDocsViewOnly,
+  featureDocsViewOnlyEnabled
 }: PropsNew) => {
   return (
     <li className={style.applicationListItem}>
@@ -83,7 +87,10 @@ const WorkspaceApplicationComponent = ({
       {features.enableViewOnlyToggle && (
         <div className={style.applicationListItemRow}>
           <span className={style.applicationItemRowSpacer} />
-          <Checkbox isChecked={false} onChange={() => {}} />
+          <Checkbox
+            isChecked={featureDocsViewOnlyEnabled}
+            onChange={updateDocsViewOnly}
+          />
         </div>
       )}
     </li>

@@ -43,6 +43,11 @@ const WorkspaceApplication = ({
     }
   )
 
+  // we have not fetched the zoom value from storage, so we're not ready to render yet
+  // if (zoom === NOT_READY || viewOnly === NOT_READY) {
+  //   return
+  // }
+
   const updateZoomValue = useCallback(
     (value) => {
       if (value) {
@@ -54,7 +59,7 @@ const WorkspaceApplication = ({
     [setZoom]
   )
 
-  const updateViewOnlyValue = useCallback(
+  const updateDocsViewOnlyValue = useCallback(
     (value) => {
       if (value) {
         setViewOnly(value)
@@ -67,11 +72,6 @@ const WorkspaceApplication = ({
 
   const isCustomZoom = zoom && !zoomValues.includes(zoom)
 
-  // we have not fetched the zoom value from storage, so we're not ready to render yet
-  // if (zoom === NOT_READY || viewOnly === NOT_READY) {
-  //   return
-  // }
-
   return (
     <WorkspaceApplicationComponent
       applicationName={name}
@@ -81,6 +81,8 @@ const WorkspaceApplication = ({
       zoomLevelCustom={zoom}
       zoomValues={zoomValues}
       features={features}
+      featureDocsViewOnlyEnabled={name === "Docs" ? viewOnly : false}
+      updateDocsViewOnly={updateDocsViewOnlyValue}
     />
   )
 }
