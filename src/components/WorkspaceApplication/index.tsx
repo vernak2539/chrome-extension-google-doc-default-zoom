@@ -1,32 +1,11 @@
-import classnames from "classnames"
 import { useCallback } from "react"
-
 import { useStorage } from "@plasmohq/storage/hook"
-
-import * as style from "../../style.module.css"
 import type { WorkspaceApp } from "../../types"
-import CustomZoomInput from "../CustomZoomInput"
-import SelectZoomInput from "../SelectZoomInput"
+import WorkspaceApplicationComponent from "./component"
 
 type Props = Omit<WorkspaceApp, "isEnabled">
 
 const NOT_READY = "__NOT_READY__INTERNAL_DONT_USE__"
-
-// Checkbox component that takes isChecked and onChange props
-const Checkbox = ({ isChecked, onChange }) => {
-  return (
-    <label className={style.applicationCheckbox}>
-      <input
-        type="checkbox"
-        checked={isChecked}
-        onChange={(event) => {
-          onChange(event.target.checked)
-        }}
-      />
-      <span>Enable View Only</span>
-    </label>
-  )
-}
 
 const WorkspaceApplication = ({
   name,
@@ -94,34 +73,15 @@ const WorkspaceApplication = ({
   // }
 
   return (
-    <li className={style.applicationListItem}>
-      <span
-        className={classnames(style.applicationIcon, {
-          [style.applicationImageDocs]: name === "Docs",
-          [style.applicationImageSheets]: name === "Sheets"
-        })}
-      />
-      <span className={style.applicationTitle}>{name}</span>
-      <div className={style.applicationInputContainer}>
-        <SelectZoomInput
-          isCustomValue={isCustomZoom}
-          updateValue={updateZoomValue}
-          zoomValue={zoom || defaultZoom}
-          zoomValues={zoomValues}
-        />
-        {features.customZoomInput && (
-          <CustomZoomInput
-            isCustomValue={isCustomZoom}
-            updateValue={updateZoomValue}
-            zoomValue={zoom}
-            zoomValues={zoomValues}
-          />
-        )}
-        {features.enableViewOnlyToggle && (
-          <Checkbox isChecked={viewOnly} onChange={updateViewOnlyValue} />
-        )}
-      </div>
-    </li>
+    <WorkspaceApplicationComponent
+      isCustomValue={isCustomZoom}
+      updateValue={updateZoomValue} // change this to updateZoomValue
+      zoomValue={zoom || defaultZoom}
+      zoomValueCustom={zoom}
+      zoomValues={zoomValues}
+      name={name}
+      features={features}
+    />
   )
 }
 
