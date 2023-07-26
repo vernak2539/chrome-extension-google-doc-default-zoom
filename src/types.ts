@@ -6,6 +6,14 @@ export interface GetZoomValueResponseBody {
   zoomValue: string
 }
 
+export interface GetFeatureViewOnlyRequestBody {
+  storageKey: string
+}
+
+export interface GetFeatureViewOnlyResponseBody {
+  enabled: boolean
+}
+
 export interface ExecuteEnterRequestBody {
   zoomValue: string
 }
@@ -87,3 +95,5 @@ export interface UiStrategyConfig {
 export type Feature = keyof WorkspaceApp["features"]
 
 export type ExecutionLocation = "observer" | "inline"
+
+export type GetFromStorageFn<T> = (storageKey: string) => Promise<T>

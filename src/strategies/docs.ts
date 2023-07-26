@@ -8,6 +8,7 @@ import {
   getDOMElementAndClick
 } from "src/utils/ui-helpers"
 import { pause } from "src/utils/pause"
+import { getFeatureViewOnlyStorageKey } from "src/constants"
 
 class DocsStrategy
   extends AbstractBaseStrategy
@@ -39,9 +40,17 @@ class DocsStrategy
   }
 
   private getIsViewOnlyEnabled() {
-    // 1. check if feature is enabled (can maybe skip this as this is docs only strategy)
-    // 2. get "enablement" from storage
-    return Promise.resolve(false)
+    if (!this.config.features.enableViewOnlyToggle) {
+      return Promise.resolve(false)
+    }
+
+    const storageKey = getFeatureViewOnlyStorageKey(this.config.storageKey)
+
+    return getFeatureViewOnlyFromStorage(storageKey).then(
+      (isViewOnlyEnabled) => {
+        return isViewOnlyEnabled
+      }
+    )
   }
 
   private uiExecuteDocsViewOnlyFlow(zoomValue: string) {
