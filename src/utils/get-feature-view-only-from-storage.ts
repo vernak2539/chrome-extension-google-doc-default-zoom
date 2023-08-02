@@ -7,7 +7,7 @@ import type {
   GetFromStorageFn
 } from "../types"
 
-const getFeatureViewOnlyFromStorage: GetFromStorageFn<boolean> = (
+export const getFeatureViewOnlyFromStorage: GetFromStorageFn<boolean> = (
   storageKey
 ) => {
   return new Promise((resolve) => {
@@ -22,5 +22,3 @@ const getFeatureViewOnlyFromStorage: GetFromStorageFn<boolean> = (
     })
   })
 }
-
-export default getFeatureViewOnlyFromStorage

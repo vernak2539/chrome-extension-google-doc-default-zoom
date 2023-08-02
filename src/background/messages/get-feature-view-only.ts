@@ -16,9 +16,9 @@ const handler: PlasmoMessaging.MessageHandler<
   GetFeatureViewOnlyResponseBody
 > = async (req, res) => {
   sentryWrap(() => {
-    storage.get(req.body.storageKey).then((enabled) => {
+    storage.get<boolean>(req.body.storageKey).then((enabled) => {
       res.send({
-        enabled: enabled === "true"
+        enabled
       })
     })
   })

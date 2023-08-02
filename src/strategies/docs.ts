@@ -1,4 +1,5 @@
 import { getClosestZoomValue } from "src/utils/get-closest-zoom-value"
+import { getFeatureViewOnlyFromStorage } from "src/utils/get-feature-view-only-from-storage"
 import type { ExecutionLocation, UiStrategyConfig } from "../types"
 import type { AbstractBaseStrategyImpl } from "./base"
 import { AbstractBaseStrategy } from "./base"
@@ -19,19 +20,25 @@ class DocsStrategy
   }
 
   public execute(executionLocation: ExecutionLocation) {
-    this.getZoomValueFromStorage().then((zoomValue) => {
-      this.getIsViewOnlyEnabled().then((isViewOnlyEnabled) => {
-        if (isViewOnlyEnabled && this.isViewOnly()) {
-          this.uiExecuteDocsViewOnlyFlow(zoomValue)
-        } else {
-          this.uiExecuteFlow(zoomValue)
-        }
-      })
+    Promise.all([
+      this.getZoomValueFromStorage(),
+      this.getIsViewOnlyEnabled()
+    ]).then(([zoomValue, isViewOnlyEnabled]) => {
+      console.log("zoomValue", zoomValue)
+      console.log("isViewOnlyEnabled", isViewOnlyEnabled)
+
+      if (isViewOnlyEnabled && this.isViewOnly()) {
+        this.uiExecuteDocsViewOnlyFlow(zoomValue)
+      } else {
+        this.uiExecuteFlow(zoomValue)
+      }
     })
   }
 
+  /*
+   * This function determines if the page is in view only mode
+   * */
   private isViewOnly() {
-    // should there be a "feature flag" to enable, as it's a bit wonky?? Yes...
     const zoomInputContainer = document.querySelector(
       this.config.uiElements.clickableZoomSelectId
     )
@@ -39,18 +46,19 @@ class DocsStrategy
     return !zoomInputContainer
   }
 
-  private getIsViewOnlyEnabled() {
+  /*
+   * This function determines if:
+   * 1. the view only feature is enabled
+   * 2. the view only feature toggle is enabled
+   * */
+  private async getIsViewOnlyEnabled() {
     if (!this.config.features.enableViewOnlyToggle) {
       return Promise.resolve(false)
     }
 
     const storageKey = getFeatureViewOnlyStorageKey(this.config.storageKey)
 
-    return getFeatureViewOnlyFromStorage(storageKey).then(
-      (isViewOnlyEnabled) => {
-        return isViewOnlyEnabled
-      }
-    )
+    return await getFeatureViewOnlyFromStorage(storageKey)
   }
 
   private uiExecuteDocsViewOnlyFlow(zoomValue: string) {
