@@ -6,7 +6,7 @@ import localize from "../../utils/localize"
 
 import * as style from "../../style.module.css"
 
-type PropsNew = {
+type WorkspaceApplicationComponentProps = {
   applicationName: WorkspaceAppName
   zoomLevel: string
   zoomLevelCustom: string
@@ -57,7 +57,7 @@ const WorkspaceApplicationComponent = ({
   updateZoomLevel,
   updateDocsViewOnly,
   featureDocsViewOnlyEnabled
-}: PropsNew) => {
+}: WorkspaceApplicationComponentProps) => {
   return (
     <li className={style.applicationListItem}>
       <div className={style.applicationListItemRow}>
