@@ -3,20 +3,24 @@ import { sendToBackgroundViaRelay } from "@plasmohq/messaging"
 import { RELAY_EXECUTE_ENTER } from "../constants"
 import type {
   ExecuteEnterRequestBody,
+  ExecutionLocation,
   Feature,
   UiStrategyConfig
 } from "../types"
 import getIsCustomZoom from "../utils/get-is-custom-zoom"
 import getZoomValueFromStorage from "../utils/get-zoom-value-from-storage"
 import {
+  clickDOMElement,
   getDOMElement,
-  getDOMElementCoordinates,
-  simulateClick
+  getDOMElementAndClick
 } from "../utils/ui-helpers"
 
 export interface AbstractBaseStrategyImpl {
-  execute: (executionLocation: string) => void
-  getIsZoomSelectorDisabled: () => boolean
+  execute: (executionLocation: ExecutionLocation) => void
+  getIsPageLoading: () => {
+    isLoading: boolean
+    getElementToWatch: () => Element
+  }
 }
 
 export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
@@ -39,12 +43,9 @@ export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
     }
 
     // get menu element responsible for changing zoom
-    const zoomInputContainer = getDOMElement(
+    const zoomInputContainer = getDOMElementAndClick(
       this.config.uiElements.clickableZoomSelectId
     )
-    const { x: zoomInputContainerX, y: zoomInputContainerY } =
-      getDOMElementCoordinates(zoomInputContainer)
-    simulateClick(zoomInputContainer, zoomInputContainerX, zoomInputContainerY)
 
     // add check for if strategy is supported or not for app
     if (
@@ -85,9 +86,7 @@ export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
     }
 
     // select new zoom level
-    const { x: newZoomOptionX, y: newZoomOptionY } =
-      getDOMElementCoordinates(newZoomLevelElement)
-    simulateClick(newZoomLevelElement, newZoomOptionX, newZoomOptionY)
+    clickDOMElement(newZoomLevelElement)
 
     this.closeDropdown()
   }
@@ -113,7 +112,7 @@ export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
   private closeDropdown() {
     // close dropdown with blur event (may need to check again to see if it's closed)
     setTimeout(() => {
-      simulateClick(getDOMElement("canvas"), 0, 0)
+      getDOMElementAndClick("canvas")
     }, 500)
   }
 
@@ -121,10 +120,37 @@ export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
     return Boolean(this.config.features[feature])
   }
 
-  public getIsZoomSelectorDisabled() {
+  /*
+   * This method is used to determine if the page is loading or not (i.e. things are disabled and interaction needs
+   * to pause for a moment).
+   *
+   * In both situations, we want to check if element on the page, which we'll use to do the zooming, is disabled.
+   *
+   * If we have a zoom selector, we want to use that to determine if the page is loading.
+   * If there is no zoom selector, we have to use the menu bar to indicate if the page is loading or not
+   */
+  public getIsPageLoading() {
     const zoomSelect = getDOMElement(
       this.config.uiElements.clickableZoomSelectId
     )
-    return zoomSelect.classList.contains("goog-toolbar-combo-button-disabled")
+
+    if (zoomSelect) {
+      return {
+        isLoading: zoomSelect.classList.contains(
+          "goog-toolbar-combo-button-disabled"
+        ),
+        getElementToWatch: () => getDOMElement(this.config.uiElements.toolbarId)
+      }
+    }
+
+    const menuBarViewTab = getDOMElement(
+      this.config.uiElements.menubarViewTabId
+    )
+
+    return {
+      isLoading: menuBarViewTab.classList.contains("goog-control-disabled"),
+      getElementToWatch: () =>
+        getDOMElement(this.config.uiElements.menubarViewTabId)
+    }
   }
 }

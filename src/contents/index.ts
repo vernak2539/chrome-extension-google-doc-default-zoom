@@ -6,6 +6,7 @@ import { relayMessage } from "@plasmohq/messaging"
 import {
   OBSERVE_EXECUTION_LIMIT,
   RELAY_EXECUTE_ENTER,
+  RELAY_GET_FEATURE_VIEW_ONLY_FROM_STORAGE,
   RELAY_GET_ZOOM_VALUE_FROM_STORAGE,
   workspaceAppUiStrategyConfigs
 } from "../constants"
@@ -27,6 +28,7 @@ export const getStyle = () => {
 // create and "register" the relay
 relayMessage({ name: RELAY_GET_ZOOM_VALUE_FROM_STORAGE })
 relayMessage({ name: RELAY_EXECUTE_ENTER })
+relayMessage({ name: RELAY_GET_FEATURE_VIEW_ONLY_FROM_STORAGE })
 
 const currentApp = getCurrentApp()
 let strategy
@@ -43,7 +45,7 @@ switch (currentApp) {
 if (strategy) {
   const counter = counterFactory()
   const observer = new MutationObserver((_mutationList, observer) => {
-    const zoomIsDisabled = strategy.getIsZoomSelectorDisabled()
+    const { isLoading } = strategy.getIsPageLoading()
     const isExecutionCountOverLimit =
       counter.getCount() > OBSERVE_EXECUTION_LIMIT
 
@@ -52,7 +54,7 @@ if (strategy) {
       return
     }
 
-    if (!zoomIsDisabled) {
+    if (!isLoading) {
       observer.disconnect()
       strategy.execute("observer")
     }
@@ -61,10 +63,10 @@ if (strategy) {
   })
 
   // initial kick-off
-  const zoomIsDisabled = strategy.getIsZoomSelectorDisabled()
+  const { isLoading, getElementToWatch } = strategy.getIsPageLoading()
 
-  if (zoomIsDisabled) {
-    observer.observe(document.getElementById("docs-toolbar"), {
+  if (isLoading) {
+    observer.observe(getElementToWatch(), {
       attributes: true,
       childList: true
     })

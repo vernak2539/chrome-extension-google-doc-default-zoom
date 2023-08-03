@@ -31,6 +31,14 @@
     "message": "Aprende sobre las diferentes versiones de esta extensión",
     "description": "Link from popup to tab that details different versions of extension"
   },
+  "popupViewOnlyDocsExperimentalLabel": {
+    "message": "experimental",
+    "description": "Label for view only docs experimental feature"
+  },
+  "popupViewOnlyDocsExperimentalContent": {
+    "message": "Habilitar para documentos solo de vista",
+    "description": "Content for view only docs experimental feature"
+  },
   "ExtVersionsTabHeader": {
     "message": "Versiones de esta extensión",
     "description": "Header for tab page explaining different versions of the extension"
@@ -54,5 +62,29 @@
   "ExtVersionsTabExtendedPermissionExplanation": {
     "message": "Se requiere el permiso elevado para establecer valores de zoom personalizados",
     "description": "Extra information saying why the elevated permission is required"
+  },
+  "ExperimentalFeaturesTabHeader": {
+    "message": "Funciones Experimentales",
+    "description": "Header for tab page explaining experimental features"
+  },
+  "ExperimentalFeaturesTabDocsViewOnlyHeader": {
+    "message": "Documentos Solo Lectura",
+    "description": "Header for view only docs experimental feature"
+  },
+  "ExperimentalFeaturesTabDocsViewOnlyContent1": {
+    "message": "Esta función habilitará la funcionalidad de la extensión para Google Docs donde el usuario solo tiene permisos de visualización.",
+    "description": "Content 1 for view only docs experimental feature"
+  },
+  "ExperimentalFeaturesTabDocsViewOnlyContent2": {
+    "message": "Esta función es experimental debido a que la extensión depende de ciertos elementos presentes en la página. Si se eliminan, dejará de funcionar.",
+    "description": "Content 2 for view only docs experimental feature"
+  },
+  "ExperimentalFeaturesTabDocsViewOnlyContent3": {
+    "message": "Esto es diferente del comportamiento predeterminado porque Google permite un \"enlace\" entre elementos que deben ser seleccionados. Donde en la barra de herramientas del menú, no existe dicho enlace.",
+    "description": "Content 3 for view only docs experimental feature"
+  },
+  "ExperimentalFeaturesTabDocsViewOnlyContent4": {
+    "message": "Esta extensión ya admite permisos de solo lectura en las Hojas de cálculo de Google. Esto se debe a que la entrada de zoom aún se muestra incluso cuando el usuario es solo un espectador.",
+    "description": "Content 4 for view only docs experimental feature"
   }
 }

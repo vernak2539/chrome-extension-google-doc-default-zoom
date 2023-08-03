@@ -31,6 +31,14 @@
     "message": "Découvrez les différentes versions de cette extension",
     "description": "Lien depuis la fenêtre contextuelle vers l'onglet détaillant les différentes versions de l'extension"
   },
+  "popupViewOnlyDocsExperimentalLabel": {
+    "message": "expérimental",
+    "description": "Label for view only docs experimental feature"
+  },
+  "popupViewOnlyDocsExperimentalContent": {
+    "message": "Activer pour les documents en lecture seule",
+    "description": "Content for view only docs experimental feature"
+  },
   "ExtVersionsTabHeader": {
     "message": "Versions de cette extension",
     "description": "En-tête pour la page d'onglet expliquant les différentes versions de l'extension"
@@ -54,5 +62,29 @@
   "ExtVersionsTabExtendedPermissionExplanation": {
     "message": "L'autorisation élevée est requise pour définir des valeurs de zoom personnalisées",
     "description": "Informations supplémentaires expliquant pourquoi l'autorisation élevée est requise"
+  },
+  "ExperimentalFeaturesTabHeader": {
+    "message": "Fonctionnalités Expérimentales",
+    "description": "Header for tab page explaining experimental features"
+  },
+  "ExperimentalFeaturesTabDocsViewOnlyHeader": {
+    "message": "Documents en Lecture Seule",
+    "description": "Header for view only docs experimental feature"
+  },
+  "ExperimentalFeaturesTabDocsViewOnlyContent1": {
+    "message": "Cette fonctionnalité permettra d'activer la fonctionnalité de l'extension pour les documents Google où l'utilisateur a uniquement des autorisations de visualisation.",
+    "description": "Content 1 for view only docs experimental feature"
+  },
+  "ExperimentalFeaturesTabDocsViewOnlyContent2": {
+    "message": "Cette fonctionnalité est expérimentale car l'extension repose sur certains éléments présents sur la page. S'ils sont supprimés, elle cessera de fonctionner.",
+    "description": "Content 2 for view only docs experimental feature"
+  },
+  "ExperimentalFeaturesTabDocsViewOnlyContent3": {
+    "message": "Cela diffère du comportement par défaut car Google permet un \"lien\" entre les éléments qui doivent être cliqués. Sur la barre d'outils du menu, il n'y a pas de tel lien.",
+    "description": "Content 3 for view only docs experimental feature"
+  },
+  "ExperimentalFeaturesTabDocsViewOnlyContent4": {
+    "message": "Cette extension prend déjà en charge les autorisations de visionnage sur les feuilles de calcul Google. Cela est dû au fait que l'entrée de zoom est toujours affichée même si l'utilisateur est uniquement un spectateur.",
+    "description": "Content 4 for view only docs experimental feature"
   }
 }

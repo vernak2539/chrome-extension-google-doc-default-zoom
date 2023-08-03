@@ -36,3 +36,18 @@ export const getDOMElementCoordinates = (element: Element): Coordinates => {
 
   return { x: coordX, y: coordY }
 }
+
+// TODO: Use this everywhere!
+export const getDOMElementAndClick = (selector: string) => {
+  const element = getDOMElement(selector)
+  const { x, y } = getDOMElementCoordinates(element)
+
+  simulateClick(element, x, y)
+  return element
+}
+
+export const clickDOMElement = (element: Element) => {
+  const { x, y } = getDOMElementCoordinates(element)
+
+  simulateClick(element, x, y)
+}

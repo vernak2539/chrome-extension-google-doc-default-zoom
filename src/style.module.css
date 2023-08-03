@@ -1,5 +1,10 @@
+:root {
+  --application-icon-dimension: 25px;
+  --application-title-mw: 50px;
+}
+
 .popupContainer {
-  min-width: 350px;
+  min-width: 450px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
     Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
@@ -16,22 +21,37 @@
 
 .applicationListItem {
   display: flex;
-  align-items: center;
+  flex-direction: column;
   border: 1px solid #ccc;
   border-radius: 20px;
+  padding: 5px 0;
+}
+
+.applicationListItemRow {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.applicationItemRowSpacer {
+  /* the magic numbers are the margins of the icon and title elements */
+  width: calc(
+    var(--application-icon-dimension) + var(--application-title-mw) + 10px +
+      15px
+  );
 }
 
 .applicationTitle {
   margin: 0 10px 0 0;
-  min-width: 50px;
+  min-width: var(--application-title-mw);
   font-weight: bold;
   color: #666;
   font-size: 0.8rem;
 }
 
 .applicationIcon {
-  width: 25px;
-  height: 25px;
+  width: var(--application-icon-dimension);
+  height: var(--application-icon-dimension);
   background-size: contain;
   background-position: center center;
   background-repeat: no-repeat;
@@ -76,4 +96,11 @@
   border: 1px solid #3f7e9b !important;
   color: #000 !important;
   font-weight: bold;
+}
+
+.applicationCheckbox {
+  display: flex;
+  font-size: 0.75rem;
+  align-items: center;
+  font-style: italic;
 }

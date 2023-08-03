@@ -6,6 +6,14 @@ export interface GetZoomValueResponseBody {
   zoomValue: string
 }
 
+export interface GetFeatureViewOnlyRequestBody {
+  storageKey: string
+}
+
+export interface GetFeatureViewOnlyResponseBody {
+  enabled: boolean
+}
+
 export interface ExecuteEnterRequestBody {
   zoomValue: string
 }
@@ -59,6 +67,9 @@ export interface WorkspaceApp {
   features: {
     /* Whether to enable the custom zoom input for an application */
     customZoomInput: boolean
+
+    /* Whether to enable the view only toggle for an application */
+    enableViewOnlyToggle: boolean
   }
 }
 
@@ -72,10 +83,17 @@ export interface UiStrategyConfig {
     clickableZoomSelectId: string
     clickableZoomOptionClass: string
     toolbarHelpMenuId?: string
+    toolbarId?: string
+    menubarViewTabId?: string
   }
   zoom: {
     defaultZoom: string
+    zoomValues: DocsZoomValues | SheetsZoomValues
   }
 }
 
 export type Feature = keyof WorkspaceApp["features"]
+
+export type ExecutionLocation = "observer" | "inline"
+
+export type GetFromStorageFn<T> = (storageKey: string) => Promise<T>

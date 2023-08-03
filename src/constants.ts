@@ -12,6 +12,7 @@ export const OBSERVE_EXECUTION_LIMIT = 1000
 
 // This needs to match the file name ./src/background/messages/get-zoom-value.ts
 export const RELAY_GET_ZOOM_VALUE_FROM_STORAGE = "get-zoom-value"
+export const RELAY_GET_FEATURE_VIEW_ONLY_FROM_STORAGE = "get-feature-view-only"
 export const RELAY_EXECUTE_ENTER = "execute-enter"
 
 /**  Workspace Application: Docs - Start **/
@@ -42,6 +43,9 @@ export const SHEETS_ZOOM_VALUES: SheetsZoomValues = [
 export const SHEETS_DEFAULT_ZOOM = SHEETS_ZOOM_VALUES.at(3)
 /**  Workspace Application: Sheets - End **/
 
+export const getFeatureViewOnlyStorageKey = (storageKey: string) =>
+  `${storageKey}:viewOnly`
+
 export const workspaceApps: WorkspaceApp[] = [
   {
     name: "Docs",
@@ -50,7 +54,8 @@ export const workspaceApps: WorkspaceApp[] = [
     storageKey: DOCS_STORAGE_KEY,
     isEnabled: true,
     features: {
-      customZoomInput: true
+      customZoomInput: true,
+      enableViewOnlyToggle: true
     }
   },
   {
@@ -60,7 +65,8 @@ export const workspaceApps: WorkspaceApp[] = [
     storageKey: SHEETS_STORAGE_KEY,
     isEnabled: true,
     features: {
-      customZoomInput: true
+      customZoomInput: true,
+      enableViewOnlyToggle: false
     }
   }
 ]
@@ -75,10 +81,13 @@ export const workspaceAppUiStrategyConfigs: Record<
     uiElements: {
       clickableZoomSelectId: "#zoomSelect",
       clickableZoomOptionClass: ".goog-menuitem",
-      toolbarHelpMenuId: "#docs-help-menu" // this is required for features.customZoomInput = true
+      toolbarHelpMenuId: "#docs-help-menu", // this is required for features.customZoomInput = true
+      toolbarId: "#docs-toolbar",
+      menubarViewTabId: "#docs-view-menu"
     },
     zoom: {
-      defaultZoom: DOCS_DEFAULT_ZOOM
+      defaultZoom: DOCS_DEFAULT_ZOOM,
+      zoomValues: DOCS_ZOOM_VALUES
     }
   },
   Sheets: {
@@ -90,7 +99,8 @@ export const workspaceAppUiStrategyConfigs: Record<
       clickableZoomOptionClass: ".goog-menuitem"
     },
     zoom: {
-      defaultZoom: SHEETS_DEFAULT_ZOOM
+      defaultZoom: SHEETS_DEFAULT_ZOOM,
+      zoomValues: SHEETS_ZOOM_VALUES
     }
   }
 }
