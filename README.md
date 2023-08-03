@@ -7,8 +7,8 @@ Supported Google Workspace Products:
 
 - [x] Google Docs
 - [x] Google Sheets
-- [ ] Google Docs (view only permissions)
-- [ ] Google Sheets (view only permissions)
+- [x] Google Sheets (view only permissions)
+- [x] Google Docs (view only permissions) - Experimental
 - [ ] Google Slides (maybe)
 
 | Google Docs                         | Google Sheets                         |
