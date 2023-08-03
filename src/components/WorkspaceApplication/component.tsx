@@ -19,6 +19,7 @@ type PropsNew = {
 }
 
 // Checkbox component that takes isChecked and onChange props
+// this is very much tied to experimental features, but can be updated in the future
 const Checkbox = ({ isChecked, onChange }) => {
   const onEduClick = () => {
     chrome.tabs.create({
