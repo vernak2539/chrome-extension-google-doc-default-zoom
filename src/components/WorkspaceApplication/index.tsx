@@ -17,15 +17,13 @@ const WorkspaceApplication = ({
 }: Props) => {
   const [zoom, setZoom] = useStorage(storageKey, (storedZoom, isHydrating) => {
     // Helpful post https://discord.com/channels/946290204443025438/1080875092667551824/1080875092667551824
-    if (storedZoom) {
+    if (storedZoom !== undefined) {
       return storedZoom
     }
     if (isHydrating === undefined) {
       return NOT_READY
     }
-    if (storedZoom === undefined) {
-      return defaultZoom
-    }
+    return defaultZoom
   })
 
   // Note: this will set up a false zoom value for Sheets by default.
@@ -35,22 +33,15 @@ const WorkspaceApplication = ({
     getFeatureViewOnlyStorageKey(storageKey),
     (storedViewOnly, isHydrating) => {
       // Helpful post https://discord.com/channels/946290204443025438/1080875092667551824/1080875092667551824
-      if (storedViewOnly) {
+      if (storedViewOnly !== undefined) {
         return storedViewOnly
       }
       if (isHydrating === undefined) {
         return NOT_READY
       }
-      if (storedViewOnly === undefined) {
-        return false
-      }
+      return false
     }
   )
-
-  // we have not fetched the zoom value from storage, so we're not ready to render yet
-  // if (zoom === NOT_READY || viewOnly === NOT_READY) {
-  //   return
-  // }
 
   const updateZoomValue = useCallback(
     (value) => {
@@ -73,6 +64,11 @@ const WorkspaceApplication = ({
     },
     [setZoom]
   )
+
+  // we have not fetched the zoom value from storage, so we're not ready to render yet
+  if (zoom === NOT_READY || viewOnly === NOT_READY) {
+    return null
+  }
 
   const isCustomZoom = zoom && !zoomValues.includes(zoom)
 
