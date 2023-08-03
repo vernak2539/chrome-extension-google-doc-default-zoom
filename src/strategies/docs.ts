@@ -53,7 +53,7 @@ class DocsStrategy
    * */
   private async getIsViewOnlyEnabled() {
     if (!this.config.features.enableViewOnlyToggle) {
-      return Promise.resolve(false)
+      return false
     }
 
     const storageKey = getFeatureViewOnlyStorageKey(this.config.storageKey)
