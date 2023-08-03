@@ -27,7 +27,7 @@ class DocsStrategy
       console.log("zoomValue", zoomValue)
       console.log("isViewOnlyEnabled", isViewOnlyEnabled)
 
-      if (isViewOnlyEnabled && this.isViewOnly()) {
+      if (isViewOnlyEnabled && this.isUIViewOnly()) {
         this.uiExecuteDocsViewOnlyFlow(zoomValue)
       } else {
         this.uiExecuteFlow(zoomValue)
@@ -38,7 +38,7 @@ class DocsStrategy
   /*
    * This function determines if the page is in view only mode
    * */
-  private isViewOnly() {
+  private isUIViewOnly() {
     const zoomInputContainer = document.querySelector(
       this.config.uiElements.clickableZoomSelectId
     )
