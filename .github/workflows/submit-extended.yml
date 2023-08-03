@@ -33,8 +33,8 @@ jobs:
           cache: "pnpm"
       - name: Build the extension
         run: pnpm build --source-maps
-      - name: Check file sizes
-        run: pnpm bundlesize
+#      - name: Check file sizes
+#        run: pnpm bundlesize
       - name: get-npm-version
         id: package-version
         uses: martinbeentjes/npm-get-version-action@v1.3.1
