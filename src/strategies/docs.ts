@@ -24,9 +24,6 @@ class DocsStrategy
       this.getZoomValueFromStorage(),
       this.getIsViewOnlyEnabled()
     ]).then(([zoomValue, isViewOnlyEnabled]) => {
-      console.log("zoomValue", zoomValue)
-      console.log("isViewOnlyEnabled", isViewOnlyEnabled)
-
       if (isViewOnlyEnabled && this.isUIViewOnly()) {
         this.uiExecuteDocsViewOnlyFlow(zoomValue)
       } else {
