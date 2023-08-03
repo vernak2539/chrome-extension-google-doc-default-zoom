@@ -60,7 +60,7 @@ class DocsStrategy
 
   private uiExecuteDocsViewOnlyFlow(zoomValue: string) {
     // view only Docs don't allow for custom zoom levels, but rather only allow the predefined ones
-    let finalZoom = zoomValue
+    let finalZoomValue = zoomValue
 
     // 1. check if zoom value is included in predefined list
     const isPredefinedList = this.config.zoom.zoomValues.includes(
@@ -69,7 +69,10 @@ class DocsStrategy
 
     // 2. if not, find the closest zoom value in the predefined list (bias to towards higher)
     if (!isPredefinedList) {
-      finalZoom = getClosestZoomValue(this.config.zoom.zoomValues, zoomValue)
+      finalZoomValue = getClosestZoomValue(
+        this.config.zoom.zoomValues,
+        zoomValue
+      )
     }
 
     // 3. set zoom value (new flow)
@@ -102,7 +105,7 @@ class DocsStrategy
 
         let newZoomLevelElement = null
         for (let i = 0; i < zoomValueRows.length; i++) {
-          if (zoomValueRows[i].firstChild.textContent === zoomValue) {
+          if (zoomValueRows[i].firstChild.textContent === finalZoomValue) {
             newZoomLevelElement = zoomValueRows[i].firstChild
           }
         }
