@@ -62,5 +62,29 @@
   "ExtVersionsTabExtendedPermissionExplanation": {
     "message": "The elevated permission is required to set custom zoom values",
     "description": "Extra information saying why the elevated permission is required"
+  },
+  "ExperimentalFeaturesTabHeader": {
+    "message": "Experimental Features",
+    "description": "Header for tab page explaining experimental features"
+  },
+  "ExperimentalFeaturesTabDocsViewOnlyHeader": {
+    "message": "View Only Docs",
+    "description": "Header for view only docs experimental feature"
+  },
+  "ExperimentalFeaturesTabDocsViewOnlyContent1": {
+    "message": "This feature will enable the extension's functionality for Google Docs where a user only has viewer permissions.",
+    "description": "Content 1 for view only docs experimental feature"
+  },
+  "ExperimentalFeaturesTabDocsViewOnlyContent2": {
+    "message": "This feature is experimental due to the extension relying on certain elements being on the page. If they are removed, then it will stop functioning.",
+    "description": "Content 2 for view only docs experimental feature"
+  },
+  "ExperimentalFeaturesTabDocsViewOnlyContent3": {
+    "message": "This is different from the default behaviour because Google allows a \"linkage\" between elements that need to be clicked. Where on the menu toolbar, there is no such linkage.",
+    "description": "Content 3 for view only docs experimental feature"
+  },
+  "ExperimentalFeaturesTabDocsViewOnlyContent4": {
+    "message": "This extension already supports viewer permissions on Google Sheets. This is because the zoom input is still shown even when a user is only a viewer.",
+    "description": "Content 4 for view only docs experimental feature"
   }
 }
