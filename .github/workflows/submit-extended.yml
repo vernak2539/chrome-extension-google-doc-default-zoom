@@ -47,6 +47,7 @@ jobs:
         with:
           environment: production
           sourcemaps: "./build/chrome-mv3-prod"
+          url_prefix: "chrome-extension://mdgikencgfhineaememjagpkiclbdkka"
           ignore_empty: true
           version: ${{ steps.package-version.outputs.current-version }}
       - name: Remove sourcemaps from bundle
