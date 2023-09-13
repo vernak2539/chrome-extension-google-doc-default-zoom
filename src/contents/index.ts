@@ -31,7 +31,7 @@ relayMessage({ name: RELAY_EXECUTE_ENTER })
 relayMessage({ name: RELAY_GET_FEATURE_VIEW_ONLY_FROM_STORAGE })
 
 const currentApp = getCurrentApp()
-let strategy
+let strategy: DocsStrategy | SheetsStrategy
 
 switch (currentApp) {
   case "Docs":

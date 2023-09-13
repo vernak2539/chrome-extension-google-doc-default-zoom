@@ -96,7 +96,9 @@ export const workspaceAppUiStrategyConfigs: Record<
     storageKey: SHEETS_STORAGE_KEY,
     uiElements: {
       clickableZoomSelectId: "#t-zoom",
-      clickableZoomOptionClass: ".goog-menuitem"
+      clickableZoomOptionClass: ".goog-menuitem",
+      toolbarId: "#docs-toolbar",
+      menubarViewTabId: "#docs-view-menu"
     },
     zoom: {
       defaultZoom: SHEETS_DEFAULT_ZOOM,
