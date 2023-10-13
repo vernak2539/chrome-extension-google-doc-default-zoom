@@ -1,15 +1,15 @@
+import { getFeatureViewOnlyStorageKey } from "src/constants"
 import { getClosestZoomValue } from "src/utils/get-closest-zoom-value"
 import { getFeatureViewOnlyFromStorage } from "src/utils/get-feature-view-only-from-storage"
-import type { ExecutionLocation, UiStrategyConfig } from "../types"
-import type { AbstractBaseStrategyImpl } from "./base"
-import { AbstractBaseStrategy } from "./base"
+import { pause } from "src/utils/pause"
 import {
   clickDOMElement,
   getDOMElement,
   getDOMElementAndClick
 } from "src/utils/ui-helpers"
-import { pause } from "src/utils/pause"
-import { getFeatureViewOnlyStorageKey } from "src/constants"
+import type { ExecutionLocation, UiStrategyConfig } from "../types"
+import type { AbstractBaseStrategyImpl } from "./base"
+import { AbstractBaseStrategy } from "./base"
 
 class DocsStrategy
   extends AbstractBaseStrategy

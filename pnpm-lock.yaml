@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 dependencies:
   '@plasmohq/messaging':
     specifier: ^0.5.0
@@ -27,9 +31,6 @@ dependencies:
     version: 18.2.0(react@18.2.0)
 
 devDependencies:
-  '@plasmohq/prettier-plugin-sort-imports':
-    specifier: 4.0.1
-    version: 4.0.1(prettier@3.0.1)
   '@storybook/addon-a11y':
     specifier: ^7.2.1
     version: 7.2.1(@types/react-dom@18.2.7)(@types/react@18.2.18)(react-dom@18.2.0)(react@18.2.0)
@@ -84,6 +85,9 @@ devDependencies:
   prettier:
     specifier: 3.0.1
     version: 3.0.1
+  prettier-plugin-organize-imports:
+    specifier: ^3.2.3
+    version: 3.2.3(prettier@3.0.1)(typescript@5.1.6)
   prop-types:
     specifier: ^15.8.1
     version: 15.8.1
@@ -3302,24 +3306,6 @@ packages:
       - walrus
       - whiskers
     dev: false
-
-  /@plasmohq/prettier-plugin-sort-imports@4.0.1(prettier@3.0.1):
-    resolution: {integrity: sha512-pEIkcMZVqqqnFWoe3xiVGpXCq8rf+6EVGGSJqUMvD3zMAzHNu0pR1hdKjlhdwPYEzi3naResRJzfwmRU8hRzkA==}
-    peerDependencies:
-      prettier: 3.x
-    dependencies:
-      '@babel/core': 7.22.9
-      '@babel/generator': 7.22.9
-      '@babel/parser': 7.22.7
-      '@babel/traverse': 7.22.8
-      '@babel/types': 7.22.5
-      javascript-natural-sort: 0.7.1
-      lodash.clone: 4.5.0
-      lodash.isequal: 4.5.0
-      prettier: 3.0.1
-    transitivePeerDependencies:
-      - supports-color
-    dev: true
 
   /@plasmohq/storage@1.7.2(react@18.2.0):
     resolution: {integrity: sha512-N8hliSa3XJftAA5gZASKVVMbZ+jxTlNIehRTNT7rIgYhm+PNGXa1xZkuAlv+JDFIUuYMI84/xvVqivKedld73Q==}
@@ -8289,10 +8275,6 @@ packages:
       minimatch: 3.1.2
     dev: true
 
-  /javascript-natural-sort@0.7.1:
-    resolution: {integrity: sha512-nO6jcEfZWQXDhOiBtG2KvKyEptz7RVbpGP4vTD2hLBdmNQSsCiicO2Ioinv6UI4y9ukqnBpy+XZ9H6uLNgJTlw==}
-    dev: true
-
   /jest-haste-map@29.6.2:
     resolution: {integrity: sha512-+51XleTDAAysvU8rT6AnS1ZJ+WHVNqhj1k6nTvN2PYP+HjU3kqlaKQ1Lnw3NYW3bm2r8vq82X0Z1nDDHZMzHVA==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
@@ -8726,16 +8708,8 @@ packages:
       p-locate: 5.0.0
     dev: true
 
-  /lodash.clone@4.5.0:
-    resolution: {integrity: sha512-GhrVeweiTD6uTmmn5hV/lzgCQhccwReIVRLHp7LT4SopOjqEZ5BbX8b5WWEtAKasjmy8hR7ZPwsYlxRCku5odg==}
-    dev: true
-
   /lodash.debounce@4.0.8:
     resolution: {integrity: sha512-FT1yDzDYEoYWhnSGnpE/4Kj1fLZkDFyqRb7fNt6FdYOSxlUWAtp42Eh6Wb0rGIv/m9Bgo7x4GhQbm5Ys4SG5ow==}
-    dev: true
-
-  /lodash.isequal@4.5.0:
-    resolution: {integrity: sha512-pDo3lu8Jhfjqls6GkMgpahsF9kCyayhgykjyLMNFTKWrpVdAQtYyB4muAMWozBB4ig/dtWAmsMxLEI8wuz+DYQ==}
     dev: true
 
   /lodash.sortby@4.7.0:
@@ -9747,6 +9721,23 @@ packages:
       tar-fs: 2.1.1
       tunnel-agent: 0.6.0
     dev: false
+
+  /prettier-plugin-organize-imports@3.2.3(prettier@3.0.1)(typescript@5.1.6):
+    resolution: {integrity: sha512-KFvk8C/zGyvUaE3RvxN2MhCLwzV6OBbFSkwZ2OamCrs9ZY4i5L77jQ/w4UmUr+lqX8qbaqVq6bZZkApn+IgJSg==}
+    peerDependencies:
+      '@volar/vue-language-plugin-pug': ^1.0.4
+      '@volar/vue-typescript': ^1.0.4
+      prettier: '>=2.0'
+      typescript: '>=2.9'
+    peerDependenciesMeta:
+      '@volar/vue-language-plugin-pug':
+        optional: true
+      '@volar/vue-typescript':
+        optional: true
+    dependencies:
+      prettier: 3.0.1
+      typescript: 5.1.6
+    dev: true
 
   /prettier@2.8.8:
     resolution: {integrity: sha512-tdN8qQGvNjw4CHbY+XXk0JgCXn9QiF21a55rBe5LJAU+kDyC4WQn4+awm2Xfk2lQMk5fKup9XgzTZtGkjBdP9Q==}

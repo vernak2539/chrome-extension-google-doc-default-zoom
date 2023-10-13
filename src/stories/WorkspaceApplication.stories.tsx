@@ -4,10 +4,8 @@ import WorkspaceApplication from "../components/WorkspaceApplication/component"
 import WorkspaceApplicationList from "../components/WorkspaceApplicationList"
 import {
   DOCS_DEFAULT_ZOOM,
-  DOCS_STORAGE_KEY,
   DOCS_ZOOM_VALUES,
   SHEETS_DEFAULT_ZOOM,
-  SHEETS_STORAGE_KEY,
   SHEETS_ZOOM_VALUES
 } from "../constants"
 import * as styles from "../style.module.css"

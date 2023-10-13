@@ -2,7 +2,6 @@ import classnames from "classnames"
 import React, { useCallback, useEffect, useState } from "react"
 
 import * as style from "../../style.module.css"
-import type { WorkspaceApp } from "../../types"
 import localize from "../../utils/localize"
 import type { ZoomInputProps } from "../shared-props"
 

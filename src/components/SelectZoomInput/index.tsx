@@ -1,9 +1,8 @@
 import classnames from "classnames"
-import React, { useId } from "react"
 import type { ChangeEvent } from "react"
+import { useId } from "react"
 
 import * as style from "../../style.module.css"
-import type { WorkspaceApp } from "../../types"
 import localize from "../../utils/localize"
 import type { ZoomInputProps } from "../shared-props"
 
