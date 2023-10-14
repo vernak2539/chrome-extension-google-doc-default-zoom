@@ -43,7 +43,8 @@ export const GoogleDocs: Story = {
     features: {
       customZoomInput: false,
       enableViewOnlyToggle: false
-    }
+    },
+    featureDocsViewOnlyEnabled: false
   }
 }
 
@@ -58,7 +59,8 @@ export const GoogleDocsCustomZoom: Story = {
     features: {
       customZoomInput: true,
       enableViewOnlyToggle: false
-    }
+    },
+    featureDocsViewOnlyEnabled: false
   }
 }
 
@@ -73,7 +75,8 @@ export const GoogleDocsViewOnly: Story = {
     features: {
       customZoomInput: false,
       enableViewOnlyToggle: true
-    }
+    },
+    featureDocsViewOnlyEnabled: true
   }
 }
 
@@ -88,7 +91,8 @@ export const GoogleSheets: Story = {
     features: {
       customZoomInput: false,
       enableViewOnlyToggle: false
-    }
+    },
+    featureDocsViewOnlyEnabled: false
   }
 }
 
@@ -103,6 +107,7 @@ export const GoogleSheetsCustomZoom: Story = {
     features: {
       customZoomInput: true,
       enableViewOnlyToggle: false
-    }
+    },
+    featureDocsViewOnlyEnabled: false
   }
 }
