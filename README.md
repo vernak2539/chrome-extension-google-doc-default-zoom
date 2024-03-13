@@ -12,14 +12,14 @@ Supported Google Workspace Products:
 - [ ] Google Slides (maybe)
 
 | Google Docs                         | Google Sheets                         |
-|-------------------------------------|---------------------------------------|
+| ----------------------------------- | ------------------------------------- |
 | ![](./docs/img/docs-screenshot.png) | ![](./docs/img/sheets-screenshot.png) |
 
 ## Find it on Chrome Web Store
 
 - [Google Workspace Zoom Default](https://chrome.google.com/webstore/detail/google-docs-zoom-default/nflkcdlimipkgbacnfnhfecjgmojhklo)
 - [Google Workspace Zoom Default - Extended](https://chrome.google.com/webstore/detail/google-workspace-zoom-def/mdgikencgfhineaememjagpkiclbdkka)
-    - In exchange for allowing elevated permissions, this extension provides ability to set custom zoom levels (as opposed to only predefined values)
+  - In exchange for allowing elevated permissions, this extension provides ability to set custom zoom levels (as opposed to only predefined values)
 
 ## Localisation
 
@@ -29,19 +29,6 @@ I've used Google Translate the values for non-English languages. I know they're 
 If you feel like helping me out, would be much appreciated if you could submit a new issue, using the
 "[Update/Add Locale Information](https://github.com/vernak2539/chrome-extension-google-doc-default-zoom/issues/new/choose)"
 issue template. Or, reach out to me, and we can have a chat!
-
-## Does it work with the Google Docs redesign?
-
-Yes, it should work with the new design! I didn't even have to do anything. I'll continue to monitor this as we go, but
-if you see any problems please submit an issue!
-
-**New Design**
-
-![](./docs/img/google-docs-new-design.png)
-
-**Current/Old Design**
-
-![](./docs/img/google-docs-current-old-design.png)
 
 ## Motivation
 
@@ -72,6 +59,19 @@ It's pretty bare bones now and likely will have some quirks. This is likely due 
 
 Issues are always appreciated, and I'll try to answer accordingly. Please remember that I do this in my spare time and
 Chrome Extensions and Plasmo are quite new to me.
+
+## Does it work with the Google Docs redesign?
+
+Yes, it should work with the new design! I didn't even have to do anything. I'll continue to monitor this as we go, but
+if you see any problems please submit an issue!
+
+**New Design**
+
+![](./docs/img/google-docs-new-design.png)
+
+**Current/Old Design**
+
+![](./docs/img/google-docs-current-old-design.png)
 
 ## Data Privacy
 
