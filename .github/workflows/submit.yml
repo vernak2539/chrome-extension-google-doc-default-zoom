@@ -13,29 +13,27 @@ jobs:
     env:
       PLASMO_PUBLIC_SENTRY_DSN: ${{ vars.PLASMO_PUBLIC_SENTRY_DSN }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Cache pnpm modules
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.pnpm-store
           key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-
-      - uses: pnpm/action-setup@v2.2.4
+      - uses: pnpm/action-setup@v3
         with:
-          version: 8.2.0
+          version: 8.x
           run_install: true
-      - name: Use Node.js 16.x
-        uses: actions/setup-node@v3.4.1
+      - name: Use Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: 16.x
+          node-version: 20
           cache: "pnpm"
       - name: Transform to "Google Workspace Zoom Default"
         run: pnpm transform-ext
       - name: Build the extension
         run: pnpm build --source-maps
-#      - name: Check file sizes
-#        run: pnpm bundlesize
       - name: get-npm-version
         id: package-version
         uses: martinbeentjes/npm-get-version-action@v1.3.1
