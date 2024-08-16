@@ -1,0 +1,90 @@
+{
+  "extensionName": {
+    "message": "Google Workspace - Масштаб по умолчанию",
+    "description": "Название расширения."
+  },
+  "extensionNameExtended": {
+    "message": "Google Workspace - Масштаб по умолчанию - Расширенная версия",
+    "description": "Название расширения с дополнительными функциями, требующими более высоких разрешений"
+  },
+  "extensionDescription": {
+    "message": "Устанавливает уровень масштаба по умолчанию для вашего приложения Google Workspace при его первой загрузке.",
+    "description": "Описание расширения"
+  },
+  "popupMainSectionDescription": {
+    "message": "Выберите уровень масштаба, который вы хотите использовать в приложениях Google Workspace при их первой загрузке.",
+    "description": "Сообщает пользователю о необходимости выбрать уровень масштаба для отдельных приложений."
+  },
+  "popupApplicationsSectionTitle": {
+    "message": "Приложения",
+    "description": "Заголовок раздела 'Приложения'"
+  },
+  "popupApplicationZoomSelectAriaLabel": {
+    "message": "Доступные значения масштаба",
+    "description": "Возможные значения масштаба для выбора"
+  },
+  "popupApplicationCustomZoomInputPlaceholder": {
+    "message": "Пользовательский масштаб",
+    "description": "Подсказка в поле ввода пользовательского уровня масштаба"
+  },
+  "popupToExtensionVersionsTab": {
+    "message": "Узнайте о разных версиях этого расширения",
+    "description": "Ссылка из всплывающего окна на вкладку, где описаны различные версии расширения"
+  },
+  "popupViewOnlyDocsExperimentalLabel": {
+    "message": "экспериментальный",
+    "description": "Метка для экспериментальной функции документов только для просмотра"
+  },
+  "popupViewOnlyDocsExperimentalContent": {
+    "message": "Включить для документов только для просмотра",
+    "description": "Содержание для экспериментальной функции документов только для просмотра"
+  },
+  "ExtVersionsTabHeader": {
+    "message": "Версии этого расширения",
+    "description": "Заголовок страницы вкладки, объясняющий различные версии расширения"
+  },
+  "ExtVersionsTabAppsSupportedHeader": {
+    "message": "Поддерживаемые приложения Google Workspace",
+    "description": "Заголовок раздела поддерживаемых приложений Google Workspace"
+  },
+  "ExtVersionsTabFunctionalityIncludedHeader": {
+    "message": "Включенная функциональность",
+    "description": "Заголовок раздела о функциональности, включенной в каждое расширение"
+  },
+  "ExtVersionsTabFunctionalityIncludedStandardZoom": {
+    "message": "Стандартные уровни масштаба",
+    "description": "Функциональность стандартного уровня масштаба"
+  },
+  "ExtVersionsTabFunctionalityIncludedCustomZoom": {
+    "message": "Пользовательские уровни масштаба",
+    "description": "Функциональность пользовательского уровня масштаба"
+  },
+  "ExtVersionsTabExtendedPermissionExplanation": {
+    "message": "Для установки пользовательских значений масштаба требуется повышенное разрешение",
+    "description": "Дополнительная информация о том, почему требуется повышенное разрешение"
+  },
+  "ExperimentalFeaturesTabHeader": {
+    "message": "Экспериментальные функции",
+    "description": "Заголовок страницы вкладки, объясняющий экспериментальные функции"
+  },
+  "ExperimentalFeaturesTabDocsViewOnlyHeader": {
+    "message": "Документы только для просмотра",
+    "description": "Заголовок для экспериментальной функции документов только для просмотра"
+  },
+  "ExperimentalFeaturesTabDocsViewOnlyContent1": {
+    "message": "Эта функция позволит включить функциональность расширения для Google Документов, где у пользователя есть только разрешения на просмотр.",
+    "description": "Содержание 1 для экспериментальной функции документов только для просмотра"
+  },
+  "ExperimentalFeaturesTabDocsViewOnlyContent2": {
+    "message": "Эта функция является экспериментальной, так как расширение зависит от наличия определенных элементов на странице. Если они будут удалены, функция перестанет работать.",
+    "description": "Содержание 2 для экспериментальной функции документов только для просмотра"
+  },
+  "ExperimentalFeaturesTabDocsViewOnlyContent3": {
+    "message": "Это отличается от поведения по умолчанию, поскольку Google допускает \"связь\" между элементами, которые нужно нажать. В меню на панели инструментов такой связи нет.",
+    "description": "Содержание 3 для экспериментальной функции документов только для просмотра"
+  },
+  "ExperimentalFeaturesTabDocsViewOnlyContent4": {
+    "message": "Это расширение уже поддерживает разрешения на просмотр в Google Таблицах. Это потому, что поле ввода масштаба все еще отображается, даже если пользователь имеет только права на просмотр.",
+    "description": "Содержание 4 для экспериментальной функции документов только для просмотра"
+  }
+}
