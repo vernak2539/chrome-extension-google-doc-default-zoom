@@ -105,7 +105,8 @@ class DocsStrategy
 
         let newZoomLevelElement = null
         for (let i = 0; i < zoomValueRows.length; i++) {
-          if (zoomValueRows[i].firstChild.textContent === finalZoomValue) {
+          const rowContent = zoomValueRows[i].firstChild.textContent
+          if (rowContent && rowContent.includes(finalZoomValue)) {
             newZoomLevelElement = zoomValueRows[i].firstChild
           }
         }
