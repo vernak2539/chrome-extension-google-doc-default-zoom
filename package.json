@@ -16,11 +16,11 @@
   },
   "dependencies": {
     "@plasmohq/messaging": "^0.6.2",
-    "@plasmohq/storage": "^1.9.3",
+    "@plasmohq/storage": "^1.11.0",
     "@sentry/browser": "^7.106.1",
     "@sentry/react": "^7.106.1",
     "classnames": "^2.5.1",
-    "plasmo": "0.85.0",
+    "plasmo": "0.88.0",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
