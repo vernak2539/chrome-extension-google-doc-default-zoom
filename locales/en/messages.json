@@ -27,6 +27,10 @@
     "message": "Custom zoom",
     "description": "Placeholder used in the custom zoom input box"
   },
+  "popupDocsDropdownFitSelection": {
+    "message": "Fit",
+    "description": "'Fit' value in the dropdown for Google Docs zoom"
+  },
   "popupToExtensionVersionsTab": {
     "message": "Learn about the different versions of this extension",
     "description": "Link from popup to tab that details different versions of extension"

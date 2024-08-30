@@ -27,6 +27,10 @@
     "message": "カスタムズーム",
     "description": "Placeholder used in the custom zoom input box"
   },
+  "popupDocsDropdownFitSelection": {
+    "message": "フィット",
+    "description": "Google ドキュメントのズームのドロップダウンリストにある「フィット」の値"
+  },
   "popupToExtensionVersionsTab": {
     "message": "この拡張機能の異なるバージョンについて学ぶ",
     "description": "Link from popup to tab that details different versions of extension"
