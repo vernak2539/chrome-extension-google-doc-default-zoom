@@ -1,12 +1,14 @@
 import type {
   DocsStorageKey,
+  DocsZoomValueFit,
   DocsZoomValues,
   SheetsStorageKey,
   SheetsZoomValues,
   UiStrategyConfig,
   WorkspaceApp,
   WorkspaceAppName
-} from "./types"
+} from "src/types"
+import localize from "src/utils/localize"
 
 export const OBSERVE_EXECUTION_LIMIT = 1000
 
@@ -18,7 +20,7 @@ export const RELAY_EXECUTE_ENTER = "execute-enter"
 /**  Workspace Application: Docs - Start **/
 export const DOCS_STORAGE_KEY: DocsStorageKey = "zoomValue"
 export const DOCS_ZOOM_VALUES: DocsZoomValues = [
-  "Fit",
+  localize("popupDocsDropdownFitSelection") as DocsZoomValueFit,
   "50%",
   "75%",
   "100%",

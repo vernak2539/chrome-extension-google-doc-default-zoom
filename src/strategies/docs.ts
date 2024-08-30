@@ -1,6 +1,7 @@
 import { getFeatureViewOnlyStorageKey } from "src/constants"
 import { getClosestZoomValue } from "src/utils/get-closest-zoom-value"
 import { getFeatureViewOnlyFromStorage } from "src/utils/get-feature-view-only-from-storage"
+import localize from "src/utils/localize"
 import { pause } from "src/utils/pause"
 import {
   clickDOMElement,
@@ -96,9 +97,11 @@ class DocsStrategy
       })
       .then(() => {
         // This is hacky, not sure a better way to do this...
-        const zoomValueContainer = getDOMElement('[aria-label^="Fit"]').closest(
-          ".goog-menu"
-        )
+        const fitValue = localize("popupDocsDropdownFitSelection")
+        const zoomValueContainer = getDOMElement(
+          `[aria-label^="${fitValue}"]`
+        ).closest(".goog-menu")
+
         const zoomValueRows = zoomValueContainer.querySelectorAll(
           ".goog-menuitem.apps-menuitem"
         )

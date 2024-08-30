@@ -19,10 +19,18 @@ export interface ExecuteEnterRequestBody {
 }
 
 export type WorkspaceAppName = "Docs" | "Sheets"
+export type DocsZoomValueFit =
+  | "Fit"
+  | "Adatta"
+  | "Anpassen"
+  | "Ajuster"
+  | "Подогнать"
+  | "フィット"
+  | "Ajustar"
 
 export type DocsStorageKey = "zoomValue"
 export type DocsZoomValues = [
-  "Fit",
+  DocsZoomValueFit,
   "50%",
   "75%",
   "100%",

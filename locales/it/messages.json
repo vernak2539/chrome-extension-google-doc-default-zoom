@@ -1,0 +1,94 @@
+{
+  "extensionName": {
+    "message": "Zoom predefinito di Google Workspace",
+    "description": "Nome dell'estensione."
+  },
+  "extensionNameExtended": {
+    "message": "Zoom predefinito di Google Workspace - Esteso",
+    "description": "Nome dell'estensione con funzionalità extra che richiedono autorizzazioni più elevate"
+  },
+  "extensionDescription": {
+    "message": "Imposta lo zoom predefinito della tua applicazione Google Workspace quando la carichi per la prima volta.",
+    "description": "Descrizione dell'estensione"
+  },
+  "popupMainSectionDescription": {
+    "message": "Seleziona il livello di zoom che desideri utilizzare nelle tue applicazioni Google Workspace quando le carichi per la prima volta.",
+    "description": "Indica all'utente di selezionare il livello di zoom per le singole applicazioni."
+  },
+  "popupApplicationsSectionTitle": {
+    "message": "Applicazioni",
+    "description": "Intestazione per la sezione 'Applicazioni'"
+  },
+  "popupApplicationZoomSelectAriaLabel": {
+    "message": "Valori di zoom disponibili",
+    "description": "Possibili valori di zoom tra cui scegliere"
+  },
+  "popupApplicationCustomZoomInputPlaceholder": {
+    "message": "Zoom personalizzato",
+    "description": "Segnaposto utilizzato nel campo di input dello zoom personalizzato"
+  },
+  "popupDocsDropdownFitSelection": {
+    "message": "Adatta",
+    "description": "Valore 'Adatta' nel menu a discesa per lo zoom di Google Documenti"
+  },
+  "popupToExtensionVersionsTab": {
+    "message": "Scopri le diverse versioni di questa estensione",
+    "description": "Link dal popup alla scheda che descrive le diverse versioni dell'estensione"
+  },
+  "popupViewOnlyDocsExperimentalLabel": {
+    "message": "sperimentale",
+    "description": "Etichetta per la funzione sperimentale di visualizzazione solo documenti"
+  },
+  "popupViewOnlyDocsExperimentalContent": {
+    "message": "Attiva per i documenti di sola visualizzazione",
+    "description": "Contenuto per la funzione sperimentale di visualizzazione solo documenti"
+  },
+  "ExtVersionsTabHeader": {
+    "message": "Versioni di questa estensione",
+    "description": "Intestazione per la pagina della scheda che spiega le diverse versioni dell'estensione"
+  },
+  "ExtVersionsTabAppsSupportedHeader": {
+    "message": "Applicazioni Google Workspace supportate",
+    "description": "Intestazione per la sezione delle applicazioni Google Workspace supportate"
+  },
+  "ExtVersionsTabFunctionalityIncludedHeader": {
+    "message": "Funzionalità incluse",
+    "description": "Intestazione per le funzionalità incluse in ciascuna estensione"
+  },
+  "ExtVersionsTabFunctionalityIncludedStandardZoom": {
+    "message": "Livelli di zoom standard",
+    "description": "Funzionalità dei livelli di zoom standard"
+  },
+  "ExtVersionsTabFunctionalityIncludedCustomZoom": {
+    "message": "Livelli di zoom personalizzati",
+    "description": "Funzionalità dei livelli di zoom personalizzati"
+  },
+  "ExtVersionsTabExtendedPermissionExplanation": {
+    "message": "L'autorizzazione elevata è necessaria per impostare valori di zoom personalizzati",
+    "description": "Informazioni aggiuntive che spiegano perché è necessaria l'autorizzazione elevata"
+  },
+  "ExperimentalFeaturesTabHeader": {
+    "message": "Funzionalità sperimentali",
+    "description": "Intestazione per la pagina della scheda che spiega le funzionalità sperimentali"
+  },
+  "ExperimentalFeaturesTabDocsViewOnlyHeader": {
+    "message": "Documenti di sola visualizzazione",
+    "description": "Intestazione per la funzione sperimentale di visualizzazione solo documenti"
+  },
+  "ExperimentalFeaturesTabDocsViewOnlyContent1": {
+    "message": "Questa funzione abiliterà la funzionalità dell'estensione per Google Documenti quando un utente ha solo autorizzazioni di visualizzazione.",
+    "description": "Contenuto 1 per la funzione sperimentale di visualizzazione solo documenti"
+  },
+  "ExperimentalFeaturesTabDocsViewOnlyContent2": {
+    "message": "Questa funzione è sperimentale perché l'estensione si basa su determinati elementi presenti nella pagina. Se vengono rimossi, smetterà di funzionare.",
+    "description": "Contenuto 2 per la funzione sperimentale di visualizzazione solo documenti"
+  },
+  "ExperimentalFeaturesTabDocsViewOnlyContent3": {
+    "message": "Questo è diverso dal comportamento predefinito perché Google consente un \"collegamento\" tra gli elementi che devono essere cliccati. Dove nella barra degli strumenti del menu non esiste tale collegamento.",
+    "description": "Contenuto 3 per la funzione sperimentale di visualizzazione solo documenti"
+  },
+  "ExperimentalFeaturesTabDocsViewOnlyContent4": {
+    "message": "Questa estensione supporta già le autorizzazioni di visualizzazione su Google Fogli. Questo perché l'input dello zoom viene ancora mostrato anche quando un utente è solo un visualizzatore.",
+    "description": "Contenuto 4 per la funzione sperimentale di visualizzazione solo documenti"
+  }
+}
