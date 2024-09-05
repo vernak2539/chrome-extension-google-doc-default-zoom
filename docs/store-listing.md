@@ -73,3 +73,18 @@ Une fois que vous avez défini le niveau de zoom souhaité, le niveau de zoom se
 Si vous souhaitez m'aider à traduire ceci dans des langues autres que l'anglais, n'hésitez pas à me contacter !!
 
 Si vous souhaitez utiliser vos propres valeurs de zoom personnalisées, veuillez consulter mon autre extension (https://chrome.google.com/webstore/detail/google-workspace-zoom-def/mdgikencgfhineaememjagpkiclbdkka).
+
+## Italian (it)
+
+Stanco di dover cambiare lo zoom delle tue applicazioni Google Workspace al primo caricamento perché il testo è troppo piccolo? Bene, questo dovrebbe aiutarti.
+
+Questa estensione ti consentirà di impostare uno "zoom predefinito" per le seguenti applicazioni Google Workspace:
+
+- Google Docs
+- Google Sheets
+
+Una volta impostato il livello di zoom desiderato, il livello di zoom verrà modificato ogni volta che carichi un'applicazione Google Workspace.
+
+Se vuoi aiutarmi a tradurre questo per lingue diverse dall'inglese, contattami!
+
+Se vuoi utilizzare i tuoi valori di zoom personalizzati, dai un'occhiata alla mia altra estensione (https://chrome.google.com/webstore/detail/google-workspace-zoom-def/mdgikencgfhineaememjagpkiclbdkka).
