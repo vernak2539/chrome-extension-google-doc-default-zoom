@@ -88,3 +88,18 @@ Una volta impostato il livello di zoom desiderato, il livello di zoom verrà mod
 Se vuoi aiutarmi a tradurre questo per lingue diverse dall'inglese, contattami!
 
 Se vuoi utilizzare i tuoi valori di zoom personalizzati, dai un'occhiata alla mia altra estensione (https://chrome.google.com/webstore/detail/google-workspace-zoom-def/mdgikencgfhineaememjagpkiclbdkka).
+
+## Russian (ru)
+
+Устали постоянно менять масштаб в приложениях Google Workspace при первой загрузке, потому что текст слишком мелкий? Тогда это вам поможет!
+
+Это расширение позволит вам установить "масштаб по умолчанию" для следующих приложений Google Workspace:
+
+- Google Docs
+- Google Sheets
+
+После того, как вы установите желаемый уровень масштабирования, он будет применяться при каждой загрузке любого приложения Google Workspace.
+
+Если вы хотите помочь мне перевести это на другие языки, кроме английского, пожалуйста, свяжитесь со мной!
+
+Если вы хотите использовать свои собственные значения масштабирования, ознакомьтесь с моим другим расширением (https://chrome.google.com/webstore/detail/google-workspace-zoom-def/mdgikencgfhineaememjagpkiclbdkka).

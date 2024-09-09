@@ -100,3 +100,18 @@ Se vuoi aiutarmi a tradurre questo per lingue diverse dall'inglese, contattami!
 Questa versione include la funzionalità di consentire livelli di zoom personalizzati. Per fare ciò, l'estensione richiede permessi avanzati.
 
 Non preoccuparti! Se non desideri accettare i permessi avanzati, puoi utilizzare la mia altra estensione, che consente l'utilizzo di valori di zoom predefiniti. È disponibile qui (https://chrome.google.com/webstore/detail/google-workspace-zoom-def/nflkcdlimipkgbacnfnhfecjgmojhklo).
+
+## Russian (ru)
+
+Это расширение позволит вам установить «масштаб по умолчанию» для следующих приложений Google Workspace:
+
+- Google Docs
+- Google Sheets
+
+После того, как вы установите желаемый уровень масштабирования, он будет применяться каждый раз при загрузке любого приложения Google Workspace.
+
+Если вы хотите помочь мне перевести это на другие языки, кроме английского, пожалуйста, свяжитесь со мной!
+
+Эта версия расширения включает в себя функцию, позволяющую устанавливать пользовательские уровни масштабирования. Для этого расширению требуются повышенные разрешения.
+
+Не волнуйтесь! Если вы не хотите предоставлять расширению повышенные разрешения, вы можете использовать моё другое расширение, которое позволяет использовать заранее определенные значения масштабирования. Оно доступно здесь (https://chrome.google.com/webstore/detail/google-workspace-zoom-def/nflkcdlimipkgbacnfnhfecjgmojhklo).
