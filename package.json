@@ -4,6 +4,7 @@
   "version": "0.7.3",
   "description": "__MSG_extensionDescription__",
   "author": "vernak2539",
+  "repository": "github:vernak2539/chrome-extension-google-doc-default-zoom",
   "scripts": {
     "dev": "plasmo dev",
     "build": "plasmo build",
