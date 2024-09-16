@@ -4,7 +4,6 @@ about: Use this issue type to update translations and/or add new locale support
 title: Add Locale Information for XX locale
 labels: localisation
 assignees: vernak2539
-
 ---
 
 ## Localisation Request
@@ -18,32 +17,28 @@ assignees: vernak2539
 
 <INSERT_LOCALE>
 
-## Localisation Information
+## Update existing translation
 
-### Image for Context
+**DELETE THIS SECTION IF NOT UPDATING AN EXISTING TRANSLATION**
 
-![](./img-localisation-context.png)
+Please follow the steps below to update an existing translation:
 
-### Localisation Values
+1. Update the value in the English translations file (`locales/en/messages.json`)
+2. Update all other translation files based on the changes you made in the English translations file
 
-#### Chrome Extension Title
+## Add support for new locale
 
-**English:** "Google Workspace Zoom Default"
-**New Translation:** "<INSERT>"
+**DELETE THIS SECTION IF NOT ADDING A NEW LOCALE**
 
-#### Chrome Web Store Description
+Please follow the steps below to add support for a new locale:
 
-**English:** "Set the default zoom of your Google Workspace application when first loading it."
-**New Translation:** "<INSERT>"
+1. Create a new file in the `locales` directory with the appropriate language code (e.g. `locales/fr/messages.json` for French)
+2. Copy the structure from the English translation file (e.g. `locales/en/messages.json`) and translate the values into the new language
 
-#### Description in Chrome Extension Popup (_purple_)
+### Images for Context
 
-**English:** "Select the zoom level you'd like your Google Workspace Applications to use when they first load."
-**New Translation:** "<INSERT>"
+Below are screenshots of the extension with the English language selected.
 
-#### "Applications" Header in Popup (_red dotted_)
-
-Note: "Applications" refers to the Google Workspace applications such as "Google Docs" or "Google Sheets"
-
-**English:** "Applications"
-**New Translation:** "<INSERT>"
+![](./img-localisation-popup.png)
+![](./img-localisation-page-versions.png)
+![](./img-localisation-page-experimental-features.png)
