@@ -39,6 +39,8 @@ Please follow the steps below to add support for a new locale:
 
 Below are screenshots of the extension with the English language selected.
 
-![](./img-localisation-popup.png)
-![](./img-localisation-page-versions.png)
-![](./img-localisation-page-experimental-features.png)
+![](https://raw.githubusercontent.com/vernak2539/chrome-extension-google-doc-default-zoom/main/.github/ISSUE_TEMPLATE/img-localisation-popup.png)
+
+![](https://raw.githubusercontent.com/vernak2539/chrome-extension-google-doc-default-zoom/main/.github/ISSUE_TEMPLATE/img-localisation-page-versions.png)
+
+![](https://raw.githubusercontent.com/vernak2539/chrome-extension-google-doc-default-zoom/main/.github/ISSUE_TEMPLATE/img-localisation-page-experimental-features.png)
