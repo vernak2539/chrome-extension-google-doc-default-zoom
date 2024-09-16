@@ -22,10 +22,14 @@ const CheckList = ({ title, data }) => {
 };
 
 const RequiredPermissions = ({ permissions }) => {
+  const requiredPermissionsTitle = localize(
+    "ExtVersionsTabFunctionalityRequiredPermissionsHeader"
+  );
+
   return (
     <>
       <p>
-        <strong>Chrome Extension Permissions Required:</strong>
+        <strong>{requiredPermissionsTitle}</strong>
       </p>
       <p>{permissions.length > 0 ? permissions.join(", ") : "None"}</p>
     </>
