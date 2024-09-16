@@ -15,17 +15,17 @@ importers:
         specifier: ^1.11.0
         version: 1.11.0(react@18.2.0)
       '@sentry/browser':
-        specifier: ^7.106.1
-        version: 7.106.1
+        specifier: ^8.30.0
+        version: 8.30.0
       '@sentry/react':
-        specifier: ^7.106.1
-        version: 7.106.1(react@18.2.0)
+        specifier: ^8.30.0
+        version: 8.30.0(react@18.2.0)
       classnames:
         specifier: ^2.5.1
         version: 2.5.1
       plasmo:
         specifier: 0.88.0
-        version: 0.88.0(react-dom@18.2.0)(react@18.2.0)
+        version: 0.88.0(@swc/core@1.4.7(@swc/helpers@0.5.6))(@swc/helpers@0.5.6)(ejs@3.1.9)(handlebars@4.7.8)(lodash@4.17.21)(postcss@8.4.35)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(srcset@4.0.0)
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -41,7 +41,7 @@ importers:
         version: 3.0.0(@storybook/addon-actions@8.0.0)(react@18.2.0)
       '@storybook/addon-essentials':
         specifier: ^8.0.0
-        version: 8.0.0(@types/react@18.2.65)(react-dom@18.2.0)(react@18.2.0)
+        version: 8.0.0(@types/react@18.2.65)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@storybook/addon-interactions':
         specifier: ^8.0.0
         version: 8.0.0
@@ -50,13 +50,13 @@ importers:
         version: 8.0.0(react@18.2.0)
       '@storybook/blocks':
         specifier: ^8.0.0
-        version: 8.0.0(@types/react@18.2.65)(react-dom@18.2.0)(react@18.2.0)
+        version: 8.0.0(@types/react@18.2.65)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@storybook/react':
         specifier: ^8.0.0
-        version: 8.0.0(react-dom@18.2.0)(react@18.2.0)(typescript@5.4.2)
+        version: 8.0.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.4.2)
       '@storybook/react-vite':
         specifier: ^8.0.0
-        version: 8.0.0(react-dom@18.2.0)(react@18.2.0)(typescript@5.4.2)(vite@5.1.6)
+        version: 8.0.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(rollup@4.13.0)(typescript@5.4.2)(vite@5.1.6(@types/node@20.11.27)(less@4.2.0)(lightningcss@1.24.0)(sass@1.71.1))
       '@storybook/testing-library':
         specifier: ^0.2.2
         version: 0.2.2
@@ -74,7 +74,7 @@ importers:
         version: 18.2.22
       '@vitejs/plugin-react':
         specifier: ^4.2.1
-        version: 4.2.1(vite@5.1.6)
+        version: 4.2.1(vite@5.1.6(@types/node@20.11.27)(less@4.2.0)(lightningcss@1.24.0)(sass@1.71.1))
       bundlesize2:
         specifier: ^0.0.31
         version: 0.0.31
@@ -95,13 +95,13 @@ importers:
         version: 15.8.1
       storybook:
         specifier: ^8.0.0
-        version: 8.0.0(react-dom@18.2.0)(react@18.2.0)
+        version: 8.0.0(@babel/preset-env@7.24.0(@babel/core@7.24.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       typescript:
         specifier: 5.4.2
         version: 5.4.2
       vite:
         specifier: ^5.1.6
-        version: 5.1.6(@types/node@20.11.27)
+        version: 5.1.6(@types/node@20.11.27)(less@4.2.0)(lightningcss@1.24.0)(sass@1.71.1)
 
 packages:
 
@@ -2105,43 +2105,43 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@sentry-internal/feedback@7.106.1':
-    resolution: {integrity: sha512-udYR7rQnnQJ0q4PP3R7lTFx7cUz3SB4ghm8T/fJzdItrk+Puv6y8VqI19SFfDgvwgStInEzE5yys6SUQcXLBtA==}
-    engines: {node: '>=12'}
+  '@sentry-internal/browser-utils@8.30.0':
+    resolution: {integrity: sha512-pwX+awNWaxSOAsBLVLqc1+Hw+Fm1Nci9mbKFA6Ed5YzCG049PnBVQwugpmx2dcyyCqJpORhcIqb9jHdCkYmCiA==}
+    engines: {node: '>=14.18'}
 
-  '@sentry-internal/replay-canvas@7.106.1':
-    resolution: {integrity: sha512-r+nhLrQuTQih93gZ08F6MLdmaoBy/bQFcVt/2ZVqe1SkDY+MxRlXxq8ydo3FfgEjMRHdody3yT1dj6E174h23w==}
-    engines: {node: '>=12'}
+  '@sentry-internal/feedback@8.30.0':
+    resolution: {integrity: sha512-ParFRxQY6helxkwUDmro77Wc5uSIC6rZos88jYMrYwFmoTJaNWf4lDzPyECfdSiSYyzSMZk4dorSUN85Ul7DCg==}
+    engines: {node: '>=14.18'}
 
-  '@sentry-internal/tracing@7.106.1':
-    resolution: {integrity: sha512-Ui9zSmW88jTdmNnNBLYYpNoAi31esX5/auysC3v7+SpwxIsC3AGLFvXs4EPziyz8d0F62Ji0fNQZ96ui4fO6BQ==}
-    engines: {node: '>=8'}
+  '@sentry-internal/replay-canvas@8.30.0':
+    resolution: {integrity: sha512-y/QqcvchhtMlVA6eOZicIfTxtZarazQZJuFW0018ynPxBTiuuWSxMCLqduulXUYsFejfD8/eKHb3BpCIFdDYjg==}
+    engines: {node: '>=14.18'}
 
-  '@sentry/browser@7.106.1':
-    resolution: {integrity: sha512-+Yp7OUx78ZwFFYfIvOKZGjMPW7Ds3zZSO8dsMxvDRzkA9NyyAmYMZ/dNTcsGb+PssgkCasF2XA07f6WgkNW92A==}
-    engines: {node: '>=8'}
+  '@sentry-internal/replay@8.30.0':
+    resolution: {integrity: sha512-/KFre+BrovPCiovgAu5N1ErJtkDVzkJA5hV3Jw011AlxRWxrmPwu6+9sV9/rn3tqYAGyq6IggYqeIOHhLh1Ihg==}
+    engines: {node: '>=14.18'}
 
-  '@sentry/core@7.106.1':
-    resolution: {integrity: sha512-cwCd66wkbutXCI8j14JLkyod9RHtqSNfzGpx/ieBE+N786jX+Yj1DiaZJ6ZYjKQpnToipFnacEakCd9Vc9oePA==}
-    engines: {node: '>=8'}
+  '@sentry/browser@8.30.0':
+    resolution: {integrity: sha512-M+tKqawH9S3CqlAIcqdZcHbcsNQkEa9MrPqPCYvXco3C4LRpNizJP2XwBiGQY2yK+fOSvbaWpPtlI938/wuRZQ==}
+    engines: {node: '>=14.18'}
 
-  '@sentry/react@7.106.1':
-    resolution: {integrity: sha512-XcvjXGist0vLapzxZxdbPSdLC4drhGOETtlA/kO+KrIKqlqRKuYw+kieU+YeyF9A/L8uSVvbj9rpjl5WVUTdIw==}
-    engines: {node: '>=8'}
+  '@sentry/core@8.30.0':
+    resolution: {integrity: sha512-CJ/FuWLw0QEKGKXGL/nm9eaOdajEcmPekLuHAuOCxID7N07R9l9laz3vFbAkUZ97GGDv3sYrJZgywfY3Moropg==}
+    engines: {node: '>=14.18'}
+
+  '@sentry/react@8.30.0':
+    resolution: {integrity: sha512-ktQjXs87jdsxW0YrHci3sb6zcSzhMECWnrTVU/KGZF8UoDsk4P4xRCknijd2SSmDIjSkwzUAANR43UkCi4BTQg==}
+    engines: {node: '>=14.18'}
     peerDependencies:
-      react: 15.x || 16.x || 17.x || 18.x
+      react: ^16.14.0 || 17.x || 18.x || 19.x
 
-  '@sentry/replay@7.106.1':
-    resolution: {integrity: sha512-UnuY6bj7v7CVv3T1sbLHjLutSG4hzcQQj6CjEB2NUpM+QAIguFrwAcYG4U42iNg4Qeg5q4kHi1rPpdpvh6unSA==}
-    engines: {node: '>=12'}
+  '@sentry/types@8.30.0':
+    resolution: {integrity: sha512-kgWW2BCjBmVlSQRG32GonHEVyeDbys74xf9mLPvynwHTgw3+NUlNAlEdu05xnb2ow4bCTHfbkS5G1zRgyv5k4Q==}
+    engines: {node: '>=14.18'}
 
-  '@sentry/types@7.106.1':
-    resolution: {integrity: sha512-g3OcyAHGugBwkQP4fZYCCZqF2ng9K7yQc9FVngKq/y7PwHm84epXdYYGDGgfQOIC1d5/GMaPxmzI5IIrZexzkg==}
-    engines: {node: '>=8'}
-
-  '@sentry/utils@7.106.1':
-    resolution: {integrity: sha512-NIeuvB9MeDwrObbi6W5xRrNTcQj8klVvwWWYQB0zotY/LDjyl+c+cZzUshFOxBTp9ljVnYzWqZ7J8x/i4baj7w==}
-    engines: {node: '>=8'}
+  '@sentry/utils@8.30.0':
+    resolution: {integrity: sha512-wZxU2HWlzsnu8214Xy7S7cRIuD6h8Z5DnnkojJfX0i0NLooepZQk2824el1Q13AakLb7/S8CHSHXOMnCtoSduw==}
+    engines: {node: '>=14.18'}
 
   '@sindresorhus/is@5.6.0':
     resolution: {integrity: sha512-TV7t8GKYaJWsn00tFDqBw8+Uqmr8A0fRU1tvTQhyZzGv0sJCGRQL3JGMI3ucuKo3XIZdUP+Lx7/gh2t3lewy7g==}
@@ -6995,14 +6995,15 @@ snapshots:
       '@types/yargs': 16.0.9
       chalk: 4.1.2
 
-  '@joshwooding/vite-plugin-react-docgen-typescript@0.3.0(typescript@5.4.2)(vite@5.1.6)':
+  '@joshwooding/vite-plugin-react-docgen-typescript@0.3.0(typescript@5.4.2)(vite@5.1.6(@types/node@20.11.27)(less@4.2.0)(lightningcss@1.24.0)(sass@1.71.1))':
     dependencies:
       glob: 7.2.3
       glob-promise: 4.2.2(glob@7.2.3)
       magic-string: 0.27.0
       react-docgen-typescript: 2.2.2(typescript@5.4.2)
+      vite: 5.1.6(@types/node@20.11.27)(less@4.2.0)(lightningcss@1.24.0)(sass@1.71.1)
+    optionalDependencies:
       typescript: 5.4.2
-      vite: 5.1.6(@types/node@20.11.27)
 
   '@jridgewell/gen-mapping@0.3.5':
     dependencies:
@@ -7168,17 +7169,17 @@ snapshots:
     transitivePeerDependencies:
       - '@parcel/core'
 
-  '@parcel/config-default@2.9.3(@parcel/core@2.9.3)(typescript@5.2.2)':
+  '@parcel/config-default@2.9.3(@parcel/core@2.9.3)(@swc/helpers@0.5.6)(postcss@8.4.35)(srcset@4.0.0)(typescript@5.2.2)':
     dependencies:
       '@parcel/bundler-default': 2.9.3(@parcel/core@2.9.3)
       '@parcel/compressor-raw': 2.9.3(@parcel/core@2.9.3)
       '@parcel/core': 2.9.3
       '@parcel/namer-default': 2.9.3(@parcel/core@2.9.3)
       '@parcel/optimizer-css': 2.9.3(@parcel/core@2.9.3)
-      '@parcel/optimizer-htmlnano': 2.9.3(@parcel/core@2.9.3)(typescript@5.2.2)
+      '@parcel/optimizer-htmlnano': 2.9.3(@parcel/core@2.9.3)(postcss@8.4.35)(srcset@4.0.0)(typescript@5.2.2)
       '@parcel/optimizer-image': 2.9.3(@parcel/core@2.9.3)
       '@parcel/optimizer-svgo': 2.9.3(@parcel/core@2.9.3)
-      '@parcel/optimizer-swc': 2.9.3(@parcel/core@2.9.3)
+      '@parcel/optimizer-swc': 2.9.3(@parcel/core@2.9.3)(@swc/helpers@0.5.6)
       '@parcel/packager-css': 2.9.3(@parcel/core@2.9.3)
       '@parcel/packager-html': 2.9.3(@parcel/core@2.9.3)
       '@parcel/packager-js': 2.9.3(@parcel/core@2.9.3)
@@ -7349,10 +7350,10 @@ snapshots:
     transitivePeerDependencies:
       - '@parcel/core'
 
-  '@parcel/optimizer-htmlnano@2.9.3(@parcel/core@2.9.3)(typescript@5.2.2)':
+  '@parcel/optimizer-htmlnano@2.9.3(@parcel/core@2.9.3)(postcss@8.4.35)(srcset@4.0.0)(typescript@5.2.2)':
     dependencies:
       '@parcel/plugin': 2.9.3(@parcel/core@2.9.3)
-      htmlnano: 2.1.0(svgo@2.8.0)(typescript@5.2.2)
+      htmlnano: 2.1.0(postcss@8.4.35)(srcset@4.0.0)(svgo@2.8.0)(typescript@5.2.2)
       nullthrows: 1.1.1
       posthtml: 0.16.6
       svgo: 2.8.0
@@ -7384,13 +7385,13 @@ snapshots:
     transitivePeerDependencies:
       - '@parcel/core'
 
-  '@parcel/optimizer-swc@2.9.3(@parcel/core@2.9.3)':
+  '@parcel/optimizer-swc@2.9.3(@parcel/core@2.9.3)(@swc/helpers@0.5.6)':
     dependencies:
       '@parcel/diagnostic': 2.9.3
       '@parcel/plugin': 2.9.3(@parcel/core@2.9.3)
       '@parcel/source-map': 2.1.1
       '@parcel/utils': 2.9.3
-      '@swc/core': 1.4.7
+      '@swc/core': 1.4.7(@swc/helpers@0.5.6)
       nullthrows: 1.1.1
     transitivePeerDependencies:
       - '@parcel/core'
@@ -7831,9 +7832,13 @@ snapshots:
   '@pkgjs/parseargs@0.11.0':
     optional: true
 
-  '@plasmohq/consolidate@0.17.0(react-dom@18.2.0)(react@18.2.0)':
+  '@plasmohq/consolidate@0.17.0(ejs@3.1.9)(handlebars@4.7.8)(lodash@4.17.21)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
     dependencies:
       bluebird: 3.7.2
+    optionalDependencies:
+      ejs: 3.1.9
+      handlebars: 4.7.8
+      lodash: 4.17.21
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
 
@@ -7842,6 +7847,7 @@ snapshots:
   '@plasmohq/messaging@0.6.2(react@18.2.0)':
     dependencies:
       nanoid: 5.0.3
+    optionalDependencies:
       react: 18.2.0
 
   '@plasmohq/parcel-bundler@0.5.5':
@@ -7860,10 +7866,10 @@ snapshots:
     transitivePeerDependencies:
       - '@parcel/core'
 
-  '@plasmohq/parcel-config@0.41.0(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2)':
+  '@plasmohq/parcel-config@0.41.0(@swc/core@1.4.7(@swc/helpers@0.5.6))(@swc/helpers@0.5.6)(ejs@3.1.9)(handlebars@4.7.8)(lodash@4.17.21)(postcss@8.4.35)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(srcset@4.0.0)(typescript@5.2.2)':
     dependencies:
       '@parcel/compressor-raw': 2.9.3(@parcel/core@2.9.3)
-      '@parcel/config-default': 2.9.3(@parcel/core@2.9.3)(typescript@5.2.2)
+      '@parcel/config-default': 2.9.3(@parcel/core@2.9.3)(@swc/helpers@0.5.6)(postcss@8.4.35)(srcset@4.0.0)(typescript@5.2.2)
       '@parcel/core': 2.9.3
       '@parcel/optimizer-data-url': 2.9.3(@parcel/core@2.9.3)
       '@parcel/reporter-bundle-buddy': 2.9.3(@parcel/core@2.9.3)
@@ -7887,16 +7893,16 @@ snapshots:
       '@plasmohq/parcel-compressor-utf8': 0.1.0(@parcel/core@2.9.3)
       '@plasmohq/parcel-namer-manifest': 0.3.12
       '@plasmohq/parcel-optimizer-encapsulate': 0.0.7
-      '@plasmohq/parcel-optimizer-es': 0.4.0
+      '@plasmohq/parcel-optimizer-es': 0.4.0(@swc/helpers@0.5.6)
       '@plasmohq/parcel-packager': 0.6.14
       '@plasmohq/parcel-resolver': 0.14.0
-      '@plasmohq/parcel-resolver-post': 0.4.4
+      '@plasmohq/parcel-resolver-post': 0.4.4(@swc/core@1.4.7(@swc/helpers@0.5.6))(postcss@8.4.35)
       '@plasmohq/parcel-runtime': 0.25.0
       '@plasmohq/parcel-transformer-inject-env': 0.2.11
       '@plasmohq/parcel-transformer-inline-css': 0.3.11
       '@plasmohq/parcel-transformer-manifest': 0.19.0
       '@plasmohq/parcel-transformer-svelte': 0.6.0
-      '@plasmohq/parcel-transformer-vue': 0.5.0(react-dom@18.2.0)(react@18.2.0)
+      '@plasmohq/parcel-transformer-vue': 0.5.0(ejs@3.1.9)(handlebars@4.7.8)(lodash@4.17.21)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
     transitivePeerDependencies:
       - '@swc/core'
       - '@swc/helpers'
@@ -7991,13 +7997,13 @@ snapshots:
       '@parcel/source-map': 2.1.1
       '@parcel/types': 2.9.3(@parcel/core@2.9.3)
 
-  '@plasmohq/parcel-optimizer-es@0.4.0':
+  '@plasmohq/parcel-optimizer-es@0.4.0(@swc/helpers@0.5.6)':
     dependencies:
       '@parcel/core': 2.9.3
       '@parcel/plugin': 2.9.3(@parcel/core@2.9.3)
       '@parcel/source-map': 2.1.1
       '@parcel/utils': 2.9.3
-      '@swc/core': 1.3.82
+      '@swc/core': 1.3.82(@swc/helpers@0.5.6)
       nullthrows: 1.1.1
     transitivePeerDependencies:
       - '@swc/helpers'
@@ -8010,14 +8016,14 @@ snapshots:
       '@parcel/utils': 2.9.3
       nullthrows: 1.1.1
 
-  '@plasmohq/parcel-resolver-post@0.4.4':
+  '@plasmohq/parcel-resolver-post@0.4.4(@swc/core@1.4.7(@swc/helpers@0.5.6))(postcss@8.4.35)':
     dependencies:
       '@parcel/core': 2.9.3
       '@parcel/hash': 2.9.3
       '@parcel/plugin': 2.9.3(@parcel/core@2.9.3)
       '@parcel/types': 2.9.3(@parcel/core@2.9.3)
       '@parcel/utils': 2.9.3
-      tsup: 7.2.0(typescript@5.2.2)
+      tsup: 7.2.0(@swc/core@1.4.7(@swc/helpers@0.5.6))(postcss@8.4.35)(typescript@5.2.2)
       typescript: 5.2.2
     transitivePeerDependencies:
       - '@swc/core'
@@ -8078,7 +8084,7 @@ snapshots:
       '@parcel/utils': 2.9.3
       svelte: 4.2.2
 
-  '@plasmohq/parcel-transformer-vue@0.5.0(react-dom@18.2.0)(react@18.2.0)':
+  '@plasmohq/parcel-transformer-vue@0.5.0(ejs@3.1.9)(handlebars@4.7.8)(lodash@4.17.21)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
     dependencies:
       '@parcel/core': 2.9.3
       '@parcel/diagnostic': 2.9.3
@@ -8086,7 +8092,7 @@ snapshots:
       '@parcel/source-map': 2.1.1
       '@parcel/types': 2.9.3(@parcel/core@2.9.3)
       '@parcel/utils': 2.9.3
-      '@plasmohq/consolidate': 0.17.0(react-dom@18.2.0)(react@18.2.0)
+      '@plasmohq/consolidate': 0.17.0(ejs@3.1.9)(handlebars@4.7.8)(lodash@4.17.21)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@vue/compiler-sfc': 3.3.4
       nullthrows: 1.1.1
       semver: 7.5.4
@@ -8142,6 +8148,7 @@ snapshots:
   '@plasmohq/storage@1.11.0(react@18.2.0)':
     dependencies:
       pify: 6.1.0
+    optionalDependencies:
       react: 18.2.0
 
   '@pnpm/config.env-replace@1.1.0': {}
@@ -8159,21 +8166,25 @@ snapshots:
   '@radix-ui/react-compose-refs@1.0.1(@types/react@18.2.65)(react@18.2.0)':
     dependencies:
       '@babel/runtime': 7.24.0
-      '@types/react': 18.2.65
       react: 18.2.0
+    optionalDependencies:
+      '@types/react': 18.2.65
 
   '@radix-ui/react-slot@1.0.2(@types/react@18.2.65)(react@18.2.0)':
     dependencies:
       '@babel/runtime': 7.24.0
       '@radix-ui/react-compose-refs': 1.0.1(@types/react@18.2.65)(react@18.2.0)
-      '@types/react': 18.2.65
       react: 18.2.0
+    optionalDependencies:
+      '@types/react': 18.2.65
 
-  '@rollup/pluginutils@5.1.0':
+  '@rollup/pluginutils@5.1.0(rollup@4.13.0)':
     dependencies:
       '@types/estree': 1.0.5
       estree-walker: 2.0.2
       picomatch: 2.3.1
+    optionalDependencies:
+      rollup: 4.13.0
 
   '@rollup/rollup-android-arm-eabi@4.13.0':
     optional: true
@@ -8214,61 +8225,61 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.13.0':
     optional: true
 
-  '@sentry-internal/feedback@7.106.1':
+  '@sentry-internal/browser-utils@8.30.0':
     dependencies:
-      '@sentry/core': 7.106.1
-      '@sentry/types': 7.106.1
-      '@sentry/utils': 7.106.1
+      '@sentry/core': 8.30.0
+      '@sentry/types': 8.30.0
+      '@sentry/utils': 8.30.0
 
-  '@sentry-internal/replay-canvas@7.106.1':
+  '@sentry-internal/feedback@8.30.0':
     dependencies:
-      '@sentry/core': 7.106.1
-      '@sentry/replay': 7.106.1
-      '@sentry/types': 7.106.1
-      '@sentry/utils': 7.106.1
+      '@sentry/core': 8.30.0
+      '@sentry/types': 8.30.0
+      '@sentry/utils': 8.30.0
 
-  '@sentry-internal/tracing@7.106.1':
+  '@sentry-internal/replay-canvas@8.30.0':
     dependencies:
-      '@sentry/core': 7.106.1
-      '@sentry/types': 7.106.1
-      '@sentry/utils': 7.106.1
+      '@sentry-internal/replay': 8.30.0
+      '@sentry/core': 8.30.0
+      '@sentry/types': 8.30.0
+      '@sentry/utils': 8.30.0
 
-  '@sentry/browser@7.106.1':
+  '@sentry-internal/replay@8.30.0':
     dependencies:
-      '@sentry-internal/feedback': 7.106.1
-      '@sentry-internal/replay-canvas': 7.106.1
-      '@sentry-internal/tracing': 7.106.1
-      '@sentry/core': 7.106.1
-      '@sentry/replay': 7.106.1
-      '@sentry/types': 7.106.1
-      '@sentry/utils': 7.106.1
+      '@sentry-internal/browser-utils': 8.30.0
+      '@sentry/core': 8.30.0
+      '@sentry/types': 8.30.0
+      '@sentry/utils': 8.30.0
 
-  '@sentry/core@7.106.1':
+  '@sentry/browser@8.30.0':
     dependencies:
-      '@sentry/types': 7.106.1
-      '@sentry/utils': 7.106.1
+      '@sentry-internal/browser-utils': 8.30.0
+      '@sentry-internal/feedback': 8.30.0
+      '@sentry-internal/replay': 8.30.0
+      '@sentry-internal/replay-canvas': 8.30.0
+      '@sentry/core': 8.30.0
+      '@sentry/types': 8.30.0
+      '@sentry/utils': 8.30.0
 
-  '@sentry/react@7.106.1(react@18.2.0)':
+  '@sentry/core@8.30.0':
     dependencies:
-      '@sentry/browser': 7.106.1
-      '@sentry/core': 7.106.1
-      '@sentry/types': 7.106.1
-      '@sentry/utils': 7.106.1
+      '@sentry/types': 8.30.0
+      '@sentry/utils': 8.30.0
+
+  '@sentry/react@8.30.0(react@18.2.0)':
+    dependencies:
+      '@sentry/browser': 8.30.0
+      '@sentry/core': 8.30.0
+      '@sentry/types': 8.30.0
+      '@sentry/utils': 8.30.0
       hoist-non-react-statics: 3.3.2
       react: 18.2.0
 
-  '@sentry/replay@7.106.1':
-    dependencies:
-      '@sentry-internal/tracing': 7.106.1
-      '@sentry/core': 7.106.1
-      '@sentry/types': 7.106.1
-      '@sentry/utils': 7.106.1
+  '@sentry/types@8.30.0': {}
 
-  '@sentry/types@7.106.1': {}
-
-  '@sentry/utils@7.106.1':
+  '@sentry/utils@8.30.0':
     dependencies:
-      '@sentry/types': 7.106.1
+      '@sentry/types': 8.30.0
 
   '@sindresorhus/is@5.6.0': {}
 
@@ -8298,9 +8309,9 @@ snapshots:
       '@storybook/global': 5.0.0
       react: 18.2.0
 
-  '@storybook/addon-controls@8.0.0(@types/react@18.2.65)(react-dom@18.2.0)(react@18.2.0)':
+  '@storybook/addon-controls@8.0.0(@types/react@18.2.65)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
     dependencies:
-      '@storybook/blocks': 8.0.0(@types/react@18.2.65)(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/blocks': 8.0.0(@types/react@18.2.65)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       lodash: 4.17.21
       ts-dedent: 2.2.0
     transitivePeerDependencies:
@@ -8314,16 +8325,16 @@ snapshots:
     dependencies:
       '@babel/core': 7.24.0
       '@mdx-js/react': 3.0.1(@types/react@18.2.65)(react@18.2.0)
-      '@storybook/blocks': 8.0.0(@types/react@18.2.65)(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/blocks': 8.0.0(@types/react@18.2.65)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@storybook/client-logger': 8.0.0
-      '@storybook/components': 8.0.0(@types/react@18.2.65)(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/components': 8.0.0(@types/react@18.2.65)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@storybook/csf-plugin': 8.0.0
       '@storybook/csf-tools': 8.0.0
       '@storybook/global': 5.0.0
       '@storybook/node-logger': 8.0.0
       '@storybook/preview-api': 8.0.0
-      '@storybook/react-dom-shim': 8.0.0(react-dom@18.2.0)(react@18.2.0)
-      '@storybook/theming': 8.0.0(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/react-dom-shim': 8.0.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@storybook/theming': 8.0.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@storybook/types': 8.0.0
       '@types/react': 18.2.65
       fs-extra: 11.2.0
@@ -8336,11 +8347,11 @@ snapshots:
       - encoding
       - supports-color
 
-  '@storybook/addon-essentials@8.0.0(@types/react@18.2.65)(react-dom@18.2.0)(react@18.2.0)':
+  '@storybook/addon-essentials@8.0.0(@types/react@18.2.65)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
     dependencies:
       '@storybook/addon-actions': 8.0.0
       '@storybook/addon-backgrounds': 8.0.0
-      '@storybook/addon-controls': 8.0.0(@types/react@18.2.65)(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/addon-controls': 8.0.0(@types/react@18.2.65)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@storybook/addon-docs': 8.0.0
       '@storybook/addon-highlight': 8.0.0
       '@storybook/addon-measure': 8.0.0
@@ -8348,7 +8359,7 @@ snapshots:
       '@storybook/addon-toolbars': 8.0.0
       '@storybook/addon-viewport': 8.0.0
       '@storybook/core-common': 8.0.0
-      '@storybook/manager-api': 8.0.0(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/manager-api': 8.0.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@storybook/node-logger': 8.0.0
       '@storybook/preview-api': 8.0.0
       ts-dedent: 2.2.0
@@ -8375,8 +8386,9 @@ snapshots:
     dependencies:
       '@storybook/csf': 0.1.2
       '@storybook/global': 5.0.0
-      react: 18.2.0
       ts-dedent: 2.2.0
+    optionalDependencies:
+      react: 18.2.0
 
   '@storybook/addon-measure@8.0.0':
     dependencies:
@@ -8394,19 +8406,19 @@ snapshots:
     dependencies:
       memoizerific: 1.11.3
 
-  '@storybook/blocks@8.0.0(@types/react@18.2.65)(react-dom@18.2.0)(react@18.2.0)':
+  '@storybook/blocks@8.0.0(@types/react@18.2.65)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
     dependencies:
       '@storybook/channels': 8.0.0
       '@storybook/client-logger': 8.0.0
-      '@storybook/components': 8.0.0(@types/react@18.2.65)(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/components': 8.0.0(@types/react@18.2.65)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@storybook/core-events': 8.0.0
       '@storybook/csf': 0.1.2
       '@storybook/docs-tools': 8.0.0
       '@storybook/global': 5.0.0
-      '@storybook/icons': 1.2.9(react-dom@18.2.0)(react@18.2.0)
-      '@storybook/manager-api': 8.0.0(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/icons': 1.2.9(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@storybook/manager-api': 8.0.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@storybook/preview-api': 8.0.0
-      '@storybook/theming': 8.0.0(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/theming': 8.0.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@storybook/types': 8.0.0
       '@types/lodash': 4.17.0
       color-convert: 2.0.1
@@ -8415,13 +8427,14 @@ snapshots:
       markdown-to-jsx: 7.3.2(react@18.2.0)
       memoizerific: 1.11.3
       polished: 4.3.1
-      react: 18.2.0
-      react-colorful: 5.6.1(react-dom@18.2.0)(react@18.2.0)
-      react-dom: 18.2.0(react@18.2.0)
+      react-colorful: 5.6.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       telejson: 7.2.0
       tocbot: 4.25.0
       ts-dedent: 2.2.0
       util-deprecate: 1.0.2
+    optionalDependencies:
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
     transitivePeerDependencies:
       - '@types/react'
       - encoding
@@ -8447,7 +8460,7 @@ snapshots:
       - encoding
       - supports-color
 
-  '@storybook/builder-vite@8.0.0(typescript@5.4.2)(vite@5.1.6)':
+  '@storybook/builder-vite@8.0.0(typescript@5.4.2)(vite@5.1.6(@types/node@20.11.27)(less@4.2.0)(lightningcss@1.24.0)(sass@1.71.1))':
     dependencies:
       '@storybook/channels': 8.0.0
       '@storybook/client-logger': 8.0.0
@@ -8466,8 +8479,9 @@ snapshots:
       fs-extra: 11.2.0
       magic-string: 0.30.8
       ts-dedent: 2.2.0
+      vite: 5.1.6(@types/node@20.11.27)(less@4.2.0)(lightningcss@1.24.0)(sass@1.71.1)
+    optionalDependencies:
       typescript: 5.4.2
-      vite: 5.1.6(@types/node@20.11.27)
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -8480,7 +8494,7 @@ snapshots:
       telejson: 7.2.0
       tiny-invariant: 1.3.3
 
-  '@storybook/cli@8.0.0(react-dom@18.2.0)(react@18.2.0)':
+  '@storybook/cli@8.0.0(@babel/preset-env@7.24.0(@babel/core@7.24.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
     dependencies:
       '@babel/core': 7.24.0
       '@babel/types': 7.24.0
@@ -8488,7 +8502,7 @@ snapshots:
       '@storybook/codemod': 8.0.0
       '@storybook/core-common': 8.0.0
       '@storybook/core-events': 8.0.0
-      '@storybook/core-server': 8.0.0(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/core-server': 8.0.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@storybook/csf-tools': 8.0.0
       '@storybook/node-logger': 8.0.0
       '@storybook/telemetry': 8.0.0
@@ -8507,7 +8521,7 @@ snapshots:
       get-npm-tarball-url: 2.1.0
       giget: 1.2.1
       globby: 11.1.0
-      jscodeshift: 0.15.2(@babel/preset-env@7.24.0)
+      jscodeshift: 0.15.2(@babel/preset-env@7.24.0(@babel/core@7.24.0))
       leven: 3.1.0
       ora: 5.4.1
       prettier: 3.2.5
@@ -8543,7 +8557,7 @@ snapshots:
       '@types/cross-spawn': 6.0.6
       cross-spawn: 7.0.3
       globby: 11.1.0
-      jscodeshift: 0.15.2(@babel/preset-env@7.24.0)
+      jscodeshift: 0.15.2(@babel/preset-env@7.24.0(@babel/core@7.24.0))
       lodash: 4.17.21
       prettier: 3.2.5
       recast: 0.23.6
@@ -8551,14 +8565,14 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@storybook/components@8.0.0(@types/react@18.2.65)(react-dom@18.2.0)(react@18.2.0)':
+  '@storybook/components@8.0.0(@types/react@18.2.65)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
     dependencies:
       '@radix-ui/react-slot': 1.0.2(@types/react@18.2.65)(react@18.2.0)
       '@storybook/client-logger': 8.0.0
       '@storybook/csf': 0.1.2
       '@storybook/global': 5.0.0
-      '@storybook/icons': 1.2.9(react-dom@18.2.0)(react@18.2.0)
-      '@storybook/theming': 8.0.0(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/icons': 1.2.9(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@storybook/theming': 8.0.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@storybook/types': 8.0.0
       memoizerific: 1.11.3
       react: 18.2.0
@@ -8605,7 +8619,7 @@ snapshots:
     dependencies:
       ts-dedent: 2.2.0
 
-  '@storybook/core-server@8.0.0(react-dom@18.2.0)(react@18.2.0)':
+  '@storybook/core-server@8.0.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
     dependencies:
       '@aw-web-design/x-default-browser': 1.4.126
       '@babel/core': 7.24.0
@@ -8619,7 +8633,7 @@ snapshots:
       '@storybook/docs-mdx': 3.0.0
       '@storybook/global': 5.0.0
       '@storybook/manager': 8.0.0
-      '@storybook/manager-api': 8.0.0(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/manager-api': 8.0.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@storybook/node-logger': 8.0.0
       '@storybook/preview-api': 8.0.0
       '@storybook/telemetry': 8.0.0
@@ -8700,12 +8714,12 @@ snapshots:
 
   '@storybook/global@5.0.0': {}
 
-  '@storybook/icons@1.2.9(react-dom@18.2.0)(react@18.2.0)':
+  '@storybook/icons@1.2.9(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
     dependencies:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
 
-  '@storybook/manager-api@8.0.0(react-dom@18.2.0)(react@18.2.0)':
+  '@storybook/manager-api@8.0.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
     dependencies:
       '@storybook/channels': 8.0.0
       '@storybook/client-logger': 8.0.0
@@ -8713,7 +8727,7 @@ snapshots:
       '@storybook/csf': 0.1.2
       '@storybook/global': 5.0.0
       '@storybook/router': 8.0.0
-      '@storybook/theming': 8.0.0(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/theming': 8.0.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@storybook/types': 8.0.0
       dequal: 2.0.3
       lodash: 4.17.21
@@ -8748,18 +8762,18 @@ snapshots:
 
   '@storybook/preview@8.0.0': {}
 
-  '@storybook/react-dom-shim@8.0.0(react-dom@18.2.0)(react@18.2.0)':
+  '@storybook/react-dom-shim@8.0.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
     dependencies:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
 
-  '@storybook/react-vite@8.0.0(react-dom@18.2.0)(react@18.2.0)(typescript@5.4.2)(vite@5.1.6)':
+  '@storybook/react-vite@8.0.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(rollup@4.13.0)(typescript@5.4.2)(vite@5.1.6(@types/node@20.11.27)(less@4.2.0)(lightningcss@1.24.0)(sass@1.71.1))':
     dependencies:
-      '@joshwooding/vite-plugin-react-docgen-typescript': 0.3.0(typescript@5.4.2)(vite@5.1.6)
-      '@rollup/pluginutils': 5.1.0
-      '@storybook/builder-vite': 8.0.0(typescript@5.4.2)(vite@5.1.6)
+      '@joshwooding/vite-plugin-react-docgen-typescript': 0.3.0(typescript@5.4.2)(vite@5.1.6(@types/node@20.11.27)(less@4.2.0)(lightningcss@1.24.0)(sass@1.71.1))
+      '@rollup/pluginutils': 5.1.0(rollup@4.13.0)
+      '@storybook/builder-vite': 8.0.0(typescript@5.4.2)(vite@5.1.6(@types/node@20.11.27)(less@4.2.0)(lightningcss@1.24.0)(sass@1.71.1))
       '@storybook/node-logger': 8.0.0
-      '@storybook/react': 8.0.0(react-dom@18.2.0)(react@18.2.0)(typescript@5.4.2)
+      '@storybook/react': 8.0.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.4.2)
       find-up: 5.0.0
       magic-string: 0.30.8
       react: 18.2.0
@@ -8767,7 +8781,7 @@ snapshots:
       react-dom: 18.2.0(react@18.2.0)
       resolve: 1.22.8
       tsconfig-paths: 4.2.0
-      vite: 5.1.6(@types/node@20.11.27)
+      vite: 5.1.6(@types/node@20.11.27)(less@4.2.0)(lightningcss@1.24.0)(sass@1.71.1)
     transitivePeerDependencies:
       - '@preact/preset-vite'
       - encoding
@@ -8776,13 +8790,13 @@ snapshots:
       - typescript
       - vite-plugin-glimmerx
 
-  '@storybook/react@8.0.0(react-dom@18.2.0)(react@18.2.0)(typescript@5.4.2)':
+  '@storybook/react@8.0.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.4.2)':
     dependencies:
       '@storybook/client-logger': 8.0.0
       '@storybook/docs-tools': 8.0.0
       '@storybook/global': 5.0.0
       '@storybook/preview-api': 8.0.0
-      '@storybook/react-dom-shim': 8.0.0(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/react-dom-shim': 8.0.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@storybook/types': 8.0.0
       '@types/escodegen': 0.0.6
       '@types/estree': 0.0.51
@@ -8796,12 +8810,13 @@ snapshots:
       prop-types: 15.8.1
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-      react-element-to-jsx-string: 15.0.0(react-dom@18.2.0)(react@18.2.0)
+      react-element-to-jsx-string: 15.0.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       semver: 7.6.0
       ts-dedent: 2.2.0
       type-fest: 2.19.0
-      typescript: 5.4.2
       util-deprecate: 1.0.2
+    optionalDependencies:
+      typescript: 5.4.2
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -8832,12 +8847,13 @@ snapshots:
       '@testing-library/user-event': 14.4.3(@testing-library/dom@9.3.1)
       ts-dedent: 2.2.0
 
-  '@storybook/theming@8.0.0(react-dom@18.2.0)(react@18.2.0)':
+  '@storybook/theming@8.0.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
     dependencies:
       '@emotion/use-insertion-effect-with-fallbacks': 1.0.1(react@18.2.0)
       '@storybook/client-logger': 8.0.0
       '@storybook/global': 5.0.0
       memoizerific: 1.11.3
+    optionalDependencies:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
 
@@ -8983,7 +8999,7 @@ snapshots:
   '@swc/core-win32-x64-msvc@1.4.7':
     optional: true
 
-  '@swc/core@1.3.82':
+  '@swc/core@1.3.82(@swc/helpers@0.5.6)':
     dependencies:
       '@swc/types': 0.1.5
     optionalDependencies:
@@ -8997,8 +9013,9 @@ snapshots:
       '@swc/core-win32-arm64-msvc': 1.3.82
       '@swc/core-win32-ia32-msvc': 1.3.82
       '@swc/core-win32-x64-msvc': 1.3.82
+      '@swc/helpers': 0.5.6
 
-  '@swc/core@1.4.7':
+  '@swc/core@1.4.7(@swc/helpers@0.5.6)':
     dependencies:
       '@swc/counter': 0.1.3
       '@swc/types': 0.1.5
@@ -9013,6 +9030,7 @@ snapshots:
       '@swc/core-win32-arm64-msvc': 1.4.7
       '@swc/core-win32-ia32-msvc': 1.4.7
       '@swc/core-win32-x64-msvc': 1.4.7
+      '@swc/helpers': 0.5.6
 
   '@swc/counter@0.1.3': {}
 
@@ -9220,14 +9238,14 @@ snapshots:
 
   '@ungap/structured-clone@1.2.0': {}
 
-  '@vitejs/plugin-react@4.2.1(vite@5.1.6)':
+  '@vitejs/plugin-react@4.2.1(vite@5.1.6(@types/node@20.11.27)(less@4.2.0)(lightningcss@1.24.0)(sass@1.71.1))':
     dependencies:
       '@babel/core': 7.24.0
       '@babel/plugin-transform-react-jsx-self': 7.23.3(@babel/core@7.24.0)
       '@babel/plugin-transform-react-jsx-source': 7.23.3(@babel/core@7.24.0)
       '@types/babel__core': 7.20.5
       react-refresh: 0.14.0
-      vite: 5.1.6(@types/node@20.11.27)
+      vite: 5.1.6(@types/node@20.11.27)(less@4.2.0)(lightningcss@1.24.0)(sass@1.71.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -9797,6 +9815,7 @@ snapshots:
       js-yaml: 4.1.0
       parse-json: 5.2.0
       path-type: 4.0.0
+    optionalDependencies:
       typescript: 5.2.2
 
   cross-spawn@7.0.3:
@@ -10566,12 +10585,15 @@ snapshots:
 
   html-tags@3.3.1: {}
 
-  htmlnano@2.1.0(svgo@2.8.0)(typescript@5.2.2):
+  htmlnano@2.1.0(postcss@8.4.35)(srcset@4.0.0)(svgo@2.8.0)(typescript@5.2.2):
     dependencies:
       cosmiconfig: 8.3.6(typescript@5.2.2)
       posthtml: 0.16.6
-      svgo: 2.8.0
       timsort: 0.3.0
+    optionalDependencies:
+      postcss: 8.4.35
+      srcset: 4.0.0
+      svgo: 2.8.0
     transitivePeerDependencies:
       - typescript
 
@@ -10854,7 +10876,7 @@ snapshots:
     dependencies:
       argparse: 2.0.1
 
-  jscodeshift@0.15.2(@babel/preset-env@7.24.0):
+  jscodeshift@0.15.2(@babel/preset-env@7.24.0(@babel/core@7.24.0)):
     dependencies:
       '@babel/core': 7.24.0
       '@babel/parser': 7.24.0
@@ -10863,7 +10885,6 @@ snapshots:
       '@babel/plugin-transform-nullish-coalescing-operator': 7.23.4(@babel/core@7.24.0)
       '@babel/plugin-transform-optional-chaining': 7.23.4(@babel/core@7.24.0)
       '@babel/plugin-transform-private-methods': 7.23.3(@babel/core@7.24.0)
-      '@babel/preset-env': 7.24.0(@babel/core@7.24.0)
       '@babel/preset-flow': 7.24.0(@babel/core@7.24.0)
       '@babel/preset-typescript': 7.23.3(@babel/core@7.24.0)
       '@babel/register': 7.23.7(@babel/core@7.24.0)
@@ -10877,6 +10898,8 @@ snapshots:
       recast: 0.23.6
       temp: 0.8.4
       write-file-atomic: 2.4.3
+    optionalDependencies:
+      '@babel/preset-env': 7.24.0(@babel/core@7.24.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -11501,7 +11524,7 @@ snapshots:
     dependencies:
       find-up: 5.0.0
 
-  plasmo@0.88.0(react-dom@18.2.0)(react@18.2.0):
+  plasmo@0.88.0(@swc/core@1.4.7(@swc/helpers@0.5.6))(@swc/helpers@0.5.6)(ejs@3.1.9)(handlebars@4.7.8)(lodash@4.17.21)(postcss@8.4.35)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(srcset@4.0.0):
     dependencies:
       '@expo/spawn-async': 1.7.2
       '@parcel/core': 2.9.3
@@ -11509,7 +11532,7 @@ snapshots:
       '@parcel/package-manager': 2.9.3(@parcel/core@2.9.3)
       '@parcel/watcher': 2.2.0
       '@plasmohq/init': 0.7.0
-      '@plasmohq/parcel-config': 0.41.0(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2)
+      '@plasmohq/parcel-config': 0.41.0(@swc/core@1.4.7(@swc/helpers@0.5.6))(@swc/helpers@0.5.6)(ejs@3.1.9)(handlebars@4.7.8)(lodash@4.17.21)(postcss@8.4.35)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(srcset@4.0.0)(typescript@5.2.2)
       '@plasmohq/parcel-core': 0.1.8
       buffer: 6.0.3
       chalk: 5.3.0
@@ -11602,10 +11625,12 @@ snapshots:
 
   possible-typed-array-names@1.0.0: {}
 
-  postcss-load-config@4.0.2:
+  postcss-load-config@4.0.2(postcss@8.4.35):
     dependencies:
       lilconfig: 3.1.1
       yaml: 2.4.1
+    optionalDependencies:
+      postcss: 8.4.35
 
   postcss-value-parser@4.2.0: {}
 
@@ -11737,7 +11762,7 @@ snapshots:
       minimist: 1.2.8
       strip-json-comments: 2.0.1
 
-  react-colorful@5.6.1(react-dom@18.2.0)(react@18.2.0):
+  react-colorful@5.6.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
     dependencies:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
@@ -11767,7 +11792,7 @@ snapshots:
       react: 18.2.0
       scheduler: 0.23.0
 
-  react-element-to-jsx-string@15.0.0(react-dom@18.2.0)(react@18.2.0):
+  react-element-to-jsx-string@15.0.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
     dependencies:
       '@base2/pretty-print-object': 1.0.1
       is-plain-object: 5.0.0
@@ -12124,9 +12149,9 @@ snapshots:
 
   store2@2.14.3: {}
 
-  storybook@8.0.0(react-dom@18.2.0)(react@18.2.0):
+  storybook@8.0.0(@babel/preset-env@7.24.0(@babel/core@7.24.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
     dependencies:
-      '@storybook/cli': 8.0.0(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/cli': 8.0.0(@babel/preset-env@7.24.0(@babel/core@7.24.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
     transitivePeerDependencies:
       - '@babel/preset-env'
       - bufferutil
@@ -12355,7 +12380,7 @@ snapshots:
 
   tslib@2.6.2: {}
 
-  tsup@7.2.0(typescript@5.2.2):
+  tsup@7.2.0(@swc/core@1.4.7(@swc/helpers@0.5.6))(postcss@8.4.35)(typescript@5.2.2):
     dependencies:
       bundle-require: 4.0.2(esbuild@0.18.20)
       cac: 6.7.14
@@ -12365,12 +12390,15 @@ snapshots:
       execa: 5.1.1
       globby: 11.1.0
       joycon: 3.1.1
-      postcss-load-config: 4.0.2
+      postcss-load-config: 4.0.2(postcss@8.4.35)
       resolve-from: 5.0.0
       rollup: 3.29.4
       source-map: 0.8.0-beta.0
       sucrase: 3.35.0
       tree-kill: 1.2.2
+    optionalDependencies:
+      '@swc/core': 1.4.7(@swc/helpers@0.5.6)
+      postcss: 8.4.35
       typescript: 5.2.2
     transitivePeerDependencies:
       - supports-color
@@ -12494,14 +12522,17 @@ snapshots:
 
   vary@1.1.2: {}
 
-  vite@5.1.6(@types/node@20.11.27):
+  vite@5.1.6(@types/node@20.11.27)(less@4.2.0)(lightningcss@1.24.0)(sass@1.71.1):
     dependencies:
-      '@types/node': 20.11.27
       esbuild: 0.19.12
       postcss: 8.4.35
       rollup: 4.13.0
     optionalDependencies:
+      '@types/node': 20.11.27
       fsevents: 2.3.3
+      less: 4.2.0
+      lightningcss: 1.24.0
+      sass: 1.71.1
 
   vue@3.3.4:
     dependencies:

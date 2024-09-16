@@ -5,9 +5,7 @@ import { getDefaultTags, sentryConfig } from "./config";
 export const setupSentry = (source: ExtensionFileSource) => {
   Sentry.init(sentryConfig);
 
-  Sentry.configureScope((scope) => {
-    scope.setTags({ source, ...getDefaultTags() });
-  });
+  Sentry.getCurrentScope().setTags({ source, ...getDefaultTags() });
 
   return Sentry.wrap;
 };
