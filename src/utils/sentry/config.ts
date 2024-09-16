@@ -9,7 +9,12 @@ export const sentryConfig: BrowserOptions = {
   // for finer control
   tracesSampleRate: 1.0,
   environment: process.env.NODE_ENV,
-  release: packageJson.version
+  release: packageJson.version,
+  ignoreErrors: [
+    /^Detached while handling command.$/,
+    /^Cannot access a chrome-extension:\/\/ URL of different extension$/,
+    /^Cannot access a chrome:\/\/ URL$/
+  ]
 }
 
 export const getDefaultTags = () => ({
