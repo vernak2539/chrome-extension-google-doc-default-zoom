@@ -1,22 +1,22 @@
-import type { WorkspaceAppName } from "../types"
+import type { WorkspaceAppName } from "../types";
 
 const docsUrlRegex = new RegExp(
   /https:\/\/docs\.google\.com\/document\/d\/(.*?)\/.*?/g
-)
+);
 const sheetsUrlRegex = new RegExp(
   /https:\/\/docs\.google\.com\/spreadsheets\/d\/(.*?)\/.*?/g
-)
+);
 
 const getCurrentApp = (): WorkspaceAppName | null => {
-  const url = new URL(window.location.href)
+  const url = new URL(window.location.href);
 
   if (docsUrlRegex.test(url.href)) {
-    return "Docs"
+    return "Docs";
   } else if (sheetsUrlRegex.test(url.href)) {
-    return "Sheets"
+    return "Sheets";
   }
 
-  return null
-}
+  return null;
+};
 
-export default getCurrentApp
+export default getCurrentApp;

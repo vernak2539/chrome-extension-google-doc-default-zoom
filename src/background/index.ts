@@ -1,1 +1,1 @@
-import "@plasmohq/messaging/background"
+import "@plasmohq/messaging/background";

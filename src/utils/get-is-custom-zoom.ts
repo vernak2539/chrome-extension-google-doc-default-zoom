@@ -1,15 +1,15 @@
-import { DOCS_ZOOM_VALUES, SHEETS_ZOOM_VALUES } from "../constants"
+import { DOCS_ZOOM_VALUES, SHEETS_ZOOM_VALUES } from "../constants";
 
 const getIsCustomZoom = (zoomValue: any) => {
   if (SHEETS_ZOOM_VALUES.includes(zoomValue)) {
-    return false
+    return false;
   }
 
   if (DOCS_ZOOM_VALUES.includes(zoomValue)) {
-    return false
+    return false;
   }
 
-  return true
-}
+  return true;
+};
 
-export default getIsCustomZoom
+export default getIsCustomZoom;

@@ -1,9 +1,9 @@
-import classnames from "classnames"
-import React, { useCallback, useEffect, useState } from "react"
+import classnames from "classnames";
+import React, { useCallback, useEffect, useState } from "react";
 
-import * as style from "../../style.module.css"
-import localize from "../../utils/localize"
-import type { ZoomInputProps } from "../shared-props"
+import * as style from "../../style.module.css";
+import localize from "../../utils/localize";
+import type { ZoomInputProps } from "../shared-props";
 
 const CustomZoomInput = ({
   zoomValue,
@@ -11,49 +11,49 @@ const CustomZoomInput = ({
   isCustomValue,
   updateValue
 }: ZoomInputProps) => {
-  const [localZoom, setLocalZoom] = useState(zoomValue || "")
+  const [localZoom, setLocalZoom] = useState(zoomValue || "");
 
   useEffect(() => {
     if (!isCustomValue) {
-      setLocalZoom("")
+      setLocalZoom("");
     }
-  }, [isCustomValue])
+  }, [isCustomValue]);
 
   const updateZoom = useCallback(
     (value) => {
-      let boundedValue = null
-      const lowerBound = 50
-      const upperBound = 200
+      let boundedValue = null;
+      const lowerBound = 50;
+      const upperBound = 200;
 
       if (value) {
-        boundedValue = value
+        boundedValue = value;
         if (value < lowerBound) {
-          boundedValue = lowerBound
+          boundedValue = lowerBound;
         }
 
         if (value > upperBound) {
-          boundedValue = upperBound
+          boundedValue = upperBound;
         }
       }
 
-      const newValue = Boolean(boundedValue) ? `${boundedValue}%` : ""
+      const newValue = Boolean(boundedValue) ? `${boundedValue}%` : "";
 
       // don't update the values if we've remove the value and we're using the select box values
       if (newValue === "" && !isCustomValue) {
-        return
+        return;
       }
 
       // @ts-ignore
       if (zoomValues.includes(newValue)) {
-        setLocalZoom("")
+        setLocalZoom("");
       } else {
-        setLocalZoom(newValue)
+        setLocalZoom(newValue);
       }
 
-      updateValue(newValue)
+      updateValue(newValue);
     },
     [isCustomValue, setLocalZoom, updateValue]
-  )
+  );
 
   return (
     <input
@@ -69,13 +69,13 @@ const CustomZoomInput = ({
         }
       )}
       onFocus={(event) => {
-        const value = event.target.value
+        const value = event.target.value;
         if (value.includes("%")) {
-          setLocalZoom(value.replace(/%/g, ""))
+          setLocalZoom(value.replace(/%/g, ""));
         }
       }}
       onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
-        const allowedUpdateTriggers = ["Enter", "Tab"]
+        const allowedUpdateTriggers = ["Enter", "Tab"];
         const allowedInputKeys = [
           "Clear",
           "Backspace",
@@ -86,27 +86,27 @@ const CustomZoomInput = ({
           "ArrowLeft",
           "ArrowRight",
           "ArrowUp"
-        ]
+        ];
 
         if (allowedUpdateTriggers.includes(event.key)) {
-          updateZoom(event.currentTarget.value)
-          event.currentTarget.blur()
-          return
+          updateZoom(event.currentTarget.value);
+          event.currentTarget.blur();
+          return;
         }
 
         if (/[0-9]/.test(event.key) || allowedInputKeys.includes(event.key)) {
-          return
+          return;
         }
-        event.preventDefault()
+        event.preventDefault();
       }}
       onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-        setLocalZoom(event.target.value)
+        setLocalZoom(event.target.value);
       }}
       onBlur={(event: React.FocusEvent<HTMLInputElement>) => {
-        updateZoom(event.target.value)
+        updateZoom(event.target.value);
       }}
     />
-  )
-}
+  );
+};
 
-export default CustomZoomInput
+export default CustomZoomInput;

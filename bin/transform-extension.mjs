@@ -9,33 +9,33 @@
  * 6. Disable "features.customZoomInput" for both "workspaceApps" in constants.ts
  * */
 
-import { execaSync } from "execa"
-import jsonfile from "jsonfile"
-import assert from "node:assert"
-import path, { dirname } from "path"
-import { fileURLToPath } from "url"
+import { execaSync } from "execa";
+import jsonfile from "jsonfile";
+import assert from "node:assert";
+import path, { dirname } from "path";
+import { fileURLToPath } from "url";
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
-const pkgPath = path.resolve(__dirname, "../package.json")
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const pkgPath = path.resolve(__dirname, "../package.json");
 
 // Update package.json fields
-const originalPkg = jsonfile.readFileSync(pkgPath)
+const originalPkg = jsonfile.readFileSync(pkgPath);
 
-originalPkg.name = "google-workspace-zoom-default"
-originalPkg.displayName = "__MSG_extensionName__"
-originalPkg.manifest.name = "__MSG_extensionName__"
-originalPkg.manifest.permissions = []
+originalPkg.name = "google-workspace-zoom-default";
+originalPkg.displayName = "__MSG_extensionName__";
+originalPkg.manifest.name = "__MSG_extensionName__";
+originalPkg.manifest.permissions = [];
 
-execaSync(path.resolve(__dirname, "./update-code-files.sh"))
-execaSync(path.resolve(__dirname, "./update-icons.sh"))
+execaSync(path.resolve(__dirname, "./update-code-files.sh"));
+execaSync(path.resolve(__dirname, "./update-icons.sh"));
 
-jsonfile.writeFileSync(pkgPath, originalPkg, { spaces: 2 })
+jsonfile.writeFileSync(pkgPath, originalPkg, { spaces: 2 });
 
 // verify package.json is how it should look
-const newPkg = jsonfile.readFileSync(pkgPath)
+const newPkg = jsonfile.readFileSync(pkgPath);
 
-assert.equal(newPkg.name, "google-workspace-zoom-default")
-assert.equal(newPkg.displayName, "__MSG_extensionName__")
-assert.equal(newPkg.manifest.name, "__MSG_extensionName__")
-assert.equal(newPkg.manifest.permissions.length, 0)
+assert.equal(newPkg.name, "google-workspace-zoom-default");
+assert.equal(newPkg.displayName, "__MSG_extensionName__");
+assert.equal(newPkg.manifest.name, "__MSG_extensionName__");
+assert.equal(newPkg.manifest.permissions.length, 0);

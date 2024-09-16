@@ -1,60 +1,60 @@
-import { sendToBackgroundViaRelay } from "@plasmohq/messaging"
+import { sendToBackgroundViaRelay } from "@plasmohq/messaging";
 
-import { RELAY_EXECUTE_ENTER } from "../constants"
+import { RELAY_EXECUTE_ENTER } from "../constants";
 import type {
   ExecuteEnterRequestBody,
   ExecutionLocation,
   Feature,
   UiStrategyConfig
-} from "../types"
-import getIsCustomZoom from "../utils/get-is-custom-zoom"
-import getZoomValueFromStorage from "../utils/get-zoom-value-from-storage"
+} from "../types";
+import getIsCustomZoom from "../utils/get-is-custom-zoom";
+import getZoomValueFromStorage from "../utils/get-zoom-value-from-storage";
 import {
   clickDOMElement,
   getDOMElement,
   getDOMElementAndClick
-} from "../utils/ui-helpers"
+} from "../utils/ui-helpers";
 
 export interface AbstractBaseStrategyImpl {
-  execute: (executionLocation: ExecutionLocation) => void
+  execute: (executionLocation: ExecutionLocation) => void;
   getIsPageLoading: () => {
-    isLoading: boolean
-    getElementToWatch: () => Element
-  }
+    isLoading: boolean;
+    getElementToWatch: () => Element;
+  };
 }
 
 export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
-  protected readonly config: UiStrategyConfig
-  public abstract execute(executionLocation: string): void
+  protected readonly config: UiStrategyConfig;
+  public abstract execute(executionLocation: string): void;
   // protected abstract getIsViewOnly(): boolean
 
   protected constructor(config: UiStrategyConfig) {
-    this.config = config
+    this.config = config;
   }
 
   protected getZoomValueFromStorage() {
-    return getZoomValueFromStorage(this.config.storageKey)
+    return getZoomValueFromStorage(this.config.storageKey);
   }
 
   protected uiExecuteFlow(zoomValue: string) {
     // don't do anything if zoom level is set to default value or not set
     if (!zoomValue || zoomValue === this.config.zoom.defaultZoom) {
-      return
+      return;
     }
 
     // get menu element responsible for changing zoom
     const zoomInputContainer = getDOMElementAndClick(
       this.config.uiElements.clickableZoomSelectId
-    )
+    );
 
     // add check for if strategy is supported or not for app
     if (
       this.isFeatureEnabled("customZoomInput") &&
       getIsCustomZoom(zoomValue)
     ) {
-      this.uiExecuteCustomZoomFlow(zoomInputContainer, zoomValue)
+      this.uiExecuteCustomZoomFlow(zoomInputContainer, zoomValue);
     } else {
-      this.uiExecuteDefinedZoomFlow(zoomInputContainer, zoomValue)
+      this.uiExecuteDefinedZoomFlow(zoomInputContainer, zoomValue);
     }
   }
 
@@ -64,40 +64,40 @@ export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
   ) {
     // get zoom menu element dropdown
     const zoomInputContainerAriaOwns =
-      zoomInputContainer.attributes["aria-owns"].value // this is the link
+      zoomInputContainer.attributes["aria-owns"].value; // this is the link
     const zoomInputSelect = getDOMElement(
       `.goog-menu.goog-menu-vertical[aria-activedescendant="${zoomInputContainerAriaOwns}"]`
-    )
+    );
 
     // figure out zoom value to select
     const zoomInputSelectOptions = zoomInputSelect.querySelectorAll(
       this.config.uiElements.clickableZoomOptionClass
-    )
-    let newZoomLevelElement = null
+    );
+    let newZoomLevelElement = null;
     for (let i = 0; i < zoomInputSelectOptions.length; i++) {
       if (zoomInputSelectOptions[i].firstChild.textContent === zoomValue) {
-        newZoomLevelElement = zoomInputSelectOptions[i].firstChild
+        newZoomLevelElement = zoomInputSelectOptions[i].firstChild;
       }
     }
 
     // somehow we may not have matched the right element
     if (!newZoomLevelElement) {
-      return
+      return;
     }
 
     // select new zoom level
-    clickDOMElement(newZoomLevelElement)
+    clickDOMElement(newZoomLevelElement);
 
-    this.closeDropdown()
+    this.closeDropdown();
   }
 
   private uiExecuteCustomZoomFlow(
     zoomInputContainer: Element,
     zoomValue: string
   ) {
-    const zoomInput = zoomInputContainer.querySelector("input")
-    zoomInput.focus()
-    zoomInput.select()
+    const zoomInput = zoomInputContainer.querySelector("input");
+    zoomInput.focus();
+    zoomInput.select();
 
     sendToBackgroundViaRelay<ExecuteEnterRequestBody>({
       name: RELAY_EXECUTE_ENTER,
@@ -105,19 +105,19 @@ export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
         zoomValue
       }
     }).then(() => {
-      this.closeDropdown()
-    })
+      this.closeDropdown();
+    });
   }
 
   private closeDropdown() {
     // close dropdown with blur event (may need to check again to see if it's closed)
     setTimeout(() => {
-      getDOMElementAndClick("canvas")
-    }, 500)
+      getDOMElementAndClick("canvas");
+    }, 500);
   }
 
   private isFeatureEnabled(feature: Feature): boolean {
-    return Boolean(this.config.features[feature])
+    return Boolean(this.config.features[feature]);
   }
 
   /*
@@ -132,7 +132,7 @@ export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
   public getIsPageLoading() {
     const zoomSelect = getDOMElement(
       this.config.uiElements.clickableZoomSelectId
-    )
+    );
 
     if (zoomSelect) {
       return {
@@ -140,17 +140,17 @@ export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
           "goog-toolbar-combo-button-disabled"
         ),
         getElementToWatch: () => getDOMElement(this.config.uiElements.toolbarId)
-      }
+      };
     }
 
     const menuBarViewTab = getDOMElement(
       this.config.uiElements.menubarViewTabId
-    )
+    );
 
     return {
       isLoading: menuBarViewTab.classList.contains("goog-control-disabled"),
       getElementToWatch: () =>
         getDOMElement(this.config.uiElements.menubarViewTabId)
-    }
+    };
   }
 }

@@ -1,9 +1,9 @@
-import localize from "../utils/localize"
+import localize from "../utils/localize";
 
 type Data = {
-  supported: boolean
-  name: string
-}
+  supported: boolean;
+  name: string;
+};
 const CheckList = ({ title, data }) => {
   return (
     <>
@@ -18,8 +18,8 @@ const CheckList = ({ title, data }) => {
         ))}
       </ul>
     </>
-  )
-}
+  );
+};
 
 const RequiredPermissions = ({ permissions }) => {
   return (
@@ -29,8 +29,8 @@ const RequiredPermissions = ({ permissions }) => {
       </p>
       <p>{permissions.length > 0 ? permissions.join(", ") : "None"}</p>
     </>
-  )
-}
+  );
+};
 
 const supportedWorkspaceApps: Data[] = [
   {
@@ -41,7 +41,7 @@ const supportedWorkspaceApps: Data[] = [
     name: "Google Sheets",
     supported: true
   }
-]
+];
 
 const extDefaultFunctionality: Data[] = [
   {
@@ -52,7 +52,7 @@ const extDefaultFunctionality: Data[] = [
     name: localize("ExtVersionsTabFunctionalityIncludedCustomZoom"),
     supported: false
   }
-]
+];
 
 const extExtendedFunctionality: Data[] = [
   {
@@ -63,7 +63,7 @@ const extExtendedFunctionality: Data[] = [
     name: localize("ExtVersionsTabFunctionalityIncludedCustomZoom"),
     supported: true
   }
-]
+];
 
 const ExtensionVersionsPage = () => {
   return (
@@ -106,7 +106,7 @@ const ExtensionVersionsPage = () => {
         </strong>
       </small>
     </>
-  )
-}
+  );
+};
 
-export default ExtensionVersionsPage
+export default ExtensionVersionsPage;

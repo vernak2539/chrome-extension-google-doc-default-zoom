@@ -1,11 +1,11 @@
-import { sendToBackgroundViaRelay } from "@plasmohq/messaging"
+import { sendToBackgroundViaRelay } from "@plasmohq/messaging";
 
-import { RELAY_GET_ZOOM_VALUE_FROM_STORAGE } from "../constants"
+import { RELAY_GET_ZOOM_VALUE_FROM_STORAGE } from "../constants";
 import type {
   GetFromStorageFn,
   GetZoomValueRequestBody,
   GetZoomValueResponseBody
-} from "../types"
+} from "../types";
 
 const getZoomValueFromStorage: GetFromStorageFn<string> = (storageKey) => {
   return new Promise((resolve) => {
@@ -15,9 +15,9 @@ const getZoomValueFromStorage: GetFromStorageFn<string> = (storageKey) => {
         body: { storageKey }
       }
     ).then((response) => {
-      resolve(response.zoomValue)
-    })
-  })
-}
+      resolve(response.zoomValue);
+    });
+  });
+};
 
-export default getZoomValueFromStorage
+export default getZoomValueFromStorage;

@@ -1,5 +1,5 @@
-import type { BrowserOptions } from "@sentry/browser"
-import packageJson from "../../../package.json"
+import type { BrowserOptions } from "@sentry/browser";
+import packageJson from "../../../package.json";
 
 export const sentryConfig: BrowserOptions = {
   dsn: process.env.PLASMO_PUBLIC_SENTRY_DSN,
@@ -15,8 +15,8 @@ export const sentryConfig: BrowserOptions = {
     /^Cannot access a chrome-extension:\/\/ URL of different extension$/,
     /^Cannot access a chrome:\/\/ URL$/
   ]
-}
+};
 
 export const getDefaultTags = () => ({
   extension: packageJson.name
-})
+});

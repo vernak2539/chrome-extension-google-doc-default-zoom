@@ -1,12 +1,12 @@
 const counterFactory = () => {
-  let count = 0
+  let count = 0;
 
   return {
     getCount: () => count,
     increment: () => {
-      count++
+      count++;
     }
-  }
-}
+  };
+};
 
-export default counterFactory
+export default counterFactory;

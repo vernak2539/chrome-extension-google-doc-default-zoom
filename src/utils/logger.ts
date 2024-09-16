@@ -1,13 +1,13 @@
 class Logger {
-  private workspaceApp: string
+  private workspaceApp: string;
 
   constructor(name: string) {
-    this.workspaceApp = name
+    this.workspaceApp = name;
   }
 
   info(msg) {
-    console.log(`Google Workspace Zoom Default: ${msg}`)
+    console.log(`Google Workspace Zoom Default: ${msg}`);
   }
 }
 
-export default Logger
+export default Logger;

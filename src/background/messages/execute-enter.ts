@@ -1,21 +1,21 @@
-import type { PlasmoMessaging } from "@plasmohq/messaging"
+import type { PlasmoMessaging } from "@plasmohq/messaging";
 
-import type { ExecuteEnterRequestBody } from "../../types"
-import { setupSentry } from "../../utils/sentry/background"
+import type { ExecuteEnterRequestBody } from "../../types";
+import { setupSentry } from "../../utils/sentry/background";
 
-const sentryWrap = setupSentry("background")
+const sentryWrap = setupSentry("background");
 
 const handler: PlasmoMessaging.MessageHandler<ExecuteEnterRequestBody> = async (
   req
 ) => {
   sentryWrap(() => {
-    const target = { tabId: req.sender.tab.id }
+    const target = { tabId: req.sender.tab.id };
 
-    chrome.debugger.attach(target, "1.0")
+    chrome.debugger.attach(target, "1.0");
 
     chrome.debugger.sendCommand(target, "Input.insertText", {
       text: req.body.zoomValue
-    })
+    });
 
     // The two events below have to be used together. I don't know why... but they do...
     chrome.debugger.sendCommand(target, "Input.dispatchKeyEvent", {
@@ -27,14 +27,14 @@ const handler: PlasmoMessaging.MessageHandler<ExecuteEnterRequestBody> = async (
       text: "\r", //This is the critical part
       unmodifiedText: "\r", //This is the critical part
       windowsVirtualKeyCode: 13
-    })
+    });
     chrome.debugger.sendCommand(target, "Input.dispatchKeyEvent", {
       type: "char",
       text: "\r"
-    })
+    });
 
-    chrome.debugger.detach(target)
-  })
-}
+    chrome.debugger.detach(target);
+  });
+};
 
-export default handler
+export default handler;

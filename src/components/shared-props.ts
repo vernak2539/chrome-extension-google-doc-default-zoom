@@ -1,8 +1,8 @@
-import type { WorkspaceApp } from "../types"
+import type { WorkspaceApp } from "../types";
 
 export interface ZoomInputProps {
-  isCustomValue: boolean
-  updateValue: (newZoomValue: string) => void
-  zoomValue: string
-  zoomValues: WorkspaceApp["zoomValues"]
+  isCustomValue: boolean;
+  updateValue: (newZoomValue: string) => void;
+  zoomValue: string;
+  zoomValues: WorkspaceApp["zoomValues"];
 }

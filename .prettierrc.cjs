@@ -11,4 +11,4 @@ module.exports = {
   bracketSpacing: true,
   bracketSameLine: true,
   plugins: [require.resolve("prettier-plugin-organize-imports")]
-}
+};

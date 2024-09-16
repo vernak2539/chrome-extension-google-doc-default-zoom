@@ -1,4 +1,4 @@
-import localize from "../utils/localize"
+import localize from "../utils/localize";
 
 const ExperimentalVersionsPage = () => {
   return (
@@ -12,7 +12,7 @@ const ExperimentalVersionsPage = () => {
         <p>{localize("ExperimentalFeaturesTabDocsViewOnlyContent4")}</p>
       </section>
     </div>
-  )
-}
+  );
+};
 
-export default ExperimentalVersionsPage
+export default ExperimentalVersionsPage;

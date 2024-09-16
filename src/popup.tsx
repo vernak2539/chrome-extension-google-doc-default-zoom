@@ -1,14 +1,14 @@
 // Icon used in Favicon was created by https://www.flaticon.com/authors/royyan-wijaya
-import WorkspaceApplication from "./components/WorkspaceApplication"
-import WorkspaceApplicationList from "./components/WorkspaceApplicationList"
-import { workspaceApps } from "./constants"
-import * as styles from "./style.module.css"
-import localize from "./utils/localize"
-import { setupSentry } from "./utils/sentry/popup"
+import WorkspaceApplication from "./components/WorkspaceApplication";
+import WorkspaceApplicationList from "./components/WorkspaceApplicationList";
+import { workspaceApps } from "./constants";
+import * as styles from "./style.module.css";
+import localize from "./utils/localize";
+import { setupSentry } from "./utils/sentry/popup";
 
 // todo - build in enabled/disabled state state
 
-const ErrorBoundary = setupSentry("popup")
+const ErrorBoundary = setupSentry("popup");
 
 const ErrorFallback = () => (
   <p>
@@ -18,7 +18,7 @@ const ErrorFallback = () => (
     </a>{" "}
     so I can fix it!
   </p>
-)
+);
 
 function IndexPopup() {
   return (
@@ -28,7 +28,7 @@ function IndexPopup() {
       <ErrorBoundary
         fallback={<ErrorFallback />}
         beforeCapture={(scope) => {
-          scope.setTag("locale", chrome.i18n.getUILanguage())
+          scope.setTag("locale", chrome.i18n.getUILanguage());
         }}>
         <p>{localize("popupMainSectionDescription")}</p>
         <WorkspaceApplicationList>
@@ -51,14 +51,14 @@ function IndexPopup() {
             onClick={() => {
               chrome.tabs.create({
                 url: "./tabs/ext-versions.html"
-              })
+              });
             }}>
             <small>{localize("popupToExtensionVersionsTab")}</small>
           </a>
         </p>
       </ErrorBoundary>
     </div>
-  )
+  );
 }
 
-export default IndexPopup
+export default IndexPopup;

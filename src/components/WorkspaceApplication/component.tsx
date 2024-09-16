@@ -1,22 +1,22 @@
-import classnames from "classnames"
-import type { WorkspaceApp, WorkspaceAppName } from "src/types"
-import localize from "../../utils/localize"
-import CustomZoomInput from "../CustomZoomInput"
-import SelectZoomInput from "../SelectZoomInput"
+import classnames from "classnames";
+import type { WorkspaceApp, WorkspaceAppName } from "src/types";
+import localize from "../../utils/localize";
+import CustomZoomInput from "../CustomZoomInput";
+import SelectZoomInput from "../SelectZoomInput";
 
-import * as style from "../../style.module.css"
+import * as style from "../../style.module.css";
 
 type WorkspaceApplicationComponentProps = {
-  applicationName: WorkspaceAppName
-  zoomLevel: string
-  zoomLevelCustom: string
-  zoomValues: WorkspaceApp["zoomValues"]
-  features: WorkspaceApp["features"]
-  featureDocsViewOnlyEnabled: boolean
-  isCustomZoomLevel: boolean
-  updateZoomLevel: (newZoomValue: string) => void
-  updateDocsViewOnly: (newDocsViewOnlyValue: boolean) => void
-}
+  applicationName: WorkspaceAppName;
+  zoomLevel: string;
+  zoomLevelCustom: string;
+  zoomValues: WorkspaceApp["zoomValues"];
+  features: WorkspaceApp["features"];
+  featureDocsViewOnlyEnabled: boolean;
+  isCustomZoomLevel: boolean;
+  updateZoomLevel: (newZoomValue: string) => void;
+  updateDocsViewOnly: (newDocsViewOnlyValue: boolean) => void;
+};
 
 // Checkbox component that takes isChecked and onChange props
 // this is very much tied to experimental features, but can be updated in the future
@@ -24,8 +24,8 @@ const Checkbox = ({ isChecked, onChange }) => {
   const onEduClick = () => {
     chrome.tabs.create({
       url: "./tabs/experimental-features.html#docs-view-only"
-    })
-  }
+    });
+  };
 
   return (
     <label className={style.applicationCheckbox}>
@@ -33,7 +33,7 @@ const Checkbox = ({ isChecked, onChange }) => {
         type="checkbox"
         checked={isChecked}
         onChange={(event) => {
-          onChange(event.target.checked)
+          onChange(event.target.checked);
         }}
       />
       <span>
@@ -44,8 +44,8 @@ const Checkbox = ({ isChecked, onChange }) => {
         ) {localize("popupViewOnlyDocsExperimentalContent")}
       </span>
     </label>
-  )
-}
+  );
+};
 
 const WorkspaceApplicationComponent = ({
   applicationName,
@@ -95,7 +95,7 @@ const WorkspaceApplicationComponent = ({
         </div>
       )}
     </li>
-  )
-}
+  );
+};
 
-export default WorkspaceApplicationComponent
+export default WorkspaceApplicationComponent;
