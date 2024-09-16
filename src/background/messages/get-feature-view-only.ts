@@ -7,7 +7,7 @@ import type {
 } from "../../types";
 import { setupSentry } from "../../utils/sentry/background";
 
-const sentryWrap = setupSentry("background");
+const sentryClient = setupSentry("background");
 
 const storage = new Storage();
 
@@ -15,13 +15,15 @@ const handler: PlasmoMessaging.MessageHandler<
   GetFeatureViewOnlyRequestBody,
   GetFeatureViewOnlyResponseBody
 > = async (req, res) => {
-  sentryWrap(() => {
-    storage.get<boolean>(req.body.storageKey).then((enabled) => {
-      res.send({
-        enabled
-      });
+  try {
+    const enabled = await storage.get<boolean>(req.body.storageKey);
+
+    res.send({
+      enabled
     });
-  });
+  } catch (err) {
+    sentryClient.captureException(err);
+  }
 };
 
 export default handler;

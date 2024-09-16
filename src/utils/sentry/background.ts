@@ -1,11 +1,12 @@
-import * as Sentry from "@sentry/browser";
 import type { ExtensionFileSource } from "../../types";
-import { getDefaultTags, sentryConfig } from "./config";
+import {
+  getDefaultTags,
+  client as sentryClient,
+  scope as sentryScope
+} from "./setup";
 
 export const setupSentry = (source: ExtensionFileSource) => {
-  Sentry.init(sentryConfig);
+  sentryScope.setTags({ source, ...getDefaultTags() });
 
-  Sentry.getCurrentScope().setTags({ source, ...getDefaultTags() });
-
-  return Sentry.wrap;
+  return sentryClient;
 };

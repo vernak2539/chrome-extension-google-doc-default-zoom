@@ -7,7 +7,7 @@ import type {
 } from "../../types";
 import { setupSentry } from "../../utils/sentry/background";
 
-const sentryWrap = setupSentry("background");
+const sentryClient = setupSentry("background");
 
 const storage = new Storage();
 
@@ -15,13 +15,15 @@ const handler: PlasmoMessaging.MessageHandler<
   GetZoomValueRequestBody,
   GetZoomValueResponseBody
 > = async (req, res) => {
-  sentryWrap(() => {
-    storage.get(req.body.storageKey).then((zoomValue) => {
-      res.send({
-        zoomValue
-      });
+  try {
+    const zoomValue = await storage.get<string>(req.body.storageKey);
+
+    res.send({
+      zoomValue
     });
-  });
+  } catch (err) {
+    sentryClient.captureException(err);
+  }
 };
 
 export default handler;

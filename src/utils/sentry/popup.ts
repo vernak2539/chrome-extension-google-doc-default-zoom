@@ -1,11 +1,61 @@
-import * as Sentry from "@sentry/react";
+import { Component } from "react";
 import type { ExtensionFileSource } from "../../types";
-import { getDefaultTags, sentryConfig } from "./config";
+import {
+  getDefaultTags,
+  client as sentryClient,
+  scope as sentryScope
+} from "./setup";
+
+type ErrorBoundaryState = {
+  hasError: boolean;
+};
+
+type ErrorBoundaryProps = {
+  fallback: React.ReactNode;
+  children: React.ReactNode;
+};
+
+class ErrorBoundaryWithSentry extends Component<
+  ErrorBoundaryProps,
+  ErrorBoundaryState
+> {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error) {
+    // Update state so the next render will show the fallback UI.
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, info) {
+    sentryClient.captureException(error, {
+      ...{
+        mechanism: {
+          handled: Boolean(this.props.fallback)
+        }
+      },
+      captureContext: {
+        contexts: {
+          react: { componentStack: info.componentStack }
+        }
+      }
+    });
+  }
+
+  render() {
+    if (this.state.hasError) {
+      // You can render any custom fallback UI
+      return this.props.fallback;
+    }
+
+    return this.props.children;
+  }
+}
 
 export const setupSentry = (source: ExtensionFileSource) => {
-  Sentry.init(sentryConfig);
+  sentryScope.setTags({ source, ...getDefaultTags() });
 
-  Sentry.getCurrentScope().setTags({ source, ...getDefaultTags() });
-
-  return Sentry.ErrorBoundary;
+  return ErrorBoundaryWithSentry;
 };
