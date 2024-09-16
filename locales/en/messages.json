@@ -63,6 +63,10 @@
     "message": "Custom Zoom Levels",
     "description": "custom zoom level functionality"
   },
+  "ExtVersionsTabFunctionalityRequiredPermissionsHeader": {
+    "message": "Chrome Extension Permissions Required:",
+    "description": "Header for what permissions are required for the extension"
+  },
   "ExtVersionsTabExtendedPermissionExplanation": {
     "message": "The elevated permission is required to set custom zoom values",
     "description": "Extra information saying why the elevated permission is required"

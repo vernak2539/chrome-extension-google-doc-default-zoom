@@ -63,6 +63,10 @@
     "message": "Пользовательские уровни масштаба",
     "description": "Функциональность пользовательского уровня масштаба"
   },
+  "ExtVersionsTabFunctionalityRequiredPermissionsHeader": {
+    "message": "Требуемые разрешения расширения Chrome:",
+    "description": "Header for what permissions are required for the extension"
+  },
   "ExtVersionsTabExtendedPermissionExplanation": {
     "message": "Для установки пользовательских значений масштаба требуется повышенное разрешение",
     "description": "Дополнительная информация о том, почему требуется повышенное разрешение"

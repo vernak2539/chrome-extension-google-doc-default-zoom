@@ -63,6 +63,10 @@
     "message": "Niveles de zoom personalizados",
     "description": "custom zoom level functionality"
   },
+  "ExtVersionsTabFunctionalityRequiredPermissionsHeader": {
+    "message": "Permisos requeridos para la extensión de Chrome:",
+    "description": "Header for what permissions are required for the extension"
+  },
   "ExtVersionsTabExtendedPermissionExplanation": {
     "message": "Se requiere el permiso elevado para establecer valores de zoom personalizados",
     "description": "Extra information saying why the elevated permission is required"

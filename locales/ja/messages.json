@@ -63,6 +63,10 @@
     "message": "カスタムズームレベル",
     "description": "custom zoom level functionality"
   },
+  "ExtVersionsTabFunctionalityRequiredPermissionsHeader": {
+    "message": "クローム拡張機能の必要な権限:",
+    "description": "Header for what permissions are required for the extension"
+  },
   "ExtVersionsTabExtendedPermissionExplanation": {
     "message": "カスタムズーム値を設定するためには、高度な権限が必要です",
     "description": "Extra information saying why the elevated permission is required"

@@ -63,6 +63,10 @@
     "message": "Benutzerdefinierte Zoomstufen",
     "description": "custom zoom level functionality"
   },
+  "ExtVersionsTabFunctionalityRequiredPermissionsHeader": {
+    "message": "Erforderliche Berechtigungen für die Chrome-Erweiterung:",
+    "description": "Header for what permissions are required for the extension"
+  },
   "ExtVersionsTabExtendedPermissionExplanation": {
     "message": "Die erhöhte Berechtigung ist erforderlich, um benutzerdefinierte Zoomwerte festzulegen",
     "description": "Extra information saying why the elevated permission is required"
