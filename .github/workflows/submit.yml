@@ -47,6 +47,7 @@ jobs:
           sourcemaps: "./build/chrome-mv3-prod"
           url_prefix: "chrome-extension://nflkcdlimipkgbacnfnhfecjgmojhklo"
           ignore_empty: true
+          ignore_missing: true
           version: ${{ steps.package-version.outputs.current-version }}
       - name: Remove sourcemaps from bundle
         run: rm ./build/chrome-mv3-prod/*.map
