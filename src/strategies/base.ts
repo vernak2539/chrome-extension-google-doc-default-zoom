@@ -1,5 +1,4 @@
 import { sendToBackgroundViaRelay } from "@plasmohq/messaging";
-
 import { getClosestZoomValue } from "src/utils/get-closest-zoom-value";
 import { RELAY_EXECUTE_ENTER } from "../constants";
 import type {
@@ -28,7 +27,6 @@ export interface AbstractBaseStrategyImpl {
 export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
   protected readonly config: UiStrategyConfig;
   public abstract execute(executionLocation: string): void;
-  // protected abstract getIsViewOnly(): boolean
 
   protected constructor(config: UiStrategyConfig) {
     this.config = config;
@@ -49,14 +47,19 @@ export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
       this.config.uiElements.clickableZoomSelectId
     );
 
+    /*--EXTENDED_ONLY_START--*/
     const canUseCustomZoom =
       this.isFeatureEnabled("customZoomInput") && getIsCustomZoom(zoomValue);
 
     if (canUseCustomZoom) {
       this.uiExecuteCustomZoomFlow(zoomInputContainer, zoomValue);
     } else {
+      /*--EXTENDED_ONLY_END--*/
+
       this.uiExecuteDefinedZoomFlow(zoomInputContainer, zoomValue);
+      /*--EXTENDED_ONLY_START--*/
     }
+    /*--EXTENDED_ONLY_END--*/
   }
 
   private uiExecuteDefinedZoomFlow(
@@ -92,6 +95,7 @@ export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
     this.closeDropdown();
   }
 
+  /*--EXTENDED_ONLY_START--*/
   private uiExecuteCustomZoomFlow(
     zoomInputContainer: Element,
     zoomValue: string
@@ -123,6 +127,7 @@ export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
       }
     });
   }
+  /*--EXTENDED_ONLY_END--*/
 
   private closeDropdown() {
     // close dropdown with blur event (may need to check again to see if it's closed)
