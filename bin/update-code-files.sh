@@ -14,7 +14,6 @@ process_file() {
     # Read the file content
     content=$(<"$file")
     
-    
     # Remove sections between the specified comment blocks, allowing for spaces
     modified_content=$(echo "$content" | sed -E '/^[[:space:]]*\/\*--EXTENDED_ONLY_START--\*\//,/^[[:space:]]*\/\*--EXTENDED_ONLY_END--\*\//d')
 
@@ -30,5 +29,9 @@ export -f process_file
 
 # Walk through all files in the directory and process them
 find "$start_dir" -type f -exec bash -c 'process_file "$0"' {} \;
+
+# Remove any .bak files created
+echo "Cleaning up .bak files..."
+find "$start_dir" -type f -name "*.bak" -exec rm -f {} \;
 
 echo "Finished processing files."
