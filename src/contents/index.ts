@@ -29,8 +29,11 @@ const sentryClient = setupSentry("content");
 const main = () => {
   // create and "register" the relay
   relayMessage({ name: RELAY_GET_ZOOM_VALUE_FROM_STORAGE });
-  relayMessage({ name: RELAY_EXECUTE_ENTER });
   relayMessage({ name: RELAY_GET_FEATURE_VIEW_ONLY_FROM_STORAGE });
+
+  /* EXTENDED_ONLY_START */
+  relayMessage({ name: RELAY_EXECUTE_ENTER });
+  /* EXTENDED_ONLY_END */
 
   const currentApp = getCurrentApp();
   let strategy: DocsStrategy | SheetsStrategy;

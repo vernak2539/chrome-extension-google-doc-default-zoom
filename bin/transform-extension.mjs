@@ -38,6 +38,7 @@ originalPkg.manifest.browser_specific_settings.gecko.id = `${originalPkg.name}@v
 
 execaSync(path.resolve(__dirname, "./update-code-files.sh"));
 execaSync(path.resolve(__dirname, "./update-icons.sh"));
+execaSync(path.resolve(__dirname, "./remove-files.sh"));
 
 jsonfile.writeFileSync(pkgPath, originalPkg, { spaces: 2 });
 
