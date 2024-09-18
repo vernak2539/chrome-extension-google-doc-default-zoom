@@ -14,19 +14,14 @@ process_file() {
     # Read the file content
     content=$(<"$file")
     
-    # Print the original content for debugging
-    echo "Original content of $file:"
-    echo "$content"
     
-    # Remove sections between the specified comment blocks
-    modified_content=$(echo "$content" | sed -E '/\/\*--EXTENDED_ONLY_START--\*\*/,/\/\*--EXTENDED_ONLY_END--\*\*/d')
+    # Remove sections between the specified comment blocks, allowing for spaces
+    modified_content=$(echo "$content" | sed -E '/^[[:space:]]*\/\*--EXTENDED_ONLY_START--\*\//,/^[[:space:]]*\/\*--EXTENDED_ONLY_END--\*\//d')
 
     # Check if content has changed
     if [[ "$content" != "$modified_content" ]]; then
         echo "Modifying file: $file"
         echo "$modified_content" > "$file"
-    else
-        echo "No changes made to: $file"
     fi
 }
 
