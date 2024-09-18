@@ -15,11 +15,24 @@ Supported Google Workspace Products:
 | ----------------------------------- | ------------------------------------- |
 | ![](./docs/img/docs-screenshot.png) | ![](./docs/img/sheets-screenshot.png) |
 
-## Find it on Chrome Web Store
+## Browser Support
 
-- [Google Workspace Zoom Default](https://chrome.google.com/webstore/detail/google-docs-zoom-default/nflkcdlimipkgbacnfnhfecjgmojhklo)
-- [Google Workspace Zoom Default - Extended](https://chrome.google.com/webstore/detail/google-workspace-zoom-def/mdgikencgfhineaememjagpkiclbdkka)
+|                                                                      | Chrome Extension | Firefox Add-on |
+| -------------------------------------------------------------------- | ---------------- | -------------- |
+| [Google Workspace Zoom Default][chrome-webstore-default]             | ✅               | ✅             |
+| [Google Workspace Zoom Default - Extended][chrome-webstore-extended] | ✅               | ❌             |
+
+### Find it on Chrome Web Store
+
+- [Google Workspace Zoom Default][chrome-webstore-default]
+- [Google Workspace Zoom Default - Extended][chrome-webstore-extended]
   - In exchange for allowing elevated permissions, this extension provides ability to set custom zoom levels (as opposed to only predefined values)
+
+### Find it on Firefox Add-ons
+
+- [Google Workspace Zoom Default][firefox-addon-default]
+
+:rotating_light: **NOTE:** Firefox does not support the "debugger" permission, meaning custom zoom values are not supported
 
 ## Localisation
 
@@ -79,3 +92,7 @@ This Chrome Extension will never collect or transmit any personal data.
 
 I do use [Sentry](https://sentry.io/welcome/) for error monitoring in diagnose and fix errors more easily. This, in turn,
 makes this extension better. There is no personal data transmitted to them and never will be.
+
+[chrome-webstore-default]: https://chrome.google.com/webstore/detail/google-docs-zoom-default/nflkcdlimipkgbacnfnhfecjgmojhklo
+[chrome-webstore-extended]: https://chrome.google.com/webstore/detail/google-workspace-zoom-def/mdgikencgfhineaememjagpkiclbdkka
+[firefox-addon-default]: https://addons.mozilla.org/en-US/firefox/addon/...
