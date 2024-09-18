@@ -34,8 +34,7 @@ originalPkg.name = "google-workspace-zoom-default";
 originalPkg.displayName = "__MSG_extensionName__";
 originalPkg.manifest.name = "__MSG_extensionName__";
 originalPkg.manifest.permissions = [];
-originalPkg.manifest.browser_specific_settings.gecko.id =
-  "{b43eaaa2-d5fc-4874-a58d-f33595c976f2}";
+originalPkg.manifest.browser_specific_settings.gecko.id = `${originalPkg.name}@vernacchia.dev`;
 
 execaSync(path.resolve(__dirname, "./update-code-files.sh"));
 execaSync(path.resolve(__dirname, "./update-icons.sh"));
@@ -51,5 +50,5 @@ assert.equal(newPkg.manifest.name, "__MSG_extensionName__");
 assert.equal(newPkg.manifest.permissions.length, 0);
 assert.equal(
   newPkg.manifest.browser_specific_settings.gecko.id,
-  "{b43eaaa2-d5fc-4874-a58d-f33595c976f2}"
+  `google-workspace-zoom-default@vernacchia.dev`
 );
