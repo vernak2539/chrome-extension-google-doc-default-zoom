@@ -38,10 +38,6 @@ jobs:
         uses: martinbeentjes/npm-get-version-action@v1.3.1
       - name: Create Sentry release (Chrome Extension)
         uses: getsentry/action-release@v1
-        env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          SENTRY_ORG: ${{ vars.SENTRY_ORG }}
-          SENTRY_PROJECT: ${{ vars.SENTRY_PROJECT }}
         with:
           environment: production
           sourcemaps: "./build/chrome-mv3-prod"
@@ -49,13 +45,16 @@ jobs:
           ignore_empty: true
           ignore_missing: true
           version: ${{ steps.package-version.outputs.current-version }}
+      - name: Create Sentry release (Firefox Add-on)
+        uses: getsentry/action-release@v1
+        with:
+          environment: production
+          sourcemaps: "./build/firefox-mv3-prod"
+          # url_prefix: "chrome-extension://nflkcdlimipkgbacnfnhfecjgmojhklo"
+          ignore_empty: true
+          ignore_missing: true
+          version: ${{ steps.package-version.outputs.current-version }}
       # NOTE: This has to be after Sentry Release is created above...
-      - name: Upload Sourcemaps (Firefox Add-on)
-        run: |
-          pnpm dlx @sentry/cli sourcemaps upload \
-            --release="${{ steps.package-version.outputs.current-version }}" \
-            ./build/firefox-mv2-prod
-      # --url-prefix="https://addons.mozilla.org/firefox/downloads/file/" \
       - name: Remove sourcemaps from bundle
         run: |
           rm ./build/chrome-mv3-prod/*.map
