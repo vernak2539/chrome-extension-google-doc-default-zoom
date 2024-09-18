@@ -1,8 +1,10 @@
 import { sendToBackgroundViaRelay } from "@plasmohq/messaging";
 
+import { getClosestZoomValue } from "src/utils/get-closest-zoom-value";
 import { RELAY_EXECUTE_ENTER } from "../constants";
 import type {
   ExecuteEnterRequestBody,
+  ExecuteEnterResponseBody,
   ExecutionLocation,
   Feature,
   UiStrategyConfig
@@ -47,11 +49,10 @@ export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
       this.config.uiElements.clickableZoomSelectId
     );
 
-    // add check for if strategy is supported or not for app
-    if (
-      this.isFeatureEnabled("customZoomInput") &&
-      getIsCustomZoom(zoomValue)
-    ) {
+    const canUseCustomZoom =
+      this.isFeatureEnabled("customZoomInput") && getIsCustomZoom(zoomValue);
+
+    if (canUseCustomZoom) {
       this.uiExecuteCustomZoomFlow(zoomInputContainer, zoomValue);
     } else {
       this.uiExecuteDefinedZoomFlow(zoomInputContainer, zoomValue);
@@ -99,13 +100,27 @@ export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
     zoomInput.focus();
     zoomInput.select();
 
-    sendToBackgroundViaRelay<ExecuteEnterRequestBody>({
-      name: RELAY_EXECUTE_ENTER,
-      body: {
-        zoomValue
+    sendToBackgroundViaRelay<ExecuteEnterRequestBody, ExecuteEnterResponseBody>(
+      {
+        name: RELAY_EXECUTE_ENTER,
+        body: {
+          zoomValue
+        }
       }
-    }).then(() => {
-      this.closeDropdown();
+    ).then(({ err }) => {
+      if (!err) {
+        this.closeDropdown();
+        return;
+      }
+
+      if (err === "no_debugger") {
+        const closestZoomValue = getClosestZoomValue(
+          this.config.zoom.zoomValues,
+          zoomValue
+        );
+
+        this.uiExecuteDefinedZoomFlow(zoomInputContainer, closestZoomValue);
+      }
     });
   }
 

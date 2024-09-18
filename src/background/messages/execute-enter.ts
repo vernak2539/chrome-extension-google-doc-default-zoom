@@ -1,13 +1,21 @@
 import type { PlasmoMessaging } from "@plasmohq/messaging";
-
-import type { ExecuteEnterRequestBody } from "../../types";
+import type {
+  ExecuteEnterRequestBody,
+  ExecuteEnterResponseBody
+} from "../../types";
 import { setupSentry } from "../../utils/sentry/background";
 
 const sentryClient = setupSentry("background");
 
-const handler: PlasmoMessaging.MessageHandler<ExecuteEnterRequestBody> = async (
-  req
-) => {
+const handler: PlasmoMessaging.MessageHandler<
+  ExecuteEnterRequestBody,
+  ExecuteEnterResponseBody
+> = async (req, res) => {
+  if (!chrome.debugger) {
+    res.send({ err: "no_debugger" });
+    return;
+  }
+
   try {
     const target = { tabId: req.sender.tab.id };
 
@@ -34,6 +42,7 @@ const handler: PlasmoMessaging.MessageHandler<ExecuteEnterRequestBody> = async (
     });
 
     chrome.debugger.detach(target);
+    res.send({ err: null });
   } catch (err) {
     sentryClient.captureException(err);
   }
