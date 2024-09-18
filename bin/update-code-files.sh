@@ -17,17 +17,23 @@ remove_extended_content() {
   modified=false
 
   while IFS= read -r line; do
+    echo "Processing line: '$line'"  # Debug log: Processing line
+
     # Check if the line is within an extended section
     if [[ "$line" =~ /*\s*EXTENDED_ONLY_START\s*/ ]]; then
       extended_section=true
+      echo "Entering extended section"  # Debug log: Entering extended section
     elif [[ "$line" =~ /*\s*EXTENDED_ONLY_END\s*/ ]]; then
       extended_section=false
+      echo "Exiting extended section"  # Debug log: Exiting extended section
     fi
 
     # Skip lines within extended sections and comments
     if [[ ! $extended_section && ! "$line" =~ ^# ]]; then
       echo "$line" >> "$temp_file"
+      echo "Writing line to temp file: '$line'"  # Debug log: Writing line to temp file
     else
+      echo "Skipping line: '$line'"  # Debug log: Skipping line
       modified=true
     fi
   done < "$file"
@@ -37,6 +43,7 @@ remove_extended_content() {
     mv "$temp_file" "$file"
     echo "Modified: $file"
   else
+    echo "No modifications made to $file"  # Debug log: No modifications made
     rm "$temp_file"
   fi
 }
