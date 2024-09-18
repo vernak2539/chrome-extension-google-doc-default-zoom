@@ -18,8 +18,8 @@ process_file() {
     echo "Original content of $file:"
     echo "$content"
     
-    # Remove sections between comment blocks and the comments themselves
-    modified_content=$(echo "$content" | sed -E '/\/\* EXTENDED_ONLY_START \*\//, /\/\* EXTENDED_ONLY_END \*\//d; s/\/\*.*\*\///g')
+    # Remove sections between the specified comment blocks
+    modified_content=$(echo "$content" | sed -E '/\/\* EXTENDED_ONLY_START \*\*/,/\/\* EXTENDED_ONLY_END \*\*/d')
 
     # Check if content has changed
     if [[ "$content" != "$modified_content" ]]; then
