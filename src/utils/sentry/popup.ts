@@ -13,6 +13,7 @@ type ErrorBoundaryState = {
 type ErrorBoundaryProps = {
   fallback: React.ReactNode;
   children: React.ReactNode;
+  beforeCapture?: (scope: typeof sentryScope) => void;
 };
 
 class ErrorBoundaryWithSentry extends Component<
@@ -30,6 +31,10 @@ class ErrorBoundaryWithSentry extends Component<
   }
 
   componentDidCatch(error, info) {
+    if (this.props.beforeCapture) {
+      this.props.beforeCapture(sentryScope);
+    }
+
     sentryClient.captureException(error, {
       ...{
         mechanism: {
