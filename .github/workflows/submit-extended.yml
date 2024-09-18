@@ -23,6 +23,8 @@ jobs:
         with:
           node-version: 20
           cache: "pnpm"
+      - name: Install dependencies
+        run: pnpm install
       - name: Build the extension
         run: pnpm build --source-maps
       - name: get-npm-version

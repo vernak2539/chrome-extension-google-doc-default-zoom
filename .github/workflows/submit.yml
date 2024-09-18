@@ -22,6 +22,8 @@ jobs:
         with:
           node-version: 20
           cache: "pnpm"
+      - name: Install dependencies
+        run: pnpm install
       - name: Transform to "Google Workspace Zoom Default"
         run: pnpm transform-ext
       - name: Build the extension
