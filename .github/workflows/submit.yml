@@ -27,11 +27,13 @@ jobs:
       - name: Transform to "Google Workspace Zoom Default"
         run: pnpm transform-ext
       - name: Build the extension
-        run: pnpm build --source-maps
+        run: |
+          pnpm build --source-maps --target=chrome-mv3
+          pnpm build --source-maps --target=firefox-mv2
       - name: get-npm-version
         id: package-version
         uses: martinbeentjes/npm-get-version-action@v1.3.1
-      - name: Create Sentry release
+      - name: Create Sentry release (Chrome Extension)
         uses: getsentry/action-release@v1
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
@@ -44,12 +46,24 @@ jobs:
           ignore_empty: true
           ignore_missing: true
           version: ${{ steps.package-version.outputs.current-version }}
+      # NOTE: This has to be after Sentry Release is created above...
+      - name: Upload Sourcemaps (Firefox Add-on)
+        run: |
+          pnpm dlx @sentry/cli sourcemaps upload \
+            --release="${{ steps.package-version.outputs.current-version }}" \
+            ./build/firefox-mv2-prod
+      # --url-prefix="https://addons.mozilla.org/firefox/downloads/file/" \
       - name: Remove sourcemaps from bundle
-        run: rm ./build/chrome-mv3-prod/*.map
+        run: |
+          rm ./build/chrome-mv3-prod/*.map
+          rm ./build/firefox-mv2-prod/*.map
       - name: Package extension artifact
-        run: pnpm package
+        run: |
+          pnpm package --target=chrome-mv3
+          pnpm package --target=firefox-mv2
       - name: Browser Platform Publish
         uses: PlasmoHQ/bpp@v3
         with:
           keys: ${{ secrets.SUBMIT_KEYS }}
-          artifact: build/chrome-mv3-prod.zip
+          chrome-file: build/chrome-mv3-prod.zip
+          firefox-file: build/firefox-mv2-prod.zip
