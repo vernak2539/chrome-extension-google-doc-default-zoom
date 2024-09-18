@@ -3,7 +3,7 @@
 sed -i.bak -e 's/customZoomInput: true/customZoomInput: false/' src/constants.ts
 sed -i.bak -e 's/localize("extensionNameExtended")/localize("extensionName")/' src/popup.tsx
 
-# Remove code blocks that start with /* EXTENDED_ONLY_START */ and end with /* EXTENDED_ONLY_END */
+# Remove code blocks that start with /*--EXTENDED_ONLY_START--*/ and end with /*--EXTENDED_ONLY_END--*/
 start_dir="src"
 
 # Function to process each file
@@ -19,7 +19,7 @@ process_file() {
     echo "$content"
     
     # Remove sections between the specified comment blocks
-    modified_content=$(echo "$content" | sed -E '/\/\* EXTENDED_ONLY_START \*\*/,/\/\* EXTENDED_ONLY_END \*\*/d')
+    modified_content=$(echo "$content" | sed -E '/\/\*--EXTENDED_ONLY_START--\*\*/,/\/\*--EXTENDED_ONLY_END--\*\*/d')
 
     # Check if content has changed
     if [[ "$content" != "$modified_content" ]]; then
