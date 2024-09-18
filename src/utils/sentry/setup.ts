@@ -34,6 +34,7 @@ const sentryClient = new BrowserClient({
 });
 
 const sentryScope = new Scope();
+sentryScope.setTag("locale", chrome.i18n.getUILanguage());
 sentryScope.setClient(sentryClient);
 
 sentryClient.init(); // initializing has to be done after setting the client on the scope
