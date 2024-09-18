@@ -18,6 +18,10 @@ export interface ExecuteEnterRequestBody {
   zoomValue: string;
 }
 
+export interface ExecuteEnterResponseBody {
+  err: null | "no_debugger";
+}
+
 export type WorkspaceAppName = "Docs" | "Sheets";
 export type DocsZoomValueFit =
   | "Fit"
