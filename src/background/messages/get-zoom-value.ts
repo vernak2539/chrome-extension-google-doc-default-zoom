@@ -5,7 +5,7 @@ import type {
   GetZoomValueRequestBody,
   GetZoomValueResponseBody
 } from "../../types";
-import { setupSentry } from "../../utils/sentry/background";
+import { setupSentry } from "../../utils/sentry/base";
 
 const sentryClient = setupSentry("background");
 
