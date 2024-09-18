@@ -7,6 +7,14 @@
  * 4. Update the package.json -> displayName from "__MSG_extensionNameExtended__" to "__MSG_extensionName__"
  * 5. Update the package.json -> manifest -> name from "__MSG_extensionNameExtended__" to "__MSG_extensionName__"
  * 6. Disable "features.customZoomInput" for both "workspaceApps" in constants.ts
+ *
+ * ***** NOTE FIREFOX INFORMATION *****
+ *
+ * Firefox will not support an "Extended" version of this extension
+ * This is because Firefox does not support the "debugger" permission, meaning custom values are not supported
+ * See: https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/permissions#api_permissions
+ *
+ * This will still be set up as if the "Extended" version is being transformed to the non-extended version
  * */
 
 import { execaSync } from "execa";
@@ -26,6 +34,8 @@ originalPkg.name = "google-workspace-zoom-default";
 originalPkg.displayName = "__MSG_extensionName__";
 originalPkg.manifest.name = "__MSG_extensionName__";
 originalPkg.manifest.permissions = [];
+originalPkg.manifest.browser_specific_settings.gecko.id =
+  "{b43eaaa2-d5fc-4874-a58d-f33595c976f2}";
 
 execaSync(path.resolve(__dirname, "./update-code-files.sh"));
 execaSync(path.resolve(__dirname, "./update-icons.sh"));
@@ -39,3 +49,7 @@ assert.equal(newPkg.name, "google-workspace-zoom-default");
 assert.equal(newPkg.displayName, "__MSG_extensionName__");
 assert.equal(newPkg.manifest.name, "__MSG_extensionName__");
 assert.equal(newPkg.manifest.permissions.length, 0);
+assert.equal(
+  newPkg.manifest.browser_specific_settings.gecko.id,
+  "{b43eaaa2-d5fc-4874-a58d-f33595c976f2}"
+);
