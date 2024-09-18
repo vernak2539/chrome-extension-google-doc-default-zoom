@@ -3,53 +3,37 @@
 sed -i.bak -e 's/customZoomInput: true/customZoomInput: false/' src/constants.ts
 sed -i.bak -e 's/localize("extensionNameExtended")/localize("extensionName")/' src/popup.tsx
 
-# Function to remove extended content and comments from a file
-remove_extended_content() {
-  local file="$1"
-  local temp_file=$(mktemp)
+# Remove code blocks that start with /* EXTENDED_ONLY_START */ and end with /* EXTENDED_ONLY_END */
+start_dir="src"
 
-  if [[ ! -f "$file" ]]; then
-    echo "Error: File '$file' not found."
-    return 1
-  fi
+# Function to process each file
+process_file() {
+    local file="$1"
+    echo "Processing file: $file"
+    
+    # Read the file content
+    content=$(<"$file")
+    
+    # Print the original content for debugging
+    echo "Original content of $file:"
+    echo "$content"
+    
+    # Remove sections between comment blocks and the comments themselves
+    modified_content=$(echo "$content" | sed -E '/\/\* EXTENDED_ONLY_START \*\//, /\/\* EXTENDED_ONLY_END \*\//d; s/\/\*.*\*\///g')
 
-  # Check if the file has been modified
-  modified=false
-
-  while IFS= read -r line; do
-    echo "Processing line: '$line'"  # Debug log: Processing line
-
-    # Check if the line is within an extended section
-    if [[ "$line" =~ /*\s*EXTENDED_ONLY_START\s*/ ]]; then
-      extended_section=true
-      echo "Entering extended section"  # Debug log: Entering extended section
-    elif [[ "$line" =~ /*\s*EXTENDED_ONLY_END\s*/ ]]; then
-      extended_section=false
-      echo "Exiting extended section"  # Debug log: Exiting extended section
-    fi
-
-    # Skip lines within extended sections and comments
-    if [[ ! $extended_section && ! "$line" =~ ^# ]]; then
-      echo "$line" >> "$temp_file"
-      echo "Writing line to temp file: '$line'"  # Debug log: Writing line to temp file
+    # Check if content has changed
+    if [[ "$content" != "$modified_content" ]]; then
+        echo "Modifying file: $file"
+        echo "$modified_content" > "$file"
     else
-      echo "Skipping line: '$line'"  # Debug log: Skipping line
-      modified=true
+        echo "No changes made to: $file"
     fi
-  done < "$file"
-
-  # If the file was modified, move the temporary file to the original file
-  if $modified; then
-    mv "$temp_file" "$file"
-    echo "Modified: $file"
-  else
-    echo "No modifications made to $file"  # Debug log: No modifications made
-    rm "$temp_file"
-  fi
 }
 
-# Hardcoded starting directory
-starting_directory="src"
+# Export the function to use in find
+export -f process_file
 
-# Walk through the directory and process files
-find "$starting_directory" -type f -exec bash -c 'remove_extended_content "$0"' {} \;
+# Walk through all files in the directory and process them
+find "$start_dir" -type f -exec bash -c 'process_file "$0"' {} \;
+
+echo "Finished processing files."
