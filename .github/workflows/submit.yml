@@ -69,3 +69,7 @@ jobs:
           keys: ${{ secrets.SUBMIT_KEYS }}
           chrome-file: build/chrome-mv3-prod.zip
           firefox-file: build/firefox-mv2-prod.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          path: build
+          name: google-workspace-zoom-default-${{ steps.package-version.outputs.current-version }}
