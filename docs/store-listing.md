@@ -13,6 +13,8 @@ If you'd like to help me translate this for languages other than English, please
 
 If you'd like to use your own custom zoom values, please checkout my other extension (https://chrome.google.com/webstore/detail/google-workspace-zoom-def/mdgikencgfhineaememjagpkiclbdkka).
 
+You can support me by "buying me a coffee" at https://buymeacoffee.com/vernacchia.
+
 ## Spanish (es)
 
 ¿Cansado de tener que cambiar el zoom en tus Aplicaciones de Google Workspace cuando se cargan por primera vez porque el texto es demasiado pequeño? Bueno, esto debería ayudar.
@@ -27,6 +29,8 @@ Una vez que establezcas tu nivel de zoom deseado, el nivel de zoom se cambiará 
 Si quieres ayudarme a traducir esto a idiomas distintos del inglés, ¡por favor ponte en contacto conmigo!
 
 Si desea utilizar sus propios valores de zoom personalizados, consulte mi otra extensión (https://chrome.google.com/webstore/detail/google-workspace-zoom-def/mdgikencgfhineaememjagpkiclbdkka).
+
+Puedes apoyarme "invitándome a un café" en https://buymeacoffee.com/vernacchia.
 
 ## Japanese (ja)
 
@@ -43,6 +47,8 @@ Google Workspaceアプリケーションを初めて読み込むときに、テ�
 
 独自のズーム値を使用したい場合は、私の他の拡張機能をチェックしてください。 (https://chrome.google.com/webstore/detail/google-workspace-zoom-def/mdgikencgfhineaememjagpkiclbdkka).
 
+「コーヒーをご馳走してください」と言って https://buymeacoffee.com/vernacchia で私をサポートすることができます ("Kōhī o gochisōshite kudasai" to itte https://buymeacoffee.com/vernacchia de watashi o supōto suru koto ga dekimasu).
+
 ## German (de)
 
 Sind Sie es leid, den Zoom in Ihren Google Workspace-Anwendungen jedes Mal ändern zu müssen, wenn sie zum ersten Mal geladen werden, weil der Text zu klein ist? Nun, das sollte helfen.
@@ -57,6 +63,8 @@ Sobald Sie die gewünschte Zoomstufe festgelegt haben, wird die Zoomstufe jedes 
 Wenn Sie mir helfen möchten, dies in anderen Sprachen als Englisch zu übersetzen, nehmen Sie bitte Kontakt mit mir auf!!
 
 Wenn Sie Ihre eigenen benutzerdefinierten Zoomwerte verwenden möchten, besuchen Sie bitte meine andere Erweiterung (https://chrome.google.com/webstore/detail/google-workspace-zoom-def/mdgikencgfhineaememjagpkiclbdkka).
+
+Sie können mich mit einem "virtuellen Kaffee" auf https://buymeacoffee.com/vernacchia unterstützen.
 
 ## French (fr)
 
@@ -74,6 +82,8 @@ Si vous souhaitez m'aider à traduire ceci dans des langues autres que l'anglais
 
 Si vous souhaitez utiliser vos propres valeurs de zoom personnalisées, veuillez consulter mon autre extension (https://chrome.google.com/webstore/detail/google-workspace-zoom-def/mdgikencgfhineaememjagpkiclbdkka).
 
+Vous pouvez me soutenir en m'offrant un café sur https://buymeacoffee.com/vernacchia.
+
 ## Italian (it)
 
 Stanco di dover cambiare lo zoom delle tue applicazioni Google Workspace al primo caricamento perché il testo è troppo piccolo? Bene, questo dovrebbe aiutarti.
@@ -89,6 +99,8 @@ Se vuoi aiutarmi a tradurre questo per lingue diverse dall'inglese, contattami!
 
 Se vuoi utilizzare i tuoi valori di zoom personalizzati, dai un'occhiata alla mia altra estensione (https://chrome.google.com/webstore/detail/google-workspace-zoom-def/mdgikencgfhineaememjagpkiclbdkka).
 
+Puoi sostenermi "offrendomi un caffè" su https://buymeacoffee.com/vernacchia.
+
 ## Russian (ru)
 
 Устали постоянно менять масштаб в приложениях Google Workspace при первой загрузке, потому что текст слишком мелкий? Тогда это вам поможет!
@@ -103,3 +115,5 @@ Se vuoi utilizzare i tuoi valori di zoom personalizzati, dai un'occhiata alla mi
 Если вы хотите помочь мне перевести это на другие языки, кроме английского, пожалуйста, свяжитесь со мной!
 
 Если вы хотите использовать свои собственные значения масштабирования, ознакомьтесь с моим другим расширением (https://chrome.google.com/webstore/detail/google-workspace-zoom-def/mdgikencgfhineaememjagpkiclbdkka).
+
+Вы можете поддержать меня, "купив мне кофе" на https://buymeacoffee.com/vernacchia (Vy možete podderzhat' menya, "kupiv mne kofe" na https://buymeacoffee.com/vernacchia).

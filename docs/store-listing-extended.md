@@ -15,6 +15,8 @@ This version includes functionality to allow for custom zoom levels. To do this 
 
 Don't worry! If you do not want to accept the elevated permissions, you can use my other extension, which allows for the use of pre-defined zoom values. It is available here (https://chrome.google.com/webstore/detail/google-workspace-zoom-def/nflkcdlimipkgbacnfnhfecjgmojhklo).
 
+You can support me by "buying me a coffee" at https://buymeacoffee.com/vernacchia.
+
 ## Spanish (es)
 
 ¿Cansado de tener que cambiar el zoom en tus Aplicaciones de Google Workspace cuando se cargan por primera vez porque el texto es demasiado pequeño? Bueno, esto debería ayudar.
@@ -31,6 +33,8 @@ Si quieres ayudarme a traducir esto a idiomas distintos del inglés, ¡por favor
 Esta versión incluye funcionalidad para permitir niveles de zoom personalizados. Para hacer esto, la extensión requiere permisos elevados.
 
 ¡No te preocupes! Si no deseas aceptar los permisos elevados, puedes usar mi otra extensión, que permite usar valores de zoom predefinidos. Está disponible aquí (https://chrome.google.com/webstore/detail/google-workspace-zoom-def/nflkcdlimipkgbacnfnhfecjgmojhklo).
+
+Puedes apoyarme "invitándome a un café" en https://buymeacoffee.com/vernacchia.
 
 ## Japanese (ja)
 
@@ -49,6 +53,8 @@ Google Workspaceアプリケーションを初めて読み込むときに、テ�
 
 心配しないでください！拡張機能の権限を承認したくない場合は、事前定義されたズーム値を使用するのに役立つ他の拡張機能を使用できます。こちらから入手できます。(https://chrome.google.com/webstore/detail/google-workspace-zoom-def/nflkcdlimipkgbacnfnhfecjgmojhklo)
 
+「コーヒーをご馳走してください」と言って https://buymeacoffee.com/vernacchia で私をサポートすることができます ("Kōhī o gochisōshite kudasai" to itte https://buymeacoffee.com/vernacchia de watashi o supōto suru koto ga dekimasu).
+
 ## German (de)
 
 Sind Sie es leid, den Zoom in Ihren Google Workspace-Anwendungen jedes Mal ändern zu müssen, wenn sie zum ersten Mal geladen werden, weil der Text zu klein ist? Nun, das sollte helfen.
@@ -65,6 +71,8 @@ Wenn Sie mir helfen möchten, dies in anderen Sprachen als Englisch zu übersetz
 Diese Version enthält eine Funktionalität, um benutzerdefinierte Zoomstufen zu ermöglichen. Hierfür erfordert die Erweiterung erhöhte Berechtigungen.
 
 Keine Sorge! Wenn Sie die erweiterten Berechtigungen nicht akzeptieren möchten, können Sie meine andere Erweiterung verwenden, die die Verwendung von vordefinierten Zoomwerten ermöglicht. Es ist hier verfügbar (https://chrome.google.com/webstore/detail/google-workspace-zoom-def/nflkcdlimipkgbacnfnhfecjgmojhklo).
+
+Sie können mich mit einem "virtuellen Kaffee" auf https://buymeacoffee.com/vernacchia unterstützen.
 
 ## French (fr)
 
@@ -84,6 +92,8 @@ Cette version inclut une fonctionnalité permettant des niveaux de zoom personna
 
 Ne vous inquiétez pas ! Si vous ne souhaitez pas accepter les autorisations élevées, vous pouvez utiliser mon autre extension, qui permet d'utiliser des valeurs de zoom prédéfinies. Il est disponible ici (https://chrome.google.com/webstore/detail/google-workspace-zoom-def/nflkcdlimipkgbacnfnhfecjgmojhklo).
 
+Vous pouvez me soutenir en m'offrant un café sur https://buymeacoffee.com/vernacchia.
+
 ## Italian (it)
 
 Stanco di dover cambiare lo zoom delle tue applicazioni Google Workspace al primo caricamento perché il testo è troppo piccolo? Bene, questa estensione fa per te!
@@ -101,6 +111,8 @@ Questa versione include la funzionalità di consentire livelli di zoom personali
 
 Non preoccuparti! Se non desideri accettare i permessi avanzati, puoi utilizzare la mia altra estensione, che consente l'utilizzo di valori di zoom predefiniti. È disponibile qui (https://chrome.google.com/webstore/detail/google-workspace-zoom-def/nflkcdlimipkgbacnfnhfecjgmojhklo).
 
+Puoi sostenermi "offrendomi un caffè" su https://buymeacoffee.com/vernacchia.
+
 ## Russian (ru)
 
 Это расширение позволит вам установить «масштаб по умолчанию» для следующих приложений Google Workspace:
@@ -115,3 +127,5 @@ Non preoccuparti! Se non desideri accettare i permessi avanzati, puoi utilizzare
 Эта версия расширения включает в себя функцию, позволяющую устанавливать пользовательские уровни масштабирования. Для этого расширению требуются повышенные разрешения.
 
 Не волнуйтесь! Если вы не хотите предоставлять расширению повышенные разрешения, вы можете использовать моё другое расширение, которое позволяет использовать заранее определенные значения масштабирования. Оно доступно здесь (https://chrome.google.com/webstore/detail/google-workspace-zoom-def/nflkcdlimipkgbacnfnhfecjgmojhklo).
+
+Вы можете поддержать меня, "купив мне кофе" на https://buymeacoffee.com/vernacchia (Vy možete podderzhat' menya, "kupiv mne kofe" na https://buymeacoffee.com/vernacchia).
