@@ -32,7 +32,7 @@ jobs:
       - name: Build the extension
         run: |
           pnpm build --source-maps --target=chrome-mv3
-          pnpm build --no-minify --no-hoist --source-maps --zip --target=firefox-mv2
+          pnpm build --source-maps --target=firefox-mv2
       - name: get-npm-version
         id: package-version
         uses: martinbeentjes/npm-get-version-action@v1.3.1
