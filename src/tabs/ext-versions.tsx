@@ -1,3 +1,4 @@
+import { isChrome } from "src/utils/get-browser";
 import localize from "../utils/localize";
 
 type Data = {
@@ -89,26 +90,30 @@ const ExtensionVersionsPage = () => {
 
       <br />
 
-      <h2>{localize("extensionNameExtended")}</h2>
-      <a href="https://chrome.google.com/webstore/detail/google-workspace-zoom-def/mdgikencgfhineaememjagpkiclbdkka">
-        https://chrome.google.com/webstore/detail/google-workspace-zoom-def/mdgikencgfhineaememjagpkiclbdkka
-      </a>
-      <CheckList
-        title={localize("ExtVersionsTabAppsSupportedHeader")}
-        data={supportedWorkspaceApps}
-      />
-      <CheckList
-        title={localize("ExtVersionsTabFunctionalityIncludedHeader")}
-        data={extExtendedFunctionality}
-      />
-      <RequiredPermissions
-        permissions={["`debugger` (this is an elevated permission)"]}
-      />
-      <small>
-        <strong>
-          <em>{localize("ExtVersionsTabExtendedPermissionExplanation")}</em>
-        </strong>
-      </small>
+      {isChrome() && (
+        <>
+          <h2>{localize("extensionNameExtended")}</h2>
+          <a href="https://chrome.google.com/webstore/detail/google-workspace-zoom-def/mdgikencgfhineaememjagpkiclbdkka">
+            https://chrome.google.com/webstore/detail/google-workspace-zoom-def/mdgikencgfhineaememjagpkiclbdkka
+          </a>
+          <CheckList
+            title={localize("ExtVersionsTabAppsSupportedHeader")}
+            data={supportedWorkspaceApps}
+          />
+          <CheckList
+            title={localize("ExtVersionsTabFunctionalityIncludedHeader")}
+            data={extExtendedFunctionality}
+          />
+          <RequiredPermissions
+            permissions={["`debugger` (this is an elevated permission)"]}
+          />
+          <small>
+            <strong>
+              <em>{localize("ExtVersionsTabExtendedPermissionExplanation")}</em>
+            </strong>
+          </small>
+        </>
+      )}
     </>
   );
 };

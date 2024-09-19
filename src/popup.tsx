@@ -3,6 +3,7 @@ import WorkspaceApplication from "./components/WorkspaceApplication";
 import WorkspaceApplicationList from "./components/WorkspaceApplicationList";
 import { workspaceApps } from "./constants";
 import * as styles from "./style.module.css";
+import { isChrome } from "./utils/get-browser";
 import localize from "./utils/localize";
 import { setupSentry } from "./utils/sentry/popup";
 
@@ -41,17 +42,19 @@ function IndexPopup() {
               />
             ))}
         </WorkspaceApplicationList>
-        <p>
-          <a
-            href="#"
-            onClick={() => {
-              chrome.tabs.create({
-                url: "./tabs/ext-versions.html"
-              });
-            }}>
-            <small>{localize("popupToExtensionVersionsTab")}</small>
-          </a>
-        </p>
+        {isChrome() && (
+          <p>
+            <a
+              href="#"
+              onClick={() => {
+                chrome.tabs.create({
+                  url: "./tabs/ext-versions.html"
+                });
+              }}>
+              <small>{localize("popupToExtensionVersionsTab")}</small>
+            </a>
+          </p>
+        )}
       </ErrorBoundary>
     </div>
   );
