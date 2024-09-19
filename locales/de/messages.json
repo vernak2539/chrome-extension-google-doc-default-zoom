@@ -43,6 +43,10 @@
     "message": "Aktivieren für Nur-Ansicht-Dokumente",
     "description": "Content for view only docs experimental feature"
   },
+  "popupSupportMeLabel": {
+    "message": "Unterstützen Sie mich",
+    "description": "Label for support me button"
+  },
   "ExtVersionsTabHeader": {
     "message": "Versionen dieser Erweiterung",
     "description": "Header for tab page explaining different versions of the extension"
