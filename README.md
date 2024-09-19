@@ -95,4 +95,4 @@ makes this extension better. There is no personal data transmitted to them and n
 
 [chrome-webstore-default]: https://chrome.google.com/webstore/detail/google-docs-zoom-default/nflkcdlimipkgbacnfnhfecjgmojhklo
 [chrome-webstore-extended]: https://chrome.google.com/webstore/detail/google-workspace-zoom-def/mdgikencgfhineaememjagpkiclbdkka
-[firefox-addon-default]: https://addons.mozilla.org/en-US/firefox/addon/...
+[firefox-addon-default]: https://addons.mozilla.org/en-GB/firefox/addon/google-workspace-zoom-default/
