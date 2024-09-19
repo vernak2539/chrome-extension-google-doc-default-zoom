@@ -43,6 +43,10 @@
     "message": "Включить для документов только для просмотра",
     "description": "Содержание для экспериментальной функции документов только для просмотра"
   },
+  "popupSupportMeLabel": {
+    "message": "Поддержите меня",
+    "description": "Label for support me button"
+  },
   "ExtVersionsTabHeader": {
     "message": "Версии этого расширения",
     "description": "Заголовок страницы вкладки, объясняющий различные версии расширения"

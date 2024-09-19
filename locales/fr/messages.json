@@ -43,6 +43,10 @@
     "message": "Activer pour les documents en lecture seule",
     "description": "Content for view only docs experimental feature"
   },
+  "popupSupportMeLabel": {
+    "message": "Soutenez-moi",
+    "description": "Label for support me button"
+  },
   "ExtVersionsTabHeader": {
     "message": "Versions de cette extension",
     "description": "En-tête pour la page d'onglet expliquant les différentes versions de l'extension"

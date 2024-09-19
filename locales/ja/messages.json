@@ -43,6 +43,10 @@
     "message": "表示のみのドキュメント用に有効にする",
     "description": "Content for view only docs experimental feature"
   },
+  "popupSupportMeLabel": {
+    "message": "私をサポートしてください",
+    "description": "Label for support me button"
+  },
   "ExtVersionsTabHeader": {
     "message": "この拡張機能のバージョン",
     "description": "Header for tab page explaining different versions of the extension"

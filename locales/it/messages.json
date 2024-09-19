@@ -43,6 +43,10 @@
     "message": "Attiva per i documenti di sola visualizzazione",
     "description": "Contenuto per la funzione sperimentale di visualizzazione solo documenti"
   },
+  "popupSupportMeLabel": {
+    "message": "Sostieni me",
+    "description": "Label for support me button"
+  },
   "ExtVersionsTabHeader": {
     "message": "Versioni di questa estensione",
     "description": "Intestazione per la pagina della scheda che spiega le diverse versioni dell'estensione"

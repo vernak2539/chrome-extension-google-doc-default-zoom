@@ -43,6 +43,10 @@
     "message": "Enable for view-only Docs",
     "description": "Content for view only docs experimental feature"
   },
+  "popupSupportMeLabel": {
+    "message": "Support me",
+    "description": "Label for support me button"
+  },
   "ExtVersionsTabHeader": {
     "message": "Versions of This Extension",
     "description": "Header for tab page explaining different versions of the extension"
