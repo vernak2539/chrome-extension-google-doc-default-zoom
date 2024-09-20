@@ -8,9 +8,9 @@ and [when I updated it](https://words.byvernacchia.com/blog/2023/03/introducing-
 Supported Google Workspace Products:
 
 - [x] Google Docs
+- [x] Google Docs (view only permissions) - Experimental
 - [x] Google Sheets
 - [x] Google Sheets (view only permissions)
-- [x] Google Docs (view only permissions) - Experimental
 - [ ] Google Slides (maybe)
 
 | Google Docs                         | Google Sheets                         |
@@ -19,10 +19,10 @@ Supported Google Workspace Products:
 
 ## Browser Support
 
-|                                                                      | Chrome Extension | Firefox Add-on |
-| -------------------------------------------------------------------- | ---------------- | -------------- |
-| [Google Workspace Zoom Default][chrome-webstore-default]             | ✅               | ✅             |
-| [Google Workspace Zoom Default - Extended][chrome-webstore-extended] | ✅               | ❌             |
+|                                          | Chrome Extension | Microsoft Edge Add-ons | Firefox Add-ons |
+| ---------------------------------------- | ---------------- | ---------------------- | --------------- |
+| Google Workspace Zoom Default            | ✅               | ✅                     | ✅              |
+| Google Workspace Zoom Default - Extended | ✅               | ✅                     | ❌              |
 
 ### Find it on Chrome Web Store
 
@@ -30,9 +30,15 @@ Supported Google Workspace Products:
 - [Google Workspace Zoom Default - Extended][chrome-webstore-extended]
   - In exchange for allowing elevated permissions, this extension provides ability to set custom zoom levels (as opposed to only predefined values)
 
+### Find it on Microsoft Edge Add-ons
+
+- [Google Workspace Zoom Default][edge-addons-default]
+- [Google Workspace Zoom Default - Extended][edge-addons-extended]
+  - In exchange for allowing elevated permissions, this extension provides ability to set custom zoom levels (as opposed to only predefined values)
+
 ### Find it on Firefox Add-ons
 
-- [Google Workspace Zoom Default][firefox-addon-default]
+- [Google Workspace Zoom Default][firefox-addons-default]
 
 :rotating_light: **NOTE:** Firefox does not support the "debugger" permission, meaning custom zoom values are not supported
 
@@ -97,4 +103,6 @@ makes this extension better. There is no personal data transmitted to them and n
 
 [chrome-webstore-default]: https://chrome.google.com/webstore/detail/google-docs-zoom-default/nflkcdlimipkgbacnfnhfecjgmojhklo
 [chrome-webstore-extended]: https://chrome.google.com/webstore/detail/google-workspace-zoom-def/mdgikencgfhineaememjagpkiclbdkka
-[firefox-addon-default]: https://addons.mozilla.org/en-GB/firefox/addon/google-workspace-zoom-default/
+[edge-addons-default]: https://replace.me
+[edge-addons-extended]: https://replace.me
+[firefox-addons-default]: https://addons.mozilla.org/en-GB/firefox/addon/google-workspace-zoom-default/
