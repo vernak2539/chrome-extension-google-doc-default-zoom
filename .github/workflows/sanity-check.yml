@@ -8,10 +8,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    environment:
-      name: build-package
-    env:
-      PLASMO_PUBLIC_SENTRY_DSN: ${{ vars.PLASMO_PUBLIC_SENTRY_DSN }}
+    # environment:
+    #   name: build-package
+    # env:
+    #   PLASMO_PUBLIC_SENTRY_DSN: ${{ vars.PLASMO_PUBLIC_SENTRY_DSN }}
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
