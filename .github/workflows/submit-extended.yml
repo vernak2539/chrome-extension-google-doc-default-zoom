@@ -13,6 +13,9 @@ jobs:
       name: build-package-extended
     env:
       PLASMO_PUBLIC_SENTRY_DSN: ${{ vars.PLASMO_PUBLIC_SENTRY_DSN }}
+      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+      SENTRY_ORG: ${{ vars.SENTRY_ORG }}
+      SENTRY_PROJECT: ${{ vars.SENTRY_PROJECT }}
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -26,16 +29,14 @@ jobs:
       - name: Install dependencies
         run: pnpm install
       - name: Build the extension
-        run: pnpm build --source-maps
+        run: |
+          pnpm build --source-maps --target=chrome-mv3
+          pnpm build --source-maps --target=edge-mv3
       - name: get-npm-version
         id: package-version
         uses: martinbeentjes/npm-get-version-action@v1.3.1
-      - name: Create Sentry release
+      - name: Create Sentry release (Chrome Extension)
         uses: getsentry/action-release@v1
-        env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          SENTRY_ORG: ${{ vars.SENTRY_ORG }}
-          SENTRY_PROJECT: ${{ vars.SENTRY_PROJECT }}
         with:
           environment: production
           sourcemaps: "./build/chrome-mv3-prod"
@@ -43,15 +44,29 @@ jobs:
           ignore_empty: true
           ignore_missing: true
           version: ${{ steps.package-version.outputs.current-version }}
+      - name: Create Sentry release (Edge Extension)
+        uses: getsentry/action-release@v1
+        with:
+          environment: production
+          sourcemaps: "./build/edge-mv3-prod"
+          # url_prefix: "chrome-extension://mdgikencgfhineaememjagpkiclbdkka"
+          ignore_empty: true
+          ignore_missing: true
+          version: ${{ steps.package-version.outputs.current-version }}
       - name: Remove sourcemaps from bundle
-        run: rm ./build/chrome-mv3-prod/*.map
+        run: |
+          rm ./build/chrome-mv3-prod/*.map
+          rm ./build/edge-mv3-prod/*.map
       - name: Package extension artifact
-        run: pnpm package
+        run: |
+          pnpm package --target=chrome-mv3
+          pnpm package --target=edge-mv3
       - name: Browser Platform Publish
         uses: PlasmoHQ/bpp@v3
         with:
           keys: ${{ secrets.SUBMIT_KEYS_EXTENDED }}
-          artifact: build/chrome-mv3-prod.zip
+          chrome-file: build/chrome-mv3-prod.zip
+          edge-file: build/edge-mv3-prod.zip
       - uses: actions/upload-artifact@v4
         with:
           path: build
