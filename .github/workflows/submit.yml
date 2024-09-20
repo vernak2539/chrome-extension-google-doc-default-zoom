@@ -32,6 +32,7 @@ jobs:
       - name: Build the extension
         run: |
           pnpm build --source-maps --target=chrome-mv3
+          pnpm build --source-maps --target=edge-mv3
           pnpm build --source-maps --target=firefox-mv2
       - name: get-npm-version
         id: package-version
@@ -45,6 +46,15 @@ jobs:
           ignore_empty: true
           ignore_missing: true
           version: ${{ steps.package-version.outputs.current-version }}
+      - name: Create Sentry release (Edge Extension)
+        uses: getsentry/action-release@v1
+        with:
+          environment: production
+          sourcemaps: "./build/edge-mv3-prod"
+          # url_prefix: "chrome-extension://nflkcdlimipkgbacnfnhfecjgmojhklo"
+          ignore_empty: true
+          ignore_missing: true
+          version: ${{ steps.package-version.outputs.current-version }}
       - name: Create Sentry release (Firefox Add-on)
         uses: getsentry/action-release@v1
         with:
@@ -54,20 +64,22 @@ jobs:
           ignore_empty: true
           ignore_missing: true
           version: ${{ steps.package-version.outputs.current-version }}
-      # NOTE: This has to be after Sentry Release is created above...
       - name: Remove sourcemaps from bundle
         run: |
           rm ./build/chrome-mv3-prod/*.map
+          rm ./build/edge-mv3-prod/*.map
           rm ./build/firefox-mv2-prod/*.map
       - name: Package extension artifact
         run: |
           pnpm package --target=chrome-mv3
+          pnpm package --target=edge-mv3
           pnpm package --target=firefox-mv2
       - name: Browser Platform Publish
         uses: PlasmoHQ/bpp@v3
         with:
           keys: ${{ secrets.SUBMIT_KEYS }}
           chrome-file: build/chrome-mv3-prod.zip
+          edge-file: build/edge-mv3-prod.zip
           firefox-file: build/firefox-mv2-prod.zip
       - uses: actions/upload-artifact@v4
         with:
