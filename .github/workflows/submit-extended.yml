@@ -67,6 +67,7 @@ jobs:
           keys: ${{ secrets.SUBMIT_KEYS_EXTENDED }}
           chrome-file: build/chrome-mv3-prod.zip
           edge-file: build/edge-mv3-prod.zip
+          edge-notes: "Publishing latest 'Google Workspace Zoom Default - Extended' version (${{ steps.package-version.outputs.current-version }}) to Edge Store."
       - uses: actions/upload-artifact@v4
         with:
           path: build
