@@ -49,8 +49,8 @@ jobs:
         uses: getsentry/action-release@v1
         with:
           environment: production
-          sourcemaps: "./build/firefox-mv3-prod"
-          # url_prefix: "chrome-extension://nflkcdlimipkgbacnfnhfecjgmojhklo"
+          sourcemaps: "./build/firefox-mv2-prod"
+          url_prefix: "moz-extension://2ea8253c-b2cc-415f-8d0e-8af14a5d29fe"
           ignore_empty: true
           ignore_missing: true
           version: ${{ steps.package-version.outputs.current-version }}
