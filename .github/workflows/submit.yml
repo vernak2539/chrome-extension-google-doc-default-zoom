@@ -51,7 +51,7 @@ jobs:
         with:
           environment: production
           sourcemaps: "./build/edge-mv3-prod"
-          # url_prefix: "chrome-extension://nflkcdlimipkgbacnfnhfecjgmojhklo"
+          url_prefix: "chrome-extension://hnilnnalkgihkfnegpcbcgpgailgjbnn"
           ignore_empty: true
           ignore_missing: true
           version: ${{ steps.package-version.outputs.current-version }}
