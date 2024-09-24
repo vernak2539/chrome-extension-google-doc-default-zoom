@@ -103,6 +103,6 @@ makes this extension better. There is no personal data transmitted to them and n
 
 [chrome-webstore-default]: https://chrome.google.com/webstore/detail/google-docs-zoom-default/nflkcdlimipkgbacnfnhfecjgmojhklo
 [chrome-webstore-extended]: https://chrome.google.com/webstore/detail/google-workspace-zoom-def/mdgikencgfhineaememjagpkiclbdkka
-[edge-addons-default]: https://replace.me
-[edge-addons-extended]: https://replace.me
+[edge-addons-default]: https://microsoftedge.microsoft.com/addons/detail/google-workspace-zoom-def/hnilnnalkgihkfnegpcbcgpgailgjbnn
+[edge-addons-extended]: https://microsoftedge.microsoft.com/addons/detail/google-workspace-zoom-def/fhjmigdmbgbiodkejhmahfnaebdgnmjb
 [firefox-addons-default]: https://addons.mozilla.org/en-GB/firefox/addon/google-workspace-zoom-default/
