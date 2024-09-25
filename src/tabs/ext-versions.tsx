@@ -1,4 +1,4 @@
-import { isChrome } from "src/utils/get-browser";
+import { isChrome, isEdge } from "src/utils/get-browser";
 import localize from "../utils/localize";
 
 type Data = {
@@ -71,6 +71,8 @@ const extExtendedFunctionality: Data[] = [
 ];
 
 const ExtensionVersionsPage = () => {
+  const showExtendedVersionInfo = isChrome() || isEdge();
+
   return (
     <>
       <h1>{localize("ExtVersionsTabHeader")}</h1>
@@ -90,7 +92,7 @@ const ExtensionVersionsPage = () => {
 
       <br />
 
-      {isChrome() && (
+      {showExtendedVersionInfo && (
         <>
           <h2>{localize("extensionNameExtended")}</h2>
           <a href="https://chrome.google.com/webstore/detail/google-workspace-zoom-def/mdgikencgfhineaememjagpkiclbdkka">

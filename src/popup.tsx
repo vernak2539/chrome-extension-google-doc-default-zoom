@@ -3,12 +3,11 @@ import WorkspaceApplication from "./components/WorkspaceApplication";
 import WorkspaceApplicationList from "./components/WorkspaceApplicationList";
 import { workspaceApps } from "./constants";
 import * as styles from "./style.module.css";
-import { isChrome } from "./utils/get-browser";
+import { isChrome, isEdge } from "./utils/get-browser";
 import localize from "./utils/localize";
 import { setupSentry } from "./utils/sentry/popup";
 
-// todo - build in enabled/disabled state state
-
+const showExtensionVersionsTab = isChrome() || isEdge();
 const ErrorBoundary = setupSentry("popup");
 
 const ErrorFallback = () => (
@@ -42,7 +41,7 @@ function IndexPopup() {
               />
             ))}
         </WorkspaceApplicationList>
-        {isChrome() && (
+        {showExtensionVersionsTab && (
           <p>
             <a
               href="#"

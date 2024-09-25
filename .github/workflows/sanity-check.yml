@@ -8,10 +8,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    environment:
-      name: build-package
-    env:
-      PLASMO_PUBLIC_SENTRY_DSN: ${{ vars.PLASMO_PUBLIC_SENTRY_DSN }}
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -25,12 +21,24 @@ jobs:
       - name: Install dependencies
         run: pnpm install
       - name: Build the extension
-        run: pnpm build --source-maps
+        run: |
+          pnpm build --source-maps --target=chrome-mv3
+          pnpm build --source-maps --target=edge-mv3
+          pnpm build --source-maps --target=firefox-mv2
       - name: Package extension artifact
-        run: pnpm package
+        run: |
+          pnpm package --target=chrome-mv3
+          pnpm package --target=edge-mv3
+          pnpm package --target=firefox-mv2
       - name: Transform to "Google Workspace Zoom Default"
         run: pnpm transform-ext
       - name: Build the extension
-        run: pnpm build --source-maps
+        run: |
+          pnpm build --source-maps --target=chrome-mv3
+          pnpm build --source-maps --target=edge-mv3
+          pnpm build --source-maps --target=firefox-mv2
       - name: Package extension artifact
-        run: pnpm package
+        run: |
+          pnpm package --target=chrome-mv3
+          pnpm package --target=edge-mv3
+          pnpm package --target=firefox-mv2
