@@ -5,7 +5,7 @@ import { workspaceApps } from "./constants";
 import * as styles from "./style.module.css";
 import { isChrome, isEdge } from "./utils/get-browser";
 import localize from "./utils/localize";
-import { setupSentry } from "./utils/sentry/popup";
+import { setupSentry } from "./utils/sentry/react-error-boundary";
 
 const ErrorBoundary = setupSentry("popup");
 const showExtensionVersionsTab = isChrome() || isEdge();
