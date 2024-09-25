@@ -1,10 +1,15 @@
 import { isChrome, isEdge } from "src/utils/get-browser";
+import { setupSentryReactErrorBoundary } from "src/utils/sentry/react-error-boundary";
 import localize from "../utils/localize";
+
+const withSentryErrorBoundary = setupSentryReactErrorBoundary("tab");
+const title = localize("ExtVersionsTabHeader");
 
 type Data = {
   supported: boolean;
   name: string;
 };
+
 const CheckList = ({ title, data }) => {
   return (
     <>
@@ -75,7 +80,7 @@ const ExtensionVersionsPage = () => {
 
   return (
     <>
-      <h1>{localize("ExtVersionsTabHeader")}</h1>
+      <h1>{title}</h1>
       <h2>{localize("extensionName")}</h2>
       <a href="https://chrome.google.com/webstore/detail/google-workspace-zoom-def/nflkcdlimipkgbacnfnhfecjgmojhklo">
         https://chrome.google.com/webstore/detail/google-workspace-zoom-def/nflkcdlimipkgbacnfnhfecjgmojhklo
@@ -120,4 +125,4 @@ const ExtensionVersionsPage = () => {
   );
 };
 
-export default ExtensionVersionsPage;
+export default withSentryErrorBoundary(ExtensionVersionsPage, title);

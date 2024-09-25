@@ -1,15 +1,13 @@
 import type { PlasmoMessaging } from "@plasmohq/messaging";
 import { Storage } from "@plasmohq/storage";
-
 import type {
   GetZoomValueRequestBody,
   GetZoomValueResponseBody
-} from "../../types";
-import { setupSentry } from "../../utils/sentry/base";
-
-const sentryClient = setupSentry("background");
+} from "src/types";
+import { createSentryClient } from "src/utils/sentry/base";
 
 const storage = new Storage();
+const sentryClient = createSentryClient("background");
 
 const handler: PlasmoMessaging.MessageHandler<
   GetZoomValueRequestBody,

@@ -5,67 +5,57 @@ import { workspaceApps } from "./constants";
 import * as styles from "./style.module.css";
 import { isChrome, isEdge } from "./utils/get-browser";
 import localize from "./utils/localize";
-import { setupSentry } from "./utils/sentry/popup";
+import { setupSentryReactErrorBoundary } from "./utils/sentry/react-error-boundary";
 
+const withSentryErrorBoundary = setupSentryReactErrorBoundary("popup");
 const showExtensionVersionsTab = isChrome() || isEdge();
-const ErrorBoundary = setupSentry("popup");
 
-const ErrorFallback = () => (
-  <p>
-    Sorry! Something has gone wrong. Please submit an issue{" "}
-    <a href="https://github.com/vernak2539/chrome-extension-google-doc-default-zoom/issues/new/choose">
-      here
-    </a>{" "}
-    so I can fix it!
-  </p>
-);
+// "extensionName"/"extensionNameExtended" WILL BE CHANGED. DON'T CHANGE WITHOUT MAKING OTHER CHANGES
+const extensionName = localize("extensionNameExtended");
 
 function IndexPopup() {
   return (
     <div className={styles.popupContainer}>
-      {/* "extensionName"/"extensionNameExtended" WILL BE CHANGED. DON'T CHANGE WITHOUT MAKING OTHER CHANGES */}
-      <h2>{localize("extensionNameExtended")}</h2>
-      <ErrorBoundary fallback={<ErrorFallback />}>
-        <p>{localize("popupMainSectionDescription")}</p>
-        <WorkspaceApplicationList>
-          {workspaceApps
-            .filter((app) => app.isEnabled)
-            .map((app) => (
-              <WorkspaceApplication
-                key={app.name}
-                name={app.name}
-                zoomValues={app.zoomValues}
-                defaultZoom={app.defaultZoom}
-                storageKey={app.storageKey}
-                features={app.features}
-              />
-            ))}
-        </WorkspaceApplicationList>
-        {showExtensionVersionsTab && (
-          <p>
-            <a
-              href="#"
-              onClick={() => {
-                chrome.tabs.create({
-                  url: "./tabs/ext-versions.html"
-                });
-              }}>
-              <small>{localize("popupToExtensionVersionsTab")}</small>
-            </a>
-          </p>
-        )}
-        <p className={styles.supportMeLinkContainer}>
-          <small>
-            💚{" "}
-            <a href="https://buymeacoffee.com/vernacchia">
-              {localize("popupSupportMeLabel")}
-            </a>{" "}
-            🤟
-          </small>
+      <h2>{extensionName}</h2>
+      <p>{localize("popupMainSectionDescription")}</p>
+      <WorkspaceApplicationList>
+        {workspaceApps
+          .filter((app) => app.isEnabled)
+          .map((app) => (
+            <WorkspaceApplication
+              key={app.name}
+              name={app.name}
+              zoomValues={app.zoomValues}
+              defaultZoom={app.defaultZoom}
+              storageKey={app.storageKey}
+              features={app.features}
+            />
+          ))}
+      </WorkspaceApplicationList>
+      {showExtensionVersionsTab && (
+        <p>
+          <a
+            href="#"
+            onClick={() => {
+              chrome.tabs.create({
+                url: "./tabs/ext-versions.html"
+              });
+            }}>
+            <small>{localize("popupToExtensionVersionsTab")}</small>
+          </a>
         </p>
-      </ErrorBoundary>
+      )}
+      <p className={styles.supportMeLinkContainer}>
+        <small>
+          💚{" "}
+          <a href="https://buymeacoffee.com/vernacchia">
+            {localize("popupSupportMeLabel")}
+          </a>{" "}
+          🤟
+        </small>
+      </p>
     </div>
   );
 }
 
-export default IndexPopup;
+export default withSentryErrorBoundary(IndexPopup, extensionName);

@@ -1,9 +1,13 @@
+import { setupSentryReactErrorBoundary } from "src/utils/sentry/react-error-boundary";
 import localize from "../utils/localize";
+
+const withSentryErrorBoundary = setupSentryReactErrorBoundary("tab");
+const title = localize("ExperimentalFeaturesTabHeader");
 
 const ExperimentalVersionsPage = () => {
   return (
     <div style={{ maxWidth: "500px" }}>
-      <h1>{localize("ExperimentalFeaturesTabHeader")}</h1>
+      <h1>{title}</h1>
       <section id="docs-view-only">
         <h2>{localize("ExperimentalFeaturesTabDocsViewOnlyHeader")}</h2>
         <p>{localize("ExperimentalFeaturesTabDocsViewOnlyContent1")}</p>
@@ -15,4 +19,4 @@ const ExperimentalVersionsPage = () => {
   );
 };
 
-export default ExperimentalVersionsPage;
+export default withSentryErrorBoundary(ExperimentalVersionsPage, title);
