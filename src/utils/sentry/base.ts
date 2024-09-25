@@ -3,7 +3,7 @@ import {
   getDefaultTags,
   client as sentryClient,
   scope as sentryScope
-} from "./setup";
+} from "./content-script";
 
 export const setupSentry = (source: ExtensionFileSource) => {
   sentryScope.setTags({ source, ...getDefaultTags() });
