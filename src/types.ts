@@ -85,7 +85,7 @@ export interface WorkspaceApp {
   };
 }
 
-export type ExtensionFileSource = "popup" | "content" | "background";
+export type ExtensionFileSource = "popup" | "content" | "background" | "tab";
 
 export interface UiStrategyConfig {
   application: WorkspaceAppName;

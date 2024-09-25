@@ -1,3 +1,4 @@
+import type { Scope } from "@sentry/react";
 import packageJson from "../../../package.json";
 
 export const SENTRY_BASE_CONFIG = {
@@ -18,3 +19,7 @@ export const SENTRY_BASE_CONFIG = {
 export const getDefaultTags = () => ({
   extension: packageJson.name
 });
+
+export const setLocaleOnScope = (scope: Scope) => {
+  scope.setTag("locale", chrome.i18n.getUILanguage());
+};
