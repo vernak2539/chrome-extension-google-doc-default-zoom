@@ -3,9 +3,9 @@ import type {
   ExecuteEnterRequestBody,
   ExecuteEnterResponseBody
 } from "src/types";
-import { createSentryClient } from "src/utils/sentry/background-script";
+import { createSentryClient } from "src/utils/sentry/base";
 
-const sentryClient = createSentryClient();
+const sentryClient = createSentryClient("background");
 
 const handler: PlasmoMessaging.MessageHandler<
   ExecuteEnterRequestBody,

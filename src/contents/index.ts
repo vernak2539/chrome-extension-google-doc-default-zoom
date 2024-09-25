@@ -1,7 +1,7 @@
 import { relayMessage } from "@plasmohq/messaging";
 import styleText from "data-text:../style.module.css";
 import type { PlasmoCSConfig } from "plasmo";
-import { setupSentry } from "src/utils/sentry/base";
+import { createSentryClient } from "src/utils/sentry/base";
 import {
   OBSERVE_EXECUTION_LIMIT,
   RELAY_EXECUTE_ENTER,
@@ -24,7 +24,7 @@ export const getStyle = () => {
   return style;
 };
 
-const sentryClient = setupSentry("content");
+const sentryClient = createSentryClient("content");
 
 const main = () => {
   // create and "register" the relay

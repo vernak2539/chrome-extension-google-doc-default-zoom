@@ -4,10 +4,10 @@ import type {
   GetZoomValueRequestBody,
   GetZoomValueResponseBody
 } from "src/types";
-import { createSentryClient } from "src/utils/sentry/background-script";
+import { createSentryClient } from "src/utils/sentry/base";
 
 const storage = new Storage();
-const sentryClient = createSentryClient();
+const sentryClient = createSentryClient("background");
 
 const handler: PlasmoMessaging.MessageHandler<
   GetZoomValueRequestBody,
