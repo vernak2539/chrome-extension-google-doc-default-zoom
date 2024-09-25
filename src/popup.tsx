@@ -7,8 +7,8 @@ import { isChrome, isEdge } from "./utils/get-browser";
 import localize from "./utils/localize";
 import { setupSentry } from "./utils/sentry/popup";
 
-const showExtensionVersionsTab = isChrome() || isEdge();
 const ErrorBoundary = setupSentry("popup");
+const showExtensionVersionsTab = isChrome() || isEdge();
 
 const ErrorFallback = () => (
   <p>
@@ -25,7 +25,11 @@ function IndexPopup() {
     <div className={styles.popupContainer}>
       {/* "extensionName"/"extensionNameExtended" WILL BE CHANGED. DON'T CHANGE WITHOUT MAKING OTHER CHANGES */}
       <h2>{localize("extensionNameExtended")}</h2>
-      <ErrorBoundary fallback={<ErrorFallback />}>
+      <ErrorBoundary
+        beforeCapture={(scope) => {
+          scope.setTag("locale", chrome.i18n.getUILanguage());
+        }}
+        fallback={<ErrorFallback />}>
         <p>{localize("popupMainSectionDescription")}</p>
         <WorkspaceApplicationList>
           {workspaceApps

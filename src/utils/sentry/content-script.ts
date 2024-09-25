@@ -41,6 +41,3 @@ sentryClient.init(); // initializing has to be done after setting the client on 
 
 export const scope = sentryScope;
 export const client = sentryClient;
-export const getDefaultTags = () => ({
-  extension: packageJson.name
-});
