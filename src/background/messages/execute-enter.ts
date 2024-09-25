@@ -2,10 +2,10 @@ import type { PlasmoMessaging } from "@plasmohq/messaging";
 import type {
   ExecuteEnterRequestBody,
   ExecuteEnterResponseBody
-} from "../../types";
-import { setupSentry } from "../../utils/sentry/base";
+} from "src/types";
+import { createSentryClient } from "src/utils/sentry/background-script";
 
-const sentryClient = setupSentry("background");
+const sentryClient = createSentryClient();
 
 const handler: PlasmoMessaging.MessageHandler<
   ExecuteEnterRequestBody,
