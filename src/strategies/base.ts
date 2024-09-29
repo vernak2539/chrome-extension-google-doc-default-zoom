@@ -150,7 +150,6 @@ export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
    * If there is no zoom selector, we have to use the menu bar to indicate if the page is loading or not
    */
   public getIsPageLoading() {
-    // Check if doc/sheet has a zoom selector (i.e. not view only)
     const zoomSelect = getDOMElement(
       this.config.uiElements.clickableZoomSelectId
     );
@@ -164,19 +163,9 @@ export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
       };
     }
 
-    // If we got to this point, doc is view only (likely)
     const menuBarViewTab = getDOMElement(
       this.config.uiElements.menubarViewTabId
     );
-
-    // For some reason the menu bar may not be there yet... let's try again in a bit
-    if (!menuBarViewTab) {
-      return {
-        isLoading: true,
-        getElementToWatch: () =>
-          getDOMElement(this.config.uiElements.menubarViewTabId)
-      };
-    }
 
     return {
       isLoading: menuBarViewTab.classList.contains("goog-control-disabled"),
