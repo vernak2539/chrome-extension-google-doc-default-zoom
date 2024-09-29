@@ -45,7 +45,7 @@ const walkDOM = (rootNode) => {
 
 const main = () => {
   sentryScope.setContext(
-    "menu_dom",
+    "menuDOM",
     walkDOM(document.querySelector("#docs-bars"))
   );
 
@@ -59,6 +59,8 @@ const main = () => {
 
   const currentApp = getCurrentApp();
   let strategy: DocsStrategy | SheetsStrategy;
+
+  sentryScope.setContext("info", { application: currentApp });
 
   switch (currentApp) {
     case "Docs":
