@@ -7,7 +7,7 @@ import type {
 import { createSentryClient } from "src/utils/sentry/base";
 
 const storage = new Storage();
-const sentryClient = createSentryClient("background");
+const [sentryClient] = createSentryClient("background");
 
 const handler: PlasmoMessaging.MessageHandler<
   GetFeatureViewOnlyRequestBody,
