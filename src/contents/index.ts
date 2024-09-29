@@ -81,8 +81,21 @@ const main = () => {
   }
 };
 
-try {
-  main();
-} catch (err) {
-  sentryClient.captureException(err);
+function onReady(fn) {
+  if (
+    document.readyState === "complete" ||
+    document.readyState === "interactive"
+  ) {
+    setTimeout(fn, 0);
+  } else {
+    document.addEventListener("DOMContentLoaded", fn);
+  }
 }
+
+onReady(() => {
+  try {
+    main();
+  } catch (err) {
+    sentryClient.captureException(err);
+  }
+});
