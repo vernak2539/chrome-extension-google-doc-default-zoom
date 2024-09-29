@@ -9,7 +9,9 @@ import {
 import type { ExtensionFileSource } from "src/types";
 import { SENTRY_BASE_CONFIG, getDefaultTags } from "./config";
 
-const createNewSentryClient = (source: ExtensionFileSource) => {
+const createNewSentryClient = (
+  source: ExtensionFileSource
+): [BrowserClient, Scope] => {
   const sentryClient = new BrowserClient({
     ...SENTRY_BASE_CONFIG,
     stackParser: defaultStackParser,
@@ -31,7 +33,7 @@ const createNewSentryClient = (source: ExtensionFileSource) => {
 
   sentryClient.init(); // initializing has to be done after setting the client on the scope
 
-  return sentryClient;
+  return [sentryClient, sentryScope];
 };
 
 export const createSentryClient = createNewSentryClient;
