@@ -5,7 +5,7 @@ import type {
 } from "src/types";
 import { createSentryClient } from "src/utils/sentry/base";
 
-const sentryClient = createSentryClient("background");
+const [sentryClient] = createSentryClient("background");
 
 const handler: PlasmoMessaging.MessageHandler<
   ExecuteEnterRequestBody,

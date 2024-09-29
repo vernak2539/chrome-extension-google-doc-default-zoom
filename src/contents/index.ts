@@ -24,9 +24,31 @@ export const getStyle = () => {
   return style;
 };
 
-const sentryClient = createSentryClient("content");
+const [sentryClient, sentryScope] = createSentryClient("content");
+
+const walkDOM = (rootNode) => {
+  const domObject = {
+    id: rootNode.id,
+    classNames: rootNode.classList.value,
+    children: []
+  };
+
+  for (let i = 0; i < rootNode.childNodes.length; i++) {
+    const child = rootNode.childNodes[i];
+    if (child.nodeType === Node.ELEMENT_NODE) {
+      domObject.children.push(walkDOM(child));
+    }
+  }
+
+  return domObject;
+};
 
 const main = () => {
+  sentryScope.setContext(
+    "menu_dom",
+    walkDOM(document.querySelector("#docs-bars"))
+  );
+
   // create and "register" the relay
   relayMessage({ name: RELAY_GET_ZOOM_VALUE_FROM_STORAGE });
   relayMessage({ name: RELAY_GET_FEATURE_VIEW_ONLY_FROM_STORAGE });
@@ -81,8 +103,21 @@ const main = () => {
   }
 };
 
-try {
-  main();
-} catch (err) {
-  sentryClient.captureException(err);
+function onReady(fn) {
+  if (
+    document.readyState === "complete" ||
+    document.readyState === "interactive"
+  ) {
+    setTimeout(fn, 0);
+  } else {
+    document.addEventListener("DOMContentLoaded", fn);
+  }
 }
+
+onReady(() => {
+  try {
+    main();
+  } catch (err) {
+    sentryClient.captureException(err);
+  }
+});
