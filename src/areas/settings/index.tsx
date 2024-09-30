@@ -1,4 +1,5 @@
 import { Storage } from "@plasmohq/storage";
+import { useState } from "react";
 import SettingsIcon from "react:~/assets/popup_icons/settings.svg";
 import { getFeatureViewOnlyStorageKey } from "src/constants";
 import type { StorageKey } from "src/types";
@@ -11,8 +12,10 @@ interface Props {
 const SettingsView = ({ onHomeClick }: Props) => {
   const storage = new Storage();
   const storageKeys: StorageKey[] = ["zoomValue", "sheets:zoomValue"];
+  const [isExitEnabled, setIsExitEnabled] = useState(true);
 
   const onResetZoomSettingsClick = () => {
+    setIsExitEnabled(true);
     const resetProimises = storageKeys.flatMap((key) => {
       return [
         storage.remove(key),
@@ -21,6 +24,7 @@ const SettingsView = ({ onHomeClick }: Props) => {
     });
 
     Promise.all(resetProimises).then(() => {
+      setIsExitEnabled(true);
       console.log("Extension zoom values + feature keys reset");
     });
   };
@@ -42,7 +46,9 @@ const SettingsView = ({ onHomeClick }: Props) => {
       <br />
       <hr />
       <br />
-      <button onClick={onHomeClick}>{localize("popupSettingsExit")}</button>
+      <button disabled={!isExitEnabled} onClick={onHomeClick}>
+        {localize("popupSettingsExit")}
+      </button>
     </div>
   );
 };
