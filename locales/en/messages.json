@@ -101,22 +101,22 @@
   },
   "popupSettingsTitle": {
     "message": "Extension Settings",
-    "description": ""
+    "description": "The title for the settings page"
   },
   "popupSettingsResetToFactoryTitle": {
     "message": "Reset to Factory Defaults",
-    "description": ""
+    "description": "Title for functionality that resets to factory defaults (i.e. removes all values from storage)"
   },
   "popupSettingsResetToFactoryDescription": {
     "message": "Sometimes things go wrong. If you've exhausted all other options and nothing seems to work, you can click the button below to reset this extension to its original state when you first installed it.",
-    "description": ""
+    "description": "Description for what happens when you execute the reset to factory functionality"
   },
   "popupSettingsResetToFactoryAction": {
     "message": "Reset zoom settings to default",
-    "description": ""
+    "description": "Text for button that executes reset to factory functionality"
   },
   "popupSettingsExit": {
     "message": "Exit Settings",
-    "description": ""
+    "description": "Button text allowing user to exit settings and return to main part of extension"
   }
 }
