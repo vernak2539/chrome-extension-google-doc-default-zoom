@@ -2,6 +2,7 @@ import { Storage } from "@plasmohq/storage";
 import SettingsIcon from "react:~/assets/popup_icons/settings.svg";
 import { getFeatureViewOnlyStorageKey } from "src/constants";
 import type { StorageKey } from "src/types";
+import localize from "src/utils/localize";
 
 interface Props {
   onHomeClick: () => void;
@@ -28,24 +29,20 @@ const SettingsView = ({ onHomeClick }: Props) => {
     <div>
       <h2 style={{ display: "flex", alignItems: "center" }}>
         <SettingsIcon width={20} height={20} style={{ marginRight: 3 }} />
-        Extension Settings
+        {localize("popupSettingsTitle")}
       </h2>
 
       <section>
-        <h3>Reset to Factory Default</h3>
-        <p>
-          Sometimes things go wrong. If you've tried everything else and
-          nothing's working, you can click the button below to reset this
-          extension to the state it was in when you first installed it.
-        </p>
+        <h3>{localize("popupSettingsResetToFactoryTitle")}</h3>
+        <p>{localize("popupSettingsResetToFactoryDescription")}</p>
         <button onClick={onResetZoomSettingsClick}>
-          Reset zoom settings to default
+          {localize("popupSettingsResetToFactoryAction")}
         </button>
       </section>
       <br />
       <hr />
       <br />
-      <button onClick={onHomeClick}>Exit Settings</button>
+      <button onClick={onHomeClick}>{localize("popupSettingsExit")}</button>
     </div>
   );
 };
