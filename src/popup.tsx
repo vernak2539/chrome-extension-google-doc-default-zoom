@@ -1,66 +1,20 @@
 // Icon used in Favicon was created by https://www.flaticon.com/authors/royyan-wijaya
-import { Storage } from "@plasmohq/storage";
 import { useState } from "react";
-import WorkspaceApplication from "./components/WorkspaceApplication";
-import WorkspaceApplicationList from "./components/WorkspaceApplicationList";
-import { getFeatureViewOnlyStorageKey, workspaceApps } from "./constants";
-import * as styles from "./style.module.css";
-import type { StorageKey } from "./types";
-import { isChrome, isEdge } from "./utils/get-browser";
-import localize from "./utils/localize";
-import { setupSentryReactErrorBoundary } from "./utils/sentry/react-error-boundary";
+import SettingsView from "src/areas/settings";
+import WorkspaceApplication from "src/components/WorkspaceApplication";
+import WorkspaceApplicationList from "src/components/WorkspaceApplicationList";
+import { workspaceApps } from "src/constants";
+import * as styles from "src/style.module.css";
+import type { CurrentView } from "src/types";
+import { isChrome, isEdge } from "src/utils/get-browser";
+import localize from "src/utils/localize";
+import { setupSentryReactErrorBoundary } from "src/utils/sentry/react-error-boundary";
 
 const withSentryErrorBoundary = setupSentryReactErrorBoundary("popup");
 const showExtensionVersionsTab = isChrome() || isEdge();
 
 // "extensionName"/"extensionNameExtended" WILL BE CHANGED. DON'T CHANGE WITHOUT MAKING OTHER CHANGES
 const extensionName = localize("extensionNameExtended");
-
-type CurrentView = "home" | "settings";
-
-interface SettingsViewProps {
-  onHomeClick: () => void;
-}
-
-const SettingsView = ({ onHomeClick }: SettingsViewProps) => {
-  const storage = new Storage();
-  const storageKeys: StorageKey[] = ["zoomValue", "sheets:zoomValue"];
-
-  const onResetZoomSettingsClick = () => {
-    const resetProimises = storageKeys.flatMap((key) => {
-      return [
-        storage.remove(key),
-        storage.remove(getFeatureViewOnlyStorageKey(key))
-      ];
-    });
-
-    Promise.all(resetProimises).then(() => {
-      console.log("Extension zoom values + feature keys reset");
-    });
-  };
-
-  return (
-    <div>
-      <h2>Settings</h2>
-
-      <section>
-        <h3>Reset to Factory Default</h3>
-        <p>
-          Sometimes things go wrong. If you've tried everything else and
-          nothing's working, you can click the button below to reset this
-          extension to the state it was in when you first installed it.
-        </p>
-        <button onClick={onResetZoomSettingsClick}>
-          Reset zoom settings to defualt
-        </button>
-      </section>
-      <br />
-      <hr />
-      <br />
-      <button onClick={onHomeClick}>Exit Settings (Go Back)</button>
-    </div>
-  );
-};
 
 function IndexPopup() {
   const [currentView, setCurrentView] = useState<CurrentView>("home");
