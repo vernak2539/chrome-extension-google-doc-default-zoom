@@ -23,6 +23,7 @@
     "classnames": "^2.5.1",
     "plasmo": "0.89.2",
     "react": "18.2.0",
+    "react-aria-components": "^1.3.3",
     "react-dom": "18.2.0"
   },
   "devDependencies": {
