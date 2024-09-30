@@ -1,6 +1,6 @@
 import { Storage } from "@plasmohq/storage";
 import { useState } from "react";
-import SettingsIcon from "react:~/assets/popup_icons/settings.svg";
+import SettingsIcon from "react:~/assets/popup_icons/settings-inverted.svg";
 import { getFeatureViewOnlyStorageKey } from "src/constants";
 import type { StorageKey } from "src/types";
 import localize from "src/utils/localize";
