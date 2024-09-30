@@ -50,23 +50,23 @@ function IndexPopup() {
                 />
               ))}
           </WorkspaceApplicationList>
+          {showExtensionVersionsTab && (
+            <p>
+              <a
+                href="#"
+                onClick={() => {
+                  chrome.tabs.create({
+                    url: "./tabs/ext-versions.html"
+                  });
+                }}>
+                <small>{localize("popupToExtensionVersionsTab")}</small>
+              </a>
+            </p>
+          )}
         </>
       ) : null}
       {isSettingsView ? <SettingsView onHomeClick={openHomeView} /> : null}
 
-      {showExtensionVersionsTab && (
-        <p>
-          <a
-            href="#"
-            onClick={() => {
-              chrome.tabs.create({
-                url: "./tabs/ext-versions.html"
-              });
-            }}>
-            <small>{localize("popupToExtensionVersionsTab")}</small>
-          </a>
-        </p>
-      )}
       <p className={styles.supportMeLinkContainer}>
         <small>
           💚{" "}
