@@ -1,3 +1,4 @@
+import Tippy from "@tippyjs/react";
 import React, { type MouseEventHandler } from "react";
 import SettingsIcon from "react:~/assets/popup_icons/settings.svg";
 import * as style from "src/style.module.css";
@@ -15,16 +16,18 @@ const WorkspaceApplicationList = ({ children, onSettingsClick }: Props) => {
     <>
       <h3 style={{ marginBottom: 0, display: "flex", alignItems: "center" }}>
         {localize("popupApplicationsSectionTitle")}
-        <button
-          onClick={onSettingsClick}
-          style={{
-            all: "unset",
-            cursor: "pointer",
-            marginLeft: 3,
-            height: iconHeight
-          }}>
-          <SettingsIcon width={iconHeight} height={iconHeight} />
-        </button>
+        <Tippy placement="right" content={localize("popupSettingsTitle")}>
+          <button
+            onClick={onSettingsClick}
+            style={{
+              all: "unset",
+              cursor: "pointer",
+              marginLeft: 3,
+              height: iconHeight
+            }}>
+            <SettingsIcon width={iconHeight} height={iconHeight} />
+          </button>
+        </Tippy>
       </h3>
       <ul className={style.applicationList}>{children}</ul>
     </>
