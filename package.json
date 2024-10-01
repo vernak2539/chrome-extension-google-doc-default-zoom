@@ -20,6 +20,7 @@
     "@plasmohq/storage": "^1.11.0",
     "@sentry/browser": "^8.32.0",
     "@sentry/react": "^8.32.0",
+    "@tippyjs/react": "^4.2.6",
     "classnames": "^2.5.1",
     "plasmo": "0.89.2",
     "react": "18.2.0",
