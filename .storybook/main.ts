@@ -1,4 +1,6 @@
 import type { StorybookConfig } from "@storybook/react-vite";
+import svgr from "vite-plugin-svgr";
+
 import path from "path";
 
 const config: StorybookConfig = {
@@ -20,10 +22,11 @@ const config: StorybookConfig = {
     const { mergeConfig } = await import("vite");
 
     return mergeConfig(config, {
-      // Add dependencies to pre-optimization
+      plugins: [svgr()],
       resolve: {
         alias: {
-          src: path.resolve(process.cwd(), "src")
+          src: path.resolve(process.cwd(), "src"),
+          "react:~": path.resolve(process.cwd())
         }
       }
     });

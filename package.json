@@ -25,7 +25,8 @@
     "plasmo": "0.89.2",
     "react": "18.2.0",
     "react-aria-components": "^1.4.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "tippy.js": "^6.3.7"
   },
   "devDependencies": {
     "@storybook/addon-a11y": "^8.3.4",
@@ -51,7 +52,8 @@
     "prop-types": "^15.8.1",
     "storybook": "^8.3.4",
     "typescript": "5.4.2",
-    "vite": "^5.1.6"
+    "vite": "^5.1.6",
+    "vite-plugin-svgr": "^4.2.0"
   },
   "manifest": {
     "name": "__MSG_extensionNameExtended__",
