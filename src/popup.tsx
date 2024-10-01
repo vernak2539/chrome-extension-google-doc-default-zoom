@@ -1,9 +1,7 @@
 // Icon used in Favicon was created by https://www.flaticon.com/authors/royyan-wijaya
 import { useState } from "react";
+import HomeView from "src/areas/home";
 import SettingsView from "src/areas/settings";
-import WorkspaceApplication from "src/components/WorkspaceApplication";
-import WorkspaceApplicationList from "src/components/WorkspaceApplicationList";
-import { workspaceApps } from "src/constants";
 import * as styles from "src/style.module.css";
 import type { CurrentView } from "src/types";
 import { isChrome, isEdge } from "src/utils/get-browser";
@@ -34,36 +32,10 @@ function IndexPopup() {
     <div className={styles.popupContainer}>
       <h1>{extensionName}</h1>
       {isHomeView ? (
-        <>
-          <p>{localize("popupMainSectionDescription")}</p>
-          <WorkspaceApplicationList onSettingsClick={openSettingsView}>
-            {workspaceApps
-              .filter((app) => app.isEnabled)
-              .map((app) => (
-                <WorkspaceApplication
-                  key={app.name}
-                  name={app.name}
-                  zoomValues={app.zoomValues}
-                  defaultZoom={app.defaultZoom}
-                  storageKey={app.storageKey}
-                  features={app.features}
-                />
-              ))}
-          </WorkspaceApplicationList>
-          {showExtensionVersionsTab && (
-            <p>
-              <a
-                href="#"
-                onClick={() => {
-                  chrome.tabs.create({
-                    url: "./tabs/ext-versions.html"
-                  });
-                }}>
-                <small>{localize("popupToExtensionVersionsTab")}</small>
-              </a>
-            </p>
-          )}
-        </>
+        <HomeView
+          openSettingsView={openSettingsView}
+          showExtensionVersionsTab={showExtensionVersionsTab}
+        />
       ) : null}
       {isSettingsView ? <SettingsView onHomeClick={openHomeView} /> : null}
 
