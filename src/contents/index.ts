@@ -48,6 +48,15 @@ const walkDOM = (rootNode) => {
 };
 
 const main = () => {
+  // this should be first to stop execution if no current app
+  const currentApp = getCurrentApp();
+
+  if (!currentApp) {
+    return;
+  }
+
+  // Try to place this as high up as possible
+  sentryScope.setContext("info", { application: currentApp });
   sentryScope.setContext(
     "menuDOM",
     walkDOM(document.querySelector("#docs-chrome"))
@@ -61,10 +70,7 @@ const main = () => {
   relayMessage({ name: RELAY_EXECUTE_ENTER });
   /*--EXTENDED_ONLY_END--*/
 
-  const currentApp = getCurrentApp();
   let strategy: DocsStrategy | SheetsStrategy;
-
-  sentryScope.setContext("info", { application: currentApp });
 
   switch (currentApp) {
     case "Docs":
