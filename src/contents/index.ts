@@ -27,6 +27,10 @@ export const getStyle = () => {
 const [sentryClient, sentryScope] = createSentryClient("content");
 
 const walkDOM = (rootNode) => {
+  if (!rootNode) {
+    return { error: "NO_ROOT_NODE_FOUND" };
+  }
+
   const domObject = {
     id: rootNode.id,
     classNames: rootNode.classList.value,
@@ -46,7 +50,7 @@ const walkDOM = (rootNode) => {
 const main = () => {
   sentryScope.setContext(
     "menuDOM",
-    walkDOM(document.querySelector("#docs-bars"))
+    walkDOM(document.querySelector("#docs-chrome"))
   );
 
   // create and "register" the relay
