@@ -1,11 +1,12 @@
 // Icon used in Favicon was created by https://www.flaticon.com/authors/royyan-wijaya
-import WorkspaceApplication from "./components/WorkspaceApplication";
-import WorkspaceApplicationList from "./components/WorkspaceApplicationList";
-import { workspaceApps } from "./constants";
-import * as styles from "./style.module.css";
-import { isChrome, isEdge } from "./utils/get-browser";
-import localize from "./utils/localize";
-import { setupSentryReactErrorBoundary } from "./utils/sentry/react-error-boundary";
+import { useState } from "react";
+import HomeView from "src/areas/home";
+import SettingsView from "src/areas/settings";
+import * as styles from "src/style.module.css";
+import type { CurrentView } from "src/types";
+import { isChrome, isEdge } from "src/utils/get-browser";
+import localize from "src/utils/localize";
+import { setupSentryReactErrorBoundary } from "src/utils/sentry/react-error-boundary";
 
 const withSentryErrorBoundary = setupSentryReactErrorBoundary("popup");
 const showExtensionVersionsTab = isChrome() || isEdge();
@@ -14,37 +15,30 @@ const showExtensionVersionsTab = isChrome() || isEdge();
 const extensionName = localize("extensionNameExtended");
 
 function IndexPopup() {
+  const [currentView, setCurrentView] = useState<CurrentView>("home");
+
+  const isSettingsView = currentView === "settings";
+  const isHomeView = currentView === "home";
+
+  const openSettingsView = () => {
+    setCurrentView("settings");
+  };
+
+  const openHomeView = () => {
+    setCurrentView("home");
+  };
+
   return (
     <div className={styles.popupContainer}>
-      <h2>{extensionName}</h2>
-      <p>{localize("popupMainSectionDescription")}</p>
-      <WorkspaceApplicationList>
-        {workspaceApps
-          .filter((app) => app.isEnabled)
-          .map((app) => (
-            <WorkspaceApplication
-              key={app.name}
-              name={app.name}
-              zoomValues={app.zoomValues}
-              defaultZoom={app.defaultZoom}
-              storageKey={app.storageKey}
-              features={app.features}
-            />
-          ))}
-      </WorkspaceApplicationList>
-      {showExtensionVersionsTab && (
-        <p>
-          <a
-            href="#"
-            onClick={() => {
-              chrome.tabs.create({
-                url: "./tabs/ext-versions.html"
-              });
-            }}>
-            <small>{localize("popupToExtensionVersionsTab")}</small>
-          </a>
-        </p>
-      )}
+      <h1>{extensionName}</h1>
+      {isHomeView ? (
+        <HomeView
+          openSettingsView={openSettingsView}
+          showExtensionVersionsTab={showExtensionVersionsTab}
+        />
+      ) : null}
+      {isSettingsView ? <SettingsView onHomeClick={openHomeView} /> : null}
+
       <p className={styles.supportMeLinkContainer}>
         <small>
           💚{" "}

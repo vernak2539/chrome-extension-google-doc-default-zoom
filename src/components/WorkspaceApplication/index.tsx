@@ -1,7 +1,7 @@
 import { useStorage } from "@plasmohq/storage/hook";
 import { useCallback } from "react";
 import { getFeatureViewOnlyStorageKey } from "src/constants";
-import type { WorkspaceApp } from "../../types";
+import type { WorkspaceApp } from "src/types";
 import WorkspaceApplicationComponent from "./component";
 
 type Props = Omit<WorkspaceApp, "isEnabled">;

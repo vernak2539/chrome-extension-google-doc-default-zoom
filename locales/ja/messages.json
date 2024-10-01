@@ -98,5 +98,25 @@
   "ExperimentalFeaturesTabDocsViewOnlyContent4": {
     "message": "この拡張機能は既にGoogleスプレッドシートのビューアー権限をサポートしています。これは、ユーザーがビューアーのみであってもズーム入力が表示されるためです。",
     "description": "Content 4 for view only docs experimental feature"
+  },
+  "popupSettingsTitle": {
+    "message": "拡張機能の設定",
+    "decription": "The title for the settings page"
+  },
+  "popupSettingsResetToFactoryTitle": {
+    "message": "工場出荷時の状態に戻す",
+    "description": "Title for functionality that resets to factory defaults (i.e. removes all values from storage)"
+  },
+  "popupSettingsResetToFactoryDescription": {
+    "message": "時々、うまくいかないことがあります。他のすべてのオプションを使い果たして何も機能しない場合は、以下のボタンをクリックして、この拡張機能を初めてインストールしたときの元の状態に戻すことができます。",
+    "description": "Description for what happens when you execute the reset to factory functionality"
+  },
+  "popupSettingsResetToFactoryAction": {
+    "message": "ズーム設定をデフォルトにリセット",
+    "description": "Text for button that executes reset to factory functionality"
+  },
+  "popupSettingsExit": {
+    "message": "設定を終了",
+    "description": "Button text allowing user to exit settings and return to main part of extension"
   }
 }

@@ -98,5 +98,25 @@
   "ExperimentalFeaturesTabDocsViewOnlyContent4": {
     "message": "This extension already supports viewer permissions on Google Sheets. This is because the zoom input is still shown even when a user is only a viewer.",
     "description": "Content 4 for view only docs experimental feature"
+  },
+  "popupSettingsTitle": {
+    "message": "Extension Settings",
+    "description": "The title for the settings page"
+  },
+  "popupSettingsResetToFactoryTitle": {
+    "message": "Reset to Factory Defaults",
+    "description": "Title for functionality that resets to factory defaults (i.e. removes all values from storage)"
+  },
+  "popupSettingsResetToFactoryDescription": {
+    "message": "Sometimes things go wrong. If you've exhausted all other options and nothing seems to work, you can click the button below to reset this extension to its original state when you first installed it.",
+    "description": "Description for what happens when you execute the reset to factory functionality"
+  },
+  "popupSettingsResetToFactoryAction": {
+    "message": "Reset zoom settings to default",
+    "description": "Text for button that executes reset to factory functionality"
+  },
+  "popupSettingsExit": {
+    "message": "Exit Settings",
+    "description": "Button text allowing user to exit settings and return to main part of extension"
   }
 }

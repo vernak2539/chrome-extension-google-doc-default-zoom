@@ -98,5 +98,25 @@
   "ExperimentalFeaturesTabDocsViewOnlyContent4": {
     "message": "Esta extensión ya admite permisos de solo lectura en las Hojas de cálculo de Google. Esto se debe a que la entrada de zoom aún se muestra incluso cuando el usuario es solo un espectador.",
     "description": "Content 4 for view only docs experimental feature"
+  },
+  "popupSettingsTitle": {
+    "message": "Configuración de la extensión",
+    "decription": "The title for the settings page"
+  },
+  "popupSettingsResetToFactoryTitle": {
+    "message": "Restablecer a los valores predeterminados de fábrica",
+    "description": "Title for functionality that resets to factory defaults (i.e. removes all values from storage)"
+  },
+  "popupSettingsResetToFactoryDescription": {
+    "message": "A veces las cosas salen mal. Si ha agotado todas las demás opciones y nada parece funcionar, puede hacer clic en el botón de abajo para restablecer esta extensión a su estado original cuando la instaló por primera vez.",
+    "description": "Description for what happens when you execute the reset to factory functionality"
+  },
+  "popupSettingsResetToFactoryAction": {
+    "message": "Restablecer la configuración de zoom a los valores predeterminados",
+    "description": "Text for button that executes reset to factory functionality"
+  },
+  "popupSettingsExit": {
+    "message": "Salir de la configuración",
+    "description": "Button text allowing user to exit settings and return to main part of extension"
   }
 }
