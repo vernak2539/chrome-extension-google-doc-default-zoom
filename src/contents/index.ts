@@ -56,11 +56,14 @@ const main = () => {
   }
 
   // Try to place this as high up as possible
-  sentryScope.setContext("info", { application: currentApp });
-  sentryScope.setContext(
-    "menuDOM",
-    walkDOM(document.querySelector("#docs-chrome"))
-  );
+  sentryScope.setTag("application", currentApp);
+  sentryScope.setContext("DOM", {
+    menu: JSON.stringify(
+      walkDOM(document.querySelector("#docs-chrome")),
+      null,
+      2
+    )
+  });
 
   // create and "register" the relay
   relayMessage({ name: RELAY_GET_ZOOM_VALUE_FROM_STORAGE });
