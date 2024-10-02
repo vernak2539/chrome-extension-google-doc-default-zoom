@@ -1,0 +1,67 @@
+/* Base styles */
+:root {
+  font-family: system-ui;
+  font-size: 14px;
+  line-height: 1.5;
+  background: var(--background-color);
+}
+
+:root {
+  --background: #f8f8f8;
+  --gray-custom-1: #505050;
+  --gray-50: #ffffff;
+  --gray-100: #d0d0d0;
+  --gray-200: #afafaf;
+  --gray-300: #8f8f8f;
+  --gray-400: #717171;
+  --gray-500: #555555;
+  --gray-600: #393939;
+  --blue-50: #ffffff;
+  --blue-100: #acd4ff;
+  --blue-200: #7ab4f2;
+  --blue-300: #6493c6;
+  --blue-400: #4f749d;
+  --blue-500: #3b5876;
+  --blue-600: #283a4f;
+  --red-50: #ffffff;
+  --red-100: #f7c4ba;
+  --red-200: #f29887;
+  --red-300: #eb664d;
+  --red-400: #de2300;
+  --red-500: #a81b00;
+  --red-600: #731200;
+}
+
+/* Semantic colors */
+:root {
+  --focus-ring-color: var(--blue-400);
+  --text-color: var(--gray-600);
+  --text-color-base: var(--gray-500);
+  --text-color-hover: var(--gray-600);
+  --text-color-disabled: var(--gray-200);
+  --text-color-placeholder: var(--gray-400);
+  --link-color: var(--blue-500);
+  --link-color-secondary: var(--gray-500);
+  --link-color-pressed: var(--blue-600);
+  --border-color: var(--gray-300);
+  --border-color-hover: var(--gray-400);
+  --border-color-pressed: var(--gray-400);
+  --border-color-disabled: var(--gray-100);
+  --field-background: var(--gray-50);
+  --field-text-color: var(--gray-600);
+  --overlay-background: var(--gray-50);
+  --button-text-color: var(--gray-50);
+  --button-background: var(--blue-200);
+  --button-background-pressed: var(--blue-100);
+  --button-border: var(--blue-300);
+  /* these colors are the same between light and dark themes
+   * to ensure contrast with the foreground color 
+  --highlight-background: #6f46ed;  purple-300 from dark theme, 3.03:1 against background-color
+  --highlight-background-pressed: #522acd; purple-200 from dark theme */
+  --highlight-background-invalid: #cc2000; /* red-300 from dark theme */
+  --highlight-foreground: white; /* 5.56:1 against highlight-background */
+  --highlight-foreground-pressed: #ddd;
+  --highlight-overlay: rgb(from #6f46ed r g b / 15%);
+  --invalid-color: var(--red-400);
+  --invalid-color-pressed: var(--red-500);
+}

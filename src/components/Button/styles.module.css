@@ -1,3 +1,5 @@
+@import "../../styles/theme.css";
+
 .button {
   border-radius: 4px;
   appearance: none;
@@ -17,26 +19,27 @@
   }
 
   &[data-disabled] {
-    border-color: #d0d0d0 !important;
-    color: #afafaf !important;
+    border-color: var(--gray-100) !important;
+    background: none !important;
+    color: var(--gray-200) !important;
     cursor: unset !important;
   }
 
   &.danger {
-    color: #fff;
-    background-color: #dc3545;
-    border-color: #dc3545;
+    color: var(--gray-50);
+    background-color: var(--red-400);
+    border-color: var(--red-500);
   }
 
   &.primary {
-    color: #000;
-    background: #fff;
-    border-color: #ccc;
+    color: var(--button-text-color);
+    background: var(--button-background);
+    border-color: var(--button-border);
 
     &[data-pressed] {
       &.primary {
         box-shadow: inset 0 1px 2px rgb(0 0 0 / 0.1);
-        background: #dfdfdf;
+        background: var(--button-background-pressed);
       }
     }
   }

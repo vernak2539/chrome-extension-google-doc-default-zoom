@@ -1,3 +1,4 @@
+@import "./styles/theme.css";
 @import "tippy.js/dist/tippy.css";
 
 :root {

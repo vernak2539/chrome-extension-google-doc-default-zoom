@@ -4,7 +4,7 @@ import * as styles from "./styles.module.css";
 
 interface Props extends ButtonProps {
   label?: string;
-  variant: "primary" | "danger";
+  variant?: "primary" | "danger";
 }
 
 const Button = ({ label, variant, children, ...props }: Props) => {
