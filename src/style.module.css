@@ -1,3 +1,4 @@
+@import "./styles/theme.css";
 @import "tippy.js/dist/tippy.css";
 
 :root {
@@ -76,14 +77,16 @@
 .applicationZoomInputBase {
   border: 1px solid #999;
   border-radius: 5px;
-  padding: 3px 5px;
   font-size: 0.75rem;
+  height: 30px;
+  padding: 5px;
 }
 
 .applicationZoomCustomInput {
   width: 100px;
   text-align: center;
   margin-left: 10px;
+  height: unset;
 }
 
 .applicationZoomSelectInput {

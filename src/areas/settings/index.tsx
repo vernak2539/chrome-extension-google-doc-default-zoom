@@ -1,6 +1,7 @@
 import { Storage } from "@plasmohq/storage";
 import { useState } from "react";
 import SettingsIcon from "react:~/assets/popup_icons/settings-inverted.svg";
+import Button from "src/components/Button";
 import { getFeatureViewOnlyStorageKey } from "src/constants";
 import type { StorageKey } from "src/types";
 import localize from "src/utils/localize";
@@ -39,16 +40,19 @@ const SettingsView = ({ onHomeClick }: Props) => {
       <section>
         <h3>{localize("popupSettingsResetToFactoryTitle")}</h3>
         <p>{localize("popupSettingsResetToFactoryDescription")}</p>
-        <button onClick={onResetZoomSettingsClick}>
+        <Button variant="danger" onPress={onResetZoomSettingsClick}>
           {localize("popupSettingsResetToFactoryAction")}
-        </button>
+        </Button>
       </section>
       <br />
       <hr />
       <br />
-      <button disabled={!isExitEnabled} onClick={onHomeClick}>
+      <Button
+        variant="primary"
+        onPress={onHomeClick}
+        isDisabled={!isExitEnabled}>
         {localize("popupSettingsExit")}
-      </button>
+      </Button>
     </div>
   );
 };

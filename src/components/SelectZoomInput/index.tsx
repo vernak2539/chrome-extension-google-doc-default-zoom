@@ -1,7 +1,6 @@
 import classnames from "classnames";
 import type { ChangeEvent } from "react";
 import { useId } from "react";
-
 import * as style from "../../style.module.css";
 import localize from "../../utils/localize";
 import type { ZoomInputProps } from "../shared-props";
