@@ -1,7 +1,7 @@
 /* Base styles */
 :root {
   font-family: system-ui;
-  font-size: 14px;
+  font-size: 1rem;
   line-height: 1.5;
   background: var(--background-color);
 }
@@ -18,11 +18,11 @@
   --gray-600: #393939;
   --blue-50: #ffffff;
   --blue-100: #acd4ff;
-  --blue-200: #7ab4f2;
-  --blue-300: #6493c6;
-  --blue-400: #4f749d;
-  --blue-500: #3b5876;
-  --blue-600: #283a4f;
+  --blue-200: #6eb4ff;
+  --blue-300: #2990ff;
+  --blue-400: #006ee4;
+  --blue-500: #0053ab;
+  --blue-600: #003874;
   --red-50: #ffffff;
   --red-100: #f7c4ba;
   --red-200: #f29887;
@@ -51,9 +51,9 @@
   --field-text-color: var(--gray-600);
   --overlay-background: var(--gray-50);
   --button-text-color: var(--gray-50);
-  --button-background: var(--blue-200);
-  --button-background-pressed: var(--blue-100);
-  --button-border: var(--blue-300);
+  --button-background: var(--blue-300);
+  --button-background-pressed: var(--blue-400);
+  --button-border: var(--blue-400);
   /* these colors are the same between light and dark themes
    * to ensure contrast with the foreground color 
   --highlight-background: #6f46ed;  purple-300 from dark theme, 3.03:1 against background-color
