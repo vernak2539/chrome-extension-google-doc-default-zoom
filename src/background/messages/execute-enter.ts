@@ -5,7 +5,7 @@ import type {
 } from "src/types";
 import { createSentryClient } from "src/utils/sentry/base";
 
-const [sentryClient] = createSentryClient("background");
+const [, sentryScope] = createSentryClient("background");
 
 const handler: PlasmoMessaging.MessageHandler<
   ExecuteEnterRequestBody,
@@ -44,7 +44,7 @@ const handler: PlasmoMessaging.MessageHandler<
     chrome.debugger.detach(target);
     res.send({ err: null });
   } catch (err) {
-    sentryClient.captureException(err);
+    sentryScope.captureException(err);
   }
 };
 

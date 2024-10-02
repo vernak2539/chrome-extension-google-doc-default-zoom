@@ -7,7 +7,7 @@ import type {
 import { createSentryClient } from "src/utils/sentry/base";
 
 const storage = new Storage();
-const [sentryClient] = createSentryClient("background");
+const [, sentryScope] = createSentryClient("background");
 
 const handler: PlasmoMessaging.MessageHandler<
   GetFeatureViewOnlyRequestBody,
@@ -20,7 +20,7 @@ const handler: PlasmoMessaging.MessageHandler<
       enabled
     });
   } catch (err) {
-    sentryClient.captureException(err);
+    sentryScope.captureException(err);
   }
 };
 

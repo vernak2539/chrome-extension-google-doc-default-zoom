@@ -24,7 +24,7 @@ export const getStyle = () => {
   return style;
 };
 
-const [sentryClient, sentryScope] = createSentryClient("content");
+const [, sentryScope] = createSentryClient("content");
 
 const walkDOM = (rootNode) => {
   if (!rootNode) {
@@ -130,6 +130,6 @@ onReady(() => {
   try {
     main();
   } catch (err) {
-    sentryClient.captureException(err);
+    sentryScope.captureException(err);
   }
 });
