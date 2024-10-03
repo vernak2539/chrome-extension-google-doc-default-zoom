@@ -69,6 +69,7 @@ jobs:
           edge-file: build/edge-mv3-prod.zip
           edge-notes: "Publishing latest 'Google Workspace Zoom Default - Extended' version (${{ steps.package-version.outputs.current-version }}) to Edge Store."
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           path: build
           name: google-workspace-zoom-extended-${{ steps.package-version.outputs.current-version }}
