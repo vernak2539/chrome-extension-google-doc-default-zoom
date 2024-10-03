@@ -26,9 +26,16 @@
   }
 
   &.danger {
-    color: var(--gray-50);
-    background-color: var(--red-400);
-    border-color: var(--red-500);
+    color: var(--button-danger-text-color);
+    background-color: var(--button-danger-background);
+    border-color: var(--button-danger-border);
+
+    &[data-pressed] {
+      &.danger {
+        box-shadow: inset 0 1px 2px rgb(0 0 0 / 0.1);
+        background: var(--button-danger-background-pressed);
+      }
+    }
   }
 
   &.primary {

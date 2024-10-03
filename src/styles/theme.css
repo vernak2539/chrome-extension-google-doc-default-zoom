@@ -54,6 +54,10 @@
   --button-background: var(--blue-300);
   --button-background-pressed: var(--blue-400);
   --button-border: var(--blue-400);
+  --button-danger-text-color: var(--gray-50);
+  --button-danger-background: var(--red-400);
+  --button-danger-background-pressed: var(--red-500);
+  --button-danger-border: var(--red-500);
   /* these colors are the same between light and dark themes
    * to ensure contrast with the foreground color 
   --highlight-background: #6f46ed;  purple-300 from dark theme, 3.03:1 against background-color
