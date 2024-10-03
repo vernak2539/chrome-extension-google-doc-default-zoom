@@ -6,9 +6,9 @@ import * as styles from "src/style.module.css";
 import type { CurrentView } from "src/types";
 import { isChrome, isEdge } from "src/utils/get-browser";
 import localize from "src/utils/localize";
-import { setupSentryReactErrorBoundary } from "src/utils/sentry/react-error-boundary";
+import ErrorBoundary from "src/utils/sentry/react-error-boundary";
+import { ErrorFallback } from "./components/ErrorFallback";
 
-const withSentryErrorBoundary = setupSentryReactErrorBoundary("popup");
 const showExtensionVersionsTab = isChrome() || isEdge();
 
 // "extensionName"/"extensionNameExtended" WILL BE CHANGED. DON'T CHANGE WITHOUT MAKING OTHER CHANGES
@@ -30,26 +30,28 @@ function IndexPopup() {
 
   return (
     <div className={styles.popupContainer}>
-      <h1>{extensionName}</h1>
-      {isHomeView ? (
-        <HomeView
-          openSettingsView={openSettingsView}
-          showExtensionVersionsTab={showExtensionVersionsTab}
-        />
-      ) : null}
-      {isSettingsView ? <SettingsView onHomeClick={openHomeView} /> : null}
+      <ErrorBoundary fallback={<ErrorFallback heading={extensionName} />}>
+        <h1>{extensionName}</h1>
+        {isHomeView ? (
+          <HomeView
+            openSettingsView={openSettingsView}
+            showExtensionVersionsTab={showExtensionVersionsTab}
+          />
+        ) : null}
+        {isSettingsView ? <SettingsView onHomeClick={openHomeView} /> : null}
 
-      <p className={styles.supportMeLinkContainer}>
-        <small>
-          💚{" "}
-          <a href="https://buymeacoffee.com/vernacchia">
-            {localize("popupSupportMeLabel")}
-          </a>{" "}
-          🤟
-        </small>
-      </p>
+        <p className={styles.supportMeLinkContainer}>
+          <small>
+            💚{" "}
+            <a href="https://buymeacoffee.com/vernacchia">
+              {localize("popupSupportMeLabel")}
+            </a>{" "}
+            🤟
+          </small>
+        </p>
+      </ErrorBoundary>
     </div>
   );
 }
 
-export default withSentryErrorBoundary(IndexPopup, extensionName);
+export default IndexPopup;

@@ -1,4 +1,3 @@
-// This is used in both content and background scripts. Do not use this in the popup.
 import {
   BrowserClient,
   Scope,
@@ -6,10 +5,14 @@ import {
   getDefaultIntegrations,
   makeFetchTransport
 } from "@sentry/browser";
+import type { BrowserClientOptions } from "@sentry/browser/build/npm/types/client";
 import type { ExtensionFileSource } from "src/types";
 import { SENTRY_BASE_CONFIG, getDefaultTags } from "./config";
 
-const createNewSentryClient = (source: ExtensionFileSource): Scope => {
+const createNewSentryClient = (
+  source: ExtensionFileSource,
+  browserClientOptions: Partial<BrowserClientOptions>
+): Scope => {
   const sentryClient = new BrowserClient({
     ...SENTRY_BASE_CONFIG,
     stackParser: defaultStackParser,
@@ -18,7 +21,8 @@ const createNewSentryClient = (source: ExtensionFileSource): Scope => {
         defaultIntegration.name
       );
     }),
-    transport: makeFetchTransport
+    transport: makeFetchTransport,
+    ...browserClientOptions
   });
 
   const sentryScope = new Scope();
