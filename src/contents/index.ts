@@ -24,7 +24,7 @@ export const getStyle = () => {
   return style;
 };
 
-const [, sentryScope] = createSentryClient("content");
+const sentryScope = createSentryClient("content");
 
 const walkDOM = (rootNode) => {
   if (!rootNode) {

@@ -7,7 +7,7 @@ import type {
 import { createSentryClient } from "src/utils/sentry/base";
 
 const storage = new Storage();
-const [, sentryScope] = createSentryClient("background");
+const sentryScope = createSentryClient("background");
 
 const handler: PlasmoMessaging.MessageHandler<
   GetZoomValueRequestBody,
