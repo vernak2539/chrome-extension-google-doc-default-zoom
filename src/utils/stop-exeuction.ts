@@ -10,8 +10,6 @@ export const stopExecution = (currentApp: WorkspaceAppName | null): boolean => {
   // "/spreadsheets/u/0/d/XXXX-XX/preview/sheet";
   const { pathname } = new URL(window.location.href);
 
-  console.log(pathname);
-
   if (currentApp === "Docs") {
     const docsPreviewRegex = /\/preview$/;
 

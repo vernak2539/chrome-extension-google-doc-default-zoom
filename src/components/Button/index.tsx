@@ -10,8 +10,6 @@ interface Props extends ButtonProps {
 const Button = ({ label, variant, children, ...props }: Props) => {
   const buttonStyles = classnames(styles.button, styles[variant]);
 
-  console.log(BaseButton);
-
   return (
     <BaseButton {...props} className={buttonStyles}>
       {children || label}
