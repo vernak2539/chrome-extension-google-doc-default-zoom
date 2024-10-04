@@ -8,8 +8,8 @@ import { isChrome, isEdge } from "src/utils/get-browser";
 import localize from "src/utils/localize";
 import { setupSentryReactErrorBoundary } from "src/utils/sentry/react-error-boundary";
 
-const showExtensionVersionsTab = isChrome() || isEdge();
 const withSentryErrorBoundary = setupSentryReactErrorBoundary("popup");
+const showExtensionVersionsTab = isChrome() || isEdge();
 
 // "extensionName"/"extensionNameExtended" WILL BE CHANGED. DON'T CHANGE WITHOUT MAKING OTHER CHANGES
 const extensionName = localize("extensionNameExtended");
