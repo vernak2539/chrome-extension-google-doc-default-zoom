@@ -10,10 +10,11 @@ import {
 } from "src/constants";
 import DocsStrategy from "src/strategies/docs";
 import SheetsStrategy from "src/strategies/sheets";
-import type { WorkspaceAppName } from "src/types";
 import counterFactory from "src/utils/counter-factory";
 import getCurrentApp from "src/utils/get-current-app";
 import { createSentryClient } from "src/utils/sentry/base";
+import { stopExecution } from "src/utils/stop-exeuction";
+import { walkDOM } from "src/utils/walk-dom";
 
 export const config: PlasmoCSConfig = {
   matches: ["https://docs.google.com/*"]
@@ -26,55 +27,6 @@ export const getStyle = () => {
 };
 
 const sentryScope = createSentryClient("content");
-
-const stopExecution = (currentApp: WorkspaceAppName | null): boolean => {
-  if (!currentApp) {
-    return true;
-  }
-
-  // '/document/d/XXXX/preview'
-  // "/spreadsheets/u/0/d/XXXX-XX/preview/sheet";
-  const { pathname } = new URL(window.location.href);
-
-  console.log(pathname);
-
-  if (currentApp === "Docs") {
-    const docsPreviewRegex = /\/preview$/;
-
-    if (docsPreviewRegex.test(pathname)) {
-      return true;
-    }
-  } else if (currentApp === "Sheets") {
-    const sheetsPreviewRegex = /\/preview\/sheet$/;
-
-    if (sheetsPreviewRegex.test(pathname)) {
-      return true;
-    }
-  }
-
-  return false;
-};
-
-const walkDOM = (rootNode) => {
-  if (!rootNode) {
-    return { error: "NO_ROOT_NODE_FOUND" };
-  }
-
-  const domObject = {
-    id: rootNode.id,
-    classNames: rootNode.classList.value,
-    children: []
-  };
-
-  for (let i = 0; i < rootNode.childNodes.length; i++) {
-    const child = rootNode.childNodes[i];
-    if (child.nodeType === Node.ELEMENT_NODE) {
-      domObject.children.push(walkDOM(child));
-    }
-  }
-
-  return domObject;
-};
 
 const main = () => {
   // this should be first to stop execution if no current app
