@@ -10,6 +10,7 @@ import {
 } from "src/constants";
 import DocsStrategy from "src/strategies/docs";
 import SheetsStrategy from "src/strategies/sheets";
+import type { WorkspaceAppName } from "src/types";
 import counterFactory from "src/utils/counter-factory";
 import getCurrentApp from "src/utils/get-current-app";
 import { createSentryClient } from "src/utils/sentry/base";
@@ -25,6 +26,34 @@ export const getStyle = () => {
 };
 
 const sentryScope = createSentryClient("content");
+
+const stopExecution = (currentApp: WorkspaceAppName | null): boolean => {
+  if (!currentApp) {
+    return true;
+  }
+
+  // '/document/d/XXXX/preview'
+  // "/spreadsheets/u/0/d/XXXX-XX/preview/sheet";
+  const { pathname } = new URL(window.location.href);
+
+  console.log(pathname);
+
+  if (currentApp === "Docs") {
+    const docsPreviewRegex = /\/preview$/;
+
+    if (docsPreviewRegex.test(pathname)) {
+      return true;
+    }
+  } else if (currentApp === "Sheets") {
+    const sheetsPreviewRegex = /\/preview\/sheet$/;
+
+    if (sheetsPreviewRegex.test(pathname)) {
+      return true;
+    }
+  }
+
+  return false;
+};
 
 const walkDOM = (rootNode) => {
   if (!rootNode) {
@@ -50,8 +79,9 @@ const walkDOM = (rootNode) => {
 const main = () => {
   // this should be first to stop execution if no current app
   const currentApp = getCurrentApp();
+  const stop = stopExecution(currentApp);
 
-  if (!currentApp) {
+  if (stop) {
     return;
   }
 
