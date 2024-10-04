@@ -7,8 +7,8 @@ const sheetsUrlRegex = new RegExp(
   /https:\/\/docs\.google\.com\/spreadsheets\/d\/(.*?)\/.*?/g
 );
 
-const getCurrentApp = (): WorkspaceAppName | null => {
-  const url = new URL(window.location.href);
+const getCurrentApp = (href: string): WorkspaceAppName | null => {
+  const url = new URL(href);
 
   if (docsUrlRegex.test(url.href)) {
     return "Docs";

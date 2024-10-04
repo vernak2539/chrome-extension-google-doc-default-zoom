@@ -30,7 +30,7 @@ const sentryScope = createSentryClient("content");
 
 const main = () => {
   // this should be first to stop execution if no current app
-  const currentApp = getCurrentApp();
+  const currentApp = getCurrentApp(window.location.href);
   const stop = stopExecution(currentApp);
 
   if (stop) {

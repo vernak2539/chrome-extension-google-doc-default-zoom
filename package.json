@@ -7,6 +7,7 @@
   "repository": "github:vernak2539/chrome-extension-google-doc-default-zoom",
   "scripts": {
     "dev": "plasmo dev",
+    "test": "vitest",
     "build": "plasmo build",
     "package": "plasmo package",
     "prettier": "prettier ./src/** -w",
@@ -53,7 +54,8 @@
     "storybook": "^8.3.4",
     "typescript": "5.4.2",
     "vite": "^5.1.6",
-    "vite-plugin-svgr": "^4.2.0"
+    "vite-plugin-svgr": "^4.2.0",
+    "vitest": "^2.1.2"
   },
   "manifest": {
     "name": "__MSG_extensionNameExtended__",
