@@ -28,6 +28,8 @@ jobs:
           cache: "pnpm"
       - name: Install dependencies
         run: pnpm install
+      - name: Run Tests
+        run: pnpm test
       - name: Build the extension
         run: |
           pnpm build --source-maps --target=chrome-mv3
