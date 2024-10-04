@@ -1,5 +1,7 @@
-import { getDefaultIntegrations } from "@sentry/browser";
+import { getDefaultIntegrations, Scope } from "@sentry/browser";
 import { Component } from "react";
+import { ErrorFallback } from "src/components/ErrorFallback";
+import type { ExtensionFileSource } from "src/types";
 import { createSentryClient } from "./base";
 
 type ErrorBoundaryState = {
@@ -9,11 +11,8 @@ type ErrorBoundaryState = {
 type ErrorBoundaryProps = {
   fallback: React.ReactNode;
   children: React.ReactNode;
+  sentryScope: Scope;
 };
-
-const sentryScope = createSentryClient("popup", {
-  integrations: getDefaultIntegrations({})
-});
 
 class ErrorBoundaryWithSentry extends Component<
   ErrorBoundaryProps,
@@ -30,7 +29,7 @@ class ErrorBoundaryWithSentry extends Component<
   }
 
   componentDidCatch(error, info) {
-    sentryScope.captureException(error, {
+    this.props.sentryScope.captureException(error, {
       ...{
         mechanism: {
           handled: Boolean(this.props.fallback)
@@ -54,4 +53,16 @@ class ErrorBoundaryWithSentry extends Component<
   }
 }
 
-export default ErrorBoundaryWithSentry;
+export const setupSentryReactErrorBoundary = (source: ExtensionFileSource) => {
+  const sentryScope = createSentryClient(source, {
+    integrations: getDefaultIntegrations({})
+  });
+
+  return (children, fallbackHeading) => {
+    <ErrorBoundaryWithSentry
+      sentryScope={sentryScope}
+      fallback={<ErrorFallback heading={fallbackHeading} />}>
+      {children}
+    </ErrorBoundaryWithSentry>;
+  };
+};

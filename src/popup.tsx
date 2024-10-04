@@ -6,10 +6,10 @@ import * as styles from "src/style.module.css";
 import type { CurrentView } from "src/types";
 import { isChrome, isEdge } from "src/utils/get-browser";
 import localize from "src/utils/localize";
-import ErrorBoundary from "src/utils/sentry/react-error-boundary";
-import { ErrorFallback } from "./components/ErrorFallback";
+import { setupSentryReactErrorBoundary } from "src/utils/sentry/react-error-boundary";
 
 const showExtensionVersionsTab = isChrome() || isEdge();
+const withSentryErrorBoundary = setupSentryReactErrorBoundary("popup");
 
 // "extensionName"/"extensionNameExtended" WILL BE CHANGED. DON'T CHANGE WITHOUT MAKING OTHER CHANGES
 const extensionName = localize("extensionNameExtended");
@@ -30,28 +30,26 @@ function IndexPopup() {
 
   return (
     <div className={styles.popupContainer}>
-      <ErrorBoundary fallback={<ErrorFallback heading={extensionName} />}>
-        <h1>{extensionName}</h1>
-        {isHomeView ? (
-          <HomeView
-            openSettingsView={openSettingsView}
-            showExtensionVersionsTab={showExtensionVersionsTab}
-          />
-        ) : null}
-        {isSettingsView ? <SettingsView onHomeClick={openHomeView} /> : null}
+      <h1>{extensionName}</h1>
+      {isHomeView ? (
+        <HomeView
+          openSettingsView={openSettingsView}
+          showExtensionVersionsTab={showExtensionVersionsTab}
+        />
+      ) : null}
+      {isSettingsView ? <SettingsView onHomeClick={openHomeView} /> : null}
 
-        <p className={styles.supportMeLinkContainer}>
-          <small>
-            💚{" "}
-            <a href="https://buymeacoffee.com/vernacchia">
-              {localize("popupSupportMeLabel")}
-            </a>{" "}
-            🤟
-          </small>
-        </p>
-      </ErrorBoundary>
+      <p className={styles.supportMeLinkContainer}>
+        <small>
+          💚{" "}
+          <a href="https://buymeacoffee.com/vernacchia">
+            {localize("popupSupportMeLabel")}
+          </a>{" "}
+          🤟
+        </small>
+      </p>
     </div>
   );
 }
 
-export default IndexPopup;
+export default withSentryErrorBoundary(IndexPopup, extensionName);
