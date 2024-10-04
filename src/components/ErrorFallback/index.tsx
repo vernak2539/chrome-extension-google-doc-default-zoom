@@ -1,9 +1,11 @@
+import * as styles from "../../style.module.css";
+
 type Props = {
   heading: string;
 };
 
 export const ErrorFallback = ({ heading }: Props) => (
-  <>
+  <div className={styles.popupContainer} style={{ minHeight: "unset" }}>
     <h1>{heading}</h1>
     <p>
       Sorry! Something has gone wrong. Please submit an issue{" "}
@@ -12,5 +14,5 @@ export const ErrorFallback = ({ heading }: Props) => (
       </a>{" "}
       so I can fix it!
     </p>
-  </>
+  </div>
 );
