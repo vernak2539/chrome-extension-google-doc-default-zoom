@@ -49,7 +49,8 @@ export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
 
     /*--EXTENDED_ONLY_START--*/
     const canUseCustomZoom =
-      this.isFeatureEnabled("customZoomInput") && getIsCustomZoom(zoomValue);
+      this.isFeatureEnabled("customZoomInput") &&
+      getIsCustomZoom(this.config.application, zoomValue);
 
     if (canUseCustomZoom) {
       this.uiExecuteCustomZoomFlow(zoomInputContainer, zoomValue);

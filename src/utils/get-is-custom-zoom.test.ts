@@ -11,26 +11,26 @@ vi.mock("src/utils/localize", (original) => {
 describe("getIsCustomZoom", () => {
   describe("Docs", () => {
     test("should return true if not predefined value", () => {
-      expect(getIsCustomZoom("123%")).toBe(true);
+      expect(getIsCustomZoom("Docs", "123%")).toBe(true);
     });
 
     test.each(DOCS_ZOOM_VALUES)(
       "should return false if predefined value (%i)",
       (value) => {
-        expect(getIsCustomZoom(value)).toBe(false);
+        expect(getIsCustomZoom("Docs", value)).toBe(false);
       }
     );
   });
 
   describe("Sheets", () => {
     test("should return true if not predefined value", () => {
-      expect(getIsCustomZoom("123%")).toBe(true);
+      expect(getIsCustomZoom("Sheets", "123%")).toBe(true);
     });
 
     test.each(SHEETS_ZOOM_VALUES)(
       "should return false if predefined value (%i)",
       (value) => {
-        expect(getIsCustomZoom(value)).toBe(false);
+        expect(getIsCustomZoom("Sheets", value)).toBe(false);
       }
     );
   });
