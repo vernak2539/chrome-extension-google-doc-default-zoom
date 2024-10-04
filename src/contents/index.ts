@@ -13,6 +13,8 @@ import SheetsStrategy from "src/strategies/sheets";
 import counterFactory from "src/utils/counter-factory";
 import getCurrentApp from "src/utils/get-current-app";
 import { createSentryClient } from "src/utils/sentry/base";
+import { stopExecution } from "src/utils/stop-exeuction";
+import { walkDOM } from "src/utils/walk-dom";
 
 export const config: PlasmoCSConfig = {
   matches: ["https://docs.google.com/*"]
@@ -26,32 +28,12 @@ export const getStyle = () => {
 
 const sentryScope = createSentryClient("content");
 
-const walkDOM = (rootNode) => {
-  if (!rootNode) {
-    return { error: "NO_ROOT_NODE_FOUND" };
-  }
-
-  const domObject = {
-    id: rootNode.id,
-    classNames: rootNode.classList.value,
-    children: []
-  };
-
-  for (let i = 0; i < rootNode.childNodes.length; i++) {
-    const child = rootNode.childNodes[i];
-    if (child.nodeType === Node.ELEMENT_NODE) {
-      domObject.children.push(walkDOM(child));
-    }
-  }
-
-  return domObject;
-};
-
 const main = () => {
   // this should be first to stop execution if no current app
   const currentApp = getCurrentApp();
+  const stop = stopExecution(currentApp);
 
-  if (!currentApp) {
+  if (stop) {
     return;
   }
 

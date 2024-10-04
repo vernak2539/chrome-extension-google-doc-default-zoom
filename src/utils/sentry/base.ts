@@ -11,8 +11,10 @@ import { SENTRY_BASE_CONFIG, getDefaultTags } from "./config";
 
 const createNewSentryClient = (
   source: ExtensionFileSource,
-  browserClientOptions: Partial<BrowserClientOptions>
+  browserClientOptions?: Partial<BrowserClientOptions>
 ): Scope => {
+  const extraClientOptions = browserClientOptions || {};
+
   const sentryClient = new BrowserClient({
     ...SENTRY_BASE_CONFIG,
     stackParser: defaultStackParser,
@@ -22,7 +24,7 @@ const createNewSentryClient = (
       );
     }),
     transport: makeFetchTransport,
-    ...browserClientOptions
+    ...extraClientOptions
   });
 
   const sentryScope = new Scope();
