@@ -33,6 +33,23 @@ class DocsStrategy
     });
   }
 
+  /**
+   * This function tells us if the doc is in preview mode. There is no menu in preview mode, so we can't zoom
+   *
+   * example preview URL: "/document/d/XXXX/preview"
+   */
+  public isPreview(href: string): boolean {
+    const { pathname } = new URL(href);
+
+    const docsPreviewRegex = /\/preview$/;
+
+    if (docsPreviewRegex.test(pathname)) {
+      return true;
+    }
+
+    return false;
+  }
+
   /*
    * This function determines if the page is in view only mode
    * */

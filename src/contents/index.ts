@@ -66,7 +66,10 @@ const main = () => {
       break;
   }
 
-  if (strategy) {
+  // Do not execute if there's no supported strategy or the URL indicates the "doc" being previewed
+  const shouldExecute = strategy && !strategy.isPreview(window.location.href);
+
+  if (shouldExecute) {
     const counter = counterFactory();
     const observer = new MutationObserver((_mutationList, observer) => {
       const { isLoading } = strategy.getIsPageLoading();
