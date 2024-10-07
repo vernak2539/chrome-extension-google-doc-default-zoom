@@ -20,7 +20,7 @@ class SheetsStrategy
    *
    * example preview URL: "/spreadsheets/u/0/d/XXXX-XX/preview/sheet";
    */
-  public isPreview(href: string): boolean {
+  public isUIPreview(href: string): boolean {
     const { pathname } = new URL(href);
     const sheetsPreviewRegex = /\/preview\/sheet$/;
 

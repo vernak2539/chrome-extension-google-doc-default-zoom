@@ -38,7 +38,7 @@ class DocsStrategy
    *
    * example preview URL: "/document/d/XXXX/preview"
    */
-  public isPreview(href: string): boolean {
+  public isUIPreview(href: string): boolean {
     const { pathname } = new URL(href);
 
     const docsPreviewRegex = /\/preview$/;

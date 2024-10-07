@@ -22,13 +22,13 @@ export interface AbstractBaseStrategyImpl {
     isLoading: boolean;
     getElementToWatch: () => Element;
   };
-  isPreview: (href: string) => boolean;
+  isUIPreview: (href: string) => boolean;
 }
 
 export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
   protected readonly config: UiStrategyConfig;
   public abstract execute(executionLocation: string): void;
-  public abstract isPreview(href: string): boolean;
+  public abstract isUIPreview(href: string): boolean;
 
   protected constructor(config: UiStrategyConfig) {
     this.config = config;

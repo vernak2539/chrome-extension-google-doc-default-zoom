@@ -67,7 +67,7 @@ const main = () => {
   }
 
   // Do not execute if there's no supported strategy or the URL indicates the "doc" being previewed
-  const shouldExecute = strategy && !strategy.isPreview(window.location.href);
+  const shouldExecute = strategy && !strategy.isUIPreview(window.location.href);
 
   if (shouldExecute) {
     const counter = counterFactory();
