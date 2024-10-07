@@ -1,7 +1,7 @@
 {
   "name": "google-workspace-zoom-extended",
   "displayName": "__MSG_extensionNameExtended__",
-  "version": "0.13.0",
+  "version": "0.14.0",
   "description": "__MSG_extensionDescription__",
   "author": "vernak2539",
   "repository": "github:vernak2539/chrome-extension-google-doc-default-zoom",
