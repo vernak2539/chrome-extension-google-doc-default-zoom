@@ -1,10 +1,10 @@
 {
   "extensionName": {
-    "message": "Google Workspace - Масштаб по умолчанию",
+    "message": "Стандартный масштаб для Google Workspace",
     "description": "Название расширения."
   },
   "extensionNameExtended": {
-    "message": "Google Workspace - Масштаб по умолчанию - Расширенная версия",
+    "message": "Стандартный масштаб для Google Workspace (Расширенный)",
     "description": "Название расширения с дополнительными функциями, требующими более высоких разрешений"
   },
   "extensionDescription": {

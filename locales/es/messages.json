@@ -1,10 +1,10 @@
 {
   "extensionName": {
-    "message": "Zoom predeterminado de Google Workspace",
+    "message": "Zoom predeterminado para Google Workspace",
     "description": "Name of the extension."
   },
   "extensionNameExtended": {
-    "message": "Zoom predeterminado de Google Workspace - Extendido",
+    "message": "Zoom predeterminado para Google Workspace (Extendido)",
     "description": "Name of the extension with extra features requiring higher permissions"
   },
   "extensionDescription": {
