@@ -6,7 +6,7 @@ class Logger {
   }
 
   info(msg) {
-    console.log(`Google Workspace Zoom Default: ${msg}`);
+    console.log(`Default zoom for Google Workspace: ${msg}`);
   }
 }
 

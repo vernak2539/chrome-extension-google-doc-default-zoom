@@ -1,5 +1,5 @@
 /**
- * This script aims to transform this extension from "Google Workspace Zoom Default - Extended" to "Google Workspace Zoom Default"
+ * This script aims to transform this extension from "Default zoom for Google Workspace (Extended)" to "Default zoom for Google Workspace"
  *
  * In order to do this, this script needs to do thw following:
  * 1. Remove "debugger" permissions from the package.json -> mainfest -> permissiosn array

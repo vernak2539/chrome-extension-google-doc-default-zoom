@@ -29,7 +29,7 @@ jobs:
         run: pnpm install
       - name: Run Tests
         run: pnpm test
-      - name: Transform to "Google Workspace Zoom Default"
+      - name: Transform to "Default zoom for Google Workspace"
         run: pnpm transform-ext
       - name: Build the extension
         run: |
@@ -82,7 +82,7 @@ jobs:
           keys: ${{ secrets.SUBMIT_KEYS }}
           chrome-file: build/chrome-mv3-prod.zip
           edge-file: build/edge-mv3-prod.zip
-          edge-notes: "Publishing latest 'Google Workspace Zoom Default' version (${{ steps.package-version.outputs.current-version }}) to Edge Store."
+          edge-notes: "Publishing latest 'Default zoom for Google Workspace' version (${{ steps.package-version.outputs.current-version }}) to Edge Store."
           firefox-file: build/firefox-mv2-prod.zip
       - uses: actions/upload-artifact@v4
         if: always()
