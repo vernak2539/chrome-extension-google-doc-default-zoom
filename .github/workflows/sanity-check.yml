@@ -34,7 +34,7 @@ jobs:
           pnpm package --target=chrome-mv3
           pnpm package --target=edge-mv3
           pnpm package --target=firefox-mv2
-      - name: Transform to "Google Workspace Zoom Default"
+      - name: Transform to "Default zoom for Google Workspace"
         run: pnpm transform-ext
       - name: Build the extension
         run: |
