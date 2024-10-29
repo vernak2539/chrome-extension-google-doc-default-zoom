@@ -18,7 +18,7 @@ export const onElementAvailable = (selector: string, callback: Callback) => {
   observer.observe(document.body, { childList: true, subtree: true });
 };
 
-export const onMutationObserverCondition = (
+export const observeElementAndExecute = (
   selector: string,
   evaluations: Evaluations,
   callback: Callback

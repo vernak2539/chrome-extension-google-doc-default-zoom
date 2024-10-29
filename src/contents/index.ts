@@ -13,8 +13,8 @@ import DocsStrategy from "src/strategies/docs";
 import SheetsStrategy from "src/strategies/sheets";
 import getCurrentApp from "src/utils/get-current-app";
 import {
-  onElementAvailable,
-  onMutationObserverCondition
+  observeElementAndExecute,
+  onElementAvailable
 } from "src/utils/mutation-observer-helpers";
 import { createSentryClient } from "src/utils/sentry/base";
 import { stopExecution } from "src/utils/stop-exeuction";
@@ -79,13 +79,13 @@ const main = () => {
   }
 
   const elementToWatchSelector = strategy.getIsPageLoadingElementToWatch();
-  const callback = () => strategy.execute();
+  const executeStrategy = () => strategy.execute();
 
   try {
     const isPageLoading = strategy.getIsPageLoading();
 
     if (!isPageLoading) {
-      callback();
+      executeStrategy();
       return;
     }
   } catch (err) {
@@ -93,7 +93,7 @@ const main = () => {
     sentryScope.setExtra("inline_loading_error", err);
   }
 
-  onMutationObserverCondition(
+  observeElementAndExecute(
     elementToWatchSelector,
     {
       shouldStop: (executionCount) => {
@@ -103,7 +103,7 @@ const main = () => {
         return !strategy.getIsPageLoading();
       }
     },
-    callback
+    executeStrategy
   );
 };
 
