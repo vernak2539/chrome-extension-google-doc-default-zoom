@@ -30,6 +30,10 @@ export const getStyle = () => {
 
 const sentryScope = createSentryClient("content");
 
+const getAndStringifyContextValue = (selector: string) => {
+  return JSON.stringify(walkDOM(document.querySelector(selector)), null, 2);
+};
+
 const main = () => {
   // this should be first to stop execution if no current app
   const currentApp = getCurrentApp(window.location.href);
@@ -42,11 +46,8 @@ const main = () => {
   // Try to place this as high up as possible
   sentryScope.setTag("application", currentApp);
   sentryScope.setContext("DOM", {
-    menu: JSON.stringify(
-      walkDOM(document.querySelector("#docs-chrome")),
-      null,
-      2
-    )
+    menu: getAndStringifyContextValue(SELECTOR_PAGE_HEADER),
+    body: getAndStringifyContextValue("body")
   });
 
   // create and "register" the relay
