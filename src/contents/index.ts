@@ -6,12 +6,14 @@ import {
   RELAY_EXECUTE_ENTER,
   RELAY_GET_FEATURE_VIEW_ONLY_FROM_STORAGE,
   RELAY_GET_ZOOM_VALUE_FROM_STORAGE,
+  SELECTOR_PAGE_HEADER,
   workspaceAppUiStrategyConfigs
 } from "src/constants";
 import DocsStrategy from "src/strategies/docs";
 import SheetsStrategy from "src/strategies/sheets";
 import counterFactory from "src/utils/counter-factory";
 import getCurrentApp from "src/utils/get-current-app";
+import { onElementAvailable } from "src/utils/on-element-available";
 import { createSentryClient } from "src/utils/sentry/base";
 import { stopExecution } from "src/utils/stop-exeuction";
 import { walkDOM } from "src/utils/walk-dom";
@@ -103,18 +105,7 @@ const main = () => {
   }
 };
 
-function onReady(fn) {
-  if (
-    document.readyState === "complete" ||
-    document.readyState === "interactive"
-  ) {
-    setTimeout(fn, 0);
-  } else {
-    document.addEventListener("DOMContentLoaded", fn);
-  }
-}
-
-onReady(() => {
+onElementAvailable(SELECTOR_PAGE_HEADER, () => {
   try {
     main();
   } catch (err) {
