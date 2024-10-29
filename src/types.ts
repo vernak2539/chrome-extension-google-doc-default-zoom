@@ -106,8 +106,6 @@ export interface UiStrategyConfig {
 
 export type Feature = keyof WorkspaceApp["features"];
 
-export type ExecutionLocation = "observer" | "inline";
-
 export type GetFromStorageFn<T> = (storageKey: string) => Promise<T>;
 
 export type CurrentView = "home" | "settings";

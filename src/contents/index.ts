@@ -11,9 +11,11 @@ import {
 } from "src/constants";
 import DocsStrategy from "src/strategies/docs";
 import SheetsStrategy from "src/strategies/sheets";
-import counterFactory from "src/utils/counter-factory";
 import getCurrentApp from "src/utils/get-current-app";
-import { onElementAvailable } from "src/utils/on-element-available";
+import {
+  onElementAvailable,
+  onMutationObserverCondition
+} from "src/utils/mutation-observer-helpers";
 import { createSentryClient } from "src/utils/sentry/base";
 import { stopExecution } from "src/utils/stop-exeuction";
 import { walkDOM } from "src/utils/walk-dom";
@@ -72,40 +74,40 @@ const main = () => {
   // Do not execute if there's no supported strategy or the URL indicates the "doc" being previewed
   const shouldExecute = strategy && !strategy.isUIPreview(window.location.href);
 
-  if (shouldExecute) {
-    const counter = counterFactory();
-    const observer = new MutationObserver((_mutationList, observer) => {
-      const { isLoading } = strategy.getIsPageLoading();
-      const isExecutionCountOverLimit =
-        counter.getCount() > OBSERVE_EXECUTION_LIMIT;
-
-      if (isExecutionCountOverLimit) {
-        observer.disconnect();
-        return;
-      }
-
-      if (!isLoading) {
-        observer.disconnect();
-        strategy.execute("observer");
-      }
-
-      counter.increment();
-    });
-
-    // initial kick-off
-    const { isLoading, getElementToWatch } = strategy.getIsPageLoading();
-
-    if (isLoading) {
-      observer.observe(getElementToWatch(), {
-        attributes: true,
-        childList: true
-      });
-    } else {
-      strategy.execute("inline");
-    }
+  if (!shouldExecute) {
+    return;
   }
+
+  const elementToWatchSelector = strategy.getIsPageLoadingElementToWatch();
+  const callback = () => strategy.execute();
+
+  try {
+    const isPageLoading = strategy.getIsPageLoading();
+
+    if (!isPageLoading) {
+      callback();
+      return;
+    }
+  } catch (err) {
+    // If we encounter an error when checking if the page is loading, we should swallow it and hope the observer works
+    sentryScope.setExtra("inline_loading_error", err);
+  }
+
+  onMutationObserverCondition(
+    elementToWatchSelector,
+    {
+      shouldStop: (executionCount) => {
+        return executionCount > OBSERVE_EXECUTION_LIMIT;
+      },
+      shouldExecute: () => {
+        return !strategy.getIsPageLoading();
+      }
+    },
+    callback
+  );
 };
 
+// Start process when the SELECTOR_PAGE_HEADER element is available
 onElementAvailable(SELECTOR_PAGE_HEADER, () => {
   try {
     main();

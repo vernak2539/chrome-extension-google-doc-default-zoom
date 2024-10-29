@@ -4,7 +4,6 @@ import { RELAY_EXECUTE_ENTER } from "../constants";
 import type {
   ExecuteEnterRequestBody,
   ExecuteEnterResponseBody,
-  ExecutionLocation,
   Feature,
   UiStrategyConfig
 } from "../types";
@@ -17,17 +16,15 @@ import {
 } from "../utils/ui-helpers";
 
 export interface AbstractBaseStrategyImpl {
-  execute: (executionLocation: ExecutionLocation) => void;
-  getIsPageLoading: () => {
-    isLoading: boolean;
-    getElementToWatch: () => Element;
-  };
+  execute: () => void;
+  getIsPageLoading: () => boolean;
+  getIsPageLoadingElementToWatch: () => string;
   isUIPreview: (href: string) => boolean;
 }
 
 export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
   protected readonly config: UiStrategyConfig;
-  public abstract execute(executionLocation: string): void;
+  public abstract execute(): void;
   public abstract isUIPreview(href: string): boolean;
 
   protected constructor(config: UiStrategyConfig) {
@@ -143,6 +140,24 @@ export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
     return Boolean(this.config.features[feature]);
   }
 
+  private getZoomSelectElement(): Element {
+    const zoomSelect = getDOMElement(
+      this.config.uiElements.clickableZoomSelectId
+    );
+
+    return zoomSelect;
+  }
+
+  public getIsPageLoadingElementToWatch(): string {
+    const zoomSelector = this.getZoomSelectElement();
+
+    if (zoomSelector) {
+      return this.config.uiElements.toolbarId;
+    }
+
+    return this.config.uiElements.menubarViewTabId;
+  }
+
   /*
    * This method is used to determine if the page is loading or not (i.e. things are disabled and interaction needs
    * to pause for a moment).
@@ -153,27 +168,18 @@ export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
    * If there is no zoom selector, we have to use the menu bar to indicate if the page is loading or not
    */
   public getIsPageLoading() {
-    const zoomSelect = getDOMElement(
-      this.config.uiElements.clickableZoomSelectId
-    );
+    const zoomSelect = this.getZoomSelectElement();
 
     if (zoomSelect) {
-      return {
-        isLoading: zoomSelect.classList.contains(
-          "goog-toolbar-combo-button-disabled"
-        ),
-        getElementToWatch: () => getDOMElement(this.config.uiElements.toolbarId)
-      };
+      return zoomSelect.classList.contains(
+        "goog-toolbar-combo-button-disabled"
+      );
     }
 
     const menuBarViewTab = getDOMElement(
       this.config.uiElements.menubarViewTabId
     );
 
-    return {
-      isLoading: menuBarViewTab.classList.contains("goog-control-disabled"),
-      getElementToWatch: () =>
-        getDOMElement(this.config.uiElements.menubarViewTabId)
-    };
+    return menuBarViewTab.classList.contains("goog-control-disabled");
   }
 }

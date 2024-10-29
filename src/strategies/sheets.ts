@@ -1,4 +1,4 @@
-import type { ExecutionLocation, UiStrategyConfig } from "../types";
+import type { UiStrategyConfig } from "../types";
 import { AbstractBaseStrategy, type AbstractBaseStrategyImpl } from "./base";
 
 class SheetsStrategy
@@ -9,7 +9,7 @@ class SheetsStrategy
     super(config);
   }
 
-  execute(executionLocation: ExecutionLocation) {
+  execute() {
     this.getZoomValueFromStorage().then((zoomValue) => {
       this.uiExecuteFlow(zoomValue);
     });
