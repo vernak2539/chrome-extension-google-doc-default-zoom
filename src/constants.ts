@@ -12,6 +12,8 @@ import localize from "src/utils/localize";
 
 export const OBSERVE_EXECUTION_LIMIT = 1000;
 
+export const SELECTOR_PAGE_HEADER = "#docs-chrome";
+
 // This needs to match the file name ./src/background/messages/get-zoom-value.ts
 export const RELAY_GET_ZOOM_VALUE_FROM_STORAGE = "get-zoom-value";
 export const RELAY_GET_FEATURE_VIEW_ONLY_FROM_STORAGE = "get-feature-view-only";

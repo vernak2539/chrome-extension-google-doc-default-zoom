@@ -8,7 +8,7 @@ import {
   getDOMElement,
   getDOMElementAndClick
 } from "src/utils/ui-helpers";
-import type { ExecutionLocation, UiStrategyConfig } from "../types";
+import type { UiStrategyConfig } from "../types";
 import type { AbstractBaseStrategyImpl } from "./base";
 import { AbstractBaseStrategy } from "./base";
 
@@ -20,7 +20,7 @@ class DocsStrategy
     super(config);
   }
 
-  public execute(executionLocation: ExecutionLocation) {
+  public execute() {
     Promise.all([
       this.getZoomValueFromStorage(),
       this.getIsViewOnlyEnabled()
