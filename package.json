@@ -19,8 +19,8 @@
   "dependencies": {
     "@plasmohq/messaging": "^0.6.2",
     "@plasmohq/storage": "^1.11.0",
-    "@sentry/browser": "^8.32.0",
-    "@sentry/react": "^8.32.0",
+    "@sentry/browser": "^8.37.1",
+    "@sentry/react": "^8.37.1",
     "@tippyjs/react": "^4.2.6",
     "classnames": "^2.5.1",
     "plasmo": "0.89.3",
