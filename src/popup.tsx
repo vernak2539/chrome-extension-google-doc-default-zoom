@@ -42,7 +42,7 @@ function IndexPopup() {
       <p className={styles.supportMeLinkContainer}>
         <small>
           💚{" "}
-          <a href="https://buymeacoffee.com/vernacchia">
+          <a target="_blank" href="https://buymeacoffee.com/vernacchia">
             {localize("popupSupportMeLabel")}
           </a>{" "}
           🤟
