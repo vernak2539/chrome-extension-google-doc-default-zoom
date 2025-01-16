@@ -1,5 +1,4 @@
 import { relayMessage } from "@plasmohq/messaging";
-import styleText from "data-text:../style.module.css";
 import type { PlasmoCSConfig } from "plasmo";
 import {
   OBSERVE_EXECUTION_LIMIT,
@@ -22,12 +21,6 @@ import { walkDOM } from "src/utils/walk-dom";
 
 export const config: PlasmoCSConfig = {
   matches: ["https://docs.google.com/*"]
-};
-
-export const getStyle = () => {
-  const style = document.createElement("style");
-  style.textContent = styleText;
-  return style;
 };
 
 const sentryScope = createSentryClient("content");
