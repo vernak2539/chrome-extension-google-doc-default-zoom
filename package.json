@@ -26,7 +26,7 @@
     "classnames": "^2.5.1",
     "plasmo": "0.89.3",
     "react": "18.2.0",
-    "react-aria-components": "^1.4.1",
+    "react-aria-components": "^1.6.0",
     "react-dom": "18.2.0",
     "tippy.js": "^6.3.7"
   },
