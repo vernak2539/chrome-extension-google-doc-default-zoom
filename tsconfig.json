@@ -12,6 +12,7 @@
       //      "~*": ["./src/*"]
     },
     "baseUrl": ".",
+    "jsx": "react-jsx",
     "types": ["vite-plugin-svgr/client", "chrome"]
   },
   "references": [{ "path": "./tsconfig.node.json" }]
