@@ -29,6 +29,7 @@ class ErrorBoundaryWithSentry extends Component<
   }
 
   componentDidCatch(error, info) {
+    console.error(error);
     this.props.sentryScope.captureException(error, {
       ...{
         mechanism: {

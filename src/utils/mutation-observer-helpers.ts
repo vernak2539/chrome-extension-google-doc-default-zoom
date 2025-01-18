@@ -7,23 +7,30 @@ interface Evaluations {
   shouldExecute?: () => boolean;
 }
 
-export const onElementAvailable = (selector: string, callback: Callback) => {
+export const onElementAvailable = (
+  selector: string,
+  callback: Callback,
+  context: Document = document
+) => {
   const observer = new MutationObserver((mutations) => {
-    if (document.querySelector(selector)) {
+    if (context.querySelector(selector)) {
       observer.disconnect();
       callback();
     }
   });
 
-  observer.observe(document.body, { childList: true, subtree: true });
+  observer.observe(context.body, { childList: true, subtree: true });
 };
 
 export const observeElementAndExecute = (
   selector: string,
   evaluations: Evaluations,
-  callback: Callback
+  callback: Callback,
+  maxAttempts: number = 100,
+  context: Document = document
 ) => {
-  const { shouldStop, shouldExecute } = evaluations;
+  const { shouldStop = (count) => count >= maxAttempts, shouldExecute } =
+    evaluations;
   const counter = counterFactory();
 
   const observer = new MutationObserver((_mutationList, observer) => {
@@ -41,8 +48,11 @@ export const observeElementAndExecute = (
     counter.increment();
   });
 
-  observer.observe(document.querySelector(selector), {
-    attributes: true,
-    childList: true
-  });
+  const element = context.querySelector(selector);
+  if (element) {
+    observer.observe(element, {
+      attributes: true,
+      childList: true
+    });
+  }
 };

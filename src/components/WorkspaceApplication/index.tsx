@@ -1,6 +1,9 @@
 import { useStorage } from "@plasmohq/storage/hook";
 import { useCallback } from "react";
-import { getFeatureViewOnlyStorageKey } from "src/constants";
+import {
+  getFeatureClassroomSupportStorageKey,
+  getFeatureViewOnlyStorageKey
+} from "src/constants";
 import type { WorkspaceApp } from "src/types";
 import WorkspaceApplicationComponent from "./component";
 
@@ -43,13 +46,28 @@ const WorkspaceApplication = ({
     }
   );
 
-  const updateZoomValue = useCallback(
-    (value) => {
-      if (value) {
-        setZoom(value);
-      } else {
-        setZoom(defaultZoom);
+  const [classroomSupport, setClassroomSupport] = useStorage(
+    getFeatureClassroomSupportStorageKey(storageKey),
+    (storedClassroomSupport, isHydrating) => {
+      console.log(
+        "storedClassroomSupport",
+        storedClassroomSupport,
+        isHydrating
+      );
+      // Helpful post https://discord.com/channels/946290204443025438/1080875092667551824/1080875092667551824
+      if (storedClassroomSupport !== undefined) {
+        return storedClassroomSupport;
       }
+      if (isHydrating === undefined) {
+        return NOT_READY;
+      }
+      return false;
+    }
+  );
+
+  const updateZoomValue = useCallback(
+    (value: string) => {
+      setZoom(value || defaultZoom);
     },
     [setZoom]
   );
@@ -62,11 +80,29 @@ const WorkspaceApplication = ({
         setViewOnly(false);
       }
     },
-    [setZoom]
+    [setViewOnly]
   );
 
+  const updateClassroomSupportValue = useCallback(
+    (value) => {
+      if (value) {
+        setClassroomSupport(value);
+      } else {
+        setClassroomSupport(false);
+      }
+    },
+    [setClassroomSupport]
+  );
+
+  console.log("zoom", zoom);
+  console.log("viewOnly", viewOnly);
+  console.log("classroomSupport", classroomSupport);
   // we have not fetched the zoom value from storage, so we're not ready to render yet
-  if (zoom === NOT_READY || viewOnly === NOT_READY) {
+  if (
+    zoom === NOT_READY ||
+    viewOnly === NOT_READY ||
+    classroomSupport === NOT_READY
+  ) {
     return null;
   }
 
@@ -83,6 +119,8 @@ const WorkspaceApplication = ({
       features={features}
       featureDocsViewOnlyEnabled={name === "Docs" ? viewOnly : false}
       updateDocsViewOnly={updateDocsViewOnlyValue}
+      featureClassroomSupportEnabled={classroomSupport}
+      updateClassroomSupport={updateClassroomSupportValue}
     />
   );
 };

@@ -16,8 +16,8 @@ class DocsStrategy
   extends AbstractBaseStrategy
   implements AbstractBaseStrategyImpl
 {
-  constructor(config: UiStrategyConfig) {
-    super(config);
+  constructor(config: UiStrategyConfig, documentContext?: Document) {
+    super(config, documentContext);
   }
 
   public execute() {

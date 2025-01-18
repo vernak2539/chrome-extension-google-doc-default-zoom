@@ -24,11 +24,16 @@ export interface AbstractBaseStrategyImpl {
 
 export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
   protected readonly config: UiStrategyConfig;
+  protected readonly documentContext: Document;
   public abstract execute(): void;
   public abstract isUIPreview(href: string): boolean;
 
-  protected constructor(config: UiStrategyConfig) {
+  protected constructor(
+    config: UiStrategyConfig,
+    documentContext: Document = document
+  ) {
     this.config = config;
+    this.documentContext = documentContext;
   }
 
   protected getZoomValueFromStorage() {
@@ -43,7 +48,8 @@ export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
 
     // get menu element responsible for changing zoom
     const zoomInputContainer = getDOMElementAndClick(
-      this.config.uiElements.clickableZoomSelectId
+      this.config.uiElements.clickableZoomSelectId,
+      this.documentContext
     );
 
     /*--EXTENDED_ONLY_START--*/

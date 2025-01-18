@@ -16,16 +16,29 @@ type WorkspaceApplicationComponentProps = {
   isCustomZoomLevel: boolean;
   updateZoomLevel: (newZoomValue: string) => void;
   updateDocsViewOnly: (newDocsViewOnlyValue: boolean) => void;
+  featureClassroomSupportEnabled: boolean;
+  updateClassroomSupport: (newClassroomSupportValue: boolean) => void;
 };
 
 // Checkbox component that takes isChecked and onChange props
 // this is very much tied to experimental features, but can be updated in the future
-const Checkbox = ({ isChecked, onChange }) => {
+const Checkbox = ({ isChecked, onChange, type = "viewOnly" }) => {
   const onEduClick = () => {
     chrome.tabs.create({
-      url: "./tabs/experimental-features.html#docs-view-only"
+      url:
+        "./tabs/experimental-features.html#" +
+        (type === "viewOnly" ? "docs-view-only" : "classroom-support")
     });
   };
+
+  const label =
+    type === "viewOnly"
+      ? "popupViewOnlyDocsExperimentalLabel"
+      : "popupClassroomSupportExperimentalLabel";
+  const content =
+    type === "viewOnly"
+      ? "popupViewOnlyDocsExperimentalContent"
+      : "popupClassroomSupportExperimentalContent";
 
   return (
     <label className={style.applicationCheckbox}>
@@ -39,9 +52,9 @@ const Checkbox = ({ isChecked, onChange }) => {
       <span>
         (
         <a href="#" onClick={onEduClick}>
-          {localize("popupViewOnlyDocsExperimentalLabel")}
+          {localize(label)}
         </a>
-        ) {localize("popupViewOnlyDocsExperimentalContent")}
+        ) {localize(content)}
       </span>
     </label>
   );
@@ -55,8 +68,10 @@ const WorkspaceApplicationComponent = ({
   zoomValues,
   features,
   updateZoomLevel,
+  updateClassroomSupport,
   updateDocsViewOnly,
-  featureDocsViewOnlyEnabled
+  featureDocsViewOnlyEnabled,
+  featureClassroomSupportEnabled
 }: WorkspaceApplicationComponentProps) => {
   return (
     <li className={style.applicationListItem}>
@@ -91,6 +106,17 @@ const WorkspaceApplicationComponent = ({
           <Checkbox
             isChecked={featureDocsViewOnlyEnabled}
             onChange={updateDocsViewOnly}
+            type="viewOnly"
+          />
+        </div>
+      )}
+      {features.classroomSupport && (
+        <div className={style.applicationListItemRow}>
+          <span className={style.applicationItemRowSpacer} />
+          <Checkbox
+            isChecked={featureClassroomSupportEnabled}
+            onChange={updateClassroomSupport}
+            type="classroom"
           />
         </div>
       )}

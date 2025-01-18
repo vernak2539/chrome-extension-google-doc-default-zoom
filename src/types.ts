@@ -14,6 +14,14 @@ export interface GetFeatureViewOnlyResponseBody {
   enabled: boolean;
 }
 
+export interface GetFeatureClassroomSupportRequestBody {
+  storageKey: string;
+}
+
+export interface GetFeatureClassroomSupportResponseBody {
+  enabled: boolean;
+}
+
 export interface ExecuteEnterRequestBody {
   zoomValue: string;
 }
@@ -82,6 +90,9 @@ export interface WorkspaceApp {
 
     /* Whether to enable the view only toggle for an application */
     enableViewOnlyToggle: boolean;
+
+    /* Whether to enable classroom support for an application */
+    classroomSupport: boolean;
   };
 }
 

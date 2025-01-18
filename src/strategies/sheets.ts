@@ -5,8 +5,8 @@ class SheetsStrategy
   extends AbstractBaseStrategy
   implements AbstractBaseStrategyImpl
 {
-  constructor(config: UiStrategyConfig) {
-    super(config);
+  constructor(config: UiStrategyConfig, documentContext?: Document) {
+    super(config, documentContext);
   }
 
   execute() {
