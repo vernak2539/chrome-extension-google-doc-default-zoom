@@ -94,10 +94,7 @@ const WorkspaceApplication = ({
     [setClassroomSupport]
   );
 
-  console.log("zoom", zoom);
-  console.log("viewOnly", viewOnly);
-  console.log("classroomSupport", classroomSupport);
-  // we have not fetched the zoom value from storage, so we're not ready to render yet
+  // we have not fetched the values required to render from storage, so we're not ready to render yet
   if (
     zoom === NOT_READY ||
     viewOnly === NOT_READY ||
