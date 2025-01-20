@@ -24,11 +24,8 @@ export const simulateClick = (element, coordX, coordY) => {
   simulateMouseEvent(element, "click", coordX, coordY);
 };
 
-export const getDOMElement = (
-  selector: string,
-  context: Document = document
-) => {
-  return context.querySelector(selector);
+export const getDOMElement = (selector: string) => {
+  return document.querySelector(selector);
 };
 
 export const getDOMElementCoordinates = (element: Element): Coordinates => {
@@ -41,11 +38,8 @@ export const getDOMElementCoordinates = (element: Element): Coordinates => {
 };
 
 // TODO: Use this everywhere!
-export const getDOMElementAndClick = (
-  selector: string,
-  context: Document = document
-) => {
-  const element = getDOMElement(selector, context);
+export const getDOMElementAndClick = (selector: string) => {
+  const element = getDOMElement(selector);
 
   if (!element) {
     return null;
