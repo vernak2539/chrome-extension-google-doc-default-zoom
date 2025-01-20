@@ -49,11 +49,6 @@ const WorkspaceApplication = ({
   const [classroomSupport, setClassroomSupport] = useStorage(
     getFeatureClassroomSupportStorageKey(storageKey),
     (storedClassroomSupport, isHydrating) => {
-      console.log(
-        "storedClassroomSupport",
-        storedClassroomSupport,
-        isHydrating
-      );
       // Helpful post https://discord.com/channels/946290204443025438/1080875092667551824/1080875092667551824
       if (storedClassroomSupport !== undefined) {
         return storedClassroomSupport;
