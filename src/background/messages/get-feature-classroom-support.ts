@@ -4,18 +4,24 @@ import type {
   GetFeatureClassroomSupportRequestBody,
   GetFeatureClassroomSupportResponseBody
 } from "src/types";
+import { createSentryClient } from "src/utils/sentry/base";
+
+const storage = new Storage();
+const sentryScope = createSentryClient("background");
 
 const handler: PlasmoMessaging.MessageHandler<
   GetFeatureClassroomSupportRequestBody,
   GetFeatureClassroomSupportResponseBody
 > = async (req, res) => {
-  const storage = new Storage();
-  const { storageKey } = req.body;
+  try {
+    const enabled = await storage.get<boolean>(req.body.storageKey);
 
-  const enabled = await storage.get<boolean>(storageKey);
-  res.send({
-    enabled: Boolean(enabled)
-  });
+    res.send({
+      enabled
+    });
+  } catch (err) {
+    sentryScope.captureException(err);
+  }
 };
 
 export default handler;
