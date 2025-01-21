@@ -7,6 +7,7 @@ import type { CurrentView } from "src/types";
 import { isChrome, isEdge } from "src/utils/get-browser";
 import localize from "src/utils/localize";
 import { setupSentryReactErrorBoundary } from "src/utils/sentry/react-error-boundary";
+import { LoggerProvider } from "./utils/logger/hook";
 
 const withSentryErrorBoundary = setupSentryReactErrorBoundary("popup");
 const showExtensionVersionsTab = isChrome() || isEdge();
@@ -29,26 +30,28 @@ function IndexPopup() {
   };
 
   return (
-    <div className={styles.popupContainer}>
-      <h1>{extensionName}</h1>
-      {isHomeView ? (
-        <HomeView
-          openSettingsView={openSettingsView}
-          showExtensionVersionsTab={showExtensionVersionsTab}
-        />
-      ) : null}
-      {isSettingsView ? <SettingsView onHomeClick={openHomeView} /> : null}
+    <LoggerProvider>
+      <div className={styles.popupContainer}>
+        <h1>{extensionName}</h1>
+        {isHomeView ? (
+          <HomeView
+            openSettingsView={openSettingsView}
+            showExtensionVersionsTab={showExtensionVersionsTab}
+          />
+        ) : null}
+        {isSettingsView ? <SettingsView onHomeClick={openHomeView} /> : null}
 
-      <p className={styles.supportMeLinkContainer}>
-        <small>
-          💚{" "}
-          <a target="_blank" href="https://buymeacoffee.com/vernacchia">
-            {localize("popupSupportMeLabel")}
-          </a>{" "}
-          🤟
-        </small>
-      </p>
-    </div>
+        <p className={styles.supportMeLinkContainer}>
+          <small>
+            💚{" "}
+            <a target="_blank" href="https://buymeacoffee.com/vernacchia">
+              {localize("popupSupportMeLabel")}
+            </a>{" "}
+            🤟
+          </small>
+        </p>
+      </div>
+    </LoggerProvider>
   );
 }
 
