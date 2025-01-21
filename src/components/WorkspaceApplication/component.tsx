@@ -24,14 +24,14 @@ type WorkspaceApplicationComponentProps = {
 interface ExperimentalFeatureCheckboxProps {
   isChecked: boolean;
   onChange: (checked: boolean) => void;
-  label: string;
+  linkText: string;
   content: string;
 }
 
 const ExperimentalFeatureCheckbox = ({
   isChecked,
   onChange,
-  label,
+  linkText,
   content
 }: ExperimentalFeatureCheckboxProps) => {
   const onEduClick = () => {
@@ -52,7 +52,7 @@ const ExperimentalFeatureCheckbox = ({
       <span>
         (
         <a href="#" onClick={onEduClick}>
-          {localize(label)}
+          {localize(linkText)}
         </a>
         ) {localize(content)}
       </span>
