@@ -14,6 +14,10 @@ class BrowserLogger {
   }
 
   public info(message: string) {
+    if (process.env.NODE_ENV === "production") {
+      return;
+    }
+
     const context = this.contexts.reduce((acc, [key, value]) => {
       acc[key] = value;
       return acc;
