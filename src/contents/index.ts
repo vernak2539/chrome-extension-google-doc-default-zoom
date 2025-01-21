@@ -13,6 +13,7 @@ import {
 import DocsStrategy from "src/strategies/docs";
 import SheetsStrategy from "src/strategies/sheets";
 import type { WorkspaceAppName } from "src/types";
+import { isGoogleClassroomDomain } from "src/utils/classroom-helpers";
 import getCurrentApp from "src/utils/get-current-app";
 import { getFeatureClassroomSupportFromStorage } from "src/utils/get-feature-classroom-support-from-storage";
 import BrowserLogger from "src/utils/logger";
@@ -47,10 +48,10 @@ relayMessage({ name: RELAY_EXECUTE_ENTER });
 /*--EXTENDED_ONLY_END--*/
 
 const executeStrategy = (currentApp: WorkspaceAppName) => {
-  console.log(`[Zoom Extension] Executing strategy for ${currentApp}`);
+  logger.info(`[Zoom Extension] Executing strategy for ${currentApp}`);
   const stop = stopExecution(currentApp);
   if (stop) {
-    console.log(`[Zoom Extension] Stopping execution for ${currentApp}`);
+    logger.info(`[Zoom Extension] Stopping execution for ${currentApp}`);
     return;
   }
 
@@ -72,7 +73,7 @@ const executeStrategy = (currentApp: WorkspaceAppName) => {
   // Do not execute if there's no supported strategy or the URL indicates the "doc" being previewed
   const shouldExecute = strategy && !strategy.isUIPreview(window.location.href);
   if (!shouldExecute) {
-    console.log(
+    logger.info(
       `[Zoom Extension] Skipping execution - preview mode or unsupported strategy`
     );
     return;
@@ -80,20 +81,20 @@ const executeStrategy = (currentApp: WorkspaceAppName) => {
 
   const elementToWatchSelector = strategy.getIsPageLoadingElementToWatch();
   const executeStrategyFn = () => {
-    console.log(`[Zoom Extension] Running strategy execution`);
+    logger.info(`[Zoom Extension] Running strategy execution`);
     strategy.execute();
   };
 
   try {
     const isPageLoading = strategy.getIsPageLoading();
     if (!isPageLoading) {
-      console.log(`[Zoom Extension] Page ready, executing immediately`);
+      logger.info(`[Zoom Extension] Page ready, executing immediately`);
       executeStrategyFn();
       return;
     }
-    console.log(`[Zoom Extension] Page still loading, waiting for ready state`);
+    logger.info(`[Zoom Extension] Page still loading, waiting for ready state`);
   } catch (err) {
-    console.log(`[Zoom Extension] Error checking page loading state:`, err);
+    logger.info(`[Zoom Extension] Error checking page loading state:`, err);
     sentryScope.setExtra("inline_loading_error", err);
   }
 
@@ -115,13 +116,13 @@ const waitForElement = (selector: string): Promise<Element> => {
 
     const checkElement = () => {
       attempts++;
-      console.log(
+      logger.info(
         `[Zoom Extension] Attempt ${attempts} to find element ${selector}`
       );
 
       const element = document.querySelector(selector);
       if (element) {
-        console.log(
+        logger.info(
           `[Zoom Extension] Successfully found element ${selector} on attempt ${attempts}`
         );
         resolve(element);
@@ -145,30 +146,29 @@ const waitForElement = (selector: string): Promise<Element> => {
 };
 
 const main = async () => {
-  console.log(
+  logger.info(
     `[Zoom Extension] Starting main execution in ${window.location.href}`
   );
 
   const currentApp = getCurrentApp(window.location.href);
 
   if (currentApp) {
-    console.log(
+    logger.info(
       `[Zoom Extension] Detected app type: ${currentApp}, waiting for page header`
     );
     try {
       await waitForElement(SELECTOR_PAGE_HEADER);
-      console.log(
+      logger.info(
         `[Zoom Extension] Page header available, proceeding with strategy`
       );
       executeStrategy(currentApp);
     } catch (err) {
-      console.log(`[Zoom Extension] Failed to find page header:`, err);
+      logger.info(`[Zoom Extension] Failed to find page header:`, err);
       sentryScope.captureException(err);
     }
   } else {
-    console.log(
-      `[Zoom Extension] No supported app type detected for URL:`,
-      window.location.href
+    logger.info(
+      `[Zoom Extension] No supported app type detected for URL: ${window.location.href}`
     );
   }
 };
@@ -176,35 +176,39 @@ const main = async () => {
 const isClassroomSupported = async (
   currentApp: WorkspaceAppName
 ): Promise<boolean> => {
-  console.log("isClassroomSupported", currentApp);
+  logger.info(`isClassroomSupported: ${currentApp}`);
   const config = workspaceAppUiStrategyConfigs[currentApp];
   const isEnabled = config.features.classroomSupport;
 
-  console.log("isEnabled", isEnabled);
+  logger.info(`isEnabled: ${isEnabled}`);
 
   if (!isEnabled) {
     return false;
   }
 
   const storageKey = getFeatureClassroomSupportStorageKey(config.storageKey);
-  console.log("storageKey", storageKey);
+  logger.info(`storageKey: ${storageKey}`);
 
   const enabled = await getFeatureClassroomSupportFromStorage(storageKey);
-  console.log(
-    `[Zoom Extension] Classroom support enabled for ${currentApp}:`,
-    enabled
+  logger.info(
+    `[Zoom Extension] Classroom support enabled for ${currentApp}: ${enabled}`
   );
   return enabled;
 };
 
 (async () => {
+  if (isGoogleClassroomDomain()) {
+    logger.info(`[Zoom Extension] Skipping execution in classroom main page`);
+    return;
+  }
+
   try {
     // Check if we're in classroom context
     const isClassroom = window.location.hostname === "classroom.google.com";
 
     // Skip execution in main classroom page
     if (isClassroom && window === window.top) {
-      console.log(`[Zoom Extension] Skipping execution in classroom main page`);
+      logger.info(`[Zoom Extension] Skipping execution in classroom main page`);
       return;
     }
 
@@ -213,17 +217,17 @@ const isClassroomSupported = async (
       const currentApp = getCurrentApp(window.location.href);
       const allowOnClassroom = await isClassroomSupported(currentApp);
       if (!currentApp || !allowOnClassroom) {
-        console.log(
+        logger.info(
           `[Zoom Extension] Classroom support not enabled for ${currentApp}`
         );
         return;
       }
-      console.log(
+      logger.info(
         `[Zoom Extension] Classroom support enabled for ${currentApp}`
       );
     }
 
-    console.log(`[Zoom Extension] Extension activated`);
+    logger.info(`[Zoom Extension] Extension activated`);
     await main();
   } catch (err) {
     console.error(`[Zoom Extension] Fatal error:`, err);
