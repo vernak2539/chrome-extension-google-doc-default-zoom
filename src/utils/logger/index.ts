@@ -1,12 +1,12 @@
 import type { ExtensionFileSource } from "src/types";
 
-const PREFIX = "Default Zoom GW - ";
+const PREFIX = "[Default Zoom GW] ";
 
 class BrowserLogger {
   contexts: [string, string][];
 
   constructor(source: ExtensionFileSource) {
-    this.contexts = [["Source", source]];
+    this.contexts = [["initiator", source]];
   }
 
   public addContext(key: string, value: string) {
