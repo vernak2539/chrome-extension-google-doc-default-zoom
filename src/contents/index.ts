@@ -15,6 +15,7 @@ import SheetsStrategy from "src/strategies/sheets";
 import type { WorkspaceAppName } from "src/types";
 import getCurrentApp from "src/utils/get-current-app";
 import { getFeatureClassroomSupportFromStorage } from "src/utils/get-feature-classroom-support-from-storage";
+import BrowserLogger from "src/utils/logger";
 import { observeElementAndExecute } from "src/utils/mutation-observer-helpers";
 import { createSentryClient } from "src/utils/sentry/base";
 import { stopExecution } from "src/utils/stop-exeuction";
@@ -31,6 +32,7 @@ export const config: PlasmoCSConfig = {
 };
 
 const sentryScope = createSentryClient("content");
+const logger = new BrowserLogger("content");
 
 const getAndStringifyContextValue = (selector: string) => {
   return JSON.stringify(walkDOM(document.querySelector(selector)), null, 2);

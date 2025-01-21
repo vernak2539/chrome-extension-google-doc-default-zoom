@@ -1,11 +1,13 @@
+import type { ExtensionFileSource } from "src/types";
 import { createLogger, format, transports, type Logger } from "winston";
-const { combine, timestamp, label, printf } = format;
+const { combine, timestamp, label } = format;
 
 class BrowserLogger {
   logger: Logger;
   contexts: [string, string][];
 
-  constructor() {
+  constructor(source: ExtensionFileSource) {
+    this.contexts = [["Source", source]];
     this.logger = createLogger(this.getOptions());
   }
 
