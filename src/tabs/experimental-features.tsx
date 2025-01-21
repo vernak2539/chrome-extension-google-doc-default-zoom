@@ -15,6 +15,12 @@ const ExperimentalVersionsPage = () => {
         <p>{localize("ExperimentalFeaturesTabDocsViewOnlyContent3")}</p>
         <p>{localize("ExperimentalFeaturesTabDocsViewOnlyContent4")}</p>
       </section>
+
+      {/* TODO: Add Classroom Support */}
+      <section id="classroom-support">
+        <h2>{localize("")}</h2>
+        <p>{localize("")}</p>
+      </section>
     </div>
   );
 };
