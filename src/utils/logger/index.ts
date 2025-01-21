@@ -30,6 +30,10 @@ class BrowserLogger {
       "color: red;"
     );
   }
+
+  public error(error: Error) {
+    console.error(error);
+  }
 }
 
 export default BrowserLogger;

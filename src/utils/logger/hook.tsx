@@ -1,7 +1,7 @@
 import { createContext, useContext } from "react";
 import BrowserLogger from "./index";
 
-const LoggerContext = createContext(new BrowserLogger("popup"));
+export const LoggerContext = createContext(new BrowserLogger("popup"));
 
 interface LoggerProviderProps {
   children: React.ReactNode;

@@ -2,6 +2,7 @@ import { getDefaultIntegrations, Scope } from "@sentry/browser";
 import { Component, type ComponentType, type ReactNode } from "react";
 import { ErrorFallback } from "src/components/ErrorFallback";
 import type { ExtensionFileSource } from "src/types";
+import { LoggerContext } from "../logger/hook";
 import { createSentryClient } from "./base";
 
 type ErrorBoundaryState = {
@@ -18,6 +19,9 @@ class ErrorBoundaryWithSentry extends Component<
   ErrorBoundaryProps,
   ErrorBoundaryState
 > {
+  static contextType = LoggerContext;
+  logger!: React.ContextType<typeof LoggerContext>;
+
   constructor(props) {
     super(props);
     this.state = { hasError: false };
@@ -29,7 +33,8 @@ class ErrorBoundaryWithSentry extends Component<
   }
 
   componentDidCatch(error, info) {
-    console.error(error);
+    this.logger.error(error);
+
     this.props.sentryScope.captureException(error, {
       ...{
         mechanism: {
