@@ -106,7 +106,7 @@ const WorkspaceApplicationComponent = ({
           <ExperimentalFeatureCheckbox
             isChecked={featureDocsViewOnlyEnabled}
             onChange={updateDocsViewOnly}
-            label="popupViewOnlyDocsExperimentalLabel"
+            linkText="popupViewOnlyDocsExperimentalLabel"
             content="popupViewOnlyDocsExperimentalContent"
           />
         </div>
@@ -117,7 +117,7 @@ const WorkspaceApplicationComponent = ({
           <ExperimentalFeatureCheckbox
             isChecked={featureClassroomSupportEnabled}
             onChange={updateClassroomSupport}
-            label="popupClassroomSupportExperimentalLabel"
+            linkText="popupClassroomSupportExperimentalLabel"
             content="popupClassroomSupportExperimentalContent"
           />
         </div>
