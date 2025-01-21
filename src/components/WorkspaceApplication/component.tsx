@@ -20,25 +20,25 @@ type WorkspaceApplicationComponentProps = {
   updateClassroomSupport: (newClassroomSupportValue: boolean) => void;
 };
 
-// Checkbox component that takes isChecked and onChange props
-// this is very much tied to experimental features, but can be updated in the future
-const Checkbox = ({ isChecked, onChange, type = "viewOnly" }) => {
+// Checkbox that is very much tied to experimental features
+interface ExperimentalFeatureCheckboxProps {
+  isChecked: boolean;
+  onChange: (checked: boolean) => void;
+  label: string;
+  content: string;
+}
+
+const ExperimentalFeatureCheckbox = ({
+  isChecked,
+  onChange,
+  label,
+  content
+}: ExperimentalFeatureCheckboxProps) => {
   const onEduClick = () => {
     chrome.tabs.create({
-      url:
-        "./tabs/experimental-features.html#" +
-        (type === "viewOnly" ? "docs-view-only" : "classroom-support")
+      url: "./tabs/experimental-features.html"
     });
   };
-
-  const label =
-    type === "viewOnly"
-      ? "popupViewOnlyDocsExperimentalLabel"
-      : "popupClassroomSupportExperimentalLabel";
-  const content =
-    type === "viewOnly"
-      ? "popupViewOnlyDocsExperimentalContent"
-      : "popupClassroomSupportExperimentalContent";
 
   return (
     <label className={style.applicationCheckbox}>
@@ -103,20 +103,22 @@ const WorkspaceApplicationComponent = ({
       {features.enableViewOnlyToggle && (
         <div className={style.applicationListItemRow}>
           <span className={style.applicationItemRowSpacer} />
-          <Checkbox
+          <ExperimentalFeatureCheckbox
             isChecked={featureDocsViewOnlyEnabled}
             onChange={updateDocsViewOnly}
-            type="viewOnly"
+            label="popupViewOnlyDocsExperimentalLabel"
+            content="popupViewOnlyDocsExperimentalContent"
           />
         </div>
       )}
       {features.classroomSupport && (
         <div className={style.applicationListItemRow}>
           <span className={style.applicationItemRowSpacer} />
-          <Checkbox
+          <ExperimentalFeatureCheckbox
             isChecked={featureClassroomSupportEnabled}
             onChange={updateClassroomSupport}
-            type="classroom"
+            label="popupClassroomSupportExperimentalLabel"
+            content="popupClassroomSupportExperimentalContent"
           />
         </div>
       )}
