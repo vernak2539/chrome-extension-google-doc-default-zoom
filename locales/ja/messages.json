@@ -43,6 +43,14 @@
     "message": "表示のみのドキュメント用に有効にする",
     "description": "Content for view only docs experimental feature"
   },
+  "popupClassroomSupportExperimentalLabel": {
+    "message": "実験中",
+    "description": "Label for classroom support experimental feature"
+  },
+  "popupClassroomSupportExperimentalContent": {
+    "message": "Google Classroom用に有効にする",
+    "description": "Content for classroom support experimental feature"
+  },
   "popupSupportMeLabel": {
     "message": "私をサポートしてください",
     "description": "Label for support me button"

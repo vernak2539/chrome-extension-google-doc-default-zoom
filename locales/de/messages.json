@@ -43,6 +43,14 @@
     "message": "Aktivieren für Nur-Ansicht-Dokumente",
     "description": "Content for view only docs experimental feature"
   },
+  "popupClassroomSupportExperimentalLabel": {
+    "message": "experimentell",
+    "description": "Label for classroom support experimental feature"
+  },
+  "popupClassroomSupportExperimentalContent": {
+    "message": "Aktivieren für Google Classroom",
+    "description": "Content for classroom support experimental feature"
+  },
   "popupSupportMeLabel": {
     "message": "Unterstützen Sie mich",
     "description": "Label for support me button"
