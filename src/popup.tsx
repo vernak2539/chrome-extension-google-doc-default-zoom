@@ -7,7 +7,7 @@ import type { CurrentView } from "src/types";
 import { isChrome, isEdge } from "src/utils/get-browser";
 import localize from "src/utils/localize";
 import { setupSentryReactErrorBoundary } from "src/utils/sentry/react-error-boundary";
-import { LoggerProvider } from "./utils/logger/hook";
+import { LoggerProvider } from "./utils/logger/context";
 
 const withSentryErrorBoundary = setupSentryReactErrorBoundary("popup");
 const showExtensionVersionsTab = isChrome() || isEdge();
