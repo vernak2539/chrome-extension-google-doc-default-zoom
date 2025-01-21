@@ -13,6 +13,7 @@ Supported Google Workspace Products:
 - [x] Google Docs (view only permissions) - Experimental
 - [x] Google Sheets
 - [x] Google Sheets (view only permissions)
+- [x] Google Classroom Docs + Sheets - Experimental
 - [ ] Google Slides (maybe)
 
 | Google Docs                         | Google Sheets                         |
@@ -22,7 +23,7 @@ Supported Google Workspace Products:
 ## Browser Support
 
 |                                              | Chrome Extension | Microsoft Edge Add-ons | Firefox Add-ons |
-|----------------------------------------------| ---------------- | ---------------------- | --------------- |
+| -------------------------------------------- | ---------------- | ---------------------- | --------------- |
 | Default zoom for Google Workspace            | ✅               | ✅                     | ✅              |
 | Default zoom for Google Workspace (Extended) | ✅               | ✅                     | ❌              |
 
