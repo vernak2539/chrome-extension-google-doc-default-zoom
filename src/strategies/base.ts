@@ -1,5 +1,4 @@
 import { sendToBackgroundViaRelay } from "@plasmohq/messaging";
-import { isGoogleClassroomSubmittedAssignment } from "src/utils/classroom-helpers";
 import { getClosestZoomValue } from "src/utils/get-closest-zoom-value";
 import { getFeatureClassroomSupportFromStorage } from "src/utils/get-feature-classroom-support-from-storage";
 import {
@@ -44,17 +43,11 @@ export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
    * This method will return true if the page has been loaded inside of Google Classroom (not if the TLD is google classrooms)
    *
    * Checks if:
-   *   1. The page is a Google Classroom document
-   *   2. The feature is enabled for the current app
+   *   1. The feature is enabled for the current app
+   *   2. The user has enabled the feature in the extension settings
    */
   protected async isGoogleClassroomEnabled() {
     if (!this.config.features.classroomSupport) {
-      return false;
-    }
-
-    const isGoogleClassroomDocument = isGoogleClassroomSubmittedAssignment();
-
-    if (!isGoogleClassroomDocument) {
       return false;
     }
 

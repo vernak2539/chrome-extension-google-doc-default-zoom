@@ -1,3 +1,4 @@
+import { isGoogleClassroomSubmittedAssignment } from "src/utils/classroom-helpers";
 import type { UiStrategyConfig } from "../types";
 import { AbstractBaseStrategy, type AbstractBaseStrategyImpl } from "./base";
 
@@ -10,7 +11,16 @@ class SheetsStrategy
   }
 
   execute() {
-    this.getZoomValueFromStorage().then((zoomValue) => {
+    const isGoogleClassroomDocument = isGoogleClassroomSubmittedAssignment();
+
+    Promise.all([
+      this.getZoomValueFromStorage(),
+      this.isGoogleClassroomEnabled()
+    ]).then(([zoomValue, isGoogleClassroomEnabled]) => {
+      if (isGoogleClassroomDocument && !isGoogleClassroomEnabled) {
+        return;
+      }
+
       this.uiExecuteFlow(zoomValue);
     });
   }
