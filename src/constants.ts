@@ -10,6 +10,8 @@ import type {
 } from "src/types";
 import localize from "src/utils/localize";
 
+export const GOOGLE_CLASSROOM_DOMAIN = "classroom.google.com";
+
 export const OBSERVE_EXECUTION_LIMIT = 1000;
 
 export const SELECTOR_PAGE_HEADER = "#docs-chrome";

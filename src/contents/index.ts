@@ -114,29 +114,6 @@ const main = () => {
   );
 };
 
-// const isClassroomSupported = async (
-//   currentApp: WorkspaceAppName
-// ): Promise<boolean> => {
-//   logger.info(`isClassroomSupported: ${currentApp}`);
-//   const config = workspaceAppUiStrategyConfigs[currentApp];
-//   const isEnabled = config.features.classroomSupport;
-
-//   logger.info(`isEnabled: ${isEnabled}`);
-
-//   if (!isEnabled) {
-//     return false;
-//   }
-
-//   const storageKey = getFeatureClassroomSupportStorageKey(config.storageKey);
-//   logger.info(`storageKey: ${storageKey}`);
-
-//   const enabled = await getFeatureClassroomSupportFromStorage(storageKey);
-//   logger.info(
-//     `[Zoom Extension] Classroom support enabled for ${currentApp}: ${enabled}`
-//   );
-//   return enabled;
-// };
-
 (() => {
   logger.addContext("url", window.location.href);
 
