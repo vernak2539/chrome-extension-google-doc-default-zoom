@@ -40,6 +40,11 @@ export const getDOMElementCoordinates = (element: Element): Coordinates => {
 // TODO: Use this everywhere!
 export const getDOMElementAndClick = (selector: string) => {
   const element = getDOMElement(selector);
+
+  if (!element) {
+    return null;
+  }
+
   const { x, y } = getDOMElementCoordinates(element);
 
   simulateClick(element, x, y);

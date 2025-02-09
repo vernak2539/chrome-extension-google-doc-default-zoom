@@ -43,6 +43,14 @@
     "message": "Aktivieren für Nur-Ansicht-Dokumente",
     "description": "Content for view only docs experimental feature"
   },
+  "popupClassroomSupportExperimentalLabel": {
+    "message": "experimentell",
+    "description": "Label for classroom support experimental feature"
+  },
+  "popupClassroomSupportExperimentalContent": {
+    "message": "Aktivieren für Google Classroom",
+    "description": "Content for classroom support experimental feature"
+  },
   "popupSupportMeLabel": {
     "message": "Unterstützen Sie mich",
     "description": "Label for support me button"
@@ -98,6 +106,18 @@
   "ExperimentalFeaturesTabDocsViewOnlyContent4": {
     "message": "Diese Erweiterung unterstützt bereits Viewer-Berechtigungen für Google Sheets. Dies liegt daran, dass die Zoom-Eingabe auch dann angezeigt wird, wenn ein Benutzer nur ein Betrachter ist.",
     "description": "Content 4 for view only docs experimental feature"
+  },
+  "ExperimentalFeaturesTabClassroomSupportHeader": {
+    "message": "Google Classroom Unterstützung",
+    "description": "Header for classroom support experimental feature"
+  },
+  "ExperimentalFeaturesTabClassroomSupportContent1": {
+    "message": "Diese Funktion ermöglicht die Aktivierung der Funktionalität der Erweiterung für die Google Classroom-Anwendung.",
+    "description": "Content 1 for classroom support experimental feature"
+  },
+  "ExperimentalFeaturesTabClassroomSupportContent2": {
+    "message": "Diese Funktion ist experimentell, da die Erweiterung von bestimmten Elementen auf der Seite abhängt. Wenn sie entfernt werden, funktioniert sie nicht mehr.",
+    "description": "Content 2 for classroom support experimental feature"
   },
   "popupSettingsTitle": {
     "message": "Erweiterungseinstellungen",

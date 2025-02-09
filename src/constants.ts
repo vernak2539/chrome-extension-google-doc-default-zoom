@@ -10,6 +10,8 @@ import type {
 } from "src/types";
 import localize from "src/utils/localize";
 
+export const GOOGLE_CLASSROOM_DOMAIN = "classroom.google.com";
+
 export const OBSERVE_EXECUTION_LIMIT = 1000;
 
 export const SELECTOR_PAGE_HEADER = "#docs-chrome";
@@ -17,6 +19,8 @@ export const SELECTOR_PAGE_HEADER = "#docs-chrome";
 // This needs to match the file name ./src/background/messages/get-zoom-value.ts
 export const RELAY_GET_ZOOM_VALUE_FROM_STORAGE = "get-zoom-value";
 export const RELAY_GET_FEATURE_VIEW_ONLY_FROM_STORAGE = "get-feature-view-only";
+export const RELAY_GET_FEATURE_CLASSROOM_SUPPORT_FROM_STORAGE =
+  "get-feature-classroom-support";
 export const RELAY_EXECUTE_ENTER = "execute-enter";
 
 /**  Workspace Application: Docs - Start **/
@@ -50,6 +54,9 @@ export const SHEETS_DEFAULT_ZOOM = SHEETS_ZOOM_VALUES.at(3);
 export const getFeatureViewOnlyStorageKey = (storageKey: string) =>
   `${storageKey}:viewOnly`;
 
+export const getFeatureClassroomSupportStorageKey = (storageKey: string) =>
+  `${storageKey}:classroomSupport`;
+
 export const workspaceApps: WorkspaceApp[] = [
   {
     name: "Docs",
@@ -59,7 +66,8 @@ export const workspaceApps: WorkspaceApp[] = [
     isEnabled: true,
     features: {
       customZoomInput: true,
-      enableViewOnlyToggle: true
+      enableViewOnlyToggle: true,
+      classroomSupport: true
     }
   },
   {
@@ -70,10 +78,12 @@ export const workspaceApps: WorkspaceApp[] = [
     isEnabled: true,
     features: {
       customZoomInput: true,
-      enableViewOnlyToggle: false
+      enableViewOnlyToggle: false,
+      classroomSupport: true
     }
   }
 ];
+
 export const workspaceAppUiStrategyConfigs: Record<
   WorkspaceAppName,
   UiStrategyConfig

@@ -43,6 +43,14 @@
     "message": "Activer pour les documents en lecture seule",
     "description": "Content for view only docs experimental feature"
   },
+  "popupClassroomSupportExperimentalLabel": {
+    "message": "expérimental",
+    "description": "Label for classroom support experimental feature"
+  },
+  "popupClassroomSupportExperimentalContent": {
+    "message": "Activer pour Google Classroom",
+    "description": "Content for classroom support experimental feature"
+  },
   "popupSupportMeLabel": {
     "message": "Soutenez-moi",
     "description": "Label for support me button"
@@ -98,6 +106,18 @@
   "ExperimentalFeaturesTabDocsViewOnlyContent4": {
     "message": "Cette extension prend déjà en charge les autorisations de visionnage sur les feuilles de calcul Google. Cela est dû au fait que l'entrée de zoom est toujours affichée même si l'utilisateur est uniquement un spectateur.",
     "description": "Content 4 for view only docs experimental feature"
+  },
+  "ExperimentalFeaturesTabClassroomSupportHeader": {
+    "message": "Support Google Classroom",
+    "description": "Header for classroom support experimental feature"
+  },
+  "ExperimentalFeaturesTabClassroomSupportContent1": {
+    "message": "Cette fonctionnalité permettra d'activer les fonctionnalités de l'extension pour l'application Google Classroom.",
+    "description": "Content 1 for classroom support experimental feature"
+  },
+  "ExperimentalFeaturesTabClassroomSupportContent2": {
+    "message": "Cette fonctionnalité est expérimentale car elle dépend de la structure de la page Google Classroom et de sa méthode de chargement des devoirs. Actuellement, les devoirs sont chargés via des iframes, et si Google modifie cette approche, la fonctionnalité pourrait cesser de fonctionner.",
+    "description": "Content 2 for classroom support experimental feature"
   },
   "popupSettingsTitle": {
     "message": "Paramètres de l'extension",

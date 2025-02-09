@@ -41,8 +41,12 @@ export const observeElementAndExecute = (
     counter.increment();
   });
 
-  observer.observe(document.querySelector(selector), {
-    attributes: true,
-    childList: true
-  });
+  const element = document.querySelector(selector);
+
+  if (element) {
+    observer.observe(element, {
+      attributes: true,
+      childList: true
+    });
+  }
 };

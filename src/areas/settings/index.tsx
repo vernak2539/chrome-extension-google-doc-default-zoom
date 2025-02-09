@@ -26,7 +26,6 @@ const SettingsView = ({ onHomeClick }: Props) => {
 
     Promise.all(resetProimises).then(() => {
       setIsExitEnabled(true);
-      console.log("Extension zoom values + feature keys reset");
     });
   };
 

@@ -1,12 +1,8 @@
-import { useStorage } from "@plasmohq/storage/hook";
-import { useCallback } from "react";
-import { getFeatureViewOnlyStorageKey } from "src/constants";
 import type { WorkspaceApp } from "src/types";
 import WorkspaceApplicationComponent from "./component";
+import { useWorkspaceStorage } from "./hooks";
 
 type Props = Omit<WorkspaceApp, "isEnabled">;
-
-const NOT_READY = "__NOT_READY__INTERNAL_DONT_USE__";
 
 const WorkspaceApplication = ({
   name,
@@ -15,62 +11,22 @@ const WorkspaceApplication = ({
   storageKey,
   features
 }: Props) => {
-  const [zoom, setZoom] = useStorage(storageKey, (storedZoom, isHydrating) => {
-    // Helpful post https://discord.com/channels/946290204443025438/1080875092667551824/1080875092667551824
-    if (storedZoom !== undefined) {
-      return storedZoom;
-    }
-    if (isHydrating === undefined) {
-      return NOT_READY;
-    }
-    return defaultZoom;
-  });
+  const {
+    zoom,
+    viewOnly,
+    classroomSupport,
+    updateZoomValue,
+    updateDocsViewOnlyValue,
+    updateClassroomSupportValue,
+    isLoading
+  } = useWorkspaceStorage(storageKey, defaultZoom);
 
-  // Note: this will set up a false zoom value for Sheets by default.
-  // This shouldn't be a problem as view only for sheets is already handled in the main flow (and
-  // I won't be checking storage for it)
-  const [viewOnly, setViewOnly] = useStorage(
-    getFeatureViewOnlyStorageKey(storageKey),
-    (storedViewOnly, isHydrating) => {
-      // Helpful post https://discord.com/channels/946290204443025438/1080875092667551824/1080875092667551824
-      if (storedViewOnly !== undefined) {
-        return storedViewOnly;
-      }
-      if (isHydrating === undefined) {
-        return NOT_READY;
-      }
-      return false;
-    }
-  );
-
-  const updateZoomValue = useCallback(
-    (value) => {
-      if (value) {
-        setZoom(value);
-      } else {
-        setZoom(defaultZoom);
-      }
-    },
-    [setZoom]
-  );
-
-  const updateDocsViewOnlyValue = useCallback(
-    (value) => {
-      if (value) {
-        setViewOnly(value);
-      } else {
-        setViewOnly(false);
-      }
-    },
-    [setZoom]
-  );
-
-  // we have not fetched the zoom value from storage, so we're not ready to render yet
-  if (zoom === NOT_READY || viewOnly === NOT_READY) {
+  // we have not fetched the values required to render from storage, so we're not ready to render yet
+  if (isLoading) {
     return null;
   }
 
-  const isCustomZoom = zoom && !zoomValues.includes(zoom);
+  const isCustomZoom = zoom && !zoomValues.includes(zoom as any);
 
   return (
     <WorkspaceApplicationComponent
@@ -83,6 +39,8 @@ const WorkspaceApplication = ({
       features={features}
       featureDocsViewOnlyEnabled={name === "Docs" ? viewOnly : false}
       updateDocsViewOnly={updateDocsViewOnlyValue}
+      featureClassroomSupportEnabled={classroomSupport}
+      updateClassroomSupport={updateClassroomSupportValue}
     />
   );
 };

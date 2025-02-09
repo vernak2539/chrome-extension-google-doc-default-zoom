@@ -16,14 +16,29 @@ type WorkspaceApplicationComponentProps = {
   isCustomZoomLevel: boolean;
   updateZoomLevel: (newZoomValue: string) => void;
   updateDocsViewOnly: (newDocsViewOnlyValue: boolean) => void;
+  featureClassroomSupportEnabled: boolean;
+  updateClassroomSupport: (newClassroomSupportValue: boolean) => void;
 };
 
-// Checkbox component that takes isChecked and onChange props
-// this is very much tied to experimental features, but can be updated in the future
-const Checkbox = ({ isChecked, onChange }) => {
+// Checkbox that is very much tied to experimental features
+interface ExperimentalFeatureCheckboxProps {
+  isChecked: boolean;
+  onChange: (checked: boolean) => void;
+  linkText: string;
+  content: string;
+  linkAnchor: string;
+}
+
+const ExperimentalFeatureCheckbox = ({
+  isChecked,
+  onChange,
+  linkText,
+  content,
+  linkAnchor
+}: ExperimentalFeatureCheckboxProps) => {
   const onEduClick = () => {
     chrome.tabs.create({
-      url: "./tabs/experimental-features.html#docs-view-only"
+      url: `./tabs/experimental-features.html#${linkAnchor}`
     });
   };
 
@@ -39,9 +54,9 @@ const Checkbox = ({ isChecked, onChange }) => {
       <span>
         (
         <a href="#" onClick={onEduClick}>
-          {localize("popupViewOnlyDocsExperimentalLabel")}
+          {localize(linkText)}
         </a>
-        ) {localize("popupViewOnlyDocsExperimentalContent")}
+        ) {localize(content)}
       </span>
     </label>
   );
@@ -55,8 +70,10 @@ const WorkspaceApplicationComponent = ({
   zoomValues,
   features,
   updateZoomLevel,
+  updateClassroomSupport,
   updateDocsViewOnly,
-  featureDocsViewOnlyEnabled
+  featureDocsViewOnlyEnabled,
+  featureClassroomSupportEnabled
 }: WorkspaceApplicationComponentProps) => {
   return (
     <li className={style.applicationListItem}>
@@ -88,9 +105,24 @@ const WorkspaceApplicationComponent = ({
       {features.enableViewOnlyToggle && (
         <div className={style.applicationListItemRow}>
           <span className={style.applicationItemRowSpacer} />
-          <Checkbox
+          <ExperimentalFeatureCheckbox
             isChecked={featureDocsViewOnlyEnabled}
             onChange={updateDocsViewOnly}
+            linkText="popupViewOnlyDocsExperimentalLabel"
+            content="popupViewOnlyDocsExperimentalContent"
+            linkAnchor="docs-view-only"
+          />
+        </div>
+      )}
+      {features.classroomSupport && (
+        <div className={style.applicationListItemRow}>
+          <span className={style.applicationItemRowSpacer} />
+          <ExperimentalFeatureCheckbox
+            isChecked={featureClassroomSupportEnabled}
+            onChange={updateClassroomSupport}
+            linkText="popupClassroomSupportExperimentalLabel"
+            content="popupClassroomSupportExperimentalContent"
+            linkAnchor="classroom-support"
           />
         </div>
       )}
