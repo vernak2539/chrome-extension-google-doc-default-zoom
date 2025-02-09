@@ -52,10 +52,10 @@ const main = () => {
   const currentApp = getCurrentApp(window.location.href);
   const stop = stopExecution(currentApp);
 
-  logger.info(`[Zoom Extension] Executing strategy for ${currentApp}`);
+  logger.info(`Executing strategy for ${currentApp}`);
 
   if (stop) {
-    logger.info(`[Zoom Extension] Stopping execution for ${currentApp}`);
+    logger.info(`Stopping execution for ${currentApp}`);
     return;
   }
 
@@ -81,9 +81,7 @@ const main = () => {
   // Do not execute if there's no supported strategy or the URL indicates the "doc" being previewed
   const shouldExecute = strategy && !strategy.isUIPreview(window.location.href);
   if (!shouldExecute) {
-    logger.info(
-      `[Zoom Extension] Skipping execution - preview mode or unsupported strategy`
-    );
+    logger.info(`Skipping execution - preview mode or unsupported strategy`);
     return;
   }
 
@@ -93,14 +91,14 @@ const main = () => {
   try {
     const isPageLoading = strategy.getIsPageLoading();
     if (!isPageLoading) {
-      logger.info(`[Zoom Extension] Page ready, executing immediately`);
+      logger.info(`Page ready, executing immediately`);
       executeStrategy();
       return;
     }
-    logger.info(`[Zoom Extension] Page still loading, waiting for ready state`);
+    logger.info(`Page still loading, waiting for ready state`);
   } catch (err) {
     // If we encounter an error when checking if the page is loading, we should swallow it and hope the observer works
-    logger.info(`[Zoom Extension] Error checking page loading state:`, err);
+    logger.info(`Error checking page loading state:`, err);
     sentryScope.setExtra("inline_loading_error", err);
   }
 
