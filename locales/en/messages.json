@@ -107,6 +107,18 @@
     "message": "This extension already supports viewer permissions on Google Sheets. This is because the zoom input is still shown even when a user is only a viewer.",
     "description": "Content 4 for view only docs experimental feature"
   },
+  "ExperimentalFeaturesTabClassroomSupportHeader": {
+    "message": "Google Classroom Support",
+    "description": "Header for classroom support experimental feature"
+  },
+  "ExperimentalFeaturesTabClassroomSupportContent1": {
+    "message": "This feature will enable the extension's functionality for Google Classroom application.",
+    "description": "Content 1 for classroom support experimental feature"
+  },
+  "ExperimentalFeaturesTabClassroomSupportContent2": {
+    "message": "This feature is experimental because it depends on the Google Classroom page structure and its method of loading assignments. Currently, assignments are loaded using iframes, and if Google changes this approach, the functionality may stop working.",
+    "description": "Content 2 for classroom support experimental feature"
+  },
   "popupSettingsTitle": {
     "message": "Extension Settings",
     "description": "The title for the settings page"

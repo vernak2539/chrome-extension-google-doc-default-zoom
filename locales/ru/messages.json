@@ -107,6 +107,18 @@
     "message": "Это расширение уже поддерживает разрешения на просмотр в Google Таблицах. Это потому, что поле ввода масштаба все еще отображается, даже если пользователь имеет только права на просмотр.",
     "description": "Содержание 4 для экспериментальной функции документов только для просмотра"
   },
+  "ExperimentalFeaturesTabClassroomSupportHeader": {
+    "message": "Поддержка Google Classroom",
+    "description": "Header for classroom support experimental feature"
+  },
+  "ExperimentalFeaturesTabClassroomSupportContent1": {
+    "message": "Эта функция включит функциональность расширения для приложения Google Classroom.",
+    "description": "Content 1 for classroom support experimental feature"
+  },
+  "ExperimentalFeaturesTabClassroomSupportContent2": {
+    "message": "Эта функция является экспериментальной, поскольку она зависит от структуры страницы Google Classroom и метода загрузки заданий. В настоящее время задания загружаются с использованием iframe, и если Google изменит этот подход, функциональность может перестать работать.",
+    "description": "Content 2 for classroom support experimental feature"
+  },
   "popupSettingsTitle": {
     "message": "Настройки расширения",
     "decription": "The title for the settings page"

@@ -107,6 +107,18 @@
     "message": "この拡張機能は既にGoogleスプレッドシートのビューアー権限をサポートしています。これは、ユーザーがビューアーのみであってもズーム入力が表示されるためです。",
     "description": "Content 4 for view only docs experimental feature"
   },
+  "ExperimentalFeaturesTabClassroomSupportHeader": {
+    "message": "Google Classroomのサポート",
+    "description": "Header for classroom support experimental feature"
+  },
+  "ExperimentalFeaturesTabClassroomSupportContent1": {
+    "message": "この機能により、Google Classroomアプリケーションで拡張機能の機能が有効になります。",
+    "description": "Content 1 for classroom support experimental feature"
+  },
+  "ExperimentalFeaturesTabClassroomSupportContent2": {
+    "message": "この機能は、Google Classroomのページ構造と課題の読み込み方法に依存しているため、実験的なものです。現在、課題はiframeを使用して読み込まれており、Googleがこの方式を変更した場合、機能が動作しなくなる可能性があります。",
+    "description": "Content 2 for classroom support experimental feature"
+  },
   "popupSettingsTitle": {
     "message": "拡張機能の設定",
     "decription": "The title for the settings page"

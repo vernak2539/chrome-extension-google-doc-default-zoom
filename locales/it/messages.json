@@ -107,6 +107,18 @@
     "message": "Questa estensione supporta già le autorizzazioni di visualizzazione su Google Fogli. Questo perché l'input dello zoom viene ancora mostrato anche quando un utente è solo un visualizzatore.",
     "description": "Contenuto 4 per la funzione sperimentale di visualizzazione solo documenti"
   },
+  "ExperimentalFeaturesTabClassroomSupportHeader": {
+    "message": "Supporto per Google Classroom",
+    "description": "Header for classroom support experimental feature"
+  },
+  "ExperimentalFeaturesTabClassroomSupportContent1": {
+    "message": "Questa funzionalità abiliterà le funzionalità dell'estensione per l'applicazione Google Classroom.",
+    "description": "Content 1 for classroom support experimental feature"
+  },
+  "ExperimentalFeaturesTabClassroomSupportContent2": {
+    "message": "Questa funzionalità è sperimentale perché dipende dalla struttura della pagina di Google Classroom e dal suo metodo di caricamento dei compiti. Attualmente, i compiti vengono caricati utilizzando gli iframe, e se Google modifica questo approccio, la funzionalità potrebbe smettere di funzionare.",
+    "description": "Content 2 for classroom support experimental feature"
+  },
   "popupSettingsTitle": {
     "message": "Impostazioni dell'estensione",
     "decription": "The title for the settings page"
