@@ -26,17 +26,19 @@ interface ExperimentalFeatureCheckboxProps {
   onChange: (checked: boolean) => void;
   linkText: string;
   content: string;
+  linkAnchor: string;
 }
 
 const ExperimentalFeatureCheckbox = ({
   isChecked,
   onChange,
   linkText,
-  content
+  content,
+  linkAnchor
 }: ExperimentalFeatureCheckboxProps) => {
   const onEduClick = () => {
     chrome.tabs.create({
-      url: "./tabs/experimental-features.html"
+      url: `./tabs/experimental-features.html#${linkAnchor}`
     });
   };
 
@@ -108,6 +110,7 @@ const WorkspaceApplicationComponent = ({
             onChange={updateDocsViewOnly}
             linkText="popupViewOnlyDocsExperimentalLabel"
             content="popupViewOnlyDocsExperimentalContent"
+            linkAnchor="docs-view-only"
           />
         </div>
       )}
@@ -119,6 +122,7 @@ const WorkspaceApplicationComponent = ({
             onChange={updateClassroomSupport}
             linkText="popupClassroomSupportExperimentalLabel"
             content="popupClassroomSupportExperimentalContent"
+            linkAnchor="classroom-support"
           />
         </div>
       )}
