@@ -52,12 +52,8 @@ const main = () => {
   const currentApp = getCurrentApp(window.location.href);
   const stop = stopExecution(currentApp);
 
-  logger.info(`Executing strategy for ${currentApp}`);
-
-  if (stop) {
-    logger.info(`Stopping execution for ${currentApp}`);
-    return;
-  }
+  logger.addContext("application", currentApp);
+  logger.info("Executing...");
 
   // Try to place this as high up as possible
   sentryScope.setTag("application", currentApp);
@@ -66,8 +62,12 @@ const main = () => {
     body: getAndStringifyContextValue("body")
   });
 
+  if (stop) {
+    logger.info("Stopping execution - unsupported application");
+    return;
+  }
+
   let strategy: DocsStrategy | SheetsStrategy;
-  const config = workspaceAppUiStrategyConfigs[currentApp];
 
   switch (currentApp) {
     case "Docs":
@@ -91,14 +91,14 @@ const main = () => {
   try {
     const isPageLoading = strategy.getIsPageLoading();
     if (!isPageLoading) {
-      logger.info(`Page ready, executing immediately`);
+      logger.info("Page ready, executing immediately");
       executeStrategy();
       return;
     }
-    logger.info(`Page still loading, waiting for ready state`);
+    logger.info("Page still loading, waiting for ready state");
   } catch (err) {
     // If we encounter an error when checking if the page is loading, we should swallow it and hope the observer works
-    logger.info(`Error checking page loading state:`, err);
+    logger.error(`Error checking page loading state:`, err);
     sentryScope.setExtra("inline_loading_error", err);
   }
 

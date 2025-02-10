@@ -35,8 +35,8 @@ class BrowserLogger {
     this.logger.info(message, context);
   }
 
-  public error(error: Error) {
-    this.logger.error(error);
+  public error(message: string, error: Error) {
+    this.logger.error(message, error);
   }
 }
 
