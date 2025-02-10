@@ -4,7 +4,7 @@ import * as tslog from "tslog/dist/esm/index.js";
 
 const { Logger } = tslog;
 
-const PREFIX = "[Default Zoom GW] ";
+const PREFIX = "[Default Zoom GW]";
 
 class BrowserLogger {
   contexts: [string, string][];
