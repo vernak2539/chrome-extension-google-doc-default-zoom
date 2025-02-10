@@ -16,8 +16,6 @@ class BrowserLogger {
       prefix: [PREFIX],
       hideLogPositionForProduction: true
     });
-
-    this.info("test");
   }
 
   public addContext(key: string, value: string) {
