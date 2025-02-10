@@ -35,13 +35,6 @@ class BrowserLogger {
     }, {});
 
     this.logger.info(message, context);
-
-    // console.log(
-    //   `%c${PREFIX}%c${message} - %c${JSON.stringify(context, null, 2)}`,
-    //   "color: blue;font-weight: bold;",
-    //   "color: green;",
-    //   "color: red;"
-    // );
   }
 
   public error(error: Error) {
