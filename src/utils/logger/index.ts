@@ -1,12 +1,21 @@
 import type { ExtensionFileSource } from "src/types";
+import type { ILogObj, Logger as LoggerType } from "tslog";
+import * as tslog from "tslog/dist/esm/index.js";
 
-const PREFIX = "[Default Zoom GW] ";
+const { Logger } = tslog;
+
+const PREFIX = "[Default Zoom GW]";
 
 class BrowserLogger {
   contexts: [string, string][];
+  logger: LoggerType<ILogObj>;
 
   constructor(source: ExtensionFileSource) {
     this.contexts = [["initiator", source]];
+    this.logger = new Logger({
+      prefix: [PREFIX],
+      hideLogPositionForProduction: true
+    });
   }
 
   public addContext(key: string, value: string) {
@@ -23,16 +32,11 @@ class BrowserLogger {
       return acc;
     }, {});
 
-    console.log(
-      `%c${PREFIX}%c${message} - %c${JSON.stringify(context, null, 2)}`,
-      "color: blue;font-weight: bold;",
-      "color: green;",
-      "color: red;"
-    );
+    this.logger.info(message, context);
   }
 
-  public error(error: Error) {
-    console.error(error);
+  public error(message: string, error: Error) {
+    this.logger.error(message, error);
   }
 }
 
