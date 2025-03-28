@@ -12,12 +12,8 @@ type WorkspaceApplicationComponentProps = {
   zoomLevelCustom: string;
   zoomValues: WorkspaceApp["zoomValues"];
   features: WorkspaceApp["features"];
-  featureDocsViewOnlyEnabled: boolean;
   isCustomZoomLevel: boolean;
   updateZoomLevel: (newZoomValue: string) => void;
-  updateDocsViewOnly: (newDocsViewOnlyValue: boolean) => void;
-  featureClassroomSupportEnabled: boolean;
-  updateClassroomSupport: (newClassroomSupportValue: boolean) => void;
 };
 
 // Checkbox that is very much tied to experimental features
@@ -69,11 +65,7 @@ const WorkspaceApplicationComponent = ({
   zoomLevelCustom,
   zoomValues,
   features,
-  updateZoomLevel,
-  updateClassroomSupport,
-  updateDocsViewOnly,
-  featureDocsViewOnlyEnabled,
-  featureClassroomSupportEnabled
+  updateZoomLevel
 }: WorkspaceApplicationComponentProps) => {
   return (
     <li className={style.applicationListItem}>
@@ -102,30 +94,12 @@ const WorkspaceApplicationComponent = ({
           )}
         </div>
       </div>
-      {features.enableViewOnlyToggle && (
-        <div className={style.applicationListItemRow}>
-          <span className={style.applicationItemRowSpacer} />
-          <ExperimentalFeatureCheckbox
-            isChecked={featureDocsViewOnlyEnabled}
-            onChange={updateDocsViewOnly}
-            linkText="popupViewOnlyDocsExperimentalLabel"
-            content="popupViewOnlyDocsExperimentalContent"
-            linkAnchor="docs-view-only"
-          />
-        </div>
-      )}
-      {features.classroomSupport && (
-        <div className={style.applicationListItemRow}>
-          <span className={style.applicationItemRowSpacer} />
-          <ExperimentalFeatureCheckbox
-            isChecked={featureClassroomSupportEnabled}
-            onChange={updateClassroomSupport}
-            linkText="popupClassroomSupportExperimentalLabel"
-            content="popupClassroomSupportExperimentalContent"
-            linkAnchor="classroom-support"
-          />
-        </div>
-      )}
+      <div className={style.applicationListItemRow}>
+        <span className={style.applicationItemRowSpacer} />
+        <p className={style.applicationExperimentalFeatureContent}>
+          See Extension Settings for experimental features.
+        </p>
+      </div>
     </li>
   );
 };
