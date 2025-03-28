@@ -68,4 +68,15 @@
   --highlight-overlay: rgb(from #6f46ed r g b / 15%);
   --invalid-color: var(--red-400);
   --invalid-color-pressed: var(--red-500);
+
+  /* Secondary Button Colors */
+  --button-secondary-text-color: var(--gray-600); /* Dark text for contrast */
+  --button-secondary-background: var(--gray-100); /* Light gray background */
+  --button-secondary-background-hover: var(
+    --gray-200
+  ); /* Slightly darker on hover */
+  --button-secondary-background-pressed: var(
+    --gray-300
+  ); /* Even darker on press */
+  --button-secondary-border: var(--gray-300); /* Subtle border */
 }

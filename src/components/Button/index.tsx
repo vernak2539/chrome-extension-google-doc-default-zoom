@@ -4,7 +4,7 @@ import * as styles from "./styles.module.css";
 
 interface Props extends ButtonProps {
   label?: string;
-  variant?: "primary" | "danger";
+  variant?: "primary" | "secondary" | "danger";
   size?: "small" | "default";
 }
 
