@@ -1,6 +1,5 @@
 import classnames from "classnames";
 import type { WorkspaceApp, WorkspaceAppName } from "src/types";
-import localize from "../../utils/localize";
 import CustomZoomInput from "../CustomZoomInput";
 import SelectZoomInput from "../SelectZoomInput";
 
@@ -14,48 +13,6 @@ type WorkspaceApplicationComponentProps = {
   features: WorkspaceApp["features"];
   isCustomZoomLevel: boolean;
   updateZoomLevel: (newZoomValue: string) => void;
-};
-
-// Checkbox that is very much tied to experimental features
-interface ExperimentalFeatureCheckboxProps {
-  isChecked: boolean;
-  onChange: (checked: boolean) => void;
-  linkText: string;
-  content: string;
-  linkAnchor: string;
-}
-
-const ExperimentalFeatureCheckbox = ({
-  isChecked,
-  onChange,
-  linkText,
-  content,
-  linkAnchor
-}: ExperimentalFeatureCheckboxProps) => {
-  const onEduClick = () => {
-    chrome.tabs.create({
-      url: `./tabs/experimental-features.html#${linkAnchor}`
-    });
-  };
-
-  return (
-    <label className={style.applicationCheckbox}>
-      <input
-        type="checkbox"
-        checked={isChecked}
-        onChange={(event) => {
-          onChange(event.target.checked);
-        }}
-      />
-      <span>
-        (
-        <a href="#" onClick={onEduClick}>
-          {localize(linkText)}
-        </a>
-        ) {localize(content)}
-      </span>
-    </label>
-  );
 };
 
 const WorkspaceApplicationComponent = ({
@@ -97,7 +54,7 @@ const WorkspaceApplicationComponent = ({
       <div className={style.applicationListItemRow}>
         <span className={style.applicationItemRowSpacer} />
         <p className={style.applicationExperimentalFeatureContent}>
-          See Extension Settings for experimental features.
+          See "Extension Settings" below for experimental features.
         </p>
       </div>
     </li>
