@@ -22,6 +22,7 @@ export const RELAY_GET_FEATURE_VIEW_ONLY_FROM_STORAGE = "get-feature-view-only";
 export const RELAY_GET_FEATURE_CLASSROOM_SUPPORT_FROM_STORAGE =
   "get-feature-classroom-support";
 export const RELAY_EXECUTE_ENTER = "execute-enter";
+export const RELAY_GET_ALL_FEATURES = "get-all-features";
 
 /**  Workspace Application: Docs - Start **/
 export const DOCS_STORAGE_KEY: DocsStorageKey = "zoomValue";

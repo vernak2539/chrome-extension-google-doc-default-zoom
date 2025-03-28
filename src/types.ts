@@ -22,6 +22,14 @@ export interface GetFeatureClassroomSupportResponseBody {
   enabled: boolean;
 }
 
+export interface GetAllFeaturesRequestBody {}
+
+export type AppFeatures = Omit<WorkspaceApp["features"], "customZoomInput">;
+
+export type GetAllFeaturesResponseBody = {
+  [K in WorkspaceAppName]: AppFeatures;
+};
+
 export interface ExecuteEnterRequestBody {
   zoomValue: string;
 }

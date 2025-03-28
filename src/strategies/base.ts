@@ -1,16 +1,14 @@
 import { sendToBackgroundViaRelay } from "@plasmohq/messaging";
 import { getClosestZoomValue } from "src/utils/get-closest-zoom-value";
-import { getFeatureClassroomSupportFromStorage } from "src/utils/get-feature-classroom-support-from-storage";
-import {
-  RELAY_EXECUTE_ENTER,
-  getFeatureClassroomSupportStorageKey
-} from "../constants";
+import { RELAY_EXECUTE_ENTER } from "../constants";
 import type {
+  AppFeatures,
   ExecuteEnterRequestBody,
   ExecuteEnterResponseBody,
   Feature,
   UiStrategyConfig
 } from "../types";
+import { getAllFeaturesFromStorage } from "../utils/get-all-features-from-storage";
 import getIsCustomZoom from "../utils/get-is-custom-zoom";
 import getZoomValueFromStorage from "../utils/get-zoom-value-from-storage";
 import {
@@ -28,6 +26,8 @@ export interface AbstractBaseStrategyImpl {
 
 export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
   protected readonly config: UiStrategyConfig;
+  private features: AppFeatures | null = null;
+
   public abstract execute(): void;
   public abstract isUIPreview(href: string): boolean;
 
@@ -37,6 +37,13 @@ export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
 
   protected getZoomValueFromStorage() {
     return getZoomValueFromStorage(this.config.storageKey);
+  }
+
+  private async getFeatures(): Promise<AppFeatures> {
+    if (!this.features) {
+      this.features = await getAllFeaturesFromStorage(this.config.application);
+    }
+    return this.features;
   }
 
   /**
@@ -51,15 +58,17 @@ export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
       return false;
     }
 
-    const classroomSupportStorageKey = getFeatureClassroomSupportStorageKey(
-      this.config.storageKey
-    );
+    const features = await this.getFeatures();
+    return features.classroomSupport;
+  }
 
-    const enabled = await getFeatureClassroomSupportFromStorage(
-      classroomSupportStorageKey
-    );
+  protected async getIsViewOnlyEnabled() {
+    if (!this.config.features.enableViewOnlyToggle) {
+      return false;
+    }
 
-    return enabled;
+    const features = await this.getFeatures();
+    return features.enableViewOnlyToggle;
   }
 
   protected uiExecuteFlow(zoomValue: string) {

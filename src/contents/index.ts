@@ -3,8 +3,7 @@ import type { PlasmoCSConfig } from "plasmo";
 import {
   OBSERVE_EXECUTION_LIMIT,
   RELAY_EXECUTE_ENTER,
-  RELAY_GET_FEATURE_CLASSROOM_SUPPORT_FROM_STORAGE,
-  RELAY_GET_FEATURE_VIEW_ONLY_FROM_STORAGE,
+  RELAY_GET_ALL_FEATURES,
   RELAY_GET_ZOOM_VALUE_FROM_STORAGE,
   SELECTOR_PAGE_HEADER,
   workspaceAppUiStrategyConfigs
@@ -40,8 +39,7 @@ const getAndStringifyContextValue = (selector: string) => {
 };
 
 relayMessage({ name: RELAY_GET_ZOOM_VALUE_FROM_STORAGE });
-relayMessage({ name: RELAY_GET_FEATURE_VIEW_ONLY_FROM_STORAGE });
-relayMessage({ name: RELAY_GET_FEATURE_CLASSROOM_SUPPORT_FROM_STORAGE });
+relayMessage({ name: RELAY_GET_ALL_FEATURES, body: {} });
 
 /*--EXTENDED_ONLY_START--*/
 relayMessage({ name: RELAY_EXECUTE_ENTER });

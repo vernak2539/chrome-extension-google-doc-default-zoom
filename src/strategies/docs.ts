@@ -1,7 +1,5 @@
-import { getFeatureViewOnlyStorageKey } from "src/constants";
 import { isGoogleClassroomSubmittedAssignment } from "src/utils/classroom-helpers";
 import { getClosestZoomValue } from "src/utils/get-closest-zoom-value";
-import { getFeatureViewOnlyFromStorage } from "src/utils/get-feature-view-only-from-storage";
 import localize from "src/utils/localize";
 import { pause } from "src/utils/pause";
 import {
@@ -67,21 +65,6 @@ class DocsStrategy
     );
 
     return !zoomInputContainer;
-  }
-
-  /*
-   * This function determines if:
-   * 1. the view only feature is enabled
-   * 2. the view only feature toggle is enabled
-   * */
-  private async getIsViewOnlyEnabled() {
-    if (!this.config.features.enableViewOnlyToggle) {
-      return false;
-    }
-
-    const storageKey = getFeatureViewOnlyStorageKey(this.config.storageKey);
-
-    return await getFeatureViewOnlyFromStorage(storageKey);
   }
 
   private uiExecuteDocsViewOnlyFlow(zoomValue: string) {
