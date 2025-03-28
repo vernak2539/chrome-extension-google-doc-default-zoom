@@ -5,10 +5,17 @@ import * as styles from "./styles.module.css";
 interface Props extends ButtonProps {
   label?: string;
   variant?: "primary" | "danger";
+  size?: "small" | "default";
 }
 
-const Button = ({ label, variant, children, ...props }: Props) => {
-  const buttonStyles = classnames(styles.button, styles[variant]);
+const Button = ({
+  label,
+  variant = "primary",
+  size = "default",
+  children,
+  ...props
+}: Props) => {
+  const buttonStyles = classnames(styles.button, styles[variant], styles[size]);
 
   return (
     <BaseButton {...props} className={buttonStyles}>
