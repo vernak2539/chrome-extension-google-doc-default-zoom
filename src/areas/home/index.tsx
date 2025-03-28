@@ -2,6 +2,7 @@ import WorkspaceApplication from "src/components/WorkspaceApplication";
 import WorkspaceApplicationList from "src/components/WorkspaceApplicationList";
 import { workspaceApps } from "src/constants";
 import localize from "src/utils/localize";
+import Button from "../../components/Button";
 
 interface Props {
   openSettingsView: () => void;
@@ -26,6 +27,10 @@ const HomeView = ({ openSettingsView, showExtensionVersionsTab }: Props) => {
             />
           ))}
       </WorkspaceApplicationList>
+      <br />
+      <Button variant="primary" size="small" onPress={openSettingsView}>
+        Extension Settings
+      </Button>
       {showExtensionVersionsTab && (
         <p>
           <a

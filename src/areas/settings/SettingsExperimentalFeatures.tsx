@@ -20,13 +20,6 @@ const SettingsExperimentalFeatures = () => {
     updateClassroomSupportValue: sheetsFeatureSetClassroomSupportEnabled
   } = useWorkspaceStorage(SHEETS_STORAGE_KEY, SHEETS_DEFAULT_ZOOM);
 
-  console.log(
-    "docsFeatureViewOnlyEnabled",
-    docsFeatureViewOnlyEnabled,
-    "docsFeatureClassroomSupportEnabled",
-    docsFeatureClassroomSupportEnabled
-  );
-
   return (
     <section>
       <h3>Experimental Features</h3>
