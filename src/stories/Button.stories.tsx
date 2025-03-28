@@ -23,6 +23,15 @@ export const Primary: Story = {
   }
 };
 
+export const Small: Story = {
+  args: {
+    label: "Press Me",
+    variant: "primary",
+    size: "small",
+    onPress: fn()
+  }
+};
+
 export const Disabled: Story = {
   args: {
     label: "Press Me - you can't",
