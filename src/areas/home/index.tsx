@@ -28,7 +28,7 @@ const HomeView = ({ openSettingsView, showExtensionVersionsTab }: Props) => {
           ))}
       </WorkspaceApplicationList>
       <br />
-      <Button variant="primary" size="small" onPress={openSettingsView}>
+      <Button variant="secondary" size="small" onPress={openSettingsView}>
         Extension Settings
       </Button>
       {showExtensionVersionsTab && (

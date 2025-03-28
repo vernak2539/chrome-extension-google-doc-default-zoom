@@ -70,7 +70,7 @@
   --invalid-color-pressed: var(--red-500);
 
   /* Secondary Button Colors */
-  --button-secondary-text-color: var(--gray-600); /* Dark text for contrast */
+  --button-secondary-text-color: var(--gray-800); /* Dark text for contrast */
   --button-secondary-background: var(--gray-100); /* Light gray background */
   --button-secondary-background-hover: var(
     --gray-200
