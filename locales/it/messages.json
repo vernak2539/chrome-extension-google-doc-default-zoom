@@ -138,5 +138,41 @@
   "popupSettingsExit": {
     "message": "Esci dalle impostazioni",
     "description": "Button text allowing user to exit settings and return to main part of extension"
+  },
+  "popupHomeViewExtensionSettingsButton": {
+    "message": "Impostazioni estensione",
+    "description": "Pulsante nella vista home per accedere alle impostazioni dell'estensione."
+  },
+  "popupSettingsViewExperimentalFeaturesTitle": {
+    "message": "Funzionalità sperimentali",
+    "description": "Titolo della sezione delle funzionalità sperimentali nelle impostazioni."
+  },
+  "popupSettingsViewExperimentalFeaturesDescription": {
+    "message": "Queste funzionalità sono sperimentali e potrebbero non funzionare come previsto. Non sono ancora pronte per l'uso in produzione. Puoi abilitarle di seguito se lo desideri!",
+    "description": "Descrizione della sezione delle funzionalità sperimentali nelle impostazioni."
+  },
+  "popupSettingsViewExperimentalFeaturesDocsTitle": {
+    "message": "Documenti",
+    "description": "Sottotitolo per le funzionalità sperimentali di Google Documenti nelle impostazioni."
+  },
+  "popupSettingsViewExperimentalFeaturesDocsViewOnlyLabel": {
+    "message": "Sola visualizzazione",
+    "description": "Etichetta per la casella di controllo 'Sola visualizzazione' per le funzionalità sperimentali di Documenti."
+  },
+  "popupSettingsViewExperimentalFeaturesDocsClassroomSupportLabel": {
+    "message": "Supporto Google Classroom",
+    "description": "Etichetta per la casella di controllo 'Supporto Google Classroom' per le funzionalità sperimentali di Documenti."
+  },
+  "popupSettingsViewExperimentalFeaturesSheetsTitle": {
+    "message": "Fogli",
+    "description": "Sottotitolo per le funzionalità sperimentali di Google Fogli nelle impostazioni."
+  },
+  "popupSettingsViewExperimentalFeaturesSheetsClassroomSupportLabel": {
+    "message": "Supporto Google Classroom",
+    "description": "Etichetta per la casella di controllo 'Supporto Google Classroom' per le funzionalità sperimentali di Fogli."
+  },
+  "popupWorkspaceComponentSeeExtensionSettings": {
+    "message": "Vedi \"Impostazioni estensione\" di seguito per le funzionalità sperimentali.",
+    "description": "Testo mostrato nel popup principale che informa l'utente su dove trovare le funzionalità sperimentali."
   }
 }

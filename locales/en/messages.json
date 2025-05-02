@@ -138,5 +138,41 @@
   "popupSettingsExit": {
     "message": "Exit Settings",
     "description": "Button text allowing user to exit settings and return to main part of extension"
+  },
+  "popupHomeViewExtensionSettingsButton": {
+    "message": "Extension Settings",
+    "description": "Button on home view to navigate to extension settings."
+  },
+  "popupSettingsViewExperimentalFeaturesTitle": {
+    "message": "Experimental Features",
+    "description": "Title for the experimental features section in settings."
+  },
+  "popupSettingsViewExperimentalFeaturesDescription": {
+    "message": "These features are experimental and may not work as expected. They are not yet ready for production use. You can enable them below if you'd like!",
+    "description": "Description for the experimental features section in settings."
+  },
+  "popupSettingsViewExperimentalFeaturesDocsTitle": {
+    "message": "Docs",
+    "description": "Sub-title for the Google Docs experimental features in settings."
+  },
+  "popupSettingsViewExperimentalFeaturesDocsViewOnlyLabel": {
+    "message": "View Only",
+    "description": "Label for the 'View Only' checkbox for Docs experimental features."
+  },
+  "popupSettingsViewExperimentalFeaturesDocsClassroomSupportLabel": {
+    "message": "Google Classroom Support",
+    "description": "Label for the 'Google Classroom Support' checkbox for Docs experimental features."
+  },
+  "popupSettingsViewExperimentalFeaturesSheetsTitle": {
+    "message": "Sheets",
+    "description": "Sub-title for the Google Sheets experimental features in settings."
+  },
+  "popupSettingsViewExperimentalFeaturesSheetsClassroomSupportLabel": {
+    "message": "Google Classroom Support",
+    "description": "Label for the 'Google Classroom Support' checkbox for Sheets experimental features."
+  },
+  "popupWorkspaceComponentSeeExtensionSettings": {
+    "message": "See \"Extension Settings\" below for experimental features.",
+    "description": "Text shown in the main popup advising user where to find experimental features."
   }
 }

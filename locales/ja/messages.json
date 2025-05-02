@@ -138,5 +138,41 @@
   "popupSettingsExit": {
     "message": "設定を終了",
     "description": "Button text allowing user to exit settings and return to main part of extension"
+  },
+  "popupHomeViewExtensionSettingsButton": {
+    "message": "拡張機能の設定",
+    "description": "ホームビューで拡張機能の設定に移動するためのボタン。"
+  },
+  "popupSettingsViewExperimentalFeaturesTitle": {
+    "message": "実験的な機能",
+    "description": "設定の実験的な機能セクションのタイトル。"
+  },
+  "popupSettingsViewExperimentalFeaturesDescription": {
+    "message": "これらの機能は実験的なものであり、期待どおりに機能しない可能性があります。まだ本番環境での使用には適していません。必要に応じて、以下で有効にすることができます！",
+    "description": "設定の実験的な機能セクションの説明。"
+  },
+  "popupSettingsViewExperimentalFeaturesDocsTitle": {
+    "message": "ドキュメント",
+    "description": "設定の Google ドキュメントの実験的な機能のサブタイトル。"
+  },
+  "popupSettingsViewExperimentalFeaturesDocsViewOnlyLabel": {
+    "message": "表示のみ",
+    "description": "ドキュメントの実験的な機能の「表示のみ」チェックボックスのラベル。"
+  },
+  "popupSettingsViewExperimentalFeaturesDocsClassroomSupportLabel": {
+    "message": "Google Classroom サポート",
+    "description": "ドキュメントの実験的な機能の「Google Classroom サポート」チェックボックスのラベル。"
+  },
+  "popupSettingsViewExperimentalFeaturesSheetsTitle": {
+    "message": "スプレッドシート",
+    "description": "設定の Google スプレッドシートの実験的な機能のサブタイトル。"
+  },
+  "popupSettingsViewExperimentalFeaturesSheetsClassroomSupportLabel": {
+    "message": "Google Classroom サポート",
+    "description": "スプレッドシートの実験的な機能の「Google Classroom サポート」チェックボックスのラベル。"
+  },
+  "popupWorkspaceComponentSeeExtensionSettings": {
+    "message": "実験的な機能については、以下の「拡張機能の設定」を参照してください。",
+    "description": "メインポップアップに表示される、実験的な機能の場所をユーザーに知らせるテキスト。"
   }
 }

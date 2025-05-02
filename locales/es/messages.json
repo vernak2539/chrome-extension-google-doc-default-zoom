@@ -138,5 +138,41 @@
   "popupSettingsExit": {
     "message": "Salir de la configuración",
     "description": "Button text allowing user to exit settings and return to main part of extension"
+  },
+  "popupHomeViewExtensionSettingsButton": {
+    "message": "Configuración de la extensión",
+    "description": "Botón en la vista de inicio para navegar a la configuración de la extensión."
+  },
+  "popupSettingsViewExperimentalFeaturesTitle": {
+    "message": "Funciones experimentales",
+    "description": "Título de la sección de funciones experimentales en la configuración."
+  },
+  "popupSettingsViewExperimentalFeaturesDescription": {
+    "message": "Estas funciones son experimentales y es posible que no funcionen como se espera. Aún no están listas para su uso en producción. ¡Puedes habilitarlas a continuación si lo deseas!",
+    "description": "Descripción de la sección de funciones experimentales en la configuración."
+  },
+  "popupSettingsViewExperimentalFeaturesDocsTitle": {
+    "message": "Docs",
+    "description": "Subtítulo de las funciones experimentales de Google Docs en la configuración."
+  },
+  "popupSettingsViewExperimentalFeaturesDocsViewOnlyLabel": {
+    "message": "Solo ver",
+    "description": "Etiqueta de la casilla de verificación 'Solo ver' para las funciones experimentales de Docs."
+  },
+  "popupSettingsViewExperimentalFeaturesDocsClassroomSupportLabel": {
+    "message": "Soporte de Google Classroom",
+    "description": "Etiqueta de la casilla de verificación 'Soporte de Google Classroom' para las funciones experimentales de Docs."
+  },
+  "popupSettingsViewExperimentalFeaturesSheetsTitle": {
+    "message": "Sheets",
+    "description": "Subtítulo de las funciones experimentales de Google Sheets en la configuración."
+  },
+  "popupSettingsViewExperimentalFeaturesSheetsClassroomSupportLabel": {
+    "message": "Soporte de Google Classroom",
+    "description": "Etiqueta de la casilla de verificación 'Soporte de Google Classroom' para las funciones experimentales de Sheets."
+  },
+  "popupWorkspaceComponentSeeExtensionSettings": {
+    "message": "Consulta \"Configuración de la extensión\" a continuación para ver las funciones experimentales.",
+    "description": "Texto que se muestra en la ventana emergente principal que informa al usuario dónde encontrar las funciones experimentales."
   }
 }
