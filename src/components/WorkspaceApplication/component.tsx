@@ -1,5 +1,6 @@
 import classnames from "classnames";
 import type { WorkspaceApp, WorkspaceAppName } from "src/types";
+import localize from "../../utils/localize";
 import CustomZoomInput from "../CustomZoomInput";
 import SelectZoomInput from "../SelectZoomInput";
 
@@ -54,7 +55,7 @@ const WorkspaceApplicationComponent = ({
       <div className={style.applicationListItemRow}>
         <span className={style.applicationItemRowSpacer} />
         <p className={style.applicationExperimentalFeatureContent}>
-          See "Extension Settings" below for experimental features.
+          {localize("popupWorkspaceComponentSeeExtensionSettings")}
         </p>
       </div>
     </li>

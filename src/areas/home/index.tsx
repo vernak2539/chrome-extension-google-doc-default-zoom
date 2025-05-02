@@ -29,7 +29,7 @@ const HomeView = ({ openSettingsView, showExtensionVersionsTab }: Props) => {
       </WorkspaceApplicationList>
       <br />
       <Button variant="secondary" size="small" onPress={openSettingsView}>
-        Extension Settings
+        {localize("popupHomeViewExtensionSettingsButton")}
       </Button>
       {showExtensionVersionsTab && (
         <p>

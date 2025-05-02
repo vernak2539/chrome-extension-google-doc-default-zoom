@@ -5,6 +5,7 @@ import {
   SHEETS_DEFAULT_ZOOM,
   SHEETS_STORAGE_KEY
 } from "src/constants";
+import localize from "src/utils/localize";
 import styles from "./styles.module.css";
 
 const SettingsExperimentalFeatures = () => {
@@ -22,13 +23,11 @@ const SettingsExperimentalFeatures = () => {
 
   return (
     <section>
-      <h3>Experimental Features</h3>
-      <p>
-        These features are experimental and may not work as expected. They are
-        not yet ready for production use. You can enable them below if you'd
-        like!
-      </p>
-      <h4 className={styles.featureHeader}>Docs</h4>
+      <h3>{localize("popupSettingsViewExperimentalFeaturesTitle")}</h3>
+      <p>{localize("popupSettingsViewExperimentalFeaturesDescription")}</p>
+      <h4 className={styles.featureHeader}>
+        {localize("popupSettingsViewExperimentalFeaturesDocsTitle")}
+      </h4>
       <ul className={styles.list}>
         <li>
           <label htmlFor="docs-feature-view-only">
@@ -40,7 +39,7 @@ const SettingsExperimentalFeatures = () => {
                 docsFeatureSetViewOnlyEnabled(event.target.checked);
               }}
             />
-            View Only
+            {localize("popupSettingsViewExperimentalFeaturesDocsViewOnlyLabel")}
           </label>
         </li>
         <li>
@@ -53,11 +52,15 @@ const SettingsExperimentalFeatures = () => {
                 docsFeatureSetClassroomSupportEnabled(event.target.checked);
               }}
             />
-            Google Classroom Support
+            {localize(
+              "popupSettingsViewExperimentalFeaturesDocsClassroomSupportLabel"
+            )}
           </label>
         </li>
       </ul>
-      <h4 className={styles.featureHeader}>Sheets</h4>
+      <h4 className={styles.featureHeader}>
+        {localize("popupSettingsViewExperimentalFeaturesSheetsTitle")}
+      </h4>
       <ul className={styles.list}>
         <li>
           <label htmlFor="sheets-feature-classroom-support">
@@ -69,7 +72,9 @@ const SettingsExperimentalFeatures = () => {
                 sheetsFeatureSetClassroomSupportEnabled(event.target.checked);
               }}
             />
-            Google Classroom Support
+            {localize(
+              "popupSettingsViewExperimentalFeaturesSheetsClassroomSupportLabel"
+            )}
           </label>
         </li>
       </ul>
