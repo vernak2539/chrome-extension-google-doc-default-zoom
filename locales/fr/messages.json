@@ -138,5 +138,41 @@
   "popupSettingsExit": {
     "message": "Quitter les paramètres",
     "description": "Button text allowing user to exit settings and return to main part of extension"
+  },
+  "popupHomeViewExtensionSettingsButton": {
+    "message": "Paramètres de l'extension",
+    "description": "Bouton dans la vue d'accueil pour accéder aux paramètres de l'extension."
+  },
+  "popupSettingsViewExperimentalFeaturesTitle": {
+    "message": "Fonctionnalités expérimentales",
+    "description": "Titre de la section des fonctionnalités expérimentales dans les paramètres."
+  },
+  "popupSettingsViewExperimentalFeaturesDescription": {
+    "message": "Ces fonctionnalités sont expérimentales et peuvent ne pas fonctionner comme prévu. Elles ne sont pas encore prêtes pour une utilisation en production. Vous pouvez les activer ci-dessous si vous le souhaitez !",
+    "description": "Description de la section des fonctionnalités expérimentales dans les paramètres."
+  },
+  "popupSettingsViewExperimentalFeaturesDocsTitle": {
+    "message": "Docs",
+    "description": "Sous-titre des fonctionnalités expérimentales de Google Docs dans les paramètres."
+  },
+  "popupSettingsViewExperimentalFeaturesDocsViewOnlyLabel": {
+    "message": "Affichage seul",
+    "description": "Étiquette de la case à cocher « Affichage seul » pour les fonctionnalités expérimentales de Docs."
+  },
+  "popupSettingsViewExperimentalFeaturesDocsClassroomSupportLabel": {
+    "message": "Assistance Google Classroom",
+    "description": "Étiquette de la case à cocher « Assistance Google Classroom » pour les fonctionnalités expérimentales de Docs."
+  },
+  "popupSettingsViewExperimentalFeaturesSheetsTitle": {
+    "message": "Sheets",
+    "description": "Sous-titre des fonctionnalités expérimentales de Google Sheets dans les paramètres."
+  },
+  "popupSettingsViewExperimentalFeaturesSheetsClassroomSupportLabel": {
+    "message": "Assistance Google Classroom",
+    "description": "Étiquette de la case à cocher « Assistance Google Classroom » pour les fonctionnalités expérimentales de Sheets."
+  },
+  "popupWorkspaceComponentSeeExtensionSettings": {
+    "message": "Voir \"Paramètres de l'extension\" ci-dessous pour les fonctionnalités expérimentales.",
+    "description": "Texte affiché dans la fenêtre contextuelle principale indiquant à l'utilisateur où trouver les fonctionnalités expérimentales."
   }
 }

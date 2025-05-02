@@ -11,15 +11,10 @@ const WorkspaceApplication = ({
   storageKey,
   features
 }: Props) => {
-  const {
-    zoom,
-    viewOnly,
-    classroomSupport,
-    updateZoomValue,
-    updateDocsViewOnlyValue,
-    updateClassroomSupportValue,
-    isLoading
-  } = useWorkspaceStorage(storageKey, defaultZoom);
+  const { zoom, updateZoomValue, isLoading } = useWorkspaceStorage(
+    storageKey,
+    defaultZoom
+  );
 
   // we have not fetched the values required to render from storage, so we're not ready to render yet
   if (isLoading) {
@@ -37,10 +32,6 @@ const WorkspaceApplication = ({
       zoomLevelCustom={zoom}
       zoomValues={zoomValues}
       features={features}
-      featureDocsViewOnlyEnabled={name === "Docs" ? viewOnly : false}
-      updateDocsViewOnly={updateDocsViewOnlyValue}
-      featureClassroomSupportEnabled={classroomSupport}
-      updateClassroomSupport={updateClassroomSupportValue}
     />
   );
 };

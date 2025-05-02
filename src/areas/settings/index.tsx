@@ -2,9 +2,15 @@ import { Storage } from "@plasmohq/storage";
 import { useState } from "react";
 import SettingsIcon from "react:~/assets/popup_icons/settings-inverted.svg";
 import Button from "src/components/Button";
-import { getFeatureViewOnlyStorageKey } from "src/constants";
+import {
+  DOCS_STORAGE_KEY,
+  getFeatureClassroomSupportStorageKey,
+  getFeatureViewOnlyStorageKey,
+  SHEETS_STORAGE_KEY
+} from "src/constants";
 import type { StorageKey } from "src/types";
 import localize from "src/utils/localize";
+import SettingsExperimentalFeatures from "./SettingsExperimentalFeatures";
 
 interface Props {
   onHomeClick: () => void;
@@ -12,7 +18,7 @@ interface Props {
 
 const SettingsView = ({ onHomeClick }: Props) => {
   const storage = new Storage();
-  const storageKeys: StorageKey[] = ["zoomValue", "sheets:zoomValue"];
+  const storageKeys: StorageKey[] = [DOCS_STORAGE_KEY, SHEETS_STORAGE_KEY];
   const [isExitEnabled, setIsExitEnabled] = useState(true);
 
   const onResetZoomSettingsClick = () => {
@@ -20,7 +26,8 @@ const SettingsView = ({ onHomeClick }: Props) => {
     const resetProimises = storageKeys.flatMap((key) => {
       return [
         storage.remove(key),
-        storage.remove(getFeatureViewOnlyStorageKey(key))
+        storage.remove(getFeatureViewOnlyStorageKey(key)),
+        storage.remove(getFeatureClassroomSupportStorageKey(key))
       ];
     });
 
@@ -35,6 +42,8 @@ const SettingsView = ({ onHomeClick }: Props) => {
         <SettingsIcon width={20} height={20} style={{ marginRight: 3 }} />
         {localize("popupSettingsTitle")}
       </h2>
+
+      <SettingsExperimentalFeatures />
 
       <section>
         <h3>{localize("popupSettingsResetToFactoryTitle")}</h3>

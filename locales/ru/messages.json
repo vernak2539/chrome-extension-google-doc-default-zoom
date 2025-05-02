@@ -138,5 +138,41 @@
   "popupSettingsExit": {
     "message": "Выйти из настроек",
     "description": "Button text allowing user to exit settings and return to main part of extension"
+  },
+  "popupHomeViewExtensionSettingsButton": {
+    "message": "Настройки расширения",
+    "description": "Кнопка в главном представлении для перехода к настройкам расширения."
+  },
+  "popupSettingsViewExperimentalFeaturesTitle": {
+    "message": "Экспериментальные функции",
+    "description": "Заголовок раздела экспериментальных функций в настройках."
+  },
+  "popupSettingsViewExperimentalFeaturesDescription": {
+    "message": "Эти функции являются экспериментальными и могут работать не так, как ожидалось. Они еще не готовы к использованию в производственной среде. Вы можете включить их ниже, если хотите!",
+    "description": "Описание раздела экспериментальных функций в настройках."
+  },
+  "popupSettingsViewExperimentalFeaturesDocsTitle": {
+    "message": "Документы",
+    "description": "Подзаголовок для экспериментальных функций Google Документов в настройках."
+  },
+  "popupSettingsViewExperimentalFeaturesDocsViewOnlyLabel": {
+    "message": "Только просмотр",
+    "description": "Метка для флажка «Только просмотр» для экспериментальных функций Документов."
+  },
+  "popupSettingsViewExperimentalFeaturesDocsClassroomSupportLabel": {
+    "message": "Поддержка Google Класса",
+    "description": "Метка для флажка «Поддержка Google Класса» для экспериментальных функций Документов."
+  },
+  "popupSettingsViewExperimentalFeaturesSheetsTitle": {
+    "message": "Таблицы",
+    "description": "Подзаголовок для экспериментальных функций Google Таблиц в настройках."
+  },
+  "popupSettingsViewExperimentalFeaturesSheetsClassroomSupportLabel": {
+    "message": "Поддержка Google Класса",
+    "description": "Метка для флажка «Поддержка Google Класса» для экспериментальных функций Таблиц."
+  },
+  "popupWorkspaceComponentSeeExtensionSettings": {
+    "message": "См. \"Настройки расширения\" ниже для экспериментальных функций.",
+    "description": "Текст, отображаемый в главном всплывающем окне, информирующий пользователя о том, где найти экспериментальные функции."
   }
 }
