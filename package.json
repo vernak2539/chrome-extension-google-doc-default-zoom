@@ -6,6 +6,7 @@
   "author": "vernak2539",
   "repository": "github:vernak2539/chrome-extension-google-doc-default-zoom",
   "type": "module",
+  "license": "MIT WITH Commons-Clause",
   "scripts": {
     "dev": "plasmo dev",
     "test": "vitest",
