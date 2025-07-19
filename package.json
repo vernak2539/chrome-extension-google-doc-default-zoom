@@ -15,12 +15,12 @@
     "transform-ext": "node bin/transform-extension.mjs"
   },
   "dependencies": {
-    "@plasmohq/messaging": "^0.5.0",
-    "@plasmohq/storage": "^1.8.0",
+    "@plasmohq/messaging": "^0.7.2",
+    "@plasmohq/storage": "^1.15.0",
     "@sentry/browser": "^7.74.0",
     "@sentry/react": "^7.74.0",
     "classnames": "^2.3.2",
-    "plasmo": "0.83.0",
+    "plasmo": "0.90.5",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
@@ -41,6 +41,7 @@
     "prettier": "3.6.2",
     "prettier-plugin-organize-imports": "^4.1.0",
     "prop-types": "^15.8.1",
+    "sharp": "^0.34.3",
     "storybook": "^9.0.17",
     "typescript": "5.2.2",
     "vite": "^5.4.19"
