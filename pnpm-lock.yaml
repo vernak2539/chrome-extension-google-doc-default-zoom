@@ -28,7 +28,7 @@ importers:
         version: 2.5.1
       plasmo:
         specifier: 0.89.3
-        version: 0.89.3(@swc/core@1.13.1(@swc/helpers@0.5.17))(@swc/helpers@0.5.17)(ejs@3.1.10)(handlebars@4.7.8)(lodash@4.17.21)(postcss@8.5.6)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(srcset@5.0.1)
+        version: 0.89.3(@swc/core@1.13.1(@swc/helpers@0.5.17))(@swc/helpers@0.5.17)(ejs@3.1.10)(handlebars@4.7.8)(lodash@4.17.21)(postcss@8.5.6)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(srcset@4.0.0)
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -59,13 +59,13 @@ importers:
         version: 9.0.17(react@18.2.0)(storybook@9.0.17(@testing-library/dom@10.4.0)(prettier@3.6.2))
       '@storybook/react-vite':
         specifier: ^9.0.17
-        version: 9.0.17(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(rollup@4.45.1)(storybook@9.0.17(@testing-library/dom@10.4.0)(prettier@3.6.2))(typescript@5.4.2)(vite@5.4.10(@types/node@20.11.27)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2))(webpack-sources@3.3.3)
+        version: 9.0.17(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(rollup@4.45.1)(storybook@9.0.17(@testing-library/dom@10.4.0)(prettier@3.6.2))(typescript@5.4.2)(vite@5.4.10(@types/node@22.16.5)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2))(webpack-sources@3.3.3)
       '@types/chrome':
         specifier: 0.0.263
         version: 0.0.263
       '@types/node':
-        specifier: 20.11.27
-        version: 20.11.27
+        specifier: 22.x
+        version: 22.16.5
       '@types/react':
         specifier: 18.2.65
         version: 18.2.65
@@ -74,7 +74,7 @@ importers:
         version: 18.2.22
       '@vitejs/plugin-react':
         specifier: ^4.3.3
-        version: 4.3.3(vite@5.4.10(@types/node@20.11.27)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2))
+        version: 4.3.3(vite@5.4.10(@types/node@22.16.5)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2))
       bundlesize2:
         specifier: ^0.0.31
         version: 0.0.31
@@ -101,13 +101,13 @@ importers:
         version: 5.4.2
       vite:
         specifier: ^5.4.10
-        version: 5.4.10(@types/node@20.11.27)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2)
+        version: 5.4.10(@types/node@22.16.5)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2)
       vite-plugin-svgr:
         specifier: ^4.3.0
-        version: 4.3.0(rollup@4.45.1)(typescript@5.4.2)(vite@5.4.10(@types/node@20.11.27)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2))
+        version: 4.3.0(rollup@4.45.1)(typescript@5.4.2)(vite@5.4.10(@types/node@22.16.5)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2))
       vitest:
         specifier: ^2.1.4
-        version: 2.1.4(@types/node@20.11.27)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2)
+        version: 2.1.4(@types/node@22.16.5)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2)
 
 packages:
 
@@ -2966,8 +2966,8 @@ packages:
   '@types/mdx@2.0.13':
     resolution: {integrity: sha512-+OWZQfAYyio6YkJb3HLxDrvnx6SWWDbC0zVPfBRzUk0/nqoDyf6dNxQi3eArPe8rJ473nobTMQ/8Zk+LxJ+Yuw==}
 
-  '@types/node@20.11.27':
-    resolution: {integrity: sha512-qyUZfMnCg1KEz57r7pzFtSGt49f6RPkPBis3Vo4PbS7roQEDn22hiHzl/Lo1q4i4hDEgBJmBF/NTNg2XR0HbFg==}
+  '@types/node@22.16.5':
+    resolution: {integrity: sha512-bJFoMATwIGaxxx8VJPeM8TonI8t579oRvgAuT8zFugJsJZgzqv0Fu8Mhp68iecjzG7cnN3mO2dJQ5uUM2EFrgQ==}
 
   '@types/parse-json@4.0.2':
     resolution: {integrity: sha512-dISoDXWWQwUquiKsyZ4Ng+HX2KsPL7LyHKHQwgGFEA3IaKac4Obd+h2a/a6waisAoepJlBcx9paWqjA8/HVjCw==}
@@ -5084,10 +5084,6 @@ packages:
     resolution: {integrity: sha512-wvLeHgcVHKO8Sc/H/5lkGreJQVeYMm9rlmt8PuR1xE31rIuXhuzznUUqAt8MqLhB3MqJdFzlNAfpcWnxiFUcPw==}
     engines: {node: '>=12'}
 
-  srcset@5.0.1:
-    resolution: {integrity: sha512-/P1UYbGfJVlxZag7aABNRrulEXAwCSDo7fklafOQrantuPTDmYgijJMks2zusPCVzgW9+4P69mq7w6pYuZpgxw==}
-    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
-
   stable@0.1.8:
     resolution: {integrity: sha512-ji9qxRnOVfcuLDySj9qzhGSEFVobyt1kIOSkj1qZzYLzq7Tos/oUUWvotUPQLlrsidqsK6tBH89Bc9kL5zHA6w==}
     deprecated: 'Modern JS already guarantees Array#sort() is a stable sort, so this library is deprecated. See the compatibility table on MDN: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort#browser_compatibility'
@@ -5341,8 +5337,8 @@ packages:
     engines: {node: '>=0.8.0'}
     hasBin: true
 
-  undici-types@5.26.5:
-    resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
+  undici-types@6.21.0:
+    resolution: {integrity: sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==}
 
   unicorn-magic@0.1.0:
     resolution: {integrity: sha512-lRfVq8fE8gz6QMBuDM6a+LO3IAzTi05H6gCVaUpir2E1Rwpo4ZUog45KpNXKC/Mn3Yb9UDuHumeFTo9iV/D9FQ==}
@@ -6117,12 +6113,12 @@ snapshots:
       wrap-ansi: 8.1.0
       wrap-ansi-cjs: wrap-ansi@7.0.0
 
-  '@joshwooding/vite-plugin-react-docgen-typescript@0.6.1(typescript@5.4.2)(vite@5.4.10(@types/node@20.11.27)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2))':
+  '@joshwooding/vite-plugin-react-docgen-typescript@0.6.1(typescript@5.4.2)(vite@5.4.10(@types/node@22.16.5)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2))':
     dependencies:
       glob: 10.3.10
       magic-string: 0.30.12
       react-docgen-typescript: 2.2.2(typescript@5.4.2)
-      vite: 5.4.10(@types/node@20.11.27)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2)
+      vite: 5.4.10(@types/node@22.16.5)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2)
     optionalDependencies:
       typescript: 5.4.2
 
@@ -6286,14 +6282,14 @@ snapshots:
     transitivePeerDependencies:
       - '@parcel/core'
 
-  '@parcel/config-default@2.9.3(@parcel/core@2.9.3)(@swc/helpers@0.5.17)(postcss@8.5.6)(srcset@5.0.1)(typescript@5.2.2)':
+  '@parcel/config-default@2.9.3(@parcel/core@2.9.3)(@swc/helpers@0.5.17)(postcss@8.5.6)(srcset@4.0.0)(typescript@5.2.2)':
     dependencies:
       '@parcel/bundler-default': 2.9.3(@parcel/core@2.9.3)
       '@parcel/compressor-raw': 2.9.3(@parcel/core@2.9.3)
       '@parcel/core': 2.9.3
       '@parcel/namer-default': 2.9.3(@parcel/core@2.9.3)
       '@parcel/optimizer-css': 2.9.3(@parcel/core@2.9.3)
-      '@parcel/optimizer-htmlnano': 2.9.3(@parcel/core@2.9.3)(postcss@8.5.6)(srcset@5.0.1)(typescript@5.2.2)
+      '@parcel/optimizer-htmlnano': 2.9.3(@parcel/core@2.9.3)(postcss@8.5.6)(srcset@4.0.0)(typescript@5.2.2)
       '@parcel/optimizer-image': 2.9.3(@parcel/core@2.9.3)
       '@parcel/optimizer-svgo': 2.9.3(@parcel/core@2.9.3)
       '@parcel/optimizer-swc': 2.9.3(@parcel/core@2.9.3)(@swc/helpers@0.5.17)
@@ -6467,10 +6463,10 @@ snapshots:
     transitivePeerDependencies:
       - '@parcel/core'
 
-  '@parcel/optimizer-htmlnano@2.9.3(@parcel/core@2.9.3)(postcss@8.5.6)(srcset@5.0.1)(typescript@5.2.2)':
+  '@parcel/optimizer-htmlnano@2.9.3(@parcel/core@2.9.3)(postcss@8.5.6)(srcset@4.0.0)(typescript@5.2.2)':
     dependencies:
       '@parcel/plugin': 2.9.3(@parcel/core@2.9.3)
-      htmlnano: 2.1.0(postcss@8.5.6)(srcset@5.0.1)(svgo@2.8.0)(typescript@5.2.2)
+      htmlnano: 2.1.0(postcss@8.5.6)(srcset@4.0.0)(svgo@2.8.0)(typescript@5.2.2)
       nullthrows: 1.1.1
       posthtml: 0.16.6
       svgo: 2.8.0
@@ -7044,10 +7040,10 @@ snapshots:
     transitivePeerDependencies:
       - '@parcel/core'
 
-  '@plasmohq/parcel-config@0.41.1(@swc/core@1.13.1(@swc/helpers@0.5.17))(@swc/helpers@0.5.17)(ejs@3.1.10)(handlebars@4.7.8)(lodash@4.17.21)(postcss@8.5.6)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(srcset@5.0.1)(typescript@5.2.2)':
+  '@plasmohq/parcel-config@0.41.1(@swc/core@1.13.1(@swc/helpers@0.5.17))(@swc/helpers@0.5.17)(ejs@3.1.10)(handlebars@4.7.8)(lodash@4.17.21)(postcss@8.5.6)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(srcset@4.0.0)(typescript@5.2.2)':
     dependencies:
       '@parcel/compressor-raw': 2.9.3(@parcel/core@2.9.3)
-      '@parcel/config-default': 2.9.3(@parcel/core@2.9.3)(@swc/helpers@0.5.17)(postcss@8.5.6)(srcset@5.0.1)(typescript@5.2.2)
+      '@parcel/config-default': 2.9.3(@parcel/core@2.9.3)(@swc/helpers@0.5.17)(postcss@8.5.6)(srcset@4.0.0)(typescript@5.2.2)
       '@parcel/core': 2.9.3
       '@parcel/optimizer-data-url': 2.9.3(@parcel/core@2.9.3)
       '@parcel/reporter-bundle-buddy': 2.9.3(@parcel/core@2.9.3)
@@ -8554,12 +8550,12 @@ snapshots:
     optionalDependencies:
       react: 18.2.0
 
-  '@storybook/builder-vite@9.0.17(storybook@9.0.17(@testing-library/dom@10.4.0)(prettier@3.6.2))(vite@5.4.10(@types/node@20.11.27)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2))(webpack-sources@3.3.3)':
+  '@storybook/builder-vite@9.0.17(storybook@9.0.17(@testing-library/dom@10.4.0)(prettier@3.6.2))(vite@5.4.10(@types/node@22.16.5)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2))(webpack-sources@3.3.3)':
     dependencies:
       '@storybook/csf-plugin': 9.0.17(storybook@9.0.17(@testing-library/dom@10.4.0)(prettier@3.6.2))(webpack-sources@3.3.3)
       storybook: 9.0.17(@testing-library/dom@10.4.0)(prettier@3.6.2)
       ts-dedent: 2.2.0
-      vite: 5.4.10(@types/node@20.11.27)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2)
+      vite: 5.4.10(@types/node@22.16.5)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2)
     transitivePeerDependencies:
       - webpack-sources
 
@@ -8583,11 +8579,11 @@ snapshots:
       react-dom: 18.2.0(react@18.2.0)
       storybook: 9.0.17(@testing-library/dom@10.4.0)(prettier@3.6.2)
 
-  '@storybook/react-vite@9.0.17(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(rollup@4.45.1)(storybook@9.0.17(@testing-library/dom@10.4.0)(prettier@3.6.2))(typescript@5.4.2)(vite@5.4.10(@types/node@20.11.27)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2))(webpack-sources@3.3.3)':
+  '@storybook/react-vite@9.0.17(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(rollup@4.45.1)(storybook@9.0.17(@testing-library/dom@10.4.0)(prettier@3.6.2))(typescript@5.4.2)(vite@5.4.10(@types/node@22.16.5)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2))(webpack-sources@3.3.3)':
     dependencies:
-      '@joshwooding/vite-plugin-react-docgen-typescript': 0.6.1(typescript@5.4.2)(vite@5.4.10(@types/node@20.11.27)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2))
+      '@joshwooding/vite-plugin-react-docgen-typescript': 0.6.1(typescript@5.4.2)(vite@5.4.10(@types/node@22.16.5)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2))
       '@rollup/pluginutils': 5.1.3(rollup@4.45.1)
-      '@storybook/builder-vite': 9.0.17(storybook@9.0.17(@testing-library/dom@10.4.0)(prettier@3.6.2))(vite@5.4.10(@types/node@20.11.27)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2))(webpack-sources@3.3.3)
+      '@storybook/builder-vite': 9.0.17(storybook@9.0.17(@testing-library/dom@10.4.0)(prettier@3.6.2))(vite@5.4.10(@types/node@22.16.5)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2))(webpack-sources@3.3.3)
       '@storybook/react': 9.0.17(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(storybook@9.0.17(@testing-library/dom@10.4.0)(prettier@3.6.2))(typescript@5.4.2)
       find-up: 7.0.0
       magic-string: 0.30.12
@@ -8597,7 +8593,7 @@ snapshots:
       resolve: 1.22.8
       storybook: 9.0.17(@testing-library/dom@10.4.0)(prettier@3.6.2)
       tsconfig-paths: 4.2.0
-      vite: 5.4.10(@types/node@20.11.27)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2)
+      vite: 5.4.10(@types/node@22.16.5)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2)
     transitivePeerDependencies:
       - rollup
       - supports-color
@@ -9006,9 +9002,9 @@ snapshots:
 
   '@types/mdx@2.0.13': {}
 
-  '@types/node@20.11.27':
+  '@types/node@22.16.5':
     dependencies:
-      undici-types: 5.26.5
+      undici-types: 6.21.0
 
   '@types/parse-json@4.0.2': {}
 
@@ -9030,14 +9026,14 @@ snapshots:
 
   '@types/trusted-types@2.0.7': {}
 
-  '@vitejs/plugin-react@4.3.3(vite@5.4.10(@types/node@20.11.27)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2))':
+  '@vitejs/plugin-react@4.3.3(vite@5.4.10(@types/node@22.16.5)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2))':
     dependencies:
       '@babel/core': 7.26.0
       '@babel/plugin-transform-react-jsx-self': 7.25.9(@babel/core@7.26.0)
       '@babel/plugin-transform-react-jsx-source': 7.25.9(@babel/core@7.26.0)
       '@types/babel__core': 7.20.5
       react-refresh: 0.14.2
-      vite: 5.4.10(@types/node@20.11.27)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2)
+      vite: 5.4.10(@types/node@22.16.5)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2)
     transitivePeerDependencies:
       - supports-color
 
@@ -9056,13 +9052,13 @@ snapshots:
       chai: 5.2.1
       tinyrainbow: 2.0.0
 
-  '@vitest/mocker@2.1.4(vite@5.4.10(@types/node@20.11.27)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2))':
+  '@vitest/mocker@2.1.4(vite@5.4.10(@types/node@22.16.5)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2))':
     dependencies:
       '@vitest/spy': 2.1.4
       estree-walker: 3.0.3
       magic-string: 0.30.12
     optionalDependencies:
-      vite: 5.4.10(@types/node@20.11.27)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2)
+      vite: 5.4.10(@types/node@22.16.5)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2)
 
   '@vitest/pretty-format@2.1.4':
     dependencies:
@@ -10069,14 +10065,14 @@ snapshots:
     dependencies:
       react-is: 16.13.1
 
-  htmlnano@2.1.0(postcss@8.5.6)(srcset@5.0.1)(svgo@2.8.0)(typescript@5.2.2):
+  htmlnano@2.1.0(postcss@8.5.6)(srcset@4.0.0)(svgo@2.8.0)(typescript@5.2.2):
     dependencies:
       cosmiconfig: 8.3.6(typescript@5.2.2)
       posthtml: 0.16.6
       timsort: 0.3.0
     optionalDependencies:
       postcss: 8.5.6
-      srcset: 5.0.1
+      srcset: 4.0.0
       svgo: 2.8.0
     transitivePeerDependencies:
       - typescript
@@ -10793,7 +10789,7 @@ snapshots:
 
   pirates@4.0.6: {}
 
-  plasmo@0.89.3(@swc/core@1.13.1(@swc/helpers@0.5.17))(@swc/helpers@0.5.17)(ejs@3.1.10)(handlebars@4.7.8)(lodash@4.17.21)(postcss@8.5.6)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(srcset@5.0.1):
+  plasmo@0.89.3(@swc/core@1.13.1(@swc/helpers@0.5.17))(@swc/helpers@0.5.17)(ejs@3.1.10)(handlebars@4.7.8)(lodash@4.17.21)(postcss@8.5.6)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(srcset@4.0.0):
     dependencies:
       '@expo/spawn-async': 1.7.2
       '@parcel/core': 2.9.3
@@ -10801,7 +10797,7 @@ snapshots:
       '@parcel/package-manager': 2.9.3(@parcel/core@2.9.3)
       '@parcel/watcher': 2.2.0
       '@plasmohq/init': 0.7.0
-      '@plasmohq/parcel-config': 0.41.1(@swc/core@1.13.1(@swc/helpers@0.5.17))(@swc/helpers@0.5.17)(ejs@3.1.10)(handlebars@4.7.8)(lodash@4.17.21)(postcss@8.5.6)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(srcset@5.0.1)(typescript@5.2.2)
+      '@plasmohq/parcel-config': 0.41.1(@swc/core@1.13.1(@swc/helpers@0.5.17))(@swc/helpers@0.5.17)(ejs@3.1.10)(handlebars@4.7.8)(lodash@4.17.21)(postcss@8.5.6)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(srcset@4.0.0)(typescript@5.2.2)
       '@plasmohq/parcel-core': 0.1.9
       buffer: 6.0.3
       chalk: 5.3.0
@@ -11378,9 +11374,6 @@ snapshots:
 
   srcset@4.0.0: {}
 
-  srcset@5.0.1:
-    optional: true
-
   stable@0.1.8: {}
 
   stackback@0.0.2: {}
@@ -11650,7 +11643,7 @@ snapshots:
   uglify-js@3.19.3:
     optional: true
 
-  undici-types@5.26.5: {}
+  undici-types@6.21.0: {}
 
   unicorn-magic@0.1.0: {}
 
@@ -11695,12 +11688,12 @@ snapshots:
 
   utility-types@3.11.0: {}
 
-  vite-node@2.1.4(@types/node@20.11.27)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2):
+  vite-node@2.1.4(@types/node@22.16.5)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2):
     dependencies:
       cac: 6.7.14
       debug: 4.3.7
       pathe: 1.1.2
-      vite: 5.4.10(@types/node@20.11.27)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2)
+      vite: 5.4.10(@types/node@22.16.5)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -11712,33 +11705,33 @@ snapshots:
       - supports-color
       - terser
 
-  vite-plugin-svgr@4.3.0(rollup@4.45.1)(typescript@5.4.2)(vite@5.4.10(@types/node@20.11.27)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2)):
+  vite-plugin-svgr@4.3.0(rollup@4.45.1)(typescript@5.4.2)(vite@5.4.10(@types/node@22.16.5)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2)):
     dependencies:
       '@rollup/pluginutils': 5.1.3(rollup@4.45.1)
       '@svgr/core': 8.1.0(typescript@5.4.2)
       '@svgr/plugin-jsx': 8.1.0(@svgr/core@8.1.0(typescript@5.4.2))
-      vite: 5.4.10(@types/node@20.11.27)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2)
+      vite: 5.4.10(@types/node@22.16.5)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2)
     transitivePeerDependencies:
       - rollup
       - supports-color
       - typescript
 
-  vite@5.4.10(@types/node@20.11.27)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2):
+  vite@5.4.10(@types/node@22.16.5)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2):
     dependencies:
       esbuild: 0.21.5
       postcss: 8.4.47
       rollup: 4.24.4
     optionalDependencies:
-      '@types/node': 20.11.27
+      '@types/node': 22.16.5
       fsevents: 2.3.3
       less: 4.4.0
       lightningcss: 1.30.1
       sass: 1.89.2
 
-  vitest@2.1.4(@types/node@20.11.27)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2):
+  vitest@2.1.4(@types/node@22.16.5)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2):
     dependencies:
       '@vitest/expect': 2.1.4
-      '@vitest/mocker': 2.1.4(vite@5.4.10(@types/node@20.11.27)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2))
+      '@vitest/mocker': 2.1.4(vite@5.4.10(@types/node@22.16.5)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2))
       '@vitest/pretty-format': 2.1.4
       '@vitest/runner': 2.1.4
       '@vitest/snapshot': 2.1.4
@@ -11754,11 +11747,11 @@ snapshots:
       tinyexec: 0.3.1
       tinypool: 1.0.1
       tinyrainbow: 1.2.0
-      vite: 5.4.10(@types/node@20.11.27)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2)
-      vite-node: 2.1.4(@types/node@20.11.27)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2)
+      vite: 5.4.10(@types/node@22.16.5)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2)
+      vite-node: 2.1.4(@types/node@22.16.5)(less@4.4.0)(lightningcss@1.30.1)(sass@1.89.2)
       why-is-node-running: 2.3.0
     optionalDependencies:
-      '@types/node': 20.11.27
+      '@types/node': 22.16.5
     transitivePeerDependencies:
       - less
       - lightningcss
