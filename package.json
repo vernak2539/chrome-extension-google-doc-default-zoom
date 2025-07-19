@@ -19,13 +19,13 @@
     "transform-ext": "node bin/transform-extension.mjs"
   },
   "dependencies": {
-    "@plasmohq/messaging": "^0.6.2",
-    "@plasmohq/storage": "^1.13.0",
+    "@plasmohq/messaging": "^0.7.2",
+    "@plasmohq/storage": "^1.15.0",
     "@sentry/browser": "^8.50.0",
     "@sentry/react": "^8.50.0",
     "@tippyjs/react": "^4.2.6",
     "classnames": "^2.5.1",
-    "plasmo": "0.89.3",
+    "plasmo": "0.90.5",
     "react": "18.2.0",
     "react-aria-components": "^1.6.0",
     "react-dom": "18.2.0",
