@@ -10,5 +10,6 @@ module.exports = {
   trailingComma: "none",
   bracketSpacing: true,
   bracketSameLine: true,
-  plugins: [require.resolve("prettier-plugin-organize-imports")]
+  endOfLine: "lf",
+  plugins: ["prettier-plugin-organize-imports"]
 }
