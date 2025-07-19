@@ -8,7 +8,7 @@
     "dev": "plasmo dev",
     "build": "plasmo build",
     "package": "plasmo package",
-    "prettier": "prettier ./src/** -w",
+    "prettier": "prettier ./src/** .storybook/** -w",
     "bundlesize": "bundlesize",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
