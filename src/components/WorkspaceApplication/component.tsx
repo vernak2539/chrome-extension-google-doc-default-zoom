@@ -1,8 +1,8 @@
 import classnames from "classnames";
 import type { WorkspaceApp, WorkspaceAppName } from "src/types";
-import localize from "../../utils/localize";
 import CustomZoomInput from "../CustomZoomInput";
 import SelectZoomInput from "../SelectZoomInput";
+import ExperimentalFeatureCheckbox from "./experimental-checkbox";
 
 import * as style from "../../style.module.css";
 
@@ -18,48 +18,6 @@ type WorkspaceApplicationComponentProps = {
   updateDocsViewOnly: (newDocsViewOnlyValue: boolean) => void;
   featureClassroomSupportEnabled: boolean;
   updateClassroomSupport: (newClassroomSupportValue: boolean) => void;
-};
-
-// Checkbox that is very much tied to experimental features
-interface ExperimentalFeatureCheckboxProps {
-  isChecked: boolean;
-  onChange: (checked: boolean) => void;
-  linkText: string;
-  content: string;
-  linkAnchor: string;
-}
-
-const ExperimentalFeatureCheckbox = ({
-  isChecked,
-  onChange,
-  linkText,
-  content,
-  linkAnchor
-}: ExperimentalFeatureCheckboxProps) => {
-  const onEduClick = () => {
-    chrome.tabs.create({
-      url: `./tabs/experimental-features.html#${linkAnchor}`
-    });
-  };
-
-  return (
-    <label className={style.applicationCheckbox}>
-      <input
-        type="checkbox"
-        checked={isChecked}
-        onChange={(event) => {
-          onChange(event.target.checked);
-        }}
-      />
-      <span>
-        (
-        <a href="#" onClick={onEduClick}>
-          {localize(linkText)}
-        </a>
-        ) {localize(content)}
-      </span>
-    </label>
-  );
 };
 
 const WorkspaceApplicationComponent = ({

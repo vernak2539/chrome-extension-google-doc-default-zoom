@@ -105,13 +105,6 @@
   font-weight: bold;
 }
 
-.applicationCheckbox {
-  display: flex;
-  font-size: 0.75rem;
-  align-items: center;
-  font-style: italic;
-}
-
 .supportMeLinkContainer {
   text-align: center;
 }
