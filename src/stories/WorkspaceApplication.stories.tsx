@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import WorkspaceApplication from "../components/WorkspaceApplication/component";
 import WorkspaceApplicationList from "../components/WorkspaceApplicationList";
