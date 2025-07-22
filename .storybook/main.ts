@@ -9,7 +9,6 @@ const config: StorybookConfig = {
 
   addons: [
     "@storybook/addon-links",
-    "@storybook/addon-console",
     "@storybook/addon-a11y",
     "@storybook/addon-docs"
   ],

@@ -34,7 +34,6 @@
   },
   "devDependencies": {
     "@storybook/addon-a11y": "^9.0.18",
-    "@storybook/addon-console": "^3.0.0",
     "@storybook/addon-docs": "^9.0.18",
     "@storybook/addon-links": "^9.0.18",
     "@storybook/react-vite": "^9.0.18",
