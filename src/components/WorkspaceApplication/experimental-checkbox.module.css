@@ -4,3 +4,21 @@
   align-items: center;
   font-style: italic;
 }
+
+.newCheckbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  font-style: italic;
+  border-radius: 50px;
+  padding: 0.25rem;
+  border: 1px solid #000;
+  background-color: #fff;
+  margin: 2px;
+}
+
+.innerLabel {
+  display: flex;
+  align-items: center;
+}

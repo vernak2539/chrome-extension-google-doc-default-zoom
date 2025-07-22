@@ -1,3 +1,4 @@
+import classnames from "classnames";
 import localize from "src/utils/localize";
 
 import * as styles from "./experimental-checkbox.module.css";
@@ -9,6 +10,7 @@ interface ExperimentalFeatureCheckboxProps {
   linkText: string;
   content: string;
   linkAnchor: string;
+  newStyle?: boolean;
 }
 
 const ExperimentalFeatureCheckbox = ({
@@ -16,7 +18,8 @@ const ExperimentalFeatureCheckbox = ({
   onChange,
   linkText,
   content,
-  linkAnchor
+  linkAnchor,
+  newStyle
 }: ExperimentalFeatureCheckboxProps) => {
   const onEduClick = () => {
     chrome.tabs.create({
@@ -25,22 +28,28 @@ const ExperimentalFeatureCheckbox = ({
   };
 
   return (
-    <label className={styles.checkbox}>
-      <input
-        type="checkbox"
-        checked={isChecked}
-        onChange={(event) => {
-          onChange(event.target.checked);
-        }}
-      />
-      <span>
-        (
-        <a href="#" onClick={onEduClick}>
-          {localize(linkText)}
-        </a>
-        ) {localize(content)}
-      </span>
-    </label>
+    <div
+      className={classnames({
+        [styles.checkbox]: !newStyle,
+        [styles.newCheckbox]: newStyle
+      })}>
+      <label className={styles.innerLabel}>
+        <input
+          type="checkbox"
+          checked={isChecked}
+          onChange={(event) => {
+            onChange(event.target.checked);
+          }}
+        />
+        <span>
+          (
+          <a href="#" onClick={onEduClick}>
+            {localize(linkText)}
+          </a>
+          ) {localize(content)}
+        </span>
+      </label>
+    </div>
   );
 };
 
