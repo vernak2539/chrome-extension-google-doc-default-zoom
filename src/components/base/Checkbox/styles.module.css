@@ -12,6 +12,7 @@
   border: 1px solid #ccc;
   border-radius: 4px;
   position: relative;
+  font-style: normal;
 }
 
 .checkbox[data-selected] .checkboxIndicator {
@@ -21,7 +22,7 @@
 
 .checkbox[data-selected] .checkboxIndicator::after {
   content: "✔";
-  color: white !important;
+  color: #fff !important;
   position: absolute;
   top: 50%;
   left: 50%;
