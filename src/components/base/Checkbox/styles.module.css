@@ -21,7 +21,7 @@
 }
 
 .checkbox[data-selected] .checkboxIndicator::after {
-  content: "✔";
+  content: "✔\fe0e";
   color: #fff !important;
   position: absolute;
   top: 50%;
