@@ -1,6 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
-import { DOCS_DEFAULT_ZOOM, DOCS_ZOOM_VALUES } from "src/constants";
+import {
+  DOCS_DEFAULT_ZOOM,
+  DOCS_ZOOM_VALUES,
+  SHEETS_ZOOM_VALUES
+} from "src/constants";
 import WorkspaceApplication from "../components/WorkspaceApplication/new-component";
 import * as styles from "../style.module.css";
 
@@ -37,42 +41,32 @@ export const GoogleDocs: Story = {
       enableViewOnlyToggle: false,
       classroomSupport: false
     },
-    featureDocsViewOnlyEnabled: false
+    featureDocsViewOnlyEnabled: false,
+    updateDocsViewOnly: () => {},
+    featureClassroomSupportEnabled: false,
+    updateClassroomSupport: () => {}
   }
 };
 
-export const GoogleSheets: Story = {
+export const GoogleDocsCustomZoom: Story = {
   args: {
-    applicationName: "Sheets",
-    isCustomZoomLevel: false,
+    applicationName: "Docs",
+    isCustomZoomLevel: true,
     updateZoomLevel: () => {},
-    zoomLevel: DOCS_DEFAULT_ZOOM,
-    zoomLevelCustom: "",
+    zoomLevel: "",
+    zoomLevelCustom: "123%",
     zoomValues: DOCS_ZOOM_VALUES,
     features: {
-      customZoomInput: false,
+      customZoomInput: true,
       enableViewOnlyToggle: false,
       classroomSupport: false
     },
-    featureDocsViewOnlyEnabled: false
+    featureDocsViewOnlyEnabled: false,
+    updateDocsViewOnly: () => {},
+    featureClassroomSupportEnabled: false,
+    updateClassroomSupport: () => {}
   }
 };
-
-// export const GoogleDocsCustomZoom: Story = {
-//   args: {
-//     applicationName: "Docs",
-//     isCustomZoomLevel: true,
-//     updateZoomLevel: () => {},
-//     zoomLevel: "",
-//     zoomLevelCustom: "123%",
-//     zoomValues: DOCS_ZOOM_VALUES,
-//     features: {
-//       customZoomInput: true,
-//       enableViewOnlyToggle: false
-//     },
-//     featureDocsViewOnlyEnabled: false
-//   }
-// };
 
 export const GoogleDocsViewOnly: Story = {
   args: {
@@ -87,7 +81,10 @@ export const GoogleDocsViewOnly: Story = {
       enableViewOnlyToggle: true,
       classroomSupport: false
     },
-    featureDocsViewOnlyEnabled: true
+    featureDocsViewOnlyEnabled: true,
+    updateDocsViewOnly: () => {},
+    featureClassroomSupportEnabled: false,
+    updateClassroomSupport: () => {}
   }
 };
 
@@ -104,7 +101,10 @@ export const GoogleDocsClassroomSupport: Story = {
       enableViewOnlyToggle: false,
       classroomSupport: true
     },
-    featureDocsViewOnlyEnabled: false
+    featureDocsViewOnlyEnabled: false,
+    updateDocsViewOnly: () => {},
+    featureClassroomSupportEnabled: false,
+    updateClassroomSupport: () => {}
   }
 };
 
@@ -121,38 +121,49 @@ export const GoogleDocsAllExperimentalOptions: Story = {
       enableViewOnlyToggle: true,
       classroomSupport: true
     },
-    featureDocsViewOnlyEnabled: false
+    featureDocsViewOnlyEnabled: false,
+    updateDocsViewOnly: () => {},
+    featureClassroomSupportEnabled: false,
+    updateClassroomSupport: () => {}
   }
 };
 
-// export const GoogleSheets: Story = {
-//   args: {
-//     applicationName: "Sheets",
-//     isCustomZoomLevel: false,
-//     updateZoomLevel: () => {},
-//     zoomLevel: SHEETS_DEFAULT_ZOOM,
-//     zoomLevelCustom: "",
-//     zoomValues: SHEETS_ZOOM_VALUES,
-//     features: {
-//       customZoomInput: false,
-//       enableViewOnlyToggle: false
-//     },
-//     featureDocsViewOnlyEnabled: false
-//   }
-// };
+export const GoogleSheets: Story = {
+  args: {
+    applicationName: "Sheets",
+    isCustomZoomLevel: false,
+    updateZoomLevel: () => {},
+    zoomLevel: DOCS_DEFAULT_ZOOM,
+    zoomLevelCustom: "",
+    zoomValues: DOCS_ZOOM_VALUES,
+    features: {
+      customZoomInput: false,
+      enableViewOnlyToggle: false,
+      classroomSupport: false
+    },
+    featureDocsViewOnlyEnabled: false,
+    updateDocsViewOnly: () => {},
+    featureClassroomSupportEnabled: false,
+    updateClassroomSupport: () => {}
+  }
+};
 
-// export const GoogleSheetsCustomZoom: Story = {
-//   args: {
-//     applicationName: "Sheets",
-//     isCustomZoomLevel: true,
-//     updateZoomLevel: () => {},
-//     zoomLevel: "",
-//     zoomLevelCustom: "123%",
-//     zoomValues: SHEETS_ZOOM_VALUES,
-//     features: {
-//       customZoomInput: true,
-//       enableViewOnlyToggle: false
-//     },
-//     featureDocsViewOnlyEnabled: false
-//   }
-// };
+export const GoogleSheetsCustomZoom: Story = {
+  args: {
+    applicationName: "Sheets",
+    isCustomZoomLevel: true,
+    updateZoomLevel: () => {},
+    zoomLevel: "",
+    zoomLevelCustom: "123%",
+    zoomValues: SHEETS_ZOOM_VALUES,
+    features: {
+      customZoomInput: true,
+      enableViewOnlyToggle: false,
+      classroomSupport: false
+    },
+    featureDocsViewOnlyEnabled: false,
+    updateDocsViewOnly: () => {},
+    featureClassroomSupportEnabled: false,
+    updateClassroomSupport: () => {}
+  }
+};
