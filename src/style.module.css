@@ -115,3 +115,9 @@
 .supportMeLinkContainer {
   text-align: center;
 }
+
+.applicationExperimentalFeatureContent {
+  font-style: italic;
+  font-size: 0.75rem;
+  margin: 2px 0 0;
+}

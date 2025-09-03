@@ -138,5 +138,41 @@
   "popupSettingsExit": {
     "message": "Einstellungen beenden",
     "description": "Button text allowing user to exit settings and return to main part of extension"
+  },
+  "popupHomeViewExtensionSettingsButton": {
+    "message": "Erweiterungseinstellungen",
+    "description": "Button in der Startansicht zum Navigieren zu den Erweiterungseinstellungen."
+  },
+  "popupSettingsViewExperimentalFeaturesTitle": {
+    "message": "Experimentelle Funktionen",
+    "description": "Titel für den Abschnitt \"Experimentelle Funktionen\" in den Einstellungen."
+  },
+  "popupSettingsViewExperimentalFeaturesDescription": {
+    "message": "Diese Funktionen sind experimentell und funktionieren möglicherweise nicht wie erwartet. Sie sind noch nicht für den Produktionseinsatz bereit. Sie können sie unten aktivieren, wenn Sie möchten!",
+    "description": "Beschreibung für den Abschnitt \"Experimentelle Funktionen\" in den Einstellungen."
+  },
+  "popupSettingsViewExperimentalFeaturesDocsTitle": {
+    "message": "Docs",
+    "description": "Untertitel für die experimentellen Funktionen von Google Docs in den Einstellungen."
+  },
+  "popupSettingsViewExperimentalFeaturesDocsViewOnlyLabel": {
+    "message": "Nur Ansicht",
+    "description": "Beschriftung für das Kontrollkästchen \"Nur Ansicht\" für experimentelle Docs-Funktionen."
+  },
+  "popupSettingsViewExperimentalFeaturesDocsClassroomSupportLabel": {
+    "message": "Google Classroom-Unterstützung",
+    "description": "Beschriftung für das Kontrollkästchen \"Google Classroom-Unterstützung\" für experimentelle Docs-Funktionen."
+  },
+  "popupSettingsViewExperimentalFeaturesSheetsTitle": {
+    "message": "Sheets",
+    "description": "Untertitel für die experimentellen Funktionen von Google Sheets in den Einstellungen."
+  },
+  "popupSettingsViewExperimentalFeaturesSheetsClassroomSupportLabel": {
+    "message": "Google Classroom-Unterstützung",
+    "description": "Beschriftung für das Kontrollkästchen \"Google Classroom-Unterstützung\" für experimentelle Sheets-Funktionen."
+  },
+  "popupWorkspaceComponentSeeExtensionSettings": {
+    "message": "Siehe \"Erweiterungseinstellungen\" unten für experimentelle Funktionen.",
+    "description": "Text, der im Haupt-Popup angezeigt wird und den Benutzer darüber informiert, wo er experimentelle Funktionen finden kann."
   }
 }
