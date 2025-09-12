@@ -45,7 +45,7 @@
     "bundlesize2": "^0.0.35",
     "execa": "^8.0.1",
     "jsonfile": "^6.1.0",
-    "markdown-translator": "^0.4.5",
+    "md-translate": "https://github.com/playcanvas/markdown-translator",
     "prettier": "3.6.2",
     "prettier-plugin-organize-imports": "^4.2.0",
     "prop-types": "^15.8.1",
