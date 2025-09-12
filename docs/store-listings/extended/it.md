@@ -7,10 +7,12 @@ Questa estensione ti permetterà di impostare uno "zoom predefinito" per le segu
 
 Una volta impostato il livello di zoom desiderato, il livello di zoom verrà modificato ogni volta che carichi una Google Workspace Application.
 
-Se desideri aiutarmi a tradurlo per lingue diverse dall'inglese, per favore contattami!!
+Se desideri aiutarmi a tradurre questo per lingue diverse dall'inglese, per favore contattami!!
 
-Questa versione include funzionalità che consentono livelli di zoom personalizzati. Per fare ciò, l'estensione richiede permessi elevati.
+Questa versione include funzionalità che consentono livelli di zoom personalizzati, il che richiede permessi del browser elevati per funzionare. A causa di questo cambiamento, potresti vedere un messaggio che dice "'Default zoom for Google Workspace (Extended)' started debugging this browser".
+
+Per favore non preoccuparti. Questo è un messaggio normale che conferma che l'estensione funziona correttamente. Puoi ignorarlo tranquillamente.
 
 Non preoccuparti! Se non desideri accettare i permessi elevati, puoi usare la mia altra estensione, che consente l'uso di valori di zoom predefiniti. È disponibile qui (https://chrome.google.com/webstore/detail/google-workspace-zoom-def/nflkcdlimipkgbacnfnhfecjgmojhklo).
 
-Puoi sostenermi "offrendomi un caffè" su https://buymeacoffee.com/vernacchia.
+Puoi supportarmi "offrendomi un caffè" su https://buymeacoffee.com/vernacchia.

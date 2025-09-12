@@ -1,16 +1,18 @@
-¿Cansado de tener que cambiar el zoom en tus Google Workspace Applications cuando se cargan por primera vez porque el texto es demasiado pequeño? Bueno, esto debería ayudar.
+¿Cansado de tener que cambiar el zoom en sus aplicaciones de Google Workspace cuando se cargan por primera vez porque el texto es demasiado pequeño? Bueno, esto debería ayudar.
 
-Esta extensión te permitirá establecer un "zoom predeterminado" para las siguientes Google Workspace Applications:
+Esta extensión le permitirá establecer un "zoom predeterminado" para las siguientes aplicaciones de Google Workspace:
 
 - Google Docs
 - Google Sheets
 
-Una vez que configures tu nivel de zoom deseado, el nivel de zoom cambiará cada vez que cargues una Google Workspace Applications.
+Una vez que establezca su nivel de zoom deseado, el nivel de zoom se cambiará cada vez que cargue una aplicación de Google Workspace.
 
-Si te gustaría ayudarme a traducir esto a otros idiomas además del inglés, ¡¡por favor, ponte en contacto!!
+Si desea ayudarme a traducir esto a idiomas que no sean inglés, ¡¡por favor, póngase en contacto conmigo!!
 
-Esta versión incluye funcionalidad para permitir niveles de zoom personalizados. Para ello, la extensión requiere permisos elevados.
+Esta versión incluye funcionalidad para permitir niveles de zoom personalizados, lo que requiere permisos de navegador elevados para funcionar. Debido a este cambio, es posible que vea un mensaje que dice "'Default zoom for Google Workspace (Extended)' started debugging this browser".
 
-¡No te preocupes! Si no quieres aceptar los permisos elevados, puedes usar mi otra extensión, que permite el uso de valores de zoom predefinidos. Está disponible aquí (https://chrome.google.com/webstore/detail/google-workspace-zoom-def/nflkcdlimipkgbacnfnhfecjgmojhklo).
+Por favor, no se preocupe. Este es un mensaje normal que confirma que la extensión está funcionando correctamente. Puede ignorarlo con seguridad.
 
-Puedes apoyarme "invitándome a un café" en https://buymeacoffee.com/vernacchia.
+¡No se preocupe! Si no desea aceptar los permisos elevados, puede usar mi otra extensión, que permite el uso de valores de zoom predefinidos. Está disponible aquí (https://chrome.google.com/webstore/detail/google-workspace-zoom-def/nflkcdlimipkgbacnfnhfecjgmojhklo).
+
+Puede apoyarme "invitándome a un café" en https://buymeacoffee.com/vernacchia.
