@@ -1,16 +1,16 @@
-Google Workspace Applicationsを初めて読み込むたびに、テキストが小さすぎてズームを変更しなければならないことにうんざりしていませんか？これで解決するはずです。
+Google Workspace アプリケーションを初めて起動した際に、テキストが小さすぎてズームを変更しなければならないことにうんざりしていませんか？この拡張機能がお役に立ちます。
 
-この拡張機能を使用すると、以下のGoogle Workspace Applicationsに「デフォルトのズーム」を設定できます。
+この拡張機能を使用すると、以下の Google Workspace アプリケーションに「デフォルトのズーム」を設定できます。
 
-- Google Docs
-- Google Sheets
+- Google ドキュメント
+- Google スプレッドシート
 
-希望のズームレベルを設定すると、Google Workspace Applicationsを読み込むたびにズームレベルが変更されます。
+希望のズームレベルを設定すると、Google Workspace アプリケーションを読み込むたびにズームレベルが変更されます。
 
-もし、英語以外の言語に翻訳するのを手伝っていただける場合は、ぜひご連絡ください！！
+英語以外の言語への翻訳にご協力いただける場合は、ぜひご連絡ください。
 
-このバージョンには、カスタムズームレベルを可能にする機能が含まれています。これを行うには、拡張機能が昇格された権限を必要とします。
+このバージョンには、カスタムズームレベルを設定する機能が含まれています。この機能を使用するには、拡張機能に権限の昇格が必要です。
 
-ご心配なく！昇格された権限を受け入れたくない場合は、事前定義されたズーム値を使用できる別の拡張機能をご利用いただけます。こちらから入手できます (https://chrome.google.com/webstore/detail/google-workspace-zoom-def/nflkcdlimipkgbacnfnhfecjgmojhklo)。
+ご安心ください！権限の昇格を受け入れたくない場合は、事前に定義されたズーム値を使用できる別の拡張機能をご利用ください。こちらからダウンロードできます (https://chrome.google.com/webstore/detail/google-workspace-zoom-def/nflkcdlimipkgbacnfnhfecjgmojhklo)。
 
-https://buymeacoffee.com/vernacchia で「コーヒーをおごる」ことで私をサポートできます。
+https://buymeacoffee.com/vernacchia で「コーヒーを買って」いただくことで、私を応援することができます。

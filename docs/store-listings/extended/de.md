@@ -1,16 +1,16 @@
-Sind Sie es leid, den Zoom Ihrer Google Workspace Applications ändern zu müssen, wenn sie zum ersten Mal geladen werden, weil der Text zu klein ist? Nun, dies sollte helfen.
+Sind Sie es leid, den Zoom Ihrer Google Workspace-Anwendungen beim ersten Laden ändern zu müssen, weil der Text zu klein ist? Das sollte helfen.
 
-Diese Erweiterung ermöglicht es Ihnen, einen "Standard-Zoom" für die folgenden Google Workspace Applications einzustellen:
+Mit dieser Erweiterung können Sie einen Standardzoom für die folgenden Google Workspace-Anwendungen festlegen:
 
-- Google Docs
-- Google Sheets
+– Google Docs
+– Google Tabellen
 
-Sobald Sie Ihre gewünschte Zoomstufe eingestellt haben, wird die Zoomstufe jedes Mal geändert, wenn Sie eine Google Workspace Applications laden.
+Sobald Sie die gewünschte Zoomstufe eingestellt haben, wird diese beim Laden einer Google Workspace-Anwendung automatisch angepasst.
 
-Wenn Sie mir helfen möchten, dies für andere Sprachen als Englisch zu übersetzen, melden Sie sich bitte bei mir!!
+Wenn Sie mir bei der Übersetzung dieser Erweiterung für andere Sprachen als Englisch helfen möchten, melden Sie sich gerne bei mir!
 
-Diese Version enthält Funktionen, die benutzerdefinierte Zoomstufen ermöglichen. Dazu benötigt die Erweiterung erhöhte Berechtigungen.
+Diese Version ermöglicht benutzerdefinierte Zoomstufen. Dafür benötigt die Erweiterung erweiterte Berechtigungen.
 
-Keine Sorge! Wenn Sie die erhöhten Berechtigungen nicht akzeptieren möchten, können Sie meine andere Erweiterung verwenden, die die Verwendung von vordefinierten Zoomwerten ermöglicht. Sie ist hier verfügbar (https://chrome.google.com/webstore/detail/google-workspace-zoom-def/nflkcdlimipkgbacnfnhfecjgmojhklo).
+Keine Sorge! Wenn Sie die erweiterten Berechtigungen nicht akzeptieren möchten, können Sie meine andere Erweiterung verwenden, die die Verwendung vordefinierter Zoomwerte ermöglicht. Sie ist hier verfügbar (https://chrome.google.com/webstore/detail/google-workspace-zoom-def/nflkcdlimipkgbacnfnhfecjgmojhklo).
 
-Sie können mich unterstützen, indem Sie mir "einen Kaffee kaufen" unter https://buymeacoffee.com/vernacchia.
+Sie können mich unterstützen, indem Sie mir unter https://buymeacoffee.com/vernacchia einen Kaffee spendieren.

@@ -1,16 +1,16 @@
-¿Cansado de tener que cambiar el zoom en tus Google Workspace Applications cuando se cargan por primera vez porque el texto es demasiado pequeño? Bueno, esto debería ayudar.
+¿Cansado de tener que cambiar el zoom de tus aplicaciones de Google Workspace al cargarlas por primera vez porque el texto es demasiado pequeño? Esto te ayudará.
 
-Esta extensión te permitirá establecer un "zoom predeterminado" para las siguientes Google Workspace Applications:
+Esta extensión te permitirá configurar un zoom predeterminado para las siguientes aplicaciones de Google Workspace:
 
-- Google Docs
-- Google Sheets
+- Documentos de Google
+- Hojas de cálculo de Google
 
-Una vez que configures tu nivel de zoom deseado, el nivel de zoom cambiará cada vez que cargues una Google Workspace Applications.
+Una vez que configures el nivel de zoom deseado, este cambiará cada vez que cargues una aplicación de Google Workspace.
 
-Si te gustaría ayudarme a traducir esto a otros idiomas además del inglés, ¡¡por favor, ponte en contacto!!
+Si quieres ayudarme a traducir esto a otros idiomas, ¡contáctame!
 
-Esta versión incluye funcionalidad para permitir niveles de zoom personalizados. Para ello, la extensión requiere permisos elevados.
+Esta versión incluye la función de personalizar los niveles de zoom. Para ello, la extensión requiere permisos elevados.
 
-¡No te preocupes! Si no quieres aceptar los permisos elevados, puedes usar mi otra extensión, que permite el uso de valores de zoom predefinidos. Está disponible aquí (https://chrome.google.com/webstore/detail/google-workspace-zoom-def/nflkcdlimipkgbacnfnhfecjgmojhklo).
+¡No te preocupes! Si no quieres aceptar los permisos elevados, puedes usar mi otra extensión, que permite usar valores de zoom predefinidos. Está disponible aquí (https://chrome.google.com/webstore/detail/google-workspace-zoom-def/nflkcdlimitpkgbacnfnhfecjgmojhklo).
 
-Puedes apoyarme "invitándome a un café" en https://buymeacoffee.com/vernacchia.
+Puedes apoyarme invitándome a un café en https://buymeacoffee.com/vernacchia.
