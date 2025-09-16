@@ -1,14 +1,14 @@
-¿Cansado de tener que cambiar el zoom en tus Google Workspace Applications cuando se cargan por primera vez porque el texto es demasiado pequeño? Bueno, esto debería ayudar.
+¿Cansado de tener que cambiar el zoom de tus aplicaciones de Google Workspace al cargarlas por primera vez porque el texto es demasiado pequeño? Esto te ayudará.
 
-Esta extensión te permitirá establecer un "zoom predeterminado" para las siguientes Google Workspace Applications:
+Esta extensión te permitirá configurar un zoom predeterminado para las siguientes aplicaciones de Google Workspace:
 
-- Google Docs
-- Google Sheets
+- Documentos de Google
+- Hojas de cálculo de Google
 
-Una vez que configures tu nivel de zoom deseado, el nivel de zoom se cambiará cada vez que cargues una Google Workspace Application.
+Una vez que configures el nivel de zoom deseado, este cambiará cada vez que cargues una aplicación de Google Workspace.
 
-Si deseas ayudarme a traducir esto a otros idiomas además del inglés, ¡¡por favor contáctame!!
+Si quieres ayudarme a traducir esto a otros idiomas, ¡contáctame!
 
-Si deseas usar tus propios valores de zoom personalizados, por favor echa un vistazo a mi otra extensión (https://chrome.google.com/webstore/detail/google-workspace-zoom-def/mdgikencgfhineaememjagpkiclbdkka).
+Si quieres usar tus propios valores de zoom personalizados, consulta mi otra extensión (https://chrome.google.com/webstore/detail/google-workspace-zoom-def/mdgikencgfhineaememjagpkiclbdkka).
 
-Puedes apoyarme "invitándome un café" en https://buymeacoffee.com/vernacchia.
+Puedes ayudarme invitándome a un café en https://buymeacoffee.com/vernacchia.
