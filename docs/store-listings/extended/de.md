@@ -1,18 +1,18 @@
-Sind Sie es leid, den Zoom Ihrer Google Workspace Anwendungen beim ersten Laden ändern zu müssen, weil der Text zu klein ist? Nun, das sollte helfen.
+Sind Sie es leid, den Zoom Ihrer Google Workspace-Anwendungen beim ersten Laden ändern zu müssen, weil der Text zu klein ist? Das sollte helfen.
 
-Diese Erweiterung ermöglicht es Ihnen, einen "Standard-Zoom" für die folgenden Google Workspace Anwendungen festzulegen:
+Mit dieser Erweiterung können Sie einen Standardzoom für die folgenden Google Workspace-Anwendungen festlegen:
 
-- Google Docs
-- Google Sheets
+– Google Docs
+– Google Tabellen
 
-Sobald Sie die gewünschte Zoomstufe eingestellt haben, wird die Zoomstufe jedes Mal geändert, wenn Sie eine Google Workspace Anwendung laden.
+Sobald Sie die gewünschte Zoomstufe eingestellt haben, wird diese beim Laden einer Google Workspace-Anwendung automatisch angepasst.
 
-Wenn Sie mir helfen möchten, dies für andere Sprachen als Englisch zu übersetzen, melden Sie sich bitte bei mir!!
+Wenn Sie mir bei der Übersetzung für andere Sprachen als Englisch helfen möchten, melden Sie sich gerne!
 
-Diese Version enthält Funktionen, die benutzerdefinierte Zoomstufen ermöglichen, was erhöhte Browserberechtigungen erfordert, um zu funktionieren. Aufgrund dieser Änderung sehen Sie möglicherweise eine Meldung, die besagt "'Default zoom for Google Workspace (Extended)' hat diesen Browser debuggt".
+Diese Version ermöglicht benutzerdefinierte Zoomstufen, wofür erweiterte Browserberechtigungen erforderlich sind. Aufgrund dieser Änderung wird möglicherweise die Meldung „‚Standardzoom für Google Workspace (Erweitert)‘ hat mit der Fehlerbehebung in diesem Browser begonnen“ angezeigt.
 
-Bitte machen Sie sich keine Sorgen. Dies ist eine normale Meldung, die bestätigt, dass die Erweiterung ordnungsgemäß funktioniert. Sie können sie bedenkenlos ignorieren.
+Keine Sorge. Dies ist eine normale Meldung zur Bestätigung, dass die Erweiterung korrekt funktioniert. Sie können sie getrost ignorieren.
 
-Keine Sorge! Wenn Sie die erhöhten Berechtigungen nicht akzeptieren möchten, können Sie meine andere Erweiterung verwenden, die die Verwendung vordefinierter Zoomwerte ermöglicht. Sie ist hier verfügbar (https://chrome.google.com/webstore/detail/google-workspace-zoom-def/nflkcdlimipkgbacnfnhfecjgmojhklo).
+Keine Sorge! Wenn Sie die erweiterten Berechtigungen nicht akzeptieren möchten, können Sie meine andere Erweiterung verwenden, die die Verwendung vordefinierter Zoomwerte ermöglicht. Es ist hier verfügbar (https://chrome.google.com/webstore/detail/google-workspace-zoom-def/nflkcdlimipkgbacnfnhfecjgmojhklo).
 
-Sie können mich unterstützen, indem Sie mir "einen Kaffee kaufen" unter https://buymeacoffee.com/vernacchia.
+Sie können mich unterstützen, indem Sie mir einen Kaffee spendieren: https://buymeacoffee.com/vernacchia.

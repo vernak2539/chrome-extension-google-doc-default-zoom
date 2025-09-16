@@ -1,14 +1,14 @@
-Google Workspace アプリケーションが最初に読み込まれるときに、テキストが小さすぎるためズームを変更しなければならないことにうんざりしていませんか？これで解決するはずです。
+Google Workspace アプリケーションを初めて起動した時に、テキストが小さすぎてズームを変更しなければならないことにうんざりしていませんか？この拡張機能が役に立つはずです。
 
-この拡張機能を使用すると、以下の Google Workspace アプリケーションで「デフォルトズーム」を設定できます。
+この拡張機能を使用すると、以下の Google Workspace アプリケーションに「デフォルトのズーム」を設定できます。
 
-- Google Docs
-- Google Sheets
+- Google ドキュメント
+- Google スプレッドシート
 
-希望するズームレベルを設定すると、Google Workspace アプリケーションを読み込むたびにズームレベルが変更されます。
+希望のズームレベルを設定すると、Google Workspace アプリケーションを読み込むたびにズームレベルが変更されます。
 
-英語以外の言語にこれを翻訳するのを手伝っていただけるなら、ぜひご連絡ください！！
+英語以外の言語への翻訳にご協力いただける場合は、ぜひご連絡ください。
 
-独自のカスタムズーム値を使用したい場合は、私の他の拡張機能をご覧ください (https://chrome.google.com/webstore/detail/google-workspace-zoom-def/mdgikencgfhineaememjagpkiclbdkka)。
+独自のカスタムズーム値を使用したい場合は、私の別の拡張機能（https://chrome.google.com/webstore/detail/google-workspace-zoom-def/mdgikencgfhineaememjagpkiclbdkka）をご確認ください。
 
-https://buymeacoffee.com/vernacchia で「コーヒーをおごる」ことで私をサポートできます。
+https://buymeacoffee.com/vernacchia で「コーヒーを買って」いただくことで、私をサポートしていただけます。

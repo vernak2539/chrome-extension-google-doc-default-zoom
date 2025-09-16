@@ -44,3 +44,5 @@ keys.md
 
 # backup files when using sed
 *.bak
+
+.gcloud
