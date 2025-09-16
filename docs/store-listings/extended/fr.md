@@ -7,7 +7,7 @@ Cette extension vous permet de définir un zoom par défaut pour les application
 
 Une fois le niveau de zoom défini, il sera modifié à chaque chargement d'une application Google Workspace.
 
-Pour m'aider à traduire ce document dans d'autres langues que l'anglais, n'hésitez pas à me contacter !
+Si vous souhaitez m'aider à traduire ce document pour d'autres langues que l'anglais, n'hésitez pas à me contacter !
 
 Cette version inclut une fonctionnalité permettant de personnaliser les niveaux de zoom, ce qui nécessite des autorisations de navigateur élevées. En raison de cette modification, un message indiquant « Zoom par défaut pour Google Workspace (Étendu) » a commencé à déboguer ce navigateur peut s'afficher.
 
