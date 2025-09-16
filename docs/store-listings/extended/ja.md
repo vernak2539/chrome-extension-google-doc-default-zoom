@@ -9,8 +9,10 @@ Google Workspace アプリケーションを初めて起動した際に、テキ
 
 英語以外の言語への翻訳にご協力いただける場合は、ぜひご連絡ください。
 
-このバージョンには、カスタムズームレベルを設定する機能が含まれています。この機能を使用するには、拡張機能に権限の昇格が必要です。
+このバージョンには、カスタムズームレベルを設定する機能が含まれています。この機能を使用するには、ブラウザの権限の昇格が必要です。この変更により、「『Google Workspace のデフォルトのズーム（拡張）』がこのブラウザのデバッグを開始しました」というメッセージが表示される場合があります。
 
-ご安心ください！権限の昇格を受け入れたくない場合は、事前に定義されたズーム値を使用できる別の拡張機能をご利用ください。こちらからダウンロードできます (https://chrome.google.com/webstore/detail/google-workspace-zoom-def/nflkcdlimipkgbacnfnhfecjgmojhklo)。
+ご安心ください。これは拡張機能が正常に動作していることを確認する正常なメッセージです。無視していただいて構いません。
 
-https://buymeacoffee.com/vernacchia で「コーヒーを買って」いただくことで、私を応援することができます。
+ご安心ください！権限の昇格を受け入れたくない場合は、事前に定義されたズーム値を使用できる別の拡張機能をご利用ください。こちらから入手できます（https://chrome.google.com/webstore/detail/google-workspace-zoom-def/nflkcdlimipkgbacnfnhfecjgmojhklo）。
+
+https://buymeacoffee.com/vernacchia で「コーヒーを買って」いただくことで、私を応援していただけます。
