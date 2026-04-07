@@ -1,10 +1,11 @@
 import { Storage } from "@plasmohq/storage";
+import { useStorage } from "@plasmohq/storage/hook";
 import { useState } from "react";
 import SettingsIcon from "react:~/assets/popup_icons/settings-inverted.svg";
 import Button from "src/components/Button";
 import type { AppStorageState, StorageKey } from "src/types";
 import localize from "src/utils/localize";
-import { SCHEMA_VERSION_KEY } from "src/utils/storage-migration";
+import { CURRENT_SCHEMA_VERSION, SCHEMA_VERSION_KEY } from "src/utils/storage-migration";
 
 interface Props {
   onHomeClick: () => void;
@@ -96,6 +97,15 @@ const SettingsView = ({ onHomeClick }: Props) => {
           </section>
         </>
       )}
+
+      <p style={{
+        marginTop: 16,
+        fontSize: 11,
+        color: "#999",
+        textAlign: "center"
+      }}>
+        Storage v{CURRENT_SCHEMA_VERSION}
+      </p>
     </div>
   );
 };
