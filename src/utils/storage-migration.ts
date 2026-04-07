@@ -15,11 +15,7 @@
  *   "schemaVersion" -> 2
  */
 
-export interface AppStorageState {
-  zoomValue: string;
-  viewOnly: boolean;
-  classroomSupport: boolean;
-}
+import type { AppStorageState } from "src/types";
 
 export interface V1FlatStorageData {
   "zoomValue"?: string;

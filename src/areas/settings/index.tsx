@@ -5,7 +5,7 @@ import SettingsIcon from "react:~/assets/popup_icons/settings-inverted.svg";
 import Button from "src/components/Button";
 import type { AppStorageState, StorageKey } from "src/types";
 import localize from "src/utils/localize";
-import { CURRENT_SCHEMA_VERSION, SCHEMA_VERSION_KEY } from "src/utils/storage-migration";
+import { SCHEMA_VERSION_KEY } from "src/utils/storage-migration";
 
 interface Props {
   onHomeClick: () => void;
@@ -19,6 +19,7 @@ const DEFAULT_APP_STATE: AppStorageState = {
 
 const SettingsView = ({ onHomeClick }: Props) => {
   const storage = new Storage();
+  const [schemaVersion] = useStorage<number>(SCHEMA_VERSION_KEY, 1);
   const storageKeys: StorageKey[] = ["docs", "sheets"];
   const [isExitEnabled, setIsExitEnabled] = useState(true);
 
@@ -104,7 +105,7 @@ const SettingsView = ({ onHomeClick }: Props) => {
         color: "#999",
         textAlign: "center"
       }}>
-        Storage v{CURRENT_SCHEMA_VERSION}
+        Storage v{schemaVersion}
       </p>
     </div>
   );

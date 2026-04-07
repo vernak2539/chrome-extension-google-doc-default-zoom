@@ -10,11 +10,25 @@ import {
 
 const storage = new Storage();
 
+async function hasExistingV2Data() {
+  const [docs, sheets] = await Promise.all([
+    storage.get("docs"),
+    storage.get("sheets")
+  ]);
+
+  return docs !== undefined || sheets !== undefined;
+}
+
 async function runMigrations() {
   const currentVersion =
     (await storage.get<number>(SCHEMA_VERSION_KEY)) ?? 0;
 
   if (currentVersion < CURRENT_SCHEMA_VERSION) {
+    if (await hasExistingV2Data()) {
+      await storage.set(SCHEMA_VERSION_KEY, CURRENT_SCHEMA_VERSION);
+      return;
+    }
+    
     await migrateToV2();
     await storage.set(SCHEMA_VERSION_KEY, CURRENT_SCHEMA_VERSION);
   }
