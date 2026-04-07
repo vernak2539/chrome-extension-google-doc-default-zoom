@@ -1,6 +1,5 @@
 import type { Scope } from "@sentry/react";
 import packageJson from "../../../package.json";
-import { CURRENT_SCHEMA_VERSION } from "./../../utils/storage-migration";
 
 export const SENTRY_BASE_CONFIG = {
   dsn: process.env.PLASMO_PUBLIC_SENTRY_DSN,
@@ -18,8 +17,7 @@ export const SENTRY_BASE_CONFIG = {
 };
 
 export const getDefaultTags = () => ({
-  extension: packageJson.name,
-  storageSchemaVersion: CURRENT_SCHEMA_VERSION
+  extension: packageJson.name
 });
 
 export const setLocaleOnScope = (scope: Scope) => {
