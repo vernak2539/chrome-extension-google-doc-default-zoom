@@ -23,7 +23,7 @@ import {
 export abstract class AbstractBaseStrategy {
   protected readonly config: UiStrategyConfig;
   public abstract isUIPreview(href: string): boolean;
-  protected abstract performZoom(zoomValue: string): void;
+  protected abstract performZoom(zoomValue: string): void | Promise<void>;
 
   constructor(config: UiStrategyConfig) {
     this.config = config;
@@ -41,7 +41,7 @@ export abstract class AbstractBaseStrategy {
       return;
     }
 
-    this.performZoom(zoomValue);
+    await this.performZoom(zoomValue);
   }
 
   protected getZoomValueFromStorage() {

@@ -87,7 +87,12 @@ const main = () => {
   }
 
   const elementToWatchSelector = strategy.getIsPageLoadingElementToWatch();
-  const executeStrategy = () => strategy.execute();
+  const executeStrategy = () => {
+    strategy.execute().catch((err) => {
+      logger.error("Error executing strategy:", err);
+      sentryScope.captureException(err);
+    });
+  };
 
   try {
     const isPageLoading = strategy.getIsPageLoading();
