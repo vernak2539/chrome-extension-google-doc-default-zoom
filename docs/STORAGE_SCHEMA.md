@@ -5,7 +5,7 @@ Over time, this extension has migrated its Chrome storage structure (`chrome.sto
 ## Schema Versions
 
 ### V2 Storage (Current)
-Implemented around April 2026. This version groups configurations securely under per-application identifiers (`docs`, `sheets`). 
+Implemented around April 2026. This version groups configurations under per-application identifiers (`docs`, `sheets`). 
 
 **Why we migrated:**
 The legacy flat-key structure created massive clutter in the root storage space. By encapsulating state within top-level application boundaries, we pave the way for supporting future tools (like Slides) without risking key conflicts or having to parse delimited string keys constantly. V1 keys are automatically migrated to this structure dynamically within the background script upon startup.

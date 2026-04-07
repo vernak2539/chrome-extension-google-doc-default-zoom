@@ -5,6 +5,7 @@ import SettingsIcon from "react:~/assets/popup_icons/settings-inverted.svg";
 import Button from "src/components/Button";
 import type { AppStorageState, StorageKey } from "src/types";
 import localize from "src/utils/localize";
+import { createSentryClient } from "src/utils/sentry/base";
 import { SCHEMA_VERSION_KEY } from "src/utils/storage-migration";
 
 interface Props {
@@ -32,9 +33,7 @@ const SettingsView = ({ onHomeClick }: Props) => {
     try {
       await Promise.all(resetPromises);
     } catch (error) {
-      import("src/utils/sentry/base").then(({ createSentryClient }) => {
-        createSentryClient("popup").captureException(error);
-      });
+      createSentryClient("popup").captureException(error);
       console.error("Failed to reset storage", error);
     } finally {
       setIsExitEnabled(true);

@@ -40,14 +40,16 @@ const createNewSentryClient = (
   // Asynchronously stamp the actual storage schema version on the scope
   import("@plasmohq/storage")
     .then(({ Storage }) => {
-      return new Storage().get<number>("schemaVersion");
+      return import("src/utils/storage-migration").then(
+        ({ SCHEMA_VERSION_KEY }) =>
+          new Storage().get<number>(SCHEMA_VERSION_KEY)
+      );
     })
     .then((version) => {
       sentryScope.setTag("storageSchemaVersion", version ?? 1);
     })
-    .catch((error) => {
-      // Best-effort tagging only; log silently
-      console.error("Failed to dynamically tag storageSchemaVersion", error);
+    .catch(() => {
+      // Best-effort tagging; swallow import/storage failures
     });
 
   return sentryScope;
