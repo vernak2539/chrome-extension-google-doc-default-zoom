@@ -1,4 +1,3 @@
-import { getFeatureViewOnlyStorageKey } from "src/constants";
 import { getClosestZoomValue } from "src/utils/get-closest-zoom-value";
 import { getFeatureViewOnlyFromStorage } from "src/utils/get-feature-view-only-from-storage";
 import localize from "src/utils/localize";
@@ -51,9 +50,7 @@ class DocsStrategy extends AbstractBaseStrategy {
       return false;
     }
 
-    const storageKey = getFeatureViewOnlyStorageKey(this.config.storageKey);
-
-    return await getFeatureViewOnlyFromStorage(storageKey);
+    return await getFeatureViewOnlyFromStorage(this.config.storageKey);
   }
 
   private uiExecuteDocsViewOnlyFlow(zoomValue: string) {

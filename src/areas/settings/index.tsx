@@ -2,29 +2,31 @@ import { Storage } from "@plasmohq/storage";
 import { useState } from "react";
 import SettingsIcon from "react:~/assets/popup_icons/settings-inverted.svg";
 import Button from "src/components/Button";
-import { getFeatureViewOnlyStorageKey } from "src/constants";
-import type { StorageKey } from "src/types";
+import type { AppStorageState, StorageKey } from "src/types";
 import localize from "src/utils/localize";
 
 interface Props {
   onHomeClick: () => void;
 }
 
+const DEFAULT_APP_STATE: AppStorageState = {
+  zoomValue: "100%",
+  viewOnly: false,
+  classroomSupport: false
+};
+
 const SettingsView = ({ onHomeClick }: Props) => {
   const storage = new Storage();
-  const storageKeys: StorageKey[] = ["zoomValue", "sheets:zoomValue"];
+  const storageKeys: StorageKey[] = ["docs", "sheets"];
   const [isExitEnabled, setIsExitEnabled] = useState(true);
 
   const onResetZoomSettingsClick = () => {
-    setIsExitEnabled(true);
-    const resetProimises = storageKeys.flatMap((key) => {
-      return [
-        storage.remove(key),
-        storage.remove(getFeatureViewOnlyStorageKey(key))
-      ];
-    });
+    setIsExitEnabled(false);
+    const resetPromises = storageKeys.map((key) =>
+      storage.set(key, { ...DEFAULT_APP_STATE })
+    );
 
-    Promise.all(resetProimises).then(() => {
+    Promise.all(resetPromises).then(() => {
       setIsExitEnabled(true);
     });
   };

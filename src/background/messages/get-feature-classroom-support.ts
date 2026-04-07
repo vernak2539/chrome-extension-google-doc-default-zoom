@@ -1,6 +1,7 @@
 import type { PlasmoMessaging } from "@plasmohq/messaging";
 import { Storage } from "@plasmohq/storage";
 import type {
+  AppStorageState,
   GetFeatureClassroomSupportRequestBody,
   GetFeatureClassroomSupportResponseBody
 } from "src/types";
@@ -14,10 +15,10 @@ const handler: PlasmoMessaging.MessageHandler<
   GetFeatureClassroomSupportResponseBody
 > = async (req, res) => {
   try {
-    const enabled = await storage.get<boolean>(req.body.storageKey);
+    const appState = await storage.get<AppStorageState>(req.body.storageKey);
 
     res.send({
-      enabled
+      enabled: appState?.classroomSupport ?? false
     });
   } catch (err) {
     sentryScope.captureException(err);

@@ -1,6 +1,7 @@
 import type { PlasmoMessaging } from "@plasmohq/messaging";
 import { Storage } from "@plasmohq/storage";
 import type {
+  AppStorageState,
   GetZoomValueRequestBody,
   GetZoomValueResponseBody
 } from "src/types";
@@ -14,10 +15,10 @@ const handler: PlasmoMessaging.MessageHandler<
   GetZoomValueResponseBody
 > = async (req, res) => {
   try {
-    const zoomValue = await storage.get<string>(req.body.storageKey);
+    const appState = await storage.get<AppStorageState>(req.body.storageKey);
 
     res.send({
-      zoomValue
+      zoomValue: appState?.zoomValue
     });
   } catch (err) {
     sentryScope.captureException(err);

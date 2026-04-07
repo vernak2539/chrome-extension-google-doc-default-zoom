@@ -3,8 +3,7 @@ import { getClosestZoomValue } from "src/utils/get-closest-zoom-value";
 import { getFeatureClassroomSupportFromStorage } from "src/utils/get-feature-classroom-support-from-storage";
 import { isGoogleClassroomSubmittedAssignment } from "../utils/classroom-helpers";
 import {
-  RELAY_EXECUTE_ENTER,
-  getFeatureClassroomSupportStorageKey
+  RELAY_EXECUTE_ENTER
 } from "../constants";
 import type {
   ExecuteEnterRequestBody,
@@ -60,12 +59,8 @@ export abstract class AbstractBaseStrategy {
       return false;
     }
 
-    const classroomSupportStorageKey = getFeatureClassroomSupportStorageKey(
-      this.config.storageKey
-    );
-
     const enabled = await getFeatureClassroomSupportFromStorage(
-      classroomSupportStorageKey
+      this.config.storageKey
     );
 
     return enabled;
