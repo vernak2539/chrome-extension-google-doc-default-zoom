@@ -56,8 +56,7 @@ const SettingsView = ({ onHomeClick }: Props) => {
       await storage.set("sheets:zoomValue:classroomSupport", sheetsState.classroomSupport);
     }
 
-    // Reload so the background script re-runs migration
-    window.location.reload();
+    alert("Downgraded to V1 flat keys. The background script will auto-migrate to V2 the next time the extension restarts (e.g. from chrome://extensions).");
   };
 
   return (
