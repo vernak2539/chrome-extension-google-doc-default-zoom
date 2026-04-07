@@ -1,6 +1,7 @@
 import { sendToBackgroundViaRelay } from "@plasmohq/messaging";
 import { getClosestZoomValue } from "src/utils/get-closest-zoom-value";
 import { getFeatureClassroomSupportFromStorage } from "src/utils/get-feature-classroom-support-from-storage";
+import { isGoogleClassroomSubmittedAssignment } from "../utils/classroom-helpers";
 import {
   RELAY_EXECUTE_ENTER,
   getFeatureClassroomSupportStorageKey
@@ -19,20 +20,28 @@ import {
   getDOMElementAndClick
 } from "../utils/ui-helpers";
 
-export interface AbstractBaseStrategyImpl {
-  execute: () => void;
-  getIsPageLoading: () => boolean;
-  getIsPageLoadingElementToWatch: () => string;
-  isUIPreview: (href: string) => boolean;
-}
-
-export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
+export abstract class AbstractBaseStrategy {
   protected readonly config: UiStrategyConfig;
-  public abstract execute(): void;
   public abstract isUIPreview(href: string): boolean;
+  protected abstract performZoom(zoomValue: string): void;
 
-  protected constructor(config: UiStrategyConfig) {
+  constructor(config: UiStrategyConfig) {
     this.config = config;
+  }
+
+  public async execute() {
+    const isGoogleClassroomDocument = isGoogleClassroomSubmittedAssignment();
+
+    const [zoomValue, isGoogleClassroomEnabled] = await Promise.all([
+      this.getZoomValueFromStorage(),
+      this.isGoogleClassroomEnabled()
+    ]);
+
+    if (isGoogleClassroomDocument && !isGoogleClassroomEnabled) {
+      return;
+    }
+
+    this.performZoom(zoomValue);
   }
 
   protected getZoomValueFromStorage() {
@@ -167,22 +176,14 @@ export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
     return Boolean(this.config.features[feature]);
   }
 
-  private getZoomSelectElement(): Element {
-    const zoomSelect = getDOMElement(
+  public getIsPageLoadingElementToWatch(): string {
+    const zoomElement = getDOMElement(
       this.config.uiElements.clickableZoomSelectId
     );
 
-    return zoomSelect;
-  }
-
-  public getIsPageLoadingElementToWatch(): string {
-    const zoomSelector = this.getZoomSelectElement();
-
-    if (zoomSelector) {
-      return this.config.uiElements.toolbarId;
-    }
-
-    return this.config.uiElements.menubarViewTabId;
+    return zoomElement
+      ? this.config.uiElements.toolbarId
+      : this.config.uiElements.menubarViewTabId;
   }
 
   /*
@@ -195,7 +196,9 @@ export abstract class AbstractBaseStrategy implements AbstractBaseStrategyImpl {
    * If there is no zoom selector, we have to use the menu bar to indicate if the page is loading or not
    */
   public getIsPageLoading() {
-    const zoomSelect = this.getZoomSelectElement();
+    const zoomSelect = getDOMElement(
+      this.config.uiElements.clickableZoomSelectId
+    );
 
     if (zoomSelect) {
       return zoomSelect.classList.contains(

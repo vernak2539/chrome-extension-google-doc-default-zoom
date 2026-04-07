@@ -9,6 +9,7 @@ import {
   SELECTOR_PAGE_HEADER,
   workspaceAppUiStrategyConfigs
 } from "src/constants";
+import { AbstractBaseStrategy } from "src/strategies/base";
 import DocsStrategy from "src/strategies/docs";
 import SheetsStrategy from "src/strategies/sheets";
 import { isGoogleClassroomDomain } from "src/utils/classroom-helpers";
@@ -67,7 +68,7 @@ const main = () => {
     return;
   }
 
-  let strategy: DocsStrategy | SheetsStrategy;
+  let strategy: AbstractBaseStrategy;
 
   switch (currentApp) {
     case "Docs":
