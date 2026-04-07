@@ -1,5 +1,4 @@
 import { getFeatureViewOnlyStorageKey } from "src/constants";
-import { isGoogleClassroomSubmittedAssignment } from "src/utils/classroom-helpers";
 import { getClosestZoomValue } from "src/utils/get-closest-zoom-value";
 import { getFeatureViewOnlyFromStorage } from "src/utils/get-feature-view-only-from-storage";
 import localize from "src/utils/localize";
@@ -9,36 +8,17 @@ import {
   getDOMElement,
   getDOMElementAndClick
 } from "src/utils/ui-helpers";
-import type { UiStrategyConfig } from "../types";
-import type { AbstractBaseStrategyImpl } from "./base";
 import { AbstractBaseStrategy } from "./base";
 
-class DocsStrategy
-  extends AbstractBaseStrategy
-  implements AbstractBaseStrategyImpl
-{
-  constructor(config: UiStrategyConfig) {
-    super(config);
-  }
+class DocsStrategy extends AbstractBaseStrategy {
+  protected async performZoom(zoomValue: string) {
+    const isViewOnlyEnabled = await this.getIsViewOnlyEnabled();
 
-  public execute() {
-    const isGoogleClassroomDocument = isGoogleClassroomSubmittedAssignment();
-
-    Promise.all([
-      this.getZoomValueFromStorage(),
-      this.getIsViewOnlyEnabled(),
-      this.isGoogleClassroomEnabled()
-    ]).then(([zoomValue, isViewOnlyEnabled, isGoogleClassroomEnabled]) => {
-      if (isGoogleClassroomDocument && !isGoogleClassroomEnabled) {
-        return;
-      }
-
-      if (isViewOnlyEnabled && this.isUIViewOnly()) {
-        this.uiExecuteDocsViewOnlyFlow(zoomValue);
-      } else {
-        this.uiExecuteFlow(zoomValue);
-      }
-    });
+    if (isViewOnlyEnabled && this.isUIViewOnly()) {
+      this.uiExecuteDocsViewOnlyFlow(zoomValue);
+    } else {
+      this.uiExecuteFlow(zoomValue);
+    }
   }
 
   /**
@@ -47,15 +27,7 @@ class DocsStrategy
    * example preview URL: "/document/d/XXXX/preview"
    */
   public isUIPreview(href: string): boolean {
-    const { pathname } = new URL(href);
-
-    const docsPreviewRegex = /\/preview$/;
-
-    if (docsPreviewRegex.test(pathname)) {
-      return true;
-    }
-
-    return false;
+    return /\/preview$/.test(new URL(href).pathname);
   }
 
   /*
