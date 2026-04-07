@@ -8,7 +8,10 @@ import {
   type V1FlatStorageData
 } from "src/utils/storage-migration";
 
+import { createSentryClient } from "src/utils/sentry/base";
+
 const storage = new Storage();
+const sentryScope = createSentryClient("background");
 
 async function hasExistingV2Data() {
   const [docs, sheets] = await Promise.all([
@@ -58,4 +61,7 @@ async function migrateToV2() {
   }
 }
 
-runMigrations();
+void runMigrations().catch((error) => {
+  console.error("Failed to run storage migrations", error);
+  sentryScope.captureException(error);
+});

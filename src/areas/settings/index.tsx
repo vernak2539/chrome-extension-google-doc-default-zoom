@@ -23,15 +23,22 @@ const SettingsView = ({ onHomeClick }: Props) => {
   const storageKeys: StorageKey[] = ["docs", "sheets"];
   const [isExitEnabled, setIsExitEnabled] = useState(true);
 
-  const onResetZoomSettingsClick = () => {
+  const onResetZoomSettingsClick = async () => {
     setIsExitEnabled(false);
     const resetPromises = storageKeys.map((key) =>
       storage.set(key, { ...DEFAULT_APP_STATE })
     );
 
-    Promise.all(resetPromises).then(() => {
+    try {
+      await Promise.all(resetPromises);
+    } catch (error) {
+      import("src/utils/sentry/base").then(({ createSentryClient }) => {
+        createSentryClient("popup").captureException(error);
+      });
+      console.error("Failed to reset storage", error);
+    } finally {
       setIsExitEnabled(true);
-    });
+    }
   };
 
   const onDowngradeToV1Click = async () => {

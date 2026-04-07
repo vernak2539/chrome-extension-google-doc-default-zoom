@@ -18,7 +18,7 @@ const handler: PlasmoMessaging.MessageHandler<
     const appState = await storage.get<AppStorageState>(req.body.storageKey);
 
     res.send({
-      zoomValue: appState?.zoomValue ?? ""
+      zoomValue: appState?.zoomValue ?? "100%"
     });
   } catch (err) {
     sentryScope.captureException(err);
