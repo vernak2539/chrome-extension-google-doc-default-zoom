@@ -4,6 +4,7 @@ import SettingsIcon from "react:~/assets/popup_icons/settings-inverted.svg";
 import Button from "src/components/Button";
 import type { AppStorageState, StorageKey } from "src/types";
 import localize from "src/utils/localize";
+import { SCHEMA_VERSION_KEY } from "src/utils/storage-migration";
 
 interface Props {
   onHomeClick: () => void;
@@ -31,6 +32,32 @@ const SettingsView = ({ onHomeClick }: Props) => {
     });
   };
 
+  const onDowngradeToV1Click = async () => {
+    // Read current V2 state before deleting
+    const docsState = await storage.get<AppStorageState>("docs");
+    const sheetsState = await storage.get<AppStorageState>("sheets");
+
+    // Delete V2 keys
+    await storage.remove("docs");
+    await storage.remove("sheets");
+    await storage.remove(SCHEMA_VERSION_KEY);
+
+    // Recreate V1 flat keys from the current state
+    if (docsState) {
+      await storage.set("zoomValue", docsState.zoomValue);
+      await storage.set("zoomValue:viewOnly", docsState.viewOnly);
+      await storage.set("zoomValue:classroomSupport", docsState.classroomSupport);
+    }
+    if (sheetsState) {
+      await storage.set("sheets:zoomValue", sheetsState.zoomValue);
+      await storage.set("sheets:zoomValue:viewOnly", sheetsState.viewOnly);
+      await storage.set("sheets:zoomValue:classroomSupport", sheetsState.classroomSupport);
+    }
+
+    // Reload so the background script re-runs migration
+    window.location.reload();
+  };
+
   return (
     <div>
       <h2 style={{ display: "flex", alignItems: "center" }}>
@@ -54,8 +81,24 @@ const SettingsView = ({ onHomeClick }: Props) => {
         isDisabled={!isExitEnabled}>
         {localize("popupSettingsExit")}
       </Button>
+
+      {process.env.NODE_ENV === "development" && (
+        <>
+          <br />
+          <hr />
+          <br />
+          <section>
+            <h3>🛠 Dev Tools</h3>
+            <p>Downgrade storage schema to V1 format (flat keys) and reload to test auto-migration.</p>
+            <Button variant="danger" onPress={onDowngradeToV1Click}>
+              Downgrade to V1 Format
+            </Button>
+          </section>
+        </>
+      )}
     </div>
   );
 };
 
 export default SettingsView;
+
