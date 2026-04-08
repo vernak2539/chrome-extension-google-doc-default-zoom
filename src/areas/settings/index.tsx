@@ -110,7 +110,7 @@ const SettingsView = ({ onHomeClick }: Props) => {
         color: "#595959",
         textAlign: "center"
       }}>
-        Storage v{schemaVersion}
+        {localize("popupSettingsStorageVersion").replace("{schemaVersion}", String(schemaVersion))}
       </p>
     </div>
   );

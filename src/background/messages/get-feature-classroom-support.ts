@@ -1,5 +1,6 @@
 import type { PlasmoMessaging } from "@plasmohq/messaging";
 import { Storage } from "@plasmohq/storage";
+import { migrationsReady } from "src/background/index";
 import type {
   AppStorageState,
   GetFeatureClassroomSupportRequestBody,
@@ -15,6 +16,7 @@ const handler: PlasmoMessaging.MessageHandler<
   GetFeatureClassroomSupportResponseBody
 > = async (req, res) => {
   try {
+    await migrationsReady;
     const appState = await storage.get<AppStorageState>(req.body.storageKey);
 
     res.send({

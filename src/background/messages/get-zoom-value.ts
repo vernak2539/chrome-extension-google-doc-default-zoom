@@ -1,5 +1,7 @@
 import type { PlasmoMessaging } from "@plasmohq/messaging";
 import { Storage } from "@plasmohq/storage";
+import { migrationsReady } from "src/background/index";
+import { workspaceApps } from "src/constants";
 import type {
   AppStorageState,
   GetZoomValueRequestBody,
@@ -15,10 +17,12 @@ const handler: PlasmoMessaging.MessageHandler<
   GetZoomValueResponseBody
 > = async (req, res) => {
   try {
+    await migrationsReady;
     const appState = await storage.get<AppStorageState>(req.body.storageKey);
+    const defaultZoom = workspaceApps.find((app) => app.storageKey === req.body.storageKey)?.defaultZoom ?? "100%";
 
     res.send({
-      zoomValue: appState?.zoomValue ?? "100%"
+      zoomValue: appState?.zoomValue ?? defaultZoom
     });
   } catch (err) {
     sentryScope.captureException(err);
