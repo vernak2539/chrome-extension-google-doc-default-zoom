@@ -28,9 +28,7 @@ const SettingsView = ({ onHomeClick }: Props) => {
 
   const onResetZoomSettingsClick = async () => {
     setIsExitEnabled(false);
-    const resetPromises = storageKeys.map((key) =>
-      storage.set(key, { ...DEFAULT_APP_STATE })
-    );
+    const resetPromises = storageKeys.map((key) => storage.set(key, { ...DEFAULT_APP_STATE }));
 
     try {
       await Promise.all(resetPromises);
@@ -67,11 +65,15 @@ const SettingsView = ({ onHomeClick }: Props) => {
         await storage.set("sheets:zoomValue:classroomSupport", sheetsState.classroomSupport);
       }
 
-      alert("Downgraded to V1 flat keys. The background script will auto-migrate to V2 the next time the extension restarts (e.g. from chrome://extensions).");
+      alert(
+        "Downgraded to V1 flat keys. The background script will auto-migrate to V2 the next time the extension restarts (e.g. from chrome://extensions)."
+      );
     } catch (error) {
       sentryScope.captureException(error);
       console.error("Failed to downgrade storage to V1 flat keys", error);
-      alert("Failed to downgrade to V1 flat keys. Storage may be partially updated; please retry or inspect extension storage before continuing.");
+      alert(
+        "Failed to downgrade to V1 flat keys. Storage may be partially updated; please retry or inspect extension storage before continuing."
+      );
     } finally {
       setIsExitEnabled(true);
     }
@@ -94,10 +96,7 @@ const SettingsView = ({ onHomeClick }: Props) => {
       <br />
       <hr />
       <br />
-      <Button
-        variant="primary"
-        onPress={onHomeClick}
-        isDisabled={!isExitEnabled}>
+      <Button variant="primary" onPress={onHomeClick} isDisabled={!isExitEnabled}>
         {localize("popupSettingsExit")}
       </Button>
 
@@ -108,7 +107,9 @@ const SettingsView = ({ onHomeClick }: Props) => {
           <br />
           <section>
             <h3>🛠 Dev Tools</h3>
-            <p>Downgrade storage schema to V1 format (flat keys) and reload to test auto-migration.</p>
+            <p>
+              Downgrade storage schema to V1 format (flat keys) and reload to test auto-migration.
+            </p>
             <Button variant="danger" onPress={onDowngradeToV1Click}>
               Downgrade to V1 Format
             </Button>
@@ -116,12 +117,13 @@ const SettingsView = ({ onHomeClick }: Props) => {
         </>
       )}
 
-      <p style={{
-        marginTop: 16,
-        fontSize: 12,
-        color: "#595959",
-        textAlign: "center"
-      }}>
+      <p
+        style={{
+          marginTop: 16,
+          fontSize: 12,
+          color: "#595959",
+          textAlign: "center"
+        }}>
         {localize("popupSettingsStorageVersion").replace("{schemaVersion}", String(schemaVersion))}
       </p>
     </div>
@@ -129,4 +131,3 @@ const SettingsView = ({ onHomeClick }: Props) => {
 };
 
 export default SettingsView;
-

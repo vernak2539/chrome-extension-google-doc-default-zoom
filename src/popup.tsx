@@ -2,12 +2,14 @@
 import { useState } from "react";
 import HomeView from "src/areas/home";
 import SettingsView from "src/areas/settings";
-import * as styles from "src/style.module.css";
 import type { CurrentView } from "src/types";
 import { isChrome, isEdge } from "src/utils/get-browser";
 import localize from "src/utils/localize";
 import { setupSentryReactErrorBoundary } from "src/utils/sentry/react-error-boundary";
+
 import { LoggerProvider } from "./utils/logger/context";
+
+import * as styles from "src/style.module.css";
 
 const withSentryErrorBoundary = setupSentryReactErrorBoundary("popup");
 const showExtensionVersionsTab = isChrome() || isEdge();

@@ -1,4 +1,5 @@
 import { describe, expect, test } from "vitest";
+
 import getCurrentApp from "./get-current-app";
 
 describe("getCurrentApp", () => {

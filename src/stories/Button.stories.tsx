@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { fn } from "storybook/test";
+
 import Button from "../components/Button";
 
 // import * as styles from "../style.module.css";

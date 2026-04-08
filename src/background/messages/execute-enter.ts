@@ -1,8 +1,5 @@
 import type { PlasmoMessaging } from "@plasmohq/messaging";
-import type {
-  ExecuteEnterRequestBody,
-  ExecuteEnterResponseBody
-} from "src/types";
+import type { ExecuteEnterRequestBody, ExecuteEnterResponseBody } from "src/types";
 import { createSentryClient } from "src/utils/sentry/base";
 
 const sentryScope = createSentryClient("background");

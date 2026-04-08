@@ -1,9 +1,11 @@
 import classnames from "classnames";
 import type { ChangeEvent } from "react";
 import { useId } from "react";
-import * as style from "../../style.module.css";
+
 import localize from "../../utils/localize";
 import type { ZoomInputProps } from "../shared-props";
+
+import * as style from "../../style.module.css";
 
 const SelectOptions = ({ zoomValues }) => {
   return (
@@ -23,21 +25,12 @@ const SelectOptionsWithNa = ({ zoomValues }) => {
   );
 };
 
-const SelectZoomInput = ({
-  zoomValue,
-  isCustomValue,
-  updateValue,
-  zoomValues
-}: ZoomInputProps) => {
+const SelectZoomInput = ({ zoomValue, isCustomValue, updateValue, zoomValues }: ZoomInputProps) => {
   return (
     <select
-      className={classnames(
-        style.applicationZoomInputBase,
-        style.applicationZoomSelectInput,
-        {
-          [style.applicationActiveZoomInput]: !isCustomValue
-        }
-      )}
+      className={classnames(style.applicationZoomInputBase, style.applicationZoomSelectInput, {
+        [style.applicationActiveZoomInput]: !isCustomValue
+      })}
       aria-label={localize("popupApplicationZoomSelectAriaLabel")}
       onChange={(event: ChangeEvent<HTMLSelectElement>) => {
         const newValue = event.target.value;

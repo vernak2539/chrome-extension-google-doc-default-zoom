@@ -2,11 +2,8 @@ import { getClosestZoomValue } from "src/utils/get-closest-zoom-value";
 import { getFeatureViewOnlyFromStorage } from "src/utils/get-feature-view-only-from-storage";
 import localize from "src/utils/localize";
 import { pause } from "src/utils/pause";
-import {
-  clickDOMElement,
-  getDOMElement,
-  getDOMElementAndClick
-} from "src/utils/ui-helpers";
+import { clickDOMElement, getDOMElement, getDOMElementAndClick } from "src/utils/ui-helpers";
+
 import { AbstractBaseStrategy } from "./base";
 
 class DocsStrategy extends AbstractBaseStrategy {
@@ -33,9 +30,7 @@ class DocsStrategy extends AbstractBaseStrategy {
    * This function determines if the page is in view only mode
    * */
   private isUIViewOnly() {
-    const zoomInputContainer = document.querySelector(
-      this.config.uiElements.clickableZoomSelectId
-    );
+    const zoomInputContainer = document.querySelector(this.config.uiElements.clickableZoomSelectId);
 
     return !zoomInputContainer;
   }
@@ -58,16 +53,11 @@ class DocsStrategy extends AbstractBaseStrategy {
     let finalZoomValue = zoomValue;
 
     // 1. check if zoom value is included in predefined list
-    const isPredefinedList = this.config.zoom.zoomValues.includes(
-      zoomValue as never
-    );
+    const isPredefinedList = this.config.zoom.zoomValues.includes(zoomValue as never);
 
     // 2. if not, find the closest zoom value in the predefined list (bias to towards higher)
     if (!isPredefinedList) {
-      finalZoomValue = getClosestZoomValue(
-        this.config.zoom.zoomValues,
-        zoomValue
-      );
+      finalZoomValue = getClosestZoomValue(this.config.zoom.zoomValues, zoomValue);
     }
 
     // 3. set zoom value (new flow)
@@ -85,20 +75,17 @@ class DocsStrategy extends AbstractBaseStrategy {
         }
 
         // fallback selector (trying to account for potential translation differences)
-        selector =
-          ".docs-icon-img-container.docs-icon-img.docs-icon-editors-ia-zoom-in";
+        selector = ".docs-icon-img-container.docs-icon-img.docs-icon-editors-ia-zoom-in";
         getDOMElementAndClick(selector);
       })
       .then(() => {
         // This is hacky, not sure a better way to do this...
         const fitValue = localize("popupDocsDropdownFitSelection");
-        const zoomValueContainer = getDOMElement(
-          `[aria-label^="${fitValue}"]`
-        ).closest(".goog-menu");
-
-        const zoomValueRows = zoomValueContainer.querySelectorAll(
-          ".goog-menuitem.apps-menuitem"
+        const zoomValueContainer = getDOMElement(`[aria-label^="${fitValue}"]`).closest(
+          ".goog-menu"
         );
+
+        const zoomValueRows = zoomValueContainer.querySelectorAll(".goog-menuitem.apps-menuitem");
 
         let newZoomLevelElement = null;
         for (let i = 0; i < zoomValueRows.length; i++) {

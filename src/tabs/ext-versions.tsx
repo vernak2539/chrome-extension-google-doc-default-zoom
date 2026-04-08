@@ -1,5 +1,6 @@
 import { isChrome, isEdge } from "src/utils/get-browser";
 import { setupSentryReactErrorBoundary } from "src/utils/sentry/react-error-boundary";
+
 import localize from "../utils/localize";
 
 const withSentryErrorBoundary = setupSentryReactErrorBoundary("tab");
@@ -28,9 +29,7 @@ const CheckList = ({ title, data }) => {
 };
 
 const RequiredPermissions = ({ permissions }) => {
-  const requiredPermissionsTitle = localize(
-    "ExtVersionsTabFunctionalityRequiredPermissionsHeader"
-  );
+  const requiredPermissionsTitle = localize("ExtVersionsTabFunctionalityRequiredPermissionsHeader");
 
   return (
     <>
@@ -111,9 +110,7 @@ const ExtensionVersionsPage = () => {
             title={localize("ExtVersionsTabFunctionalityIncludedHeader")}
             data={extExtendedFunctionality}
           />
-          <RequiredPermissions
-            permissions={["`debugger` (this is an elevated permission)"]}
-          />
+          <RequiredPermissions permissions={["`debugger` (this is an elevated permission)"]} />
           <small>
             <strong>
               <em>{localize("ExtVersionsTabExtendedPermissionExplanation")}</em>

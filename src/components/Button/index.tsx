@@ -1,5 +1,6 @@
 import classnames from "classnames";
 import { Button as BaseButton, type ButtonProps } from "react-aria-components";
+
 import * as styles from "./styles.module.css";
 
 interface Props extends ButtonProps {

@@ -1,4 +1,5 @@
 import { setupSentryReactErrorBoundary } from "src/utils/sentry/react-error-boundary";
+
 import localize from "../utils/localize";
 
 const withSentryErrorBoundary = setupSentryReactErrorBoundary("tab");

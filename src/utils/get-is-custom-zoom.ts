@@ -1,4 +1,5 @@
 import type { WorkspaceAppName } from "src/types";
+
 import { DOCS_ZOOM_VALUES, SHEETS_ZOOM_VALUES } from "../constants";
 
 const getIsCustomZoom = (application: WorkspaceAppName, zoomValue: any) => {

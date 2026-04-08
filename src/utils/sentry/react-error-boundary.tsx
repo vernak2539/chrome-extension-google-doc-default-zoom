@@ -2,6 +2,7 @@ import { getDefaultIntegrations, Scope } from "@sentry/browser";
 import { Component, type ComponentType, type ReactNode } from "react";
 import { ErrorFallback } from "src/components/ErrorFallback";
 import type { ExtensionFileSource } from "src/types";
+
 import { LoggerContext } from "../logger/context";
 import { createSentryClient } from "./base";
 
@@ -15,10 +16,7 @@ type ErrorBoundaryProps = {
   sentryScope: Scope;
 };
 
-class ErrorBoundaryWithSentry extends Component<
-  ErrorBoundaryProps,
-  ErrorBoundaryState
-> {
+class ErrorBoundaryWithSentry extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   static contextType = LoggerContext;
   logger!: React.ContextType<typeof LoggerContext>;
 

@@ -1,4 +1,5 @@
 import { describe, expect, test } from "vitest";
+
 import counterFactory from "./counter-factory";
 
 describe("counterFactory", () => {

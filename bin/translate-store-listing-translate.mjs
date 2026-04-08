@@ -1,7 +1,8 @@
-import pkg from "@google-cloud/translate";
 import fs from "node:fs";
 import path, { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+
+import pkg from "@google-cloud/translate";
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 const { Translate } = pkg.v2;
@@ -20,10 +21,7 @@ const argv = yargs(hideBin(process.argv))
   })
   .usage("Usage: $0 --listing=<value>")
   .example("$0 --listing=base", "Translate docs/store-listings/base/en.md")
-  .example(
-    "$0 --listing=extended",
-    "Translate docs/store-listings/extended/en.md"
-  )
+  .example("$0 --listing=extended", "Translate docs/store-listings/extended/en.md")
   .help()
   .alias("help", "h")
   .version(false).argv;
@@ -42,14 +40,8 @@ async function main() {
   const { listing } = argv;
 
   // Set source file and output directory based on listing type
-  const sourceFile = path.resolve(
-    __dirname,
-    `../docs/store-listings/${listing}/en.md`
-  );
-  const outputDir = path.resolve(
-    __dirname,
-    `../docs/store-listings/${listing}`
-  );
+  const sourceFile = path.resolve(__dirname, `../docs/store-listings/${listing}/en.md`);
+  const outputDir = path.resolve(__dirname, `../docs/store-listings/${listing}`);
 
   // Ensure source file exists
   if (!fs.existsSync(sourceFile)) {
@@ -82,10 +74,7 @@ async function main() {
 
       console.log(`✅ Successfully translated to ${lang.code}.md`);
     } catch (error) {
-      console.error(
-        `❌ Failed to translate to ${lang.name} (${lang.code}):`,
-        error.message
-      );
+      console.error(`❌ Failed to translate to ${lang.name} (${lang.code}):`, error.message);
       process.exit(1);
     }
 

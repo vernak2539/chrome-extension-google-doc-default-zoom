@@ -1,5 +1,6 @@
 import { DOCS_ZOOM_VALUES } from "src/constants";
 import { describe, expect, test, vi } from "vitest";
+
 import { getClosestZoomValue } from "./get-closest-zoom-value";
 
 vi.mock("src/utils/localize", (original) => {

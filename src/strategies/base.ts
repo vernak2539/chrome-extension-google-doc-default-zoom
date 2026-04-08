@@ -1,23 +1,18 @@
 import { sendToBackgroundViaRelay } from "@plasmohq/messaging";
 import { getClosestZoomValue } from "src/utils/get-closest-zoom-value";
 import { getFeatureClassroomSupportFromStorage } from "src/utils/get-feature-classroom-support-from-storage";
-import { isGoogleClassroomSubmittedAssignment } from "../utils/classroom-helpers";
-import {
-  RELAY_EXECUTE_ENTER
-} from "../constants";
+
+import { RELAY_EXECUTE_ENTER } from "../constants";
 import type {
   ExecuteEnterRequestBody,
   ExecuteEnterResponseBody,
   Feature,
   UiStrategyConfig
 } from "../types";
+import { isGoogleClassroomSubmittedAssignment } from "../utils/classroom-helpers";
 import getIsCustomZoom from "../utils/get-is-custom-zoom";
 import getZoomValueFromStorage from "../utils/get-zoom-value-from-storage";
-import {
-  clickDOMElement,
-  getDOMElement,
-  getDOMElementAndClick
-} from "../utils/ui-helpers";
+import { clickDOMElement, getDOMElement, getDOMElementAndClick } from "../utils/ui-helpers";
 
 export abstract class AbstractBaseStrategy {
   protected readonly config: UiStrategyConfig;
@@ -59,9 +54,7 @@ export abstract class AbstractBaseStrategy {
       return false;
     }
 
-    const enabled = await getFeatureClassroomSupportFromStorage(
-      this.config.storageKey
-    );
+    const enabled = await getFeatureClassroomSupportFromStorage(this.config.storageKey);
 
     return enabled;
   }
@@ -73,9 +66,7 @@ export abstract class AbstractBaseStrategy {
     }
 
     // get menu element responsible for changing zoom
-    const zoomInputContainer = getDOMElementAndClick(
-      this.config.uiElements.clickableZoomSelectId
-    );
+    const zoomInputContainer = getDOMElementAndClick(this.config.uiElements.clickableZoomSelectId);
 
     /*--EXTENDED_ONLY_START--*/
     const canUseCustomZoom =
@@ -93,13 +84,9 @@ export abstract class AbstractBaseStrategy {
     /*--EXTENDED_ONLY_END--*/
   }
 
-  private uiExecuteDefinedZoomFlow(
-    zoomInputContainer: Element,
-    zoomValue: string
-  ) {
+  private uiExecuteDefinedZoomFlow(zoomInputContainer: Element, zoomValue: string) {
     // get zoom menu element dropdown
-    const zoomInputContainerAriaOwns =
-      zoomInputContainer.attributes["aria-owns"].value; // this is the link
+    const zoomInputContainerAriaOwns = zoomInputContainer.attributes["aria-owns"].value; // this is the link
     const zoomInputSelect = getDOMElement(
       `.goog-menu.goog-menu-vertical[aria-activedescendant="${zoomInputContainerAriaOwns}"]`
     );
@@ -127,32 +114,24 @@ export abstract class AbstractBaseStrategy {
   }
 
   /*--EXTENDED_ONLY_START--*/
-  private uiExecuteCustomZoomFlow(
-    zoomInputContainer: Element,
-    zoomValue: string
-  ) {
+  private uiExecuteCustomZoomFlow(zoomInputContainer: Element, zoomValue: string) {
     const zoomInput = zoomInputContainer.querySelector("input");
     zoomInput.focus();
     zoomInput.select();
 
-    sendToBackgroundViaRelay<ExecuteEnterRequestBody, ExecuteEnterResponseBody>(
-      {
-        name: RELAY_EXECUTE_ENTER,
-        body: {
-          zoomValue
-        }
+    sendToBackgroundViaRelay<ExecuteEnterRequestBody, ExecuteEnterResponseBody>({
+      name: RELAY_EXECUTE_ENTER,
+      body: {
+        zoomValue
       }
-    ).then(({ err }) => {
+    }).then(({ err }) => {
       if (!err) {
         this.closeDropdown();
         return;
       }
 
       if (err === "no_debugger") {
-        const closestZoomValue = getClosestZoomValue(
-          this.config.zoom.zoomValues,
-          zoomValue
-        );
+        const closestZoomValue = getClosestZoomValue(this.config.zoom.zoomValues, zoomValue);
 
         this.uiExecuteDefinedZoomFlow(zoomInputContainer, closestZoomValue);
       }
@@ -172,13 +151,9 @@ export abstract class AbstractBaseStrategy {
   }
 
   public getIsPageLoadingElementToWatch(): string {
-    const zoomElement = getDOMElement(
-      this.config.uiElements.clickableZoomSelectId
-    );
+    const zoomElement = getDOMElement(this.config.uiElements.clickableZoomSelectId);
 
-    return zoomElement
-      ? this.config.uiElements.toolbarId
-      : this.config.uiElements.menubarViewTabId;
+    return zoomElement ? this.config.uiElements.toolbarId : this.config.uiElements.menubarViewTabId;
   }
 
   /*
@@ -191,19 +166,13 @@ export abstract class AbstractBaseStrategy {
    * If there is no zoom selector, we have to use the menu bar to indicate if the page is loading or not
    */
   public getIsPageLoading() {
-    const zoomSelect = getDOMElement(
-      this.config.uiElements.clickableZoomSelectId
-    );
+    const zoomSelect = getDOMElement(this.config.uiElements.clickableZoomSelectId);
 
     if (zoomSelect) {
-      return zoomSelect.classList.contains(
-        "goog-toolbar-combo-button-disabled"
-      );
+      return zoomSelect.classList.contains("goog-toolbar-combo-button-disabled");
     }
 
-    const menuBarViewTab = getDOMElement(
-      this.config.uiElements.menubarViewTabId
-    );
+    const menuBarViewTab = getDOMElement(this.config.uiElements.menubarViewTabId);
 
     return menuBarViewTab.classList.contains("goog-control-disabled");
   }

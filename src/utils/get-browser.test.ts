@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, test, vi } from "vitest";
+
 import { isChrome, isEdge, isFirefox } from "./get-browser";
 
 describe("isChrome", () => {

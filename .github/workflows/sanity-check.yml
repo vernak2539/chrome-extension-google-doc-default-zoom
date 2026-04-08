@@ -22,6 +22,10 @@ jobs:
           cache: "pnpm"
       - name: Install dependencies
         run: pnpm install
+      - name: Check formatting
+        run: pnpm format:check
+      - name: Lint
+        run: pnpm lint
       - name: Run Tests
         run: pnpm test
       - name: Build the extension
