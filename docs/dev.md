@@ -39,10 +39,10 @@ You can request a review from GitHub Copilot using the following commands:
 
 Using `gh pr edit`:
 ```bash
-gh pr edit <pr-number-or-url> --add-reviewer @.idea/copilot.data.migration.agent.xml
+gh pr edit <pr-number-or-url> --add-reviewer @copilot
 ```
 
 Or when creating a new PR:
 ```bash
-gh pr create --add-reviewer @.idea/copilot.data.migration.agent.xml
+gh pr create --add-reviewer @copilot
 ```
