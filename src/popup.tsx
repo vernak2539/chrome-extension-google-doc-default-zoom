@@ -1,47 +1,27 @@
 // Icon used in Favicon was created by https://www.flaticon.com/authors/royyan-wijaya
-import { useState } from "react";
-import HomeView from "src/areas/home";
-import SettingsView from "src/areas/settings";
-import type { CurrentView } from "src/types";
+import { RouterProvider } from "@tanstack/react-router";
 import { isChrome, isEdge } from "src/utils/get-browser";
 import localize from "src/utils/localize";
 import { setupSentryReactErrorBoundary } from "src/utils/sentry/react-error-boundary";
 
+import { router } from "./router";
 import { LoggerProvider } from "./utils/logger/context";
 
 import * as styles from "src/style.module.css";
 
 const withSentryErrorBoundary = setupSentryReactErrorBoundary("popup");
-const showExtensionVersionsTab = isChrome() || isEdge();
+export const showExtensionVersionsTab = isChrome() || isEdge(); // Export for HomeView
 
 // "extensionName"/"extensionNameExtended" WILL BE CHANGED. DON'T CHANGE WITHOUT MAKING OTHER CHANGES
 const extensionName = localize("extensionNameExtended");
 
 function IndexPopup() {
-  const [currentView, setCurrentView] = useState<CurrentView>("home");
-
-  const isSettingsView = currentView === "settings";
-  const isHomeView = currentView === "home";
-
-  const openSettingsView = () => {
-    setCurrentView("settings");
-  };
-
-  const openHomeView = () => {
-    setCurrentView("home");
-  };
-
   return (
     <LoggerProvider>
       <div className={styles.popupContainer}>
         <h1>{extensionName}</h1>
-        {isHomeView ? (
-          <HomeView
-            openSettingsView={openSettingsView}
-            showExtensionVersionsTab={showExtensionVersionsTab}
-          />
-        ) : null}
-        {isSettingsView ? <SettingsView onHomeClick={openHomeView} /> : null}
+
+        <RouterProvider router={router} />
 
         <p className={styles.supportMeLinkContainer}>
           <small>
