@@ -106,8 +106,8 @@ const SettingsView = ({ onHomeClick }: Props) => {
 
       <p style={{
         marginTop: 16,
-        fontSize: 11,
-        color: "#999",
+        fontSize: 12,
+        color: "#595959",
         textAlign: "center"
       }}>
         Storage v{schemaVersion}

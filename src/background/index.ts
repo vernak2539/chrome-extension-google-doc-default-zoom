@@ -13,23 +13,14 @@ import { createSentryClient } from "src/utils/sentry/base";
 const storage = new Storage();
 const sentryScope = createSentryClient("background");
 
-function isValidAppState(value: unknown): boolean {
-  return typeof value === "object" && value !== null;
-}
-
-async function hasExistingV2Data() {
-  const [docs, sheets] = await Promise.all([
-    storage.get("docs"),
-    storage.get("sheets")
-  ]);
-
-  return isValidAppState(docs) && isValidAppState(sheets);
-}
-
-async function cleanupV1Keys() {
+async function hasExistingV1Data() {
   for (const key of V1_STORAGE_KEYS) {
-    await storage.remove(key);
+    const value = await storage.get(key);
+    if (value !== undefined) {
+      return true;
+    }
   }
+  return false;
 }
 
 async function runMigrations() {
@@ -37,14 +28,10 @@ async function runMigrations() {
     (await storage.get<number>(SCHEMA_VERSION_KEY)) ?? 0;
 
   if (currentVersion < CURRENT_SCHEMA_VERSION) {
-    if (await hasExistingV2Data()) {
-      // V2 data already present — just stamp the version and clean up any leftover V1 keys
-      await cleanupV1Keys();
-      await storage.set(SCHEMA_VERSION_KEY, CURRENT_SCHEMA_VERSION);
-      return;
+    if (await hasExistingV1Data()) {
+      await migrateToV2();
     }
     
-    await migrateToV2();
     await storage.set(SCHEMA_VERSION_KEY, CURRENT_SCHEMA_VERSION);
   }
 }
@@ -68,7 +55,9 @@ async function migrateToV2() {
   await storage.set("sheets", v2Data.sheets);
 
   // Clean up old flat keys
-  await cleanupV1Keys();
+  for (const key of V1_STORAGE_KEYS) {
+    await storage.remove(key);
+  }
 }
 
 void runMigrations().catch((error) => {
