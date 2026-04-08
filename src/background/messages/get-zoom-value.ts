@@ -1,6 +1,6 @@
 import type { PlasmoMessaging } from "@plasmohq/messaging";
 import { Storage } from "@plasmohq/storage";
-import { migrationsReady } from "src/background/index";
+import { migrationsReady } from "src/utils/migrations";
 import { workspaceApps } from "src/constants";
 import type {
   AppStorageState,
