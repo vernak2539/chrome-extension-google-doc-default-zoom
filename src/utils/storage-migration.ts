@@ -15,7 +15,6 @@
  *   "schemaVersion" -> 2
  */
 
-import { DOCS_DEFAULT_ZOOM, SHEETS_DEFAULT_ZOOM } from "src/constants";
 import type { AppStorageState } from "src/types";
 
 export interface V1FlatStorageData {
@@ -32,15 +31,17 @@ export interface V2StorageData {
   sheets: AppStorageState;
 }
 
+const DEFAULT_ZOOM = "100%";
+
 export function migrateV1ToV2(v1Data: V1FlatStorageData): V2StorageData {
   return {
     docs: {
-      zoomValue: v1Data["zoomValue"] ?? DOCS_DEFAULT_ZOOM,
+      zoomValue: v1Data["zoomValue"] ?? DEFAULT_ZOOM,
       viewOnly: v1Data["zoomValue:viewOnly"] ?? false,
       classroomSupport: v1Data["zoomValue:classroomSupport"] ?? false
     },
     sheets: {
-      zoomValue: v1Data["sheets:zoomValue"] ?? SHEETS_DEFAULT_ZOOM,
+      zoomValue: v1Data["sheets:zoomValue"] ?? DEFAULT_ZOOM,
       viewOnly: v1Data["sheets:zoomValue:viewOnly"] ?? false,
       classroomSupport: v1Data["sheets:zoomValue:classroomSupport"] ?? false
     }
