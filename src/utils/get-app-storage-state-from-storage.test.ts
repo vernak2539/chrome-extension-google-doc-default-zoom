@@ -20,7 +20,7 @@ describe("getAppStorageStateFromStorage", () => {
       classroomSupport: false
     };
 
-    (sendToBackgroundViaRelay as any).mockResolvedValue(mockState);
+    vi.mocked(sendToBackgroundViaRelay).mockResolvedValue(mockState);
 
     const storageKey = "docs";
     const result = await getAppStorageStateFromStorage(storageKey);
