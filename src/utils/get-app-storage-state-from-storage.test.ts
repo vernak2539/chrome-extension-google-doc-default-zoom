@@ -1,6 +1,5 @@
-import { describe, expect, test, vi } from "vitest";
-
 import { sendToBackgroundViaRelay } from "@plasmohq/messaging";
+import { describe, expect, test, vi } from "vitest";
 
 import { RELAY_GET_APP_STORAGE_STATE } from "../constants";
 import getAppStorageStateFromStorage from "./get-app-storage-state-from-storage";

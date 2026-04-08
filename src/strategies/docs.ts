@@ -1,9 +1,9 @@
+import type { AppStorageState } from "src/types";
 import { getClosestZoomValue } from "src/utils/get-closest-zoom-value";
 import localize from "src/utils/localize";
 import { pause } from "src/utils/pause";
 import { clickDOMElement, getDOMElement, getDOMElementAndClick } from "src/utils/ui-helpers";
 
-import type { AppStorageState } from "src/types";
 import { AbstractBaseStrategy } from "./base";
 
 class DocsStrategy extends AbstractBaseStrategy {

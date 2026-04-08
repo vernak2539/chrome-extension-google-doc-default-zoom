@@ -1,4 +1,5 @@
 import type { AppStorageState } from "src/types";
+
 import { AbstractBaseStrategy } from "./base";
 
 class SheetsStrategy extends AbstractBaseStrategy {

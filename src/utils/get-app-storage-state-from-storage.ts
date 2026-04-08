@@ -1,11 +1,7 @@
 import { sendToBackgroundViaRelay } from "@plasmohq/messaging";
 
 import { RELAY_GET_APP_STORAGE_STATE } from "../constants";
-import type {
-  AppStorageState,
-  GetAppStorageStateRequestBody,
-  GetFromStorageFn
-} from "../types";
+import type { AppStorageState, GetAppStorageStateRequestBody, GetFromStorageFn } from "../types";
 
 const getAppStorageStateFromStorage: GetFromStorageFn<AppStorageState> = (storageKey) => {
   return new Promise((resolve) => {
