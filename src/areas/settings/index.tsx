@@ -8,10 +8,6 @@ import localize from "src/utils/localize";
 import { createSentryClient } from "src/utils/sentry/base";
 import { SCHEMA_VERSION_KEY } from "src/utils/storage-migration";
 
-interface Props {
-  onHomeClick: () => void;
-}
-
 const DEFAULT_APP_STATE: AppStorageState = {
   zoomValue: "100%",
   viewOnly: false,
@@ -20,7 +16,7 @@ const DEFAULT_APP_STATE: AppStorageState = {
 
 const sentryScope = createSentryClient("popup");
 
-const SettingsView = ({ onHomeClick }: Props) => {
+const SettingsView = () => {
   const storage = new Storage();
   const [schemaVersion] = useStorage<number>(SCHEMA_VERSION_KEY, 1);
   const storageKeys: StorageKey[] = ["docs", "sheets"];
@@ -89,16 +85,10 @@ const SettingsView = ({ onHomeClick }: Props) => {
       <section>
         <h3>{localize("popupSettingsResetToFactoryTitle")}</h3>
         <p>{localize("popupSettingsResetToFactoryDescription")}</p>
-        <Button variant="danger" onPress={onResetZoomSettingsClick}>
+        <Button variant="danger" onPress={onResetZoomSettingsClick} isDisabled={!isExitEnabled}>
           {localize("popupSettingsResetToFactoryAction")}
         </Button>
       </section>
-      <br />
-      <hr />
-      <br />
-      <Button variant="primary" onPress={onHomeClick} isDisabled={!isExitEnabled}>
-        {localize("popupSettingsExit")}
-      </Button>
 
       {process.env.NODE_ENV === "development" && (
         <>
@@ -110,7 +100,7 @@ const SettingsView = ({ onHomeClick }: Props) => {
             <p>
               Downgrade storage schema to V1 format (flat keys) and reload to test auto-migration.
             </p>
-            <Button variant="danger" onPress={onDowngradeToV1Click}>
+            <Button variant="danger" onPress={onDowngradeToV1Click} isDisabled={!isExitEnabled}>
               Downgrade to V1 Format
             </Button>
           </section>
