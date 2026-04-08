@@ -1,14 +1,11 @@
 import { describe, expect, test } from "vitest";
-import {
-  type V1FlatStorageData,
-  type V2StorageData,
-  migrateV1ToV2
-} from "./storage-migration";
+
+import { type V1FlatStorageData, type V2StorageData, migrateV1ToV2 } from "./storage-migration";
 
 describe("migrateV1ToV2", () => {
   test("should migrate fully populated V1 data to V2 structure", () => {
     const v1Data: V1FlatStorageData = {
-      "zoomValue": "150%",
+      zoomValue: "150%",
       "zoomValue:viewOnly": true,
       "zoomValue:classroomSupport": true,
       "sheets:zoomValue": "75%",
@@ -57,7 +54,7 @@ describe("migrateV1ToV2", () => {
 
   test("should handle partial V1 data (only Docs zoom set)", () => {
     const v1Data: V1FlatStorageData = {
-      "zoomValue": "200%"
+      zoomValue: "200%"
     };
 
     const result = migrateV1ToV2(v1Data);
@@ -99,7 +96,7 @@ describe("migrateV1ToV2", () => {
 
   test("should treat undefined V1 boolean values as false", () => {
     const v1Data: V1FlatStorageData = {
-      "zoomValue": "125%",
+      zoomValue: "125%",
       "zoomValue:viewOnly": undefined,
       "zoomValue:classroomSupport": undefined
     };
@@ -112,7 +109,7 @@ describe("migrateV1ToV2", () => {
 
   test("should treat undefined V1 zoom values as default 100%", () => {
     const v1Data: V1FlatStorageData = {
-      "zoomValue": undefined,
+      zoomValue: undefined,
       "sheets:zoomValue": undefined
     };
 

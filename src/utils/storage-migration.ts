@@ -18,7 +18,7 @@
 import type { AppStorageState } from "src/types";
 
 export interface V1FlatStorageData {
-  "zoomValue"?: string;
+  zoomValue?: string;
   "zoomValue:viewOnly"?: boolean;
   "zoomValue:classroomSupport"?: boolean;
   "sheets:zoomValue"?: string;

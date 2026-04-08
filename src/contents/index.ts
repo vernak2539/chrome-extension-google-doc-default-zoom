@@ -15,10 +15,7 @@ import SheetsStrategy from "src/strategies/sheets";
 import { isGoogleClassroomDomain } from "src/utils/classroom-helpers";
 import getCurrentApp from "src/utils/get-current-app";
 import BrowserLogger from "src/utils/logger";
-import {
-  observeElementAndExecute,
-  onElementAvailable
-} from "src/utils/mutation-observer-helpers";
+import { observeElementAndExecute, onElementAvailable } from "src/utils/mutation-observer-helpers";
 import { createSentryClient } from "src/utils/sentry/base";
 import { stopExecution } from "src/utils/stop-exeuction";
 import { walkDOM } from "src/utils/walk-dom";

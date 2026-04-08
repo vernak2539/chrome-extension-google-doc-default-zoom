@@ -60,6 +60,12 @@
     "vitest": "^3.2.4",
     "yargs": "^18.0.0"
   },
+  "packageManager": "pnpm@9.10.0",
+  "pnpm": {
+    "overrides": {
+      "nanoid": "3.3.7"
+    }
+  },
   "manifest": {
     "name": "__MSG_extensionNameExtended__",
     "default_locale": "en",
@@ -73,12 +79,6 @@
       "gecko": {
         "id": "google-workspace-zoom-extended@vernacchia.dev"
       }
-    }
-  },
-  "packageManager": "pnpm@9.10.0",
-  "pnpm": {
-    "overrides": {
-      "nanoid": "3.3.7"
     }
   }
 }

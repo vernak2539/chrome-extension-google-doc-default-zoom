@@ -17,11 +17,12 @@
  * This will still be set up as if the "Extended" version is being transformed to the non-extended version
  * */
 
-import { execaSync } from "execa";
-import jsonfile from "jsonfile";
 import assert from "node:assert";
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
+
+import { execaSync } from "execa";
+import jsonfile from "jsonfile";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);

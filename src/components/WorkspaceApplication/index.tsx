@@ -1,16 +1,11 @@
 import type { WorkspaceApp } from "src/types";
+
 import WorkspaceApplicationComponent from "./component";
 import { useWorkspaceStorage } from "./hooks";
 
 type Props = Omit<WorkspaceApp, "isEnabled">;
 
-const WorkspaceApplication = ({
-  name,
-  zoomValues,
-  defaultZoom,
-  storageKey,
-  features
-}: Props) => {
+const WorkspaceApplication = ({ name, zoomValues, defaultZoom, storageKey, features }: Props) => {
   const {
     zoom,
     viewOnly,

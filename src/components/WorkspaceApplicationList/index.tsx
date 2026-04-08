@@ -1,8 +1,9 @@
 import Tippy from "@tippyjs/react";
 import React, { type MouseEventHandler } from "react";
 import SettingsIcon from "react:~/assets/popup_icons/settings.svg";
-import * as style from "src/style.module.css";
 import localize from "src/utils/localize";
+
+import * as style from "src/style.module.css";
 
 interface Props {
   children: React.ReactNode;

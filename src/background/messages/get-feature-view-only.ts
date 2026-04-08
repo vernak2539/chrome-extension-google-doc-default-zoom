@@ -1,11 +1,11 @@
 import type { PlasmoMessaging } from "@plasmohq/messaging";
 import { Storage } from "@plasmohq/storage";
-import { migrationsReady } from "src/utils/migrations";
 import type {
   AppStorageState,
   GetFeatureViewOnlyRequestBody,
   GetFeatureViewOnlyResponseBody
 } from "src/types";
+import { migrationsReady } from "src/utils/migrations";
 import { createSentryClient } from "src/utils/sentry/base";
 
 const storage = new Storage();

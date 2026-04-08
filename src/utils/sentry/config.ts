@@ -1,4 +1,5 @@
 import type { Scope } from "@sentry/react";
+
 import packageJson from "../../../package.json";
 
 export const SENTRY_BASE_CONFIG = {

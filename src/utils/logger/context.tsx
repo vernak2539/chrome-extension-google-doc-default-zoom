@@ -1,4 +1,5 @@
 import { createContext, useContext } from "react";
+
 import BrowserLogger from "./index";
 
 export const LoggerContext = createContext(new BrowserLogger("popup"));
@@ -9,9 +10,7 @@ interface LoggerProviderProps {
 
 export const LoggerProvider = ({ children }: LoggerProviderProps) => {
   return (
-    <LoggerContext.Provider value={new BrowserLogger("popup")}>
-      {children}
-    </LoggerContext.Provider>
+    <LoggerContext.Provider value={new BrowserLogger("popup")}>{children}</LoggerContext.Provider>
   );
 };
 

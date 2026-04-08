@@ -47,7 +47,8 @@ export const useWorkspaceStorage = (
   const updateZoomValue = useCallback(
     (value: string) => {
       setAppState((prev) => {
-        const current = prev === NOT_READY ? { ...DEFAULT_APP_STATE, zoomValue: defaultZoom } : prev;
+        const current =
+          prev === NOT_READY ? { ...DEFAULT_APP_STATE, zoomValue: defaultZoom } : prev;
         return { ...current, zoomValue: value || defaultZoom };
       });
     },
@@ -57,7 +58,8 @@ export const useWorkspaceStorage = (
   const updateDocsViewOnlyValue = useCallback(
     (value: boolean) => {
       setAppState((prev) => {
-        const current = prev === NOT_READY ? { ...DEFAULT_APP_STATE, zoomValue: defaultZoom } : prev;
+        const current =
+          prev === NOT_READY ? { ...DEFAULT_APP_STATE, zoomValue: defaultZoom } : prev;
         return { ...current, viewOnly: value ?? false };
       });
     },
@@ -67,7 +69,8 @@ export const useWorkspaceStorage = (
   const updateClassroomSupportValue = useCallback(
     (value: boolean) => {
       setAppState((prev) => {
-        const current = prev === NOT_READY ? { ...DEFAULT_APP_STATE, zoomValue: defaultZoom } : prev;
+        const current =
+          prev === NOT_READY ? { ...DEFAULT_APP_STATE, zoomValue: defaultZoom } : prev;
         return { ...current, classroomSupport: value ?? false };
       });
     },

@@ -47,26 +47,10 @@ export type DocsZoomValueFit =
   | "Ajustar";
 
 export type DocsStorageKey = "docs";
-export type DocsZoomValues = [
-  DocsZoomValueFit,
-  "50%",
-  "75%",
-  "100%",
-  "125%",
-  "150%",
-  "200%"
-];
+export type DocsZoomValues = [DocsZoomValueFit, "50%", "75%", "100%", "125%", "150%", "200%"];
 
 export type SheetsStorageKey = "sheets";
-export type SheetsZoomValues = [
-  "50%",
-  "75%",
-  "90%",
-  "100%",
-  "125%",
-  "150%",
-  "200%"
-];
+export type SheetsZoomValues = ["50%", "75%", "90%", "100%", "125%", "150%", "200%"];
 
 export type StorageKey = DocsStorageKey | SheetsStorageKey;
 

@@ -5,12 +5,14 @@ Over time, this extension has migrated its Chrome storage structure (`chrome.sto
 ## Schema Versions
 
 ### V2 Storage (Current)
-Implemented around April 2026. This version groups configurations under per-application identifiers (`docs`, `sheets`). 
+
+Implemented around April 2026. This version groups configurations under per-application identifiers (`docs`, `sheets`).
 
 **Why we migrated:**
 The legacy flat-key structure created massive clutter in the root storage space. By encapsulating state within top-level application boundaries, we pave the way for supporting future tools (like Slides) without risking key conflicts or having to parse delimited string keys constantly. V1 keys are automatically migrated to this structure dynamically within the background script upon startup.
 
 **Schema Shape:**
+
 ```json
 {
   "schemaVersion": 2,
@@ -30,9 +32,11 @@ The legacy flat-key structure created massive clutter in the root storage space.
 ---
 
 ### V1 Storage (Legacy)
-The original flat-key structure used before schema versioning was introduced. 
+
+The original flat-key structure used before schema versioning was introduced.
 
 **Schema Shape:**
+
 ```json
 {
   "zoomValue": "150%",
@@ -44,4 +48,4 @@ The original flat-key structure used before schema versioning was introduced.
 }
 ```
 
-*Note: In V1, missing keys were interpreted as standard disabled values or `100%` zoom defaults by the runtime, rather than being explicitly stored.*
+_Note: In V1, missing keys were interpreted as standard disabled values or `100%` zoom defaults by the runtime, rather than being explicitly stored._

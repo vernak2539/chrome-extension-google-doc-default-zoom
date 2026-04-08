@@ -1,16 +1,12 @@
 import classnames from "classnames";
 import React, { useCallback, useEffect, useState } from "react";
 
-import * as style from "../../style.module.css";
 import localize from "../../utils/localize";
 import type { ZoomInputProps } from "../shared-props";
 
-const CustomZoomInput = ({
-  zoomValue,
-  zoomValues,
-  isCustomValue,
-  updateValue
-}: ZoomInputProps) => {
+import * as style from "../../style.module.css";
+
+const CustomZoomInput = ({ zoomValue, zoomValues, isCustomValue, updateValue }: ZoomInputProps) => {
   const [localZoom, setLocalZoom] = useState(zoomValue || "");
 
   useEffect(() => {
@@ -36,7 +32,7 @@ const CustomZoomInput = ({
         }
       }
 
-      const newValue = Boolean(boundedValue) ? `${boundedValue}%` : "";
+      const newValue = boundedValue ? `${boundedValue}%` : "";
 
       // don't update the values if we've remove the value and we're using the select box values
       if (newValue === "" && !isCustomValue) {
@@ -61,13 +57,9 @@ const CustomZoomInput = ({
       value={localZoom}
       maxLength={3}
       minLength={2}
-      className={classnames(
-        style.applicationZoomInputBase,
-        style.applicationZoomCustomInput,
-        {
-          [style.applicationActiveZoomInput]: isCustomValue
-        }
-      )}
+      className={classnames(style.applicationZoomInputBase, style.applicationZoomCustomInput, {
+        [style.applicationActiveZoomInput]: isCustomValue
+      })}
       onFocus={(event) => {
         const value = event.target.value;
         if (value.includes("%")) {

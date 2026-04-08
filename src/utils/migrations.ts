@@ -46,14 +46,13 @@ async function migrateToV2() {
 }
 
 async function runMigrations() {
-  const currentVersion =
-    (await storage.get<number>(SCHEMA_VERSION_KEY)) ?? 0;
+  const currentVersion = (await storage.get<number>(SCHEMA_VERSION_KEY)) ?? 0;
 
   if (currentVersion < CURRENT_SCHEMA_VERSION) {
     if (await hasExistingV1Data()) {
       await migrateToV2();
     }
-    
+
     await storage.set(SCHEMA_VERSION_KEY, CURRENT_SCHEMA_VERSION);
   }
 }

@@ -7,6 +7,7 @@ import {
 } from "@sentry/browser";
 import type { BrowserClientOptions } from "@sentry/browser/build/npm/types/client";
 import type { ExtensionFileSource } from "src/types";
+
 import { SENTRY_BASE_CONFIG, getDefaultTags } from "./config";
 
 const createNewSentryClient = (
@@ -40,9 +41,8 @@ const createNewSentryClient = (
   // Asynchronously stamp the actual storage schema version on the scope
   import("@plasmohq/storage")
     .then(({ Storage }) => {
-      return import("src/utils/storage-migration").then(
-        ({ SCHEMA_VERSION_KEY }) =>
-          new Storage().get<number>(SCHEMA_VERSION_KEY)
+      return import("src/utils/storage-migration").then(({ SCHEMA_VERSION_KEY }) =>
+        new Storage().get<number>(SCHEMA_VERSION_KEY)
       );
     })
     .then((version) => {
