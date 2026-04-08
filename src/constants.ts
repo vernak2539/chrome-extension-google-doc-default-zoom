@@ -24,7 +24,7 @@ export const RELAY_GET_FEATURE_CLASSROOM_SUPPORT_FROM_STORAGE =
 export const RELAY_EXECUTE_ENTER = "execute-enter";
 
 /**  Workspace Application: Docs - Start **/
-export const DOCS_STORAGE_KEY: DocsStorageKey = "zoomValue";
+export const DOCS_STORAGE_KEY: DocsStorageKey = "docs";
 export const DOCS_ZOOM_VALUES: DocsZoomValues = [
   localize("popupDocsDropdownFitSelection") as DocsZoomValueFit,
   "50%",
@@ -38,7 +38,7 @@ export const DOCS_DEFAULT_ZOOM = DOCS_ZOOM_VALUES.at(3);
 /**  Workspace Application: Docs - End **/
 
 /**  Workspace Application: Sheets - Start **/
-export const SHEETS_STORAGE_KEY: SheetsStorageKey = "sheets:zoomValue";
+export const SHEETS_STORAGE_KEY: SheetsStorageKey = "sheets";
 export const SHEETS_ZOOM_VALUES: SheetsZoomValues = [
   "50%",
   "75%",
@@ -51,11 +51,7 @@ export const SHEETS_ZOOM_VALUES: SheetsZoomValues = [
 export const SHEETS_DEFAULT_ZOOM = SHEETS_ZOOM_VALUES.at(3);
 /**  Workspace Application: Sheets - End **/
 
-export const getFeatureViewOnlyStorageKey = (storageKey: string) =>
-  `${storageKey}:viewOnly`;
 
-export const getFeatureClassroomSupportStorageKey = (storageKey: string) =>
-  `${storageKey}:classroomSupport`;
 
 export const workspaceApps: WorkspaceApp[] = [
   {

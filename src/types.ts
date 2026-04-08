@@ -31,6 +31,12 @@ export interface ExecuteEnterResponseBody {
 }
 
 export type WorkspaceAppName = "Docs" | "Sheets";
+
+export interface AppStorageState {
+  zoomValue: string;
+  viewOnly: boolean;
+  classroomSupport: boolean;
+}
 export type DocsZoomValueFit =
   | "Fit"
   | "Adatta"
@@ -40,7 +46,7 @@ export type DocsZoomValueFit =
   | "フィット"
   | "Ajustar";
 
-export type DocsStorageKey = "zoomValue";
+export type DocsStorageKey = "docs";
 export type DocsZoomValues = [
   DocsZoomValueFit,
   "50%",
@@ -51,7 +57,7 @@ export type DocsZoomValues = [
   "200%"
 ];
 
-export type SheetsStorageKey = "sheets:zoomValue";
+export type SheetsStorageKey = "sheets";
 export type SheetsZoomValues = [
   "50%",
   "75%",

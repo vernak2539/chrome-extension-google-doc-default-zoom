@@ -1,6 +1,8 @@
 import type { PlasmoMessaging } from "@plasmohq/messaging";
 import { Storage } from "@plasmohq/storage";
+import { migrationsReady } from "src/utils/migrations";
 import type {
+  AppStorageState,
   GetFeatureViewOnlyRequestBody,
   GetFeatureViewOnlyResponseBody
 } from "src/types";
@@ -14,13 +16,15 @@ const handler: PlasmoMessaging.MessageHandler<
   GetFeatureViewOnlyResponseBody
 > = async (req, res) => {
   try {
-    const enabled = await storage.get<boolean>(req.body.storageKey);
+    await migrationsReady;
+    const appState = await storage.get<AppStorageState>(req.body.storageKey);
 
     res.send({
-      enabled
+      enabled: appState?.viewOnly ?? false
     });
   } catch (err) {
     sentryScope.captureException(err);
+    res.send({ enabled: false });
   }
 };
 

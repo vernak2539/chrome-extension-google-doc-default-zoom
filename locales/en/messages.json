@@ -138,5 +138,9 @@
   "popupSettingsExit": {
     "message": "Exit Settings",
     "description": "Button text allowing user to exit settings and return to main part of extension"
+  },
+  "popupSettingsStorageVersion": {
+    "message": "Storage v{schemaVersion}",
+    "description": "Text in settings footer denoting current storage schema version"
   }
 }

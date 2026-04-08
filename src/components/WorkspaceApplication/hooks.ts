@@ -1,11 +1,12 @@
 import { useStorage } from "@plasmohq/storage/hook";
 import { useCallback } from "react";
-import {
-  getFeatureClassroomSupportStorageKey,
-  getFeatureViewOnlyStorageKey
-} from "src/constants";
+import type { AppStorageState } from "src/types";
 
-const NOT_READY = "__NOT_READY__INTERNAL_DONT_USE__";
+const DEFAULT_APP_STATE: AppStorageState = {
+  zoomValue: "",
+  viewOnly: false,
+  classroomSupport: false
+};
 
 interface UseWorkspaceStorage {
   zoom: string;
@@ -17,76 +18,66 @@ interface UseWorkspaceStorage {
   isLoading: boolean;
 }
 
+const NOT_READY = "__NOT_READY__INTERNAL__";
+
 export const useWorkspaceStorage = (
   storageKey: string,
   defaultZoom: string
 ): UseWorkspaceStorage => {
-  const [zoom, setZoom] = useStorage(storageKey, (storedZoom, isHydrating) => {
-    if (storedZoom !== undefined) {
-      return storedZoom;
-    }
-    if (isHydrating === undefined) {
-      return NOT_READY;
-    }
-    return defaultZoom;
-  });
-
-  const [viewOnly, setViewOnly] = useStorage(
-    getFeatureViewOnlyStorageKey(storageKey),
-    (storedViewOnly, isHydrating) => {
-      if (storedViewOnly !== undefined) {
-        return storedViewOnly;
+  const [appState, setAppState] = useStorage<AppStorageState | typeof NOT_READY>(
+    storageKey,
+    (stored, isHydrating) => {
+      if (stored !== undefined) {
+        return stored;
       }
       if (isHydrating === undefined) {
         return NOT_READY;
       }
-      return false;
+      return {
+        ...DEFAULT_APP_STATE,
+        zoomValue: defaultZoom
+      };
     }
   );
 
-  const [classroomSupport, setClassroomSupport] = useStorage(
-    getFeatureClassroomSupportStorageKey(storageKey),
-    (storedClassroomSupport, isHydrating) => {
-      if (storedClassroomSupport !== undefined) {
-        return storedClassroomSupport;
-      }
-      if (isHydrating === undefined) {
-        return NOT_READY;
-      }
-      return false;
-    }
-  );
+  const isLoading = appState === NOT_READY;
+
+  const state = isLoading ? { ...DEFAULT_APP_STATE, zoomValue: defaultZoom } : appState;
 
   const updateZoomValue = useCallback(
     (value: string) => {
-      setZoom(value || defaultZoom);
+      setAppState((prev) => {
+        const current = prev === NOT_READY ? { ...DEFAULT_APP_STATE, zoomValue: defaultZoom } : prev;
+        return { ...current, zoomValue: value || defaultZoom };
+      });
     },
-    [setZoom, defaultZoom]
+    [setAppState, defaultZoom]
   );
 
   const updateDocsViewOnlyValue = useCallback(
     (value: boolean) => {
-      setViewOnly(value || false);
+      setAppState((prev) => {
+        const current = prev === NOT_READY ? { ...DEFAULT_APP_STATE, zoomValue: defaultZoom } : prev;
+        return { ...current, viewOnly: value ?? false };
+      });
     },
-    [setViewOnly]
+    [setAppState, defaultZoom]
   );
 
   const updateClassroomSupportValue = useCallback(
     (value: boolean) => {
-      setClassroomSupport(value || false);
+      setAppState((prev) => {
+        const current = prev === NOT_READY ? { ...DEFAULT_APP_STATE, zoomValue: defaultZoom } : prev;
+        return { ...current, classroomSupport: value ?? false };
+      });
     },
-    [setClassroomSupport]
+    [setAppState, defaultZoom]
   );
 
-  const isLoading =
-    zoom === NOT_READY ||
-    viewOnly === NOT_READY ||
-    classroomSupport === NOT_READY;
-
   return {
-    zoom,
-    viewOnly,
-    classroomSupport,
+    zoom: state.zoomValue,
+    viewOnly: state.viewOnly,
+    classroomSupport: state.classroomSupport,
     updateZoomValue,
     updateDocsViewOnlyValue,
     updateClassroomSupportValue,

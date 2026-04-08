@@ -37,6 +37,21 @@ const createNewSentryClient = (
 
   sentryClient.init(); // initializing has to be done after setting the client on the scope
 
+  // Asynchronously stamp the actual storage schema version on the scope
+  import("@plasmohq/storage")
+    .then(({ Storage }) => {
+      return import("src/utils/storage-migration").then(
+        ({ SCHEMA_VERSION_KEY }) =>
+          new Storage().get<number>(SCHEMA_VERSION_KEY)
+      );
+    })
+    .then((version) => {
+      sentryScope.setTag("storageSchemaVersion", version ?? 1);
+    })
+    .catch(() => {
+      // Best-effort tagging; swallow import/storage failures
+    });
+
   return sentryScope;
 };
 
