@@ -80,6 +80,7 @@ pnpm transform-ext
 
 ### Coding Style
 
+- **Mandatory Workflow:** **ALWAYS** run `pnpm format` and `pnpm lint` before completing any code changes or submitting a PR.
 - **Formatting:** oxfmt is used for code formatting (`pnpm format`).
 - **Linting:** oxlint is used for linting (`pnpm lint`).
 - **Imports:** oxfmt handles import sorting automatically via the `sortImports` option.

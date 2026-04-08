@@ -1,8 +1,10 @@
+import type { AppStorageState } from "src/types";
+
 import { AbstractBaseStrategy } from "./base";
 
 class SheetsStrategy extends AbstractBaseStrategy {
-  protected performZoom(zoomValue: string) {
-    this.uiExecuteFlow(zoomValue);
+  protected performZoom(appState: AppStorageState) {
+    this.uiExecuteFlow(appState.zoomValue);
   }
 
   /**

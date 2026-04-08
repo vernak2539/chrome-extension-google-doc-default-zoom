@@ -1,9 +1,10 @@
 import { sendToBackgroundViaRelay } from "@plasmohq/messaging";
+import getAppStorageStateFromStorage from "src/utils/get-app-storage-state-from-storage";
 import { getClosestZoomValue } from "src/utils/get-closest-zoom-value";
-import { getFeatureClassroomSupportFromStorage } from "src/utils/get-feature-classroom-support-from-storage";
 
 import { RELAY_EXECUTE_ENTER } from "../constants";
 import type {
+  AppStorageState,
   ExecuteEnterRequestBody,
   ExecuteEnterResponseBody,
   Feature,
@@ -11,13 +12,12 @@ import type {
 } from "../types";
 import { isGoogleClassroomSubmittedAssignment } from "../utils/classroom-helpers";
 import getIsCustomZoom from "../utils/get-is-custom-zoom";
-import getZoomValueFromStorage from "../utils/get-zoom-value-from-storage";
 import { clickDOMElement, getDOMElement, getDOMElementAndClick } from "../utils/ui-helpers";
 
 export abstract class AbstractBaseStrategy {
   protected readonly config: UiStrategyConfig;
   public abstract isUIPreview(href: string): boolean;
-  protected abstract performZoom(zoomValue: string): void | Promise<void>;
+  protected abstract performZoom(appState: AppStorageState): void | Promise<void>;
 
   constructor(config: UiStrategyConfig) {
     this.config = config;
@@ -26,37 +26,13 @@ export abstract class AbstractBaseStrategy {
   public async execute() {
     const isGoogleClassroomDocument = isGoogleClassroomSubmittedAssignment();
 
-    const [zoomValue, isGoogleClassroomEnabled] = await Promise.all([
-      this.getZoomValueFromStorage(),
-      this.isGoogleClassroomEnabled()
-    ]);
+    const appState = await getAppStorageStateFromStorage(this.config.storageKey);
 
-    if (isGoogleClassroomDocument && !isGoogleClassroomEnabled) {
+    if (isGoogleClassroomDocument && !appState.classroomSupport) {
       return;
     }
 
-    await this.performZoom(zoomValue);
-  }
-
-  protected getZoomValueFromStorage() {
-    return getZoomValueFromStorage(this.config.storageKey);
-  }
-
-  /**
-   * This method will return true if the page has been loaded inside of Google Classroom (not if the TLD is google classrooms)
-   *
-   * Checks if:
-   *   1. The feature is enabled for the current app
-   *   2. The user has enabled the feature in the extension settings
-   */
-  protected async isGoogleClassroomEnabled() {
-    if (!this.config.features.classroomSupport) {
-      return false;
-    }
-
-    const enabled = await getFeatureClassroomSupportFromStorage(this.config.storageKey);
-
-    return enabled;
+    await this.performZoom(appState);
   }
 
   protected uiExecuteFlow(zoomValue: string) {
