@@ -16,16 +16,20 @@ const handler: PlasmoMessaging.MessageHandler<
   GetZoomValueRequestBody,
   GetZoomValueResponseBody
 > = async (req, res) => {
+  const defaultZoom =
+    workspaceApps.find((app) => app.storageKey === req.body.storageKey)
+      ?.defaultZoom ?? "100%";
+
   try {
     await migrationsReady;
     const appState = await storage.get<AppStorageState>(req.body.storageKey);
-    const defaultZoom = workspaceApps.find((app) => app.storageKey === req.body.storageKey)?.defaultZoom ?? "100%";
 
     res.send({
       zoomValue: appState?.zoomValue ?? defaultZoom
     });
   } catch (err) {
     sentryScope.captureException(err);
+    res.send({ zoomValue: defaultZoom });
   }
 };
 

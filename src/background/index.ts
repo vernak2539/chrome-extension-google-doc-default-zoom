@@ -63,5 +63,6 @@ async function migrateToV2() {
 export const migrationsReady = runMigrations().catch((error) => {
   console.error("Failed to run storage migrations", error);
   sentryScope.captureException(error);
-  throw error;
+  // Do not re-throw — handlers await this promise and a permanent rejection
+  // would break all background messaging after a single migration error.
 });

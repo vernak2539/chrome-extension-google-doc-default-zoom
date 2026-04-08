@@ -18,6 +18,8 @@ const DEFAULT_APP_STATE: AppStorageState = {
   classroomSupport: false
 };
 
+const sentryScope = createSentryClient("popup");
+
 const SettingsView = ({ onHomeClick }: Props) => {
   const storage = new Storage();
   const [schemaVersion] = useStorage<number>(SCHEMA_VERSION_KEY, 1);
@@ -33,7 +35,7 @@ const SettingsView = ({ onHomeClick }: Props) => {
     try {
       await Promise.all(resetPromises);
     } catch (error) {
-      createSentryClient("popup").captureException(error);
+      sentryScope.captureException(error);
       console.error("Failed to reset storage", error);
     } finally {
       setIsExitEnabled(true);
@@ -41,28 +43,38 @@ const SettingsView = ({ onHomeClick }: Props) => {
   };
 
   const onDowngradeToV1Click = async () => {
-    // Read current V2 state before deleting
-    const docsState = await storage.get<AppStorageState>("docs");
-    const sheetsState = await storage.get<AppStorageState>("sheets");
+    setIsExitEnabled(false);
 
-    // Delete V2 keys
-    await storage.remove("docs");
-    await storage.remove("sheets");
-    await storage.remove(SCHEMA_VERSION_KEY);
+    try {
+      // Read current V2 state before deleting
+      const docsState = await storage.get<AppStorageState>("docs");
+      const sheetsState = await storage.get<AppStorageState>("sheets");
 
-    // Recreate V1 flat keys from the current state
-    if (docsState) {
-      await storage.set("zoomValue", docsState.zoomValue);
-      await storage.set("zoomValue:viewOnly", docsState.viewOnly);
-      await storage.set("zoomValue:classroomSupport", docsState.classroomSupport);
+      // Delete V2 keys
+      await storage.remove("docs");
+      await storage.remove("sheets");
+      await storage.remove(SCHEMA_VERSION_KEY);
+
+      // Recreate V1 flat keys from the current state
+      if (docsState) {
+        await storage.set("zoomValue", docsState.zoomValue);
+        await storage.set("zoomValue:viewOnly", docsState.viewOnly);
+        await storage.set("zoomValue:classroomSupport", docsState.classroomSupport);
+      }
+      if (sheetsState) {
+        await storage.set("sheets:zoomValue", sheetsState.zoomValue);
+        await storage.set("sheets:zoomValue:viewOnly", sheetsState.viewOnly);
+        await storage.set("sheets:zoomValue:classroomSupport", sheetsState.classroomSupport);
+      }
+
+      alert("Downgraded to V1 flat keys. The background script will auto-migrate to V2 the next time the extension restarts (e.g. from chrome://extensions).");
+    } catch (error) {
+      sentryScope.captureException(error);
+      console.error("Failed to downgrade storage to V1 flat keys", error);
+      alert("Failed to downgrade to V1 flat keys. Storage may be partially updated; please retry or inspect extension storage before continuing.");
+    } finally {
+      setIsExitEnabled(true);
     }
-    if (sheetsState) {
-      await storage.set("sheets:zoomValue", sheetsState.zoomValue);
-      await storage.set("sheets:zoomValue:viewOnly", sheetsState.viewOnly);
-      await storage.set("sheets:zoomValue:classroomSupport", sheetsState.classroomSupport);
-    }
-
-    alert("Downgraded to V1 flat keys. The background script will auto-migrate to V2 the next time the extension restarts (e.g. from chrome://extensions).");
   };
 
   return (

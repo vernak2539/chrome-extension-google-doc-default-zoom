@@ -24,6 +24,7 @@ const handler: PlasmoMessaging.MessageHandler<
     });
   } catch (err) {
     sentryScope.captureException(err);
+    res.send({ enabled: false });
   }
 };
 
