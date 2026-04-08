@@ -8,7 +8,7 @@ import { AbstractBaseStrategy } from "./base";
 
 class DocsStrategy extends AbstractBaseStrategy {
   protected async performZoom(appState: AppStorageState) {
-    const isViewOnlyEnabled = this.config.features.enableViewOnlyToggle && appState.viewOnly;
+    const isViewOnlyEnabled = this.isFeatureEnabled("enableViewOnlyToggle") && appState.viewOnly;
 
     if (isViewOnlyEnabled && this.isUIViewOnly()) {
       this.uiExecuteDocsViewOnlyFlow(appState.zoomValue);
@@ -24,15 +24,6 @@ class DocsStrategy extends AbstractBaseStrategy {
    */
   public isUIPreview(href: string): boolean {
     return /\/preview$/.test(new URL(href).pathname);
-  }
-
-  /*
-   * This function determines if the page is in view only mode
-   * */
-  private isUIViewOnly() {
-    const zoomInputContainer = document.querySelector(this.config.uiElements.clickableZoomSelectId);
-
-    return !zoomInputContainer;
   }
 
   private uiExecuteDocsViewOnlyFlow(zoomValue: string) {
