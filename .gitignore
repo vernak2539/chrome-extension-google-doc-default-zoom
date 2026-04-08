@@ -41,6 +41,7 @@ keys.md
 
 # typescript
 .tsbuildinfo
+tsconfig.tsbuildinfo
 
 # backup files when using sed
 *.bak
