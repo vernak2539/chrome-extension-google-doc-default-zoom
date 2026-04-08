@@ -1,25 +1,5 @@
-export interface GetZoomValueRequestBody {
+export interface GetAppStorageStateRequestBody {
   storageKey: string;
-}
-
-export interface GetZoomValueResponseBody {
-  zoomValue: string;
-}
-
-export interface GetFeatureViewOnlyRequestBody {
-  storageKey: string;
-}
-
-export interface GetFeatureViewOnlyResponseBody {
-  enabled: boolean;
-}
-
-export interface GetFeatureClassroomSupportRequestBody {
-  storageKey: string;
-}
-
-export interface GetFeatureClassroomSupportResponseBody {
-  enabled: boolean;
 }
 
 export interface ExecuteEnterRequestBody {

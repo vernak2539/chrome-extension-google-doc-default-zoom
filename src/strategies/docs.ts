@@ -1,19 +1,19 @@
 import { getClosestZoomValue } from "src/utils/get-closest-zoom-value";
-import { getFeatureViewOnlyFromStorage } from "src/utils/get-feature-view-only-from-storage";
 import localize from "src/utils/localize";
 import { pause } from "src/utils/pause";
 import { clickDOMElement, getDOMElement, getDOMElementAndClick } from "src/utils/ui-helpers";
 
+import type { AppStorageState } from "src/types";
 import { AbstractBaseStrategy } from "./base";
 
 class DocsStrategy extends AbstractBaseStrategy {
-  protected async performZoom(zoomValue: string) {
-    const isViewOnlyEnabled = await this.getIsViewOnlyEnabled();
+  protected async performZoom(appState: AppStorageState) {
+    const isViewOnlyEnabled = this.config.features.enableViewOnlyToggle && appState.viewOnly;
 
     if (isViewOnlyEnabled && this.isUIViewOnly()) {
-      this.uiExecuteDocsViewOnlyFlow(zoomValue);
+      this.uiExecuteDocsViewOnlyFlow(appState.zoomValue);
     } else {
-      this.uiExecuteFlow(zoomValue);
+      this.uiExecuteFlow(appState.zoomValue);
     }
   }
 
@@ -33,19 +33,6 @@ class DocsStrategy extends AbstractBaseStrategy {
     const zoomInputContainer = document.querySelector(this.config.uiElements.clickableZoomSelectId);
 
     return !zoomInputContainer;
-  }
-
-  /*
-   * This function determines if:
-   * 1. the view only feature is enabled
-   * 2. the view only feature toggle is enabled
-   * */
-  private async getIsViewOnlyEnabled() {
-    if (!this.config.features.enableViewOnlyToggle) {
-      return false;
-    }
-
-    return await getFeatureViewOnlyFromStorage(this.config.storageKey);
   }
 
   private uiExecuteDocsViewOnlyFlow(zoomValue: string) {
