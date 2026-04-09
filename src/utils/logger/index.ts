@@ -1,8 +1,6 @@
 import type { ExtensionFileSource } from "src/types";
+import { Logger } from "tslog";
 import type { ILogObj, Logger as LoggerType } from "tslog";
-import * as tslog from "tslog/dist/esm/index.js";
-
-const { Logger } = tslog;
 
 const PREFIX = "[Default Zoom GW]";
 

@@ -47,3 +47,8 @@ tsconfig.tsbuildinfo
 *.bak
 
 .gcloud
+
+# Gemini Visual Testing
+docs/preview.png
+storybook-visual-inspector/
+*.skill

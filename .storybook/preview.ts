@@ -1,4 +1,5 @@
 import type { Preview } from "@storybook/react-vite";
+import "./chrome-mock";
 
 const preview: Preview = {
   parameters: {

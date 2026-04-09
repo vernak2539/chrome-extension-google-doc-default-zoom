@@ -21,6 +21,15 @@ const config: StorybookConfig = {
     const { mergeConfig } = await import("vite");
 
     return mergeConfig(config, {
+      define: {
+        "process.env.NODE_ENV": JSON.stringify("development"),
+        "process.env.PLASMO_BROWSER": JSON.stringify("chrome"),
+        "process.env.PLASMO_PUBLIC_SENTRY_DSN": JSON.stringify(undefined),
+        "process.env": {
+          NODE_ENV: "development",
+          PLASMO_BROWSER: "chrome"
+        }
+      },
       plugins: [
         react(),
         svgr({
