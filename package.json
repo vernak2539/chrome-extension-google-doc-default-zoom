@@ -51,6 +51,7 @@
     "jsonfile": "^6.1.0",
     "oxfmt": "^0.44.0",
     "oxlint": "^1.59.0",
+    "playwright": "^1.59.1",
     "prop-types": "^15.8.1",
     "storybook": "^9.0.18",
     "typescript": "5.8.3",

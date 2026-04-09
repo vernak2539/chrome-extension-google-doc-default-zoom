@@ -34,7 +34,7 @@ const createNewSentryClient = (
   const sentryScope = new Scope();
   sentryScope.setTags({
     source,
-    locale: chrome.i18n.getUILanguage(),
+    locale: chrome?.i18n?.getUILanguage?.() || "en",
     ...getDefaultTags()
   });
   sentryScope.setClient(sentryClient);

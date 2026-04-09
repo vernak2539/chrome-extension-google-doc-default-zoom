@@ -3,7 +3,6 @@
     "fileName": ["AGENTS.md"]
   },
   "experimental": {
-    "plan": true,
     "enableAgents": true
   },
   "mcpServers": {
@@ -15,5 +14,13 @@
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
     }
+  },
+  "general": {
+    "plan": {
+      "enabled": true
+    }
+  },
+  "agents": {
+    "overrides": {}
   }
 }

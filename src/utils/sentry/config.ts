@@ -22,5 +22,5 @@ export const getDefaultTags = () => ({
 });
 
 export const setLocaleOnScope = (scope: Scope) => {
-  scope.setTag("locale", chrome.i18n.getUILanguage());
+  scope.setTag("locale", chrome?.i18n?.getUILanguage?.() || "en");
 };

@@ -47,3 +47,6 @@ tsconfig.tsbuildinfo
 *.bak
 
 .gcloud
+
+# Gemini Visual Testing
+docs/preview.png
