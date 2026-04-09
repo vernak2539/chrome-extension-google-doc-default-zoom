@@ -28,7 +28,10 @@ export abstract class AbstractBaseStrategy {
 
     const appState = await getAppStorageStateFromStorage(this.config.storageKey);
 
-    if (isGoogleClassroomDocument && !appState.classroomSupport) {
+    const isClassroomSupportEnabled =
+      this.isFeatureEnabled("classroomSupport") && appState.classroomSupport;
+
+    if (isGoogleClassroomDocument && !isClassroomSupportEnabled) {
       return;
     }
 
@@ -43,6 +46,10 @@ export abstract class AbstractBaseStrategy {
 
     // get menu element responsible for changing zoom
     const zoomInputContainer = getDOMElementAndClick(this.config.uiElements.clickableZoomSelectId);
+
+    if (!zoomInputContainer) {
+      return;
+    }
 
     /*--EXTENDED_ONLY_START--*/
     const canUseCustomZoom =
@@ -122,8 +129,14 @@ export abstract class AbstractBaseStrategy {
     }, 500);
   }
 
-  private isFeatureEnabled(feature: Feature): boolean {
+  protected isFeatureEnabled(feature: Feature): boolean {
     return Boolean(this.config.features[feature]);
+  }
+
+  protected isUIViewOnly() {
+    const zoomInputContainer = document.querySelector(this.config.uiElements.clickableZoomSelectId);
+
+    return !zoomInputContainer;
   }
 
   public getIsPageLoadingElementToWatch(): string {

@@ -4,6 +4,12 @@ import { AbstractBaseStrategy } from "./base";
 
 class SheetsStrategy extends AbstractBaseStrategy {
   protected performZoom(appState: AppStorageState) {
+    const isViewOnlyEnabled = this.isFeatureEnabled("enableViewOnlyToggle") && appState.viewOnly;
+
+    if (isViewOnlyEnabled && this.isUIViewOnly()) {
+      return;
+    }
+
     this.uiExecuteFlow(appState.zoomValue);
   }
 
