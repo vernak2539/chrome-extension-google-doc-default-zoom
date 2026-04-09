@@ -50,5 +50,3 @@ tsconfig.tsbuildinfo
 
 # Gemini Visual Testing
 docs/preview.png
-storybook-visual-inspector/
-*.skill
