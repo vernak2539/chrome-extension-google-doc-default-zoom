@@ -109,15 +109,19 @@ Use the following markers for code that should only exist in the "Extended" vers
 When tasking with addressing PR reviews or managing the PR lifecycle, follow this workflow:
 
 ### 1. Verification
+
 - **Tests:** **ALWAYS** run tests using `pnpm test -- --run` (or similar non-watching flags) to ensure the process terminates automatically.
 - **Build:** Run `pnpm build` to verify the extension bundles correctly.
 - **Format/Lint:** Run `pnpm format` and `pnpm lint` as per the mandatory workflow.
 
 ### 2. Addressing Reviews
+
 - **Fetch Comments:** Use `gh api repos/{owner}/{repo}/pulls/{number}/comments` to read latest feedback.
 - **Action Comments:** Implement requested changes surgically.
 - **Resolve Threads:** After pushing fixes, resolve the corresponding review threads using the GitHub GraphQL API (`resolveReviewThread` mutation). This provides clear visual feedback that a comment has been addressed.
 - **Re-request Review:** Use `gh pr edit {number} --add-reviewer {login}` or `gh pr comment` to notify reviewers of the updates.
 
 ### 3. Pushing Changes
+
+- **Format & Lint:** **ALWAYS** run `pnpm format` and `pnpm lint` immediately before pushing. Pushing unformatted code is a failure.
 - Ensure all commits follow the existing style and that the remote branch is kept up to date (`git push`).
