@@ -20,10 +20,10 @@ const SettingsView = () => {
   const storage = new Storage();
   const [schemaVersion] = useStorage<number>(SCHEMA_VERSION_KEY, 1);
   const storageKeys: StorageKey[] = ["docs", "sheets"];
-  const [isExitEnabled, setIsExitEnabled] = useState(true);
+  const [isBusy, setIsBusy] = useState(false);
 
   const onResetZoomSettingsClick = async () => {
-    setIsExitEnabled(false);
+    setIsBusy(true);
     const resetPromises = storageKeys.map((key) => storage.set(key, { ...DEFAULT_APP_STATE }));
 
     try {
@@ -32,12 +32,12 @@ const SettingsView = () => {
       sentryScope.captureException(error);
       console.error("Failed to reset storage", error);
     } finally {
-      setIsExitEnabled(true);
+      setIsBusy(false);
     }
   };
 
   const onDowngradeToV1Click = async () => {
-    setIsExitEnabled(false);
+    setIsBusy(true);
 
     try {
       // Read current V2 state before deleting
@@ -71,7 +71,7 @@ const SettingsView = () => {
         "Failed to downgrade to V1 flat keys. Storage may be partially updated; please retry or inspect extension storage before continuing."
       );
     } finally {
-      setIsExitEnabled(true);
+      setIsBusy(false);
     }
   };
 
@@ -85,7 +85,7 @@ const SettingsView = () => {
       <section>
         <h3>{localize("popupSettingsResetToFactoryTitle")}</h3>
         <p>{localize("popupSettingsResetToFactoryDescription")}</p>
-        <Button variant="danger" onPress={onResetZoomSettingsClick} isDisabled={!isExitEnabled}>
+        <Button variant="danger" onPress={onResetZoomSettingsClick} isDisabled={isBusy}>
           {localize("popupSettingsResetToFactoryAction")}
         </Button>
       </section>
@@ -100,7 +100,7 @@ const SettingsView = () => {
             <p>
               Downgrade storage schema to V1 format (flat keys) and reload to test auto-migration.
             </p>
-            <Button variant="danger" onPress={onDowngradeToV1Click} isDisabled={!isExitEnabled}>
+            <Button variant="danger" onPress={onDowngradeToV1Click} isDisabled={isBusy}>
               Downgrade to V1 Format
             </Button>
           </section>
