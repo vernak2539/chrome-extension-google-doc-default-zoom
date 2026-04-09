@@ -1,18 +1,14 @@
 import WorkspaceApplication from "src/components/WorkspaceApplication";
 import WorkspaceApplicationList from "src/components/WorkspaceApplicationList";
 import { workspaceApps } from "src/constants";
+import { showExtensionVersionsTab } from "src/utils/get-browser";
 import localize from "src/utils/localize";
 
-interface Props {
-  openSettingsView: () => void;
-  showExtensionVersionsTab: boolean;
-}
-
-const HomeView = ({ openSettingsView, showExtensionVersionsTab }: Props) => {
+const HomeView = () => {
   return (
     <>
       <p>{localize("popupMainSectionDescription")}</p>
-      <WorkspaceApplicationList onSettingsClick={openSettingsView}>
+      <WorkspaceApplicationList>
         {workspaceApps
           .filter((app) => app.isEnabled)
           .map((app) => (
@@ -26,7 +22,7 @@ const HomeView = ({ openSettingsView, showExtensionVersionsTab }: Props) => {
             />
           ))}
       </WorkspaceApplicationList>
-      {showExtensionVersionsTab && (
+      {showExtensionVersionsTab() && (
         <p>
           <a
             href="#"

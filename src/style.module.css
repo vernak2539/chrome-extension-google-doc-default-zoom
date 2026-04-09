@@ -1,5 +1,4 @@
 @import "./styles/theme.css";
-@import "tippy.js/dist/tippy.css";
 
 :root {
   --application-icon-dimension: 25px;
@@ -111,4 +110,26 @@
 
 .supportMeLinkContainer {
   text-align: center;
+}
+
+.tabContainer {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 5px;
+}
+
+.tabItem {
+  text-decoration: none;
+  color: #666;
+  font-weight: bold;
+  font-size: 0.9rem;
+  padding: 5px 10px;
+  border-radius: 5px 5px 0 0;
+}
+
+.tabItemActive {
+  color: #000;
+  border-bottom: 2px solid #3f7e9b;
 }

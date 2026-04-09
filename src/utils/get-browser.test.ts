@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, test, vi } from "vitest";
 
-import { isChrome, isEdge, isFirefox } from "./get-browser";
+import { isChrome, isEdge, isFirefox, showExtensionVersionsTab } from "./get-browser";
 
 describe("isChrome", () => {
   afterEach(() => {
@@ -47,5 +47,26 @@ describe("isEdge", () => {
   test("should return false when not edge", () => {
     vi.stubEnv("PLASMO_BROWSER", "firefox");
     expect(isEdge()).toBe(false);
+  });
+});
+
+describe("showExtensionVersionsTab", () => {
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
+  test("should be true when chrome", () => {
+    vi.stubEnv("PLASMO_BROWSER", "chrome");
+    expect(showExtensionVersionsTab()).toBe(true);
+  });
+
+  test("should be true when edge", () => {
+    vi.stubEnv("PLASMO_BROWSER", "edge");
+    expect(showExtensionVersionsTab()).toBe(true);
+  });
+
+  test("should be false when firefox", () => {
+    vi.stubEnv("PLASMO_BROWSER", "firefox");
+    expect(showExtensionVersionsTab()).toBe(false);
   });
 });

@@ -31,3 +31,21 @@ This should create a production bundle for your extension, ready to be zipped an
 ## Submit to the webstores
 
 The easiest way to deploy your Plasmo extension is to use the built-in [bpp](https://bpp.browser.market) GitHub action. Prior to using this action however, make sure to build your extension and upload the first version to the store to establish the basic credentials. Then, simply follow [this setup instruction](https://docs.plasmo.com/framework/workflows/submit) and you should be on your way for automated submission!
+
+## Development Tips
+
+### Requesting PR Reviews from GitHub Copilot
+
+You can request a review from GitHub Copilot using the following commands:
+
+Using `gh pr edit`:
+
+```bash
+gh pr edit <pr-number-or-url> --add-reviewer @copilot
+```
+
+Or when creating a new PR:
+
+```bash
+gh pr create --add-reviewer @copilot
+```

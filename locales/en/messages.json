@@ -142,5 +142,13 @@
   "popupSettingsStorageVersion": {
     "message": "Storage v{schemaVersion}",
     "description": "Text in settings footer denoting current storage schema version"
+  },
+  "popupNavHome": {
+    "message": "Home",
+    "description": "Label for the Home navigation tab"
+  },
+  "popupNavSettings": {
+    "message": "Settings",
+    "description": "Label for the Settings navigation tab"
   }
 }
