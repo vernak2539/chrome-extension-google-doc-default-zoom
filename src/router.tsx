@@ -20,6 +20,7 @@ const rootRoute = createRootRoute({
         <Link
           to="/"
           className={styles.tabItem}
+          activeOptions={{ exact: true }}
           activeProps={{ className: `${styles.tabItem} ${styles.tabItemActive}` }}>
           {localize("popupNavHome")}
         </Link>
