@@ -5,11 +5,11 @@ import { chromium } from "playwright";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const repoRoot = path.resolve(__dirname, "../../../../");
 
 (async () => {
-  // We assume the script is running from the root of the project or the skill folder.
-  // The output path should be relative to the project root.
-  const outputPath = path.resolve(process.cwd(), "docs/preview.png");
+  // Resolve the output path from the repository root based on this script's location.
+  const outputPath = path.resolve(repoRoot, "docs/preview.png");
 
   const browser = await chromium.launch({ headless: true });
   const context = await browser.newContext({
