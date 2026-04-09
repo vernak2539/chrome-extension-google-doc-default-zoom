@@ -1,6 +1,5 @@
 // Icon used in Favicon was created by https://www.flaticon.com/authors/royyan-wijaya
 import { RouterProvider } from "@tanstack/react-router";
-import { isChrome, isEdge } from "src/utils/get-browser";
 import localize from "src/utils/localize";
 import { setupSentryReactErrorBoundary } from "src/utils/sentry/react-error-boundary";
 
@@ -10,7 +9,6 @@ import { LoggerProvider } from "./utils/logger/context";
 import * as styles from "src/style.module.css";
 
 const withSentryErrorBoundary = setupSentryReactErrorBoundary("popup");
-export const showExtensionVersionsTab = isChrome() || isEdge(); // Export for HomeView
 
 // "extensionName"/"extensionNameExtended" WILL BE CHANGED. DON'T CHANGE WITHOUT MAKING OTHER CHANGES
 const extensionName = localize("extensionNameExtended");
