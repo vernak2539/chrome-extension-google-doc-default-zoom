@@ -36,8 +36,9 @@ const repoRoot = path.resolve(__dirname, "../../../../");
     await page.screenshot({ path: outputPath });
     console.log(`✅ Screenshot saved to ${outputPath}`);
   } catch (error) {
-    console.error(`❌ Failed to capture screenshot: ${error.message}`);
-    process.exit(1);
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    console.error(`❌ Failed to capture screenshot: ${errorMessage}`);
+    process.exitCode = 1;
   } finally {
     await browser.close();
   }

@@ -1,4 +1,4 @@
-// Mock chrome.storage if it doesn't exist
+// Mock chrome APIs used in Storybook (storage, runtime, i18n, and tabs) if `window.chrome` doesn't exist
 if (typeof window !== "undefined" && !window.chrome) {
   (window as any).chrome = {
     runtime: {
