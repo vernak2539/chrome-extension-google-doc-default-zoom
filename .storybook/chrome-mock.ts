@@ -7,17 +7,17 @@ if (typeof window !== "undefined" && !window.chrome) {
       id: "mock-extension-id",
       onMessage: {
         addListener: () => {},
-        removeListener: () => {},
-      },
+        removeListener: () => {}
+      }
     },
     storage: {
       sync: {
         get: (keys: any, callback: any) => {
           const result = {};
           if (Array.isArray(keys)) {
-            keys.forEach(key => (result as any)[key] = undefined);
+            keys.forEach((key) => ((result as any)[key] = undefined));
           } else if (typeof keys === "object" && keys !== null) {
-            Object.keys(keys).forEach(key => (result as any)[key] = keys[key]);
+            Object.keys(keys).forEach((key) => ((result as any)[key] = keys[key]));
           } else if (typeof keys === "string") {
             (result as any)[keys] = undefined;
           }
@@ -34,8 +34,8 @@ if (typeof window !== "undefined" && !window.chrome) {
         },
         onChanged: {
           addListener: () => {},
-          removeListener: () => {},
-        },
+          removeListener: () => {}
+        }
       },
       local: {
         get: (keys: any, callback: any) => {
@@ -53,13 +53,13 @@ if (typeof window !== "undefined" && !window.chrome) {
         },
         onChanged: {
           addListener: () => {},
-          removeListener: () => {},
-        },
+          removeListener: () => {}
+        }
       },
       onChanged: {
         addListener: () => {},
-        removeListener: () => {},
-      },
+        removeListener: () => {}
+      }
     },
     i18n: {
       getMessage: (key: string) => {
@@ -72,14 +72,14 @@ if (typeof window !== "undefined" && !window.chrome) {
           popupToExtensionVersionsTab: "View extension versions",
           workspaceAppDocs: "Google Docs",
           workspaceAppSheets: "Google Sheets",
-          popupSupportMe: "Support me",
+          popupSupportMe: "Support me"
         };
         return messages[key] || key;
       },
-      getUILanguage: () => "en",
+      getUILanguage: () => "en"
     },
     tabs: {
-      create: () => {},
-    },
+      create: () => {}
+    }
   };
 }
