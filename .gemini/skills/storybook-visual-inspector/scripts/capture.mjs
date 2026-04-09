@@ -1,6 +1,7 @@
-import { chromium } from 'playwright';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import path from "path";
+import { fileURLToPath } from "url";
+
+import { chromium } from "playwright";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -8,30 +9,30 @@ const __dirname = path.dirname(__filename);
 (async () => {
   // We assume the script is running from the root of the project or the skill folder.
   // The output path should be relative to the project root.
-  const outputPath = path.resolve(process.cwd(), 'docs/preview.png');
-  
+  const outputPath = path.resolve(process.cwd(), "docs/preview.png");
+
   const browser = await chromium.launch({ headless: true });
   const context = await browser.newContext({
     viewport: { width: 500, height: 600 },
-    deviceScaleFactor: 2, // Retina scale for clearer screenshots
+    deviceScaleFactor: 2 // Retina scale for clearer screenshots
   });
-  
+
   const page = await context.newPage();
-  
-  console.log('Navigating to Storybook...');
+
+  console.log("Navigating to Storybook...");
   try {
-    await page.goto('http://127.0.0.1:6006/iframe.html?id=popup--default&viewMode=story', {
-      waitUntil: 'networkidle',
-      timeout: 30000,
+    await page.goto("http://127.0.0.1:6006/iframe.html?id=popup--default&viewMode=story", {
+      waitUntil: "networkidle",
+      timeout: 30000
     });
-    
+
     // Wait for the popup container or any visible element to ensure rendering
     // Based on our styles, .popupContainer is the root
     await page.waitForSelector('div[class*="popupContainer"]', { timeout: 10000 });
-    
+
     // Give it a small extra buffer for any animations or layout shifts
     await page.waitForTimeout(500);
-    
+
     await page.screenshot({ path: outputPath });
     console.log(`✅ Screenshot saved to ${outputPath}`);
   } catch (error) {
