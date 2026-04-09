@@ -94,6 +94,8 @@ Google Docs/Sheets UI is complex. Use the `simulateClick` helper in `src/utils/u
 
 All user-facing strings should be localized using `src/utils/localize.ts`, which wraps `chrome.i18n.getMessage`. Localized strings are stored in `locales/`.
 
+For instructions on adding new languages or managing translations, refer to [docs/localization.md](./docs/localization.md).
+
 ### Conditional Code
 
 Use the following markers for code that should only exist in the "Extended" version:
