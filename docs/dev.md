@@ -35,14 +35,17 @@ The easiest way to deploy your Plasmo extension is to use the built-in [bpp](htt
 ## Development Tips
 
 ### Requesting PR Reviews from GitHub Copilot
+
 You can request a review from GitHub Copilot using the following commands:
 
 Using `gh pr edit`:
+
 ```bash
 gh pr edit <pr-number-or-url> --add-reviewer @copilot
 ```
 
 Or when creating a new PR:
+
 ```bash
 gh pr create --add-reviewer @copilot
 ```

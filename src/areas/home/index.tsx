@@ -1,8 +1,8 @@
 import WorkspaceApplication from "src/components/WorkspaceApplication";
 import WorkspaceApplicationList from "src/components/WorkspaceApplicationList";
 import { workspaceApps } from "src/constants";
-import localize from "src/utils/localize";
 import { showExtensionVersionsTab } from "src/utils/get-browser";
+import localize from "src/utils/localize";
 
 const HomeView = () => {
   return (
