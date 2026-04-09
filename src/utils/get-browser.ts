@@ -10,4 +10,6 @@ export const isEdge = () => {
   return process.env.PLASMO_BROWSER === "edge";
 };
 
-export const showExtensionVersionsTab = isChrome() || isEdge();
+export const showExtensionVersionsTab = () => {
+  return isChrome() || isEdge();
+};

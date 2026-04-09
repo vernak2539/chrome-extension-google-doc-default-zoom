@@ -1,18 +1,18 @@
-import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
+import { afterEach, describe, expect, test, vi } from "vitest";
+
+import { isChrome, isEdge, isFirefox, showExtensionVersionsTab } from "./get-browser";
 
 describe("isChrome", () => {
   afterEach(() => {
     vi.unstubAllEnvs();
   });
 
-  test("should return true when chrome", async () => {
-    const { isChrome } = await import("./get-browser");
+  test("should return true when chrome", () => {
     vi.stubEnv("PLASMO_BROWSER", "chrome");
     expect(isChrome()).toBe(true);
   });
 
-  test("should return false when not chrome", async () => {
-    const { isChrome } = await import("./get-browser");
+  test("should return false when not chrome", () => {
     vi.stubEnv("PLASMO_BROWSER", "firefox");
     expect(isChrome()).toBe(false);
   });
@@ -23,14 +23,12 @@ describe("isFirefox", () => {
     vi.unstubAllEnvs();
   });
 
-  test("should return true when firefox", async () => {
-    const { isFirefox } = await import("./get-browser");
+  test("should return true when firefox", () => {
     vi.stubEnv("PLASMO_BROWSER", "firefox");
     expect(isFirefox()).toBe(true);
   });
 
-  test("should return false when not firefox", async () => {
-    const { isFirefox } = await import("./get-browser");
+  test("should return false when not firefox", () => {
     vi.stubEnv("PLASMO_BROWSER", "chrome");
     expect(isFirefox()).toBe(false);
   });
@@ -41,43 +39,34 @@ describe("isEdge", () => {
     vi.unstubAllEnvs();
   });
 
-  test("should return true when edge", async () => {
-    const { isEdge } = await import("./get-browser");
+  test("should return true when edge", () => {
     vi.stubEnv("PLASMO_BROWSER", "edge");
     expect(isEdge()).toBe(true);
   });
 
-  test("should return false when not edge", async () => {
-    const { isEdge } = await import("./get-browser");
+  test("should return false when not edge", () => {
     vi.stubEnv("PLASMO_BROWSER", "firefox");
     expect(isEdge()).toBe(false);
   });
 });
 
 describe("showExtensionVersionsTab", () => {
-  beforeEach(() => {
-    vi.resetModules();
-  });
-
   afterEach(() => {
     vi.unstubAllEnvs();
   });
 
-  test("should be true when chrome", async () => {
+  test("should be true when chrome", () => {
     vi.stubEnv("PLASMO_BROWSER", "chrome");
-    const { showExtensionVersionsTab } = await import("./get-browser");
-    expect(showExtensionVersionsTab).toBe(true);
+    expect(showExtensionVersionsTab()).toBe(true);
   });
 
-  test("should be true when edge", async () => {
+  test("should be true when edge", () => {
     vi.stubEnv("PLASMO_BROWSER", "edge");
-    const { showExtensionVersionsTab } = await import("./get-browser");
-    expect(showExtensionVersionsTab).toBe(true);
+    expect(showExtensionVersionsTab()).toBe(true);
   });
 
-  test("should be false when firefox", async () => {
+  test("should be false when firefox", () => {
     vi.stubEnv("PLASMO_BROWSER", "firefox");
-    const { showExtensionVersionsTab } = await import("./get-browser");
-    expect(showExtensionVersionsTab).toBe(false);
+    expect(showExtensionVersionsTab()).toBe(false);
   });
 });

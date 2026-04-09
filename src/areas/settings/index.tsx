@@ -1,6 +1,6 @@
 import { Storage } from "@plasmohq/storage";
 import { useStorage } from "@plasmohq/storage/hook";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import SettingsIcon from "react:~/assets/popup_icons/settings-inverted.svg";
 import Button from "src/components/Button";
 import type { AppStorageState, StorageKey } from "src/types";
@@ -21,6 +21,13 @@ const SettingsView = () => {
   const [schemaVersion] = useStorage<number>(SCHEMA_VERSION_KEY, 1);
   const storageKeys: StorageKey[] = ["docs", "sheets"];
   const [isBusy, setIsBusy] = useState(false);
+  const isMounted = useRef(true);
+
+  useEffect(() => {
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
 
   const onResetZoomSettingsClick = async () => {
     setIsBusy(true);
@@ -32,7 +39,9 @@ const SettingsView = () => {
       sentryScope.captureException(error);
       console.error("Failed to reset storage", error);
     } finally {
-      setIsBusy(false);
+      if (isMounted.current) {
+        setIsBusy(false);
+      }
     }
   };
 
@@ -71,7 +80,9 @@ const SettingsView = () => {
         "Failed to downgrade to V1 flat keys. Storage may be partially updated; please retry or inspect extension storage before continuing."
       );
     } finally {
-      setIsBusy(false);
+      if (isMounted.current) {
+        setIsBusy(false);
+      }
     }
   };
 

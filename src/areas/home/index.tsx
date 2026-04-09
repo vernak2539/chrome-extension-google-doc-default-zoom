@@ -22,7 +22,7 @@ const HomeView = () => {
             />
           ))}
       </WorkspaceApplicationList>
-      {showExtensionVersionsTab && (
+      {showExtensionVersionsTab() && (
         <p>
           <a
             href="#"
