@@ -44,10 +44,11 @@ The store listing script translates the contents of `docs/store-listings/`.
 Machine translations can be imperfect. You can manually edit the generated JSON or Markdown files.
 
 - **Diff Mode Safety:** Running the `translate-messages.mjs` script again in default mode will **not** overwrite your manual changes, as the keys are no longer considered "missing."
-- **Force Update:** If you want to force an update for a specific key (overwriting manual changes), use the `--key` flag:
-  ```bash
-  node bin/translate-messages.mjs --key="yourKeyName"
-  ```
+*   **Force Update:** If you want to force an update for a specific key (overwriting manual changes), use the `--key` flag:
+    ```bash
+    GOOGLE_APPLICATION_CREDENTIALS=./creds.json node bin/translate-messages.mjs --key="yourKeyName"
+    ```
+
 
 ## Developer Notes
 
