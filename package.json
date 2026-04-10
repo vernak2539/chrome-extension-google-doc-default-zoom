@@ -64,8 +64,11 @@
     "yargs": "^18.0.0"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx,mjs,cjs,json,css,md}": "oxfmt --write",
-    "*.{js,jsx,ts,tsx,mjs,cjs}": "oxlint --fix"
+    "*.{json,css,md}": "oxfmt --write",
+    "*.{js,jsx,ts,tsx,mjs,cjs}": [
+      "oxfmt --write",
+      "oxlint --fix"
+    ]
   },
   "packageManager": "pnpm@9.10.0",
   "pnpm": {
