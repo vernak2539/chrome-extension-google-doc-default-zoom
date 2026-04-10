@@ -117,7 +117,6 @@
   gap: 20px;
   margin-bottom: 20px;
   border-bottom: 1px solid #ccc;
-  padding-bottom: 5px;
 }
 
 .tabItem {
@@ -127,6 +126,8 @@
   font-size: 0.9rem;
   padding: 5px 10px;
   border-radius: 5px 5px 0 0;
+  margin-bottom: -1px;
+  border-bottom: 2px solid transparent;
 }
 
 .tabItemActive {
