@@ -1,5 +1,6 @@
 import { Storage } from "@plasmohq/storage";
 import { useStorage } from "@plasmohq/storage/hook";
+import { useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import SettingsIcon from "react:~/assets/popup_icons/settings-inverted.svg";
 import Button from "src/components/Button";
@@ -18,6 +19,7 @@ const sentryScope = createSentryClient("popup");
 
 const SettingsView = () => {
   const storage = new Storage();
+  const navigate = useNavigate();
   const [schemaVersion] = useStorage<number>(SCHEMA_VERSION_KEY, 1);
   const storageKeys: StorageKey[] = ["docs", "sheets"];
   const [isBusy, setIsBusy] = useState(false);
@@ -86,6 +88,10 @@ const SettingsView = () => {
     }
   };
 
+  const onExitSettingsClick = () => {
+    navigate({ to: "/" });
+  };
+
   return (
     <div>
       <h2 style={{ display: "flex", alignItems: "center" }}>
@@ -117,6 +123,16 @@ const SettingsView = () => {
           </section>
         </>
       )}
+
+      <br />
+      <hr />
+      <br />
+
+      <section style={{ textAlign: "center" }}>
+        <Button onPress={onExitSettingsClick} isDisabled={isBusy}>
+          {localize("popupSettingsExit")}
+        </Button>
+      </section>
 
       <p
         style={{
