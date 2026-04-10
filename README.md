@@ -53,17 +53,23 @@ I've used Google Translate the values for non-English languages. I know they're 
 To automate the translation process, we use Google Cloud Translation API.
 
 ### Translate UI strings (`messages.json`)
+
 To translate all missing strings from the English source to all other languages:
+
 ```bash
 GOOGLE_APPLICATION_CREDENTIALS=./path-to-creds.json node bin/translate-messages.mjs
 ```
+
 To translate or update a specific key only:
+
 ```bash
 GOOGLE_APPLICATION_CREDENTIALS=./path-to-creds.json node bin/translate-messages.mjs --key="yourKeyName"
 ```
 
 ### Translate Store Listings
+
 To translate the store listings:
+
 ```bash
 GOOGLE_APPLICATION_CREDENTIALS=./path-to-creds.json node bin/translate-store-listing-translate.mjs --listing=base
 ```
