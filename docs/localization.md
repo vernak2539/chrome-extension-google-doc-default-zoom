@@ -15,7 +15,10 @@ To add a new language (e.g., Portuguese) to the extension, follow these steps:
 Add the new language to the `LANGUAGES` array in `bin/translate-config.mjs`:
 
 ```javascript
-export const LANGUAGES = [...{ code: "pt", name: "Portuguese" }];
+export const LANGUAGES = [
+  ...
+  { code: "pt", name: "Portuguese" }
+];
 ```
 
 ### 2. Generate UI Translations
