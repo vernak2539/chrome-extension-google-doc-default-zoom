@@ -50,6 +50,30 @@ Supported Google Workspace Products:
 I'm a native English speaker, but want to provide this Chrome Extension for everyone. That being said,
 I've used Google Translate the values for non-English languages. I know they're probably not correct.
 
+To automate the translation process, we use Google Cloud Translation API.
+
+### Translate UI strings (`messages.json`)
+
+To translate all missing strings from the English source to all other languages:
+
+```bash
+GOOGLE_APPLICATION_CREDENTIALS=./path-to-creds.json node bin/translate-messages.mjs
+```
+
+To translate or update a specific key only:
+
+```bash
+GOOGLE_APPLICATION_CREDENTIALS=./path-to-creds.json node bin/translate-messages.mjs --key="yourKeyName"
+```
+
+### Translate Store Listings
+
+To translate the store listings:
+
+```bash
+GOOGLE_APPLICATION_CREDENTIALS=./path-to-creds.json node bin/translate-store-listing-translate.mjs --listing=base
+```
+
 If you feel like helping me out, would be much appreciated if you could submit a new issue, using the
 "[Update/Add Locale Information](https://github.com/vernak2539/chrome-extension-google-doc-default-zoom/issues/new/choose)"
 issue template. Or, reach out to me, and we can have a chat!
