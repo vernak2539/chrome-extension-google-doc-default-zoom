@@ -80,7 +80,7 @@ pnpm transform-ext
 
 ### Coding Style
 
-- **Mandatory Workflow:** **ALWAYS** run `pnpm format` and `pnpm lint` before completing any code changes or submitting a PR.
+- **Mandatory Workflow:** Quality gates (formatting, linting, and tests) run automatically on `pre-commit` via `husky` and `lint-staged`. While automated, it is still good practice to manually verify your changes before committing.
 - **Formatting:** oxfmt is used for code formatting (`pnpm format`).
 - **Linting:** oxlint is used for linting (`pnpm lint`).
 - **Imports:** oxfmt handles import sorting automatically via the `sortImports` option.
@@ -125,5 +125,5 @@ When tasking with addressing PR reviews or managing the PR lifecycle, follow thi
 
 ### 3. Pushing Changes
 
-- **Format & Lint:** **ALWAYS** run `pnpm format` and `pnpm lint` immediately before pushing. Pushing unformatted code is a failure.
+- **Quality Gates:** Automated `pre-commit` hooks handle formatting, linting, and testing. Ensure all hooks pass before pushing.
 - Ensure all commits follow the existing style and that the remote branch is kept up to date (`git push`).
