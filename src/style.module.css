@@ -46,7 +46,10 @@
   padding: 0.5rem 1rem;
   text-decoration: none;
   color: var(--pico-muted-color);
-  border-bottom: 2px solid transparent;
+  border-bottom: 4px solid transparent;
+  margin-bottom: -1px; /* Align with container bottom border */
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
   transition: all 0.2s ease;
 }
 
