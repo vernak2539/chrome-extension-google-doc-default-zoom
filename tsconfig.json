@@ -1,12 +1,13 @@
 {
   "extends": "plasmo/templates/tsconfig.base",
-  "exclude": ["node_modules"],
+  "exclude": ["node_modules", "vite.config.ts"],
   "include": [".plasmo/index.d.ts", ".plasmo/messaging.d.ts", "./**/*.ts", "./**/*.tsx"],
   "compilerOptions": {
     "paths": {
       //      "~*": ["./src/*"]
     },
     "baseUrl": ".",
+    "strictNullChecks": true,
     "jsx": "react-jsx",
     "types": ["vite-plugin-svgr/client", "chrome"]
   },

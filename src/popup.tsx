@@ -1,11 +1,8 @@
-// Icon used in Favicon was created by https://www.flaticon.com/authors/royyan-wijaya
-import { RouterProvider } from "@tanstack/react-router";
-
 import "@picocss/pico/css/pico.min.css";
 import localize from "src/utils/localize";
 import { setupSentryReactErrorBoundary } from "src/utils/sentry/react-error-boundary";
 
-import { router } from "./router";
+import { AppRouter } from "./router";
 import { LoggerProvider } from "./utils/logger/context";
 
 import * as styles from "src/style.module.css";
@@ -21,7 +18,7 @@ export function IndexPopup() {
       <main className={`container ${styles.popupContainer}`}>
         <h1>{extensionName}</h1>
 
-        <RouterProvider router={router} />
+        <AppRouter />
 
         <p className={styles.supportMeLinkContainer}>
           <small>

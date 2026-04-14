@@ -28,13 +28,13 @@
     "@plasmohq/storage": "^1.15.0",
     "@sentry/browser": "^9.40.0",
     "@sentry/react": "^9.40.0",
-    "@tanstack/react-router": "^1.168.10",
     "classnames": "^2.5.1",
     "plasmo": "0.90.5",
     "react": "18.2.0",
     "react-aria-components": "^1.6.0",
     "react-dom": "18.2.0",
     "react-hot-toast": "^2.6.0",
+    "react-router-dom": "^7.14.1",
     "tslog": "^4.9.3"
   },
   "devDependencies": {
