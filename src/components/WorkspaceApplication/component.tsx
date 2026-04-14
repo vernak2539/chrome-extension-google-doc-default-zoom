@@ -104,7 +104,7 @@ const WorkspaceApplicationComponent = ({
         </div>
       </div>
       {features.enableViewOnlyToggle && (
-        <div className={style.applicationListItemRow}>
+        <div className={style.applicationCheckboxContainer}>
           <span className={style.applicationItemRowSpacer} />
           <ExperimentalFeatureCheckbox
             isChecked={featureDocsViewOnlyEnabled}
@@ -116,7 +116,7 @@ const WorkspaceApplicationComponent = ({
         </div>
       )}
       {features.classroomSupport && (
-        <div className={style.applicationListItemRow}>
+        <div className={style.applicationCheckboxContainer}>
           <span className={style.applicationItemRowSpacer} />
           <ExperimentalFeatureCheckbox
             isChecked={featureClassroomSupportEnabled}

@@ -8,9 +8,61 @@
 .popupContainer {
   min-width: 450px;
   min-height: 355px;
-  font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+/* Heading size reductions */
+.popupContainer h1 {
+  font-size: 1.5rem;
+}
+
+.popupContainer h2 {
+  font-size: 1.25rem;
+}
+
+.popupContainer h3 {
+  font-size: 1.1rem;
+}
+
+/* Tab navigation styling */
+.navTabs {
+  margin-bottom: 1.5rem;
+}
+
+.navTabs ul {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  border-bottom: 1px solid var(--pico-border-color); /* The thin line across entire width */
+}
+
+.navTabs li {
+  padding: 0;
+  margin: 0;
+}
+
+.tabLink {
+  display: block;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  color: var(--pico-muted-color);
+  border-bottom: 4px solid transparent; /* This will sit on top of the ul's border */
+  margin-bottom: -1px; /* Overlap the ul's border for the active state to connect */
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  transition: all 0.2s ease;
+}
+
+.tabLink:hover {
+  color: var(--pico-color);
+  background-color: var(--pico-nav-link-hover-background);
+}
+
+.tabLinkActive {
+  color: var(--pico-primary) !important;
+  border-bottom-color: var(--pico-primary);
+  font-weight: bold;
 }
 
 .applicationList {
@@ -26,28 +78,33 @@
 .applicationListItem {
   display: flex;
   flex-direction: column;
-  border: 1px solid #ccc;
-  border-radius: 20px;
-  padding: 5px 0;
+  border: 1px solid var(--pico-border-color);
+  border-radius: var(--pico-border-radius);
+  padding: 15px;
+  background-color: var(--pico-card-background-color);
 }
 
 .applicationListItemRow {
   display: flex;
   align-items: center;
   width: 100%;
+  gap: 15px;
 }
 
 .applicationItemRowSpacer {
-  /* the magic numbers are the margins of the icon and title elements */
-  width: calc(var(--application-icon-dimension) + var(--application-title-mw) + 10px + 15px);
+  /* Aligns sub-checkboxes under the first select input: 
+     Position of select box is Icon (25) + Gap (15) + Title (50) + Gap (15) = 105px.
+     Since row has 15px gap, spacer should be 105 - 15 = 90px. */
+  width: 90px;
+  flex-shrink: 0;
 }
 
 .applicationTitle {
-  margin: 0 10px 0 0;
+  margin: 0;
   min-width: var(--application-title-mw);
   font-weight: bold;
-  color: #666;
-  font-size: 0.8rem;
+  color: var(--pico-muted-color);
+  font-size: 0.85rem;
 }
 
 .applicationIcon {
@@ -56,8 +113,7 @@
   background-size: contain;
   background-position: center center;
   background-repeat: no-repeat;
-  margin: 0 5px 0 10px;
-  padding: 5px 0;
+  flex-shrink: 0;
 }
 
 .applicationImageDocs {
@@ -70,67 +126,59 @@
 
 .applicationInputContainer {
   display: flex;
+  gap: 12px;
+  flex: 1;
+  align-items: center;
 }
 
-.applicationZoomInputBase {
-  border: 1px solid #999;
-  border-radius: 5px;
-  font-size: 0.75rem;
-  height: 30px;
-  padding: 5px;
+/* Fixed widths and smaller height for inputs */
+.applicationInputContainer select,
+.applicationZoomCustomInput {
+  height: 32px !important;
+  padding: 0 8px !important;
+  font-size: 0.85rem !important;
+  margin: 0 !important;
+  flex: 0 0 auto !important; /* Prevent stretching */
+  line-height: normal !important;
+}
+
+.applicationInputContainer select {
+  width: 140px !important; /* Consistent fixed width */
 }
 
 .applicationZoomCustomInput {
-  width: 100px;
+  width: 75px !important;
   text-align: center;
-  margin-left: 10px;
-  height: unset;
 }
 
-.applicationZoomSelectInput {
-  appearance: auto;
-  -webkit-appearance: button;
-  cursor: pointer;
-}
-
-.applicationActiveZoomInput {
-  background: #82bdda;
-  background: rgba(130, 189, 218, 0.3);
-  border: 1px solid #3f7e9b !important;
-  color: #000 !important;
-  font-weight: bold;
+/* Checkbox alignment fixes */
+.applicationCheckboxContainer {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 15px;
+  margin-top: 10px; /* Added spacing to the top of checkbox containers */
 }
 
 .applicationCheckbox {
   display: flex;
   font-size: 0.75rem;
-  align-items: center;
+  align-items: flex-start; /* Better for multi-line labels */
   font-style: italic;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+  line-height: 1.2;
+}
+
+.applicationCheckbox input[type="checkbox"] {
+  margin: 2px 10px 0 0;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
 }
 
 .supportMeLinkContainer {
   text-align: center;
-}
-
-.tabContainer {
-  display: flex;
-  gap: 20px;
-  margin-bottom: 20px;
-  border-bottom: 1px solid #ccc;
-}
-
-.tabItem {
-  text-decoration: none;
-  color: #666;
-  font-weight: bold;
-  font-size: 0.9rem;
-  padding: 5px 10px;
-  border-radius: 5px 5px 0 0;
-  margin-bottom: -1px;
-  border-bottom: 2px solid transparent;
-}
-
-.tabItemActive {
-  color: #000;
-  border-bottom: 2px solid #3f7e9b;
+  margin-top: 20px;
 }

@@ -1,4 +1,3 @@
-import classnames from "classnames";
 import React, { useCallback, useEffect, useState } from "react";
 
 import localize from "../../utils/localize";
@@ -48,7 +47,7 @@ const CustomZoomInput = ({ zoomValue, zoomValues, isCustomValue, updateValue }: 
 
       updateValue(newValue);
     },
-    [isCustomValue, setLocalZoom, updateValue]
+    [isCustomValue, setLocalZoom, updateValue, zoomValues]
   );
 
   return (
@@ -57,9 +56,7 @@ const CustomZoomInput = ({ zoomValue, zoomValues, isCustomValue, updateValue }: 
       value={localZoom}
       maxLength={3}
       minLength={2}
-      className={classnames(style.applicationZoomInputBase, style.applicationZoomCustomInput, {
-        [style.applicationActiveZoomInput]: isCustomValue
-      })}
+      className={style.applicationZoomCustomInput}
       onFocus={(event) => {
         const value = event.target.value;
         if (value.includes("%")) {

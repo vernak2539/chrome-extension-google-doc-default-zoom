@@ -129,7 +129,7 @@ const SettingsView = () => {
       <br />
 
       <section style={{ textAlign: "center" }}>
-        <Button onPress={onExitSettingsClick} isDisabled={isBusy}>
+        <Button variant="secondary" onPress={onExitSettingsClick} isDisabled={isBusy}>
           {localize("popupSettingsExit")}
         </Button>
       </section>
@@ -138,7 +138,7 @@ const SettingsView = () => {
         style={{
           marginTop: 16,
           fontSize: 12,
-          color: "#595959",
+          color: "var(--pico-muted-color)",
           textAlign: "center"
         }}>
         {localize("popupSettingsStorageVersion").replace("{schemaVersion}", String(schemaVersion))}

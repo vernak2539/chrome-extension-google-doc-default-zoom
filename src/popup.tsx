@@ -1,5 +1,7 @@
 // Icon used in Favicon was created by https://www.flaticon.com/authors/royyan-wijaya
 import { RouterProvider } from "@tanstack/react-router";
+
+import "@picocss/pico/css/pico.min.css";
 import localize from "src/utils/localize";
 import { setupSentryReactErrorBoundary } from "src/utils/sentry/react-error-boundary";
 
@@ -16,7 +18,7 @@ const extensionName = localize("extensionNameExtended");
 export function IndexPopup() {
   return (
     <LoggerProvider>
-      <div className={styles.popupContainer}>
+      <main className={`container ${styles.popupContainer}`}>
         <h1>{extensionName}</h1>
 
         <RouterProvider router={router} />
@@ -30,7 +32,7 @@ export function IndexPopup() {
             🤟
           </small>
         </p>
-      </div>
+      </main>
     </LoggerProvider>
   );
 }

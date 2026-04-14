@@ -1,12 +1,14 @@
 import type { ExtensionFileSource } from "src/types";
-import { Logger } from "tslog";
-import type { ILogObj, Logger as LoggerType } from "tslog";
+import type { ILogObj } from "tslog";
+import * as tslog from "tslog/dist/esm/index.js";
+
+const { Logger } = tslog;
 
 const PREFIX = "[Default Zoom GW]";
 
 class BrowserLogger {
   contexts: [string, string][];
-  logger: LoggerType<ILogObj>;
+  logger: any;
 
   constructor(source: ExtensionFileSource) {
     this.contexts = [["initiator", source]];
