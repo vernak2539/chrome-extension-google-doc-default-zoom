@@ -11,25 +11,22 @@ import HomeView from "./areas/home";
 import SettingsView from "./areas/settings";
 import localize from "./utils/localize";
 
-import * as styles from "./style.module.css";
-
 const rootRoute = createRootRoute({
   component: () => (
     <>
-      <nav className={styles.tabContainer}>
-        <Link
-          to="/"
-          className={styles.tabItem}
-          activeOptions={{ exact: true }}
-          activeProps={{ className: `${styles.tabItem} ${styles.tabItemActive}` }}>
-          {localize("popupNavHome")}
-        </Link>
-        <Link
-          to="/settings"
-          className={styles.tabItem}
-          activeProps={{ className: `${styles.tabItem} ${styles.tabItemActive}` }}>
-          {localize("popupNavSettings")}
-        </Link>
+      <nav>
+        <ul>
+          <li>
+            <Link to="/" activeOptions={{ exact: true }} activeProps={{ className: "secondary" }}>
+              {localize("popupNavHome")}
+            </Link>
+          </li>
+          <li>
+            <Link to="/settings" activeProps={{ className: "secondary" }}>
+              {localize("popupNavSettings")}
+            </Link>
+          </li>
+        </ul>
       </nav>
       <Outlet />
     </>
