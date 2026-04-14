@@ -92,8 +92,11 @@
 }
 
 .applicationItemRowSpacer {
-  /* Aligns sub-checkboxes under the first select input */
-  width: calc(var(--application-icon-dimension) + var(--application-title-mw) + 15px);
+  /* Aligns sub-checkboxes under the first select input: 
+     Position of select box is Icon (25) + Gap (15) + Title (50) + Gap (15) = 105px.
+     Since row has 15px gap, spacer should be 105 - 15 = 90px. */
+  width: 90px;
+  flex-shrink: 0;
 }
 
 .applicationTitle {
@@ -123,29 +126,46 @@
 
 .applicationInputContainer {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   flex: 1;
   align-items: center;
 }
 
-/* Fixed widths for inputs */
-.applicationInputContainer select {
-  width: 150px;
+/* Fixed widths and smaller height for inputs */
+.applicationInputContainer select,
+.applicationZoomCustomInput {
+  height: 32px !important;
+  padding: 0 8px !important;
+  font-size: 0.85rem !important;
   margin: 0 !important;
+  flex: 0 0 auto !important; /* Prevent stretching */
+  line-height: normal !important;
+}
+
+.applicationInputContainer select {
+  width: 140px !important; /* Consistent fixed width */
 }
 
 .applicationZoomCustomInput {
-  width: 80px;
-  margin: 0 !important;
+  width: 75px !important;
+  text-align: center;
 }
 
 /* Checkbox alignment fixes */
+.applicationCheckboxContainer {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 15px;
+  margin-top: 10px; /* Added spacing to the top of checkbox containers */
+}
+
 .applicationCheckbox {
   display: flex;
   font-size: 0.75rem;
   align-items: flex-start; /* Better for multi-line labels */
   font-style: italic;
-  margin: 5px 0 0 0;
+  margin: 0;
   padding: 0;
   cursor: pointer;
   line-height: 1.2;
