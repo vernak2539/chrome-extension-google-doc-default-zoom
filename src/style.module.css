@@ -26,7 +26,6 @@
 /* Tab navigation styling */
 .navTabs {
   margin-bottom: 1.5rem;
-  border-bottom: 1px solid var(--pico-border-color);
 }
 
 .navTabs ul {
@@ -34,6 +33,8 @@
   list-style: none;
   padding: 0;
   margin: 0;
+  width: 100%;
+  border-bottom: 1px solid var(--pico-border-color); /* The thin line across entire width */
 }
 
 .navTabs li {
@@ -46,8 +47,8 @@
   padding: 0.5rem 1rem;
   text-decoration: none;
   color: var(--pico-muted-color);
-  border-bottom: 4px solid transparent;
-  margin-bottom: -1px; /* Align with container bottom border */
+  border-bottom: 4px solid transparent; /* This will sit on top of the ul's border */
+  margin-bottom: -1px; /* Overlap the ul's border for the active state to connect */
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
   transition: all 0.2s ease;
