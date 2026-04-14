@@ -23,6 +23,7 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@picocss/pico": "^2.1.1",
     "@plasmohq/messaging": "^0.7.2",
     "@plasmohq/storage": "^1.15.0",
     "@sentry/browser": "^9.40.0",
