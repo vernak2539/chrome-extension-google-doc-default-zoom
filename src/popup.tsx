@@ -1,3 +1,5 @@
+// Icon used in Favicon was created by https://www.flaticon.com/authors/royyan-wijaya
+
 import "@picocss/pico/css/pico.min.css";
 import localize from "src/utils/localize";
 import { setupSentryReactErrorBoundary } from "src/utils/sentry/react-error-boundary";
