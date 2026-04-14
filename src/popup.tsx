@@ -14,13 +14,13 @@ const withSentryErrorBoundary = setupSentryReactErrorBoundary("popup");
 // "extensionName"/"extensionNameExtended" WILL BE CHANGED. DON'T CHANGE WITHOUT MAKING OTHER CHANGES
 const extensionName = localize("extensionNameExtended");
 
-export function IndexPopup() {
+export function IndexPopup({ initialEntries }: { initialEntries?: string[] } = {}) {
   return (
     <LoggerProvider>
       <main className={`container ${styles.popupContainer}`}>
         <h1>{extensionName}</h1>
 
-        <AppRouter />
+        <AppRouter initialEntries={initialEntries} />
 
         <p className={styles.supportMeLinkContainer}>
           <small>
