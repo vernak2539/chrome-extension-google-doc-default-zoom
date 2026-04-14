@@ -1,7 +1,7 @@
 import { Storage } from "@plasmohq/storage";
 import { useStorage } from "@plasmohq/storage/hook";
-import { useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import SettingsIcon from "react:~/assets/popup_icons/settings-inverted.svg";
 import Button from "src/components/Button";
 import type { AppStorageState, StorageKey } from "src/types";
@@ -87,11 +87,9 @@ const SettingsView = () => {
       }
     }
   };
-
   const onExitSettingsClick = () => {
-    navigate({ to: "/" });
+    navigate("/");
   };
-
   return (
     <div>
       <h2 style={{ display: "flex", alignItems: "center" }}>
