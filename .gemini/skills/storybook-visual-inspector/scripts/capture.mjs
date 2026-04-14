@@ -7,6 +7,10 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const repoRoot = path.resolve(__dirname, "../../../../");
 
+const args = process.argv.slice(2);
+const storyArg = args.find((arg) => arg.startsWith("--story="));
+const requestedStoryId = storyArg ? storyArg.split("=")[1] : null;
+
 (async () => {
   const outputPath = path.resolve(repoRoot, "docs/preview.png");
   const storybookUrl = "http://127.0.0.1:6006";
@@ -20,15 +24,19 @@ const repoRoot = path.resolve(__dirname, "../../../../");
   const page = await context.newPage();
 
   try {
-    console.log("Fetching Storybook index...");
-    const response = await page.goto(`${storybookUrl}/index.json`);
-    const index = await response.json();
+    let storyId = requestedStoryId;
 
-    // Prioritize Popup, then Button, then anything else that isn't docs
-    const storyId =
-      Object.keys(index.entries).find((id) => id.includes("popup") && !id.includes("--docs")) ||
-      Object.keys(index.entries).find((id) => id.includes("button") && !id.includes("--docs")) ||
-      Object.keys(index.entries).find((id) => !id.includes("--docs"));
+    if (!storyId) {
+      console.log("Fetching Storybook index...");
+      const response = await page.goto(`${storybookUrl}/index.json`);
+      const index = await response.json();
+
+      // Prioritize Popup, then Button, then anything else that isn't docs
+      storyId =
+        Object.keys(index.entries).find((id) => id.includes("popup") && !id.includes("--docs")) ||
+        Object.keys(index.entries).find((id) => id.includes("button") && !id.includes("--docs")) ||
+        Object.keys(index.entries).find((id) => !id.includes("--docs"));
+    }
 
     if (!storyId) {
       throw new Error("No stories found in index.json");
