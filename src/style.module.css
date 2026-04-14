@@ -8,6 +8,7 @@
 .popupContainer {
   min-width: 450px;
   min-height: 355px;
+  padding-top: 15px;
 }
 
 /* Heading size reductions */
@@ -25,7 +26,7 @@
 
 /* Tab navigation styling */
 .navTabs {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .navTabs ul {
@@ -34,7 +35,8 @@
   padding: 0;
   margin: 0;
   width: 100%;
-  border-bottom: 1px solid var(--pico-border-color); /* The thin line across entire width */
+  border-bottom: 1px solid var(--pico-border-color);
+  /* The thin line across entire width */
 }
 
 .navTabs li {
@@ -44,14 +46,17 @@
 
 .tabLink {
   display: block;
-  padding: 0.5rem 1rem;
+  padding: 1rem 1rem 0.5rem;
   text-decoration: none;
   color: var(--pico-muted-color);
-  border-bottom: 4px solid transparent; /* This will sit on top of the ul's border */
-  margin-bottom: -1px; /* Overlap the ul's border for the active state to connect */
+  border-bottom: 4px solid transparent;
+  /* This will sit on top of the ul's border */
+  margin-bottom: -1px;
+  /* Overlap the ul's border for the active state to connect */
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
   transition: all 0.2s ease;
+  margin-right: 10px;
 }
 
 .tabLink:hover {
@@ -138,17 +143,34 @@
   padding: 0 8px !important;
   font-size: 0.85rem !important;
   margin: 0 !important;
-  flex: 0 0 auto !important; /* Prevent stretching */
+  flex: 0 0 auto !important;
+  /* Prevent stretching */
   line-height: normal !important;
 }
 
 .applicationInputContainer select {
-  width: 140px !important; /* Consistent fixed width */
+  width: 140px !important;
+  /* Consistent fixed width */
 }
 
 .applicationZoomCustomInput {
   width: 75px !important;
   text-align: center;
+}
+
+/* Button size overrides */
+.popupContainer button.small,
+.popupContainer [role="button"].small,
+.popupContainer button[class*="small"],
+.popupContainer [role="button"][class*="small"] {
+  padding: 4px 12px !important;
+  font-size: 0.85rem !important;
+  width: auto !important;
+  min-width: unset !important;
+  margin-bottom: 0 !important;
+  display: inline-block !important;
+  height: auto !important;
+  line-height: 1.5 !important;
 }
 
 /* Checkbox alignment fixes */
@@ -157,13 +179,15 @@
   align-items: center;
   width: 100%;
   gap: 15px;
-  margin-top: 10px; /* Added spacing to the top of checkbox containers */
+  margin-top: 10px;
+  /* Added spacing to the top of checkbox containers */
 }
 
 .applicationCheckbox {
   display: flex;
   font-size: 0.75rem;
-  align-items: flex-start; /* Better for multi-line labels */
+  align-items: flex-start;
+  /* Better for multi-line labels */
   font-style: italic;
   margin: 0;
   padding: 0;

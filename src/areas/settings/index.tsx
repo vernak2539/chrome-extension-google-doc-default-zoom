@@ -2,7 +2,6 @@ import { Storage } from "@plasmohq/storage";
 import { useStorage } from "@plasmohq/storage/hook";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import SettingsIcon from "react:~/assets/popup_icons/settings-inverted.svg";
 import Button from "src/components/Button";
 import type { AppStorageState, StorageKey } from "src/types";
 import localize from "src/utils/localize";
@@ -92,22 +91,20 @@ const SettingsView = () => {
   };
   return (
     <div>
-      <h2 style={{ display: "flex", alignItems: "center" }}>
-        <SettingsIcon width={20} height={20} style={{ marginRight: 3 }} />
-        {localize("popupSettingsTitle")}
-      </h2>
-
       <section>
         <h3>{localize("popupSettingsResetToFactoryTitle")}</h3>
         <p>{localize("popupSettingsResetToFactoryDescription")}</p>
-        <Button variant="danger" onPress={onResetZoomSettingsClick} isDisabled={isBusy}>
+        <Button
+          variant="danger"
+          onPress={onResetZoomSettingsClick}
+          isDisabled={isBusy}
+          size="small">
           {localize("popupSettingsResetToFactoryAction")}
         </Button>
       </section>
 
       {process.env.NODE_ENV === "development" && (
         <>
-          <br />
           <hr />
           <br />
           <section>
@@ -115,7 +112,11 @@ const SettingsView = () => {
             <p>
               Downgrade storage schema to V1 format (flat keys) and reload to test auto-migration.
             </p>
-            <Button variant="danger" onPress={onDowngradeToV1Click} isDisabled={isBusy}>
+            <Button
+              variant="danger"
+              onPress={onDowngradeToV1Click}
+              isDisabled={isBusy}
+              size="small">
               Downgrade to V1 Format
             </Button>
           </section>
@@ -127,7 +128,7 @@ const SettingsView = () => {
       <br />
 
       <section style={{ textAlign: "center" }}>
-        <Button variant="secondary" onPress={onExitSettingsClick} isDisabled={isBusy}>
+        <Button variant="secondary" onPress={onExitSettingsClick} isDisabled={isBusy} size="small">
           {localize("popupSettingsExit")}
         </Button>
       </section>
