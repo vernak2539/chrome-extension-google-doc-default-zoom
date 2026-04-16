@@ -9,7 +9,12 @@ const repoRoot = path.resolve(__dirname, "../../../../");
 
 const args = process.argv.slice(2);
 const storyArg = args.find((arg) => arg.startsWith("--story="));
-const requestedStoryId = storyArg ? storyArg.split("=")[1] : null;
+const storyFlagIndex = args.indexOf("--story");
+const requestedStoryId = storyArg
+  ? storyArg.split("=")[1]
+  : storyFlagIndex !== -1 && storyFlagIndex + 1 < args.length
+    ? args[storyFlagIndex + 1]
+    : null;
 
 (async () => {
   const outputPath = path.resolve(repoRoot, "docs/preview.png");

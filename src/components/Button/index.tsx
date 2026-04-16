@@ -17,14 +17,7 @@ const Button = ({ label, variant, size = "medium", children, ...props }: Props) 
   return (
     <BaseButton
       {...props}
-      className={({ isHovered, isPressed, isFocused, isDisabled }) =>
-        classnames(buttonStyles, {
-          hovered: isHovered,
-          pressed: isPressed,
-          focused: isFocused,
-          disabled: isDisabled
-        })
-      }
+      className={buttonStyles}
       style={
         variant === "danger"
           ? { "--pico-color": "#de2300", "--pico-border-color": "#de2300" }
