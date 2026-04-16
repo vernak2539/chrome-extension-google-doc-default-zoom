@@ -7,6 +7,29 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const repoRoot = path.resolve(__dirname, "../../../../");
 
+const args = process.argv.slice(2);
+const storyArg = args.find((arg) => arg.startsWith("--story="));
+const storyFlagIndex = args.indexOf("--story");
+
+const hasStoryOption = storyArg !== undefined || storyFlagIndex !== -1;
+const storyValueFromEquals = storyArg?.split("=")[1];
+const storyValueFromNextArg =
+  storyFlagIndex !== -1 && storyFlagIndex + 1 < args.length ? args[storyFlagIndex + 1] : null;
+const requestedStoryId =
+  storyValueFromEquals !== undefined ? storyValueFromEquals : storyValueFromNextArg;
+
+if (
+  hasStoryOption &&
+  (!requestedStoryId ||
+    requestedStoryId.trim() === "" ||
+    (storyArg === undefined && requestedStoryId.startsWith("--")))
+) {
+  console.error(
+    "❌ Invalid usage: `--story` requires a non-empty value. Use `--story=<story-id>` or `--story <story-id>`."
+  );
+  process.exit(1);
+}
+
 (async () => {
   const outputPath = path.resolve(repoRoot, "docs/preview.png");
   const storybookUrl = "http://127.0.0.1:6006";
@@ -21,14 +44,38 @@ const repoRoot = path.resolve(__dirname, "../../../../");
 
   try {
     console.log("Fetching Storybook index...");
-    const response = await page.goto(`${storybookUrl}/index.json`);
-    const index = await response.json();
+    const indexUrl = `${storybookUrl}/index.json`;
+    const response = await page.goto(indexUrl);
 
-    // Prioritize Popup, then Button, then anything else that isn't docs
-    const storyId =
-      Object.keys(index.entries).find((id) => id.includes("popup") && !id.includes("--docs")) ||
-      Object.keys(index.entries).find((id) => id.includes("button") && !id.includes("--docs")) ||
-      Object.keys(index.entries).find((id) => !id.includes("--docs"));
+    if (!response) {
+      throw new Error(
+        `Failed to fetch Storybook index: no response received from ${indexUrl}. Is Storybook running and reachable?`
+      );
+    }
+
+    if (!response.ok()) {
+      throw new Error(
+        `Failed to fetch Storybook index from ${indexUrl}: HTTP ${response.status()} ${response.statusText()}`
+      );
+    }
+
+    const index = await response.json();
+    const storyEntries = index.entries ?? {};
+    let storyId = requestedStoryId;
+
+    if (storyId) {
+      if (!storyEntries[storyId]) {
+        throw new Error(
+          `Story "${storyId}" was not found in Storybook index.json. Check the --story value for typos and ensure the story exists.`
+        );
+      }
+    } else {
+      // Prioritize Popup, then Button, then anything else that isn't docs
+      storyId =
+        Object.keys(storyEntries).find((id) => id.includes("popup") && !id.includes("--docs")) ||
+        Object.keys(storyEntries).find((id) => id.includes("button") && !id.includes("--docs")) ||
+        Object.keys(storyEntries).find((id) => !id.includes("--docs"));
+    }
 
     if (!storyId) {
       throw new Error("No stories found in index.json");
