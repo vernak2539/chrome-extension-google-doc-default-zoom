@@ -6,13 +6,9 @@ import localize from "./utils/localize";
 
 import * as styles from "./style.module.css";
 
-interface AppRouterProps {
-  initialEntries?: string[];
-}
-
-export function AppRouter({ initialEntries }: AppRouterProps) {
+export function AppRouter() {
   return (
-    <MemoryRouter initialEntries={initialEntries}>
+    <MemoryRouter>
       <nav className={styles.navTabs}>
         <ul>
           <li>

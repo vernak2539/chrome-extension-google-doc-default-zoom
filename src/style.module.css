@@ -159,10 +159,8 @@
 }
 
 /* Button size overrides */
-.popupContainer button.small,
-.popupContainer [role="button"].small,
-.popupContainer button[class*="small"],
-.popupContainer [role="button"][class*="small"] {
+.popupContainer button:global(.small),
+.popupContainer [role="button"]:global(.small) {
   padding: 4px 12px !important;
   font-size: 0.85rem !important;
   width: auto !important;

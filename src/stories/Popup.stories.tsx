@@ -14,7 +14,3 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
-
-export const Settings: Story = {
-  render: () => <IndexPopup initialEntries={["/settings"]} />
-};

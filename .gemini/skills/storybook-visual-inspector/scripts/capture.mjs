@@ -28,7 +28,21 @@ const requestedStoryId = storyArg ? storyArg.split("=")[1] : null;
 
     if (!storyId) {
       console.log("Fetching Storybook index...");
-      const response = await page.goto(`${storybookUrl}/index.json`);
+      const indexUrl = `${storybookUrl}/index.json`;
+      const response = await page.goto(indexUrl);
+
+      if (!response) {
+        throw new Error(
+          `Failed to fetch Storybook index: no response received from ${indexUrl}. Is Storybook running and reachable?`
+        );
+      }
+
+      if (!response.ok()) {
+        throw new Error(
+          `Failed to fetch Storybook index from ${indexUrl}: HTTP ${response.status()} ${response.statusText()}`
+        );
+      }
+
       const index = await response.json();
 
       // Prioritize Popup, then Button, then anything else that isn't docs
