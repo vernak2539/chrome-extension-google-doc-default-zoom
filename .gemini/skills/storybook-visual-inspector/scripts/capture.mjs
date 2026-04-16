@@ -10,11 +10,25 @@ const repoRoot = path.resolve(__dirname, "../../../../");
 const args = process.argv.slice(2);
 const storyArg = args.find((arg) => arg.startsWith("--story="));
 const storyFlagIndex = args.indexOf("--story");
-const requestedStoryId = storyArg
-  ? storyArg.split("=")[1]
-  : storyFlagIndex !== -1 && storyFlagIndex + 1 < args.length
-    ? args[storyFlagIndex + 1]
-    : null;
+
+const hasStoryOption = storyArg !== undefined || storyFlagIndex !== -1;
+const storyValueFromEquals = storyArg?.split("=")[1];
+const storyValueFromNextArg =
+  storyFlagIndex !== -1 && storyFlagIndex + 1 < args.length ? args[storyFlagIndex + 1] : null;
+const requestedStoryId =
+  storyValueFromEquals !== undefined ? storyValueFromEquals : storyValueFromNextArg;
+
+if (
+  hasStoryOption &&
+  (!requestedStoryId ||
+    requestedStoryId.trim() === "" ||
+    (storyArg === undefined && requestedStoryId.startsWith("--")))
+) {
+  console.error(
+    "❌ Invalid usage: `--story` requires a non-empty value. Use `--story=<story-id>` or `--story <story-id>`."
+  );
+  process.exit(1);
+}
 
 (async () => {
   const outputPath = path.resolve(repoRoot, "docs/preview.png");

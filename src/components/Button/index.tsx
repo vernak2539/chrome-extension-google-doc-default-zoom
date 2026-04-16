@@ -7,7 +7,7 @@ interface Props extends ButtonProps {
   size?: "small" | "medium";
 }
 
-const Button = ({ label, variant, size = "medium", children, ...props }: Props) => {
+const Button = ({ label, variant, size = "medium", children, className, ...props }: Props) => {
   const buttonStyles = classnames({
     secondary: variant === "secondary",
     outline: variant === "danger", // Using outline for danger as a simple alternative for now
@@ -17,7 +17,9 @@ const Button = ({ label, variant, size = "medium", children, ...props }: Props) 
   return (
     <BaseButton
       {...props}
-      className={buttonStyles}
+      className={(values) =>
+        classnames(buttonStyles, typeof className === "function" ? className(values) : className)
+      }
       style={
         variant === "danger"
           ? { "--pico-color": "#de2300", "--pico-border-color": "#de2300" }
