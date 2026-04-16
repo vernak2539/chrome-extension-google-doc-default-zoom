@@ -29,32 +29,38 @@ const requestedStoryId = storyArg
   const page = await context.newPage();
 
   try {
+    console.log("Fetching Storybook index...");
+    const indexUrl = `${storybookUrl}/index.json`;
+    const response = await page.goto(indexUrl);
+
+    if (!response) {
+      throw new Error(
+        `Failed to fetch Storybook index: no response received from ${indexUrl}. Is Storybook running and reachable?`
+      );
+    }
+
+    if (!response.ok()) {
+      throw new Error(
+        `Failed to fetch Storybook index from ${indexUrl}: HTTP ${response.status()} ${response.statusText()}`
+      );
+    }
+
+    const index = await response.json();
+    const storyEntries = index.entries ?? {};
     let storyId = requestedStoryId;
 
-    if (!storyId) {
-      console.log("Fetching Storybook index...");
-      const indexUrl = `${storybookUrl}/index.json`;
-      const response = await page.goto(indexUrl);
-
-      if (!response) {
+    if (storyId) {
+      if (!storyEntries[storyId]) {
         throw new Error(
-          `Failed to fetch Storybook index: no response received from ${indexUrl}. Is Storybook running and reachable?`
+          `Story "${storyId}" was not found in Storybook index.json. Check the --story value for typos and ensure the story exists.`
         );
       }
-
-      if (!response.ok()) {
-        throw new Error(
-          `Failed to fetch Storybook index from ${indexUrl}: HTTP ${response.status()} ${response.statusText()}`
-        );
-      }
-
-      const index = await response.json();
-
+    } else {
       // Prioritize Popup, then Button, then anything else that isn't docs
       storyId =
-        Object.keys(index.entries).find((id) => id.includes("popup") && !id.includes("--docs")) ||
-        Object.keys(index.entries).find((id) => id.includes("button") && !id.includes("--docs")) ||
-        Object.keys(index.entries).find((id) => !id.includes("--docs"));
+        Object.keys(storyEntries).find((id) => id.includes("popup") && !id.includes("--docs")) ||
+        Object.keys(storyEntries).find((id) => id.includes("button") && !id.includes("--docs")) ||
+        Object.keys(storyEntries).find((id) => !id.includes("--docs"));
     }
 
     if (!storyId) {

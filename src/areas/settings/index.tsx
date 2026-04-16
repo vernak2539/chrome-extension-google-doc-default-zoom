@@ -92,7 +92,7 @@ const SettingsView = () => {
   return (
     <div>
       <section>
-        <h3>{localize("popupSettingsResetToFactoryTitle")}</h3>
+        <h2>{localize("popupSettingsResetToFactoryTitle")}</h2>
         <p>{localize("popupSettingsResetToFactoryDescription")}</p>
         <Button
           variant="danger"
@@ -108,7 +108,7 @@ const SettingsView = () => {
           <hr />
           <br />
           <section>
-            <h3>🛠 Dev Tools</h3>
+            <h2>🛠 Dev Tools</h2>
             <p>
               Downgrade storage schema to V1 format (flat keys) and reload to test auto-migration.
             </p>
