@@ -1,0 +1,15 @@
+# Software factory per-repo config (read from the default branch only).
+# Models, effort and limits may be tuned per stage; agent commands can only be set locally.
+# Kept to plain "key: value" lines and standalone comments so common YAML formatters
+# (prettier, oxfmt) leave it unchanged.
+require_plan_approval: false
+# Commands run in the worktree before a PR is opened,
+# e.g. ["go build ./...", "go test ./..."]
+checks: []
+max_plan_rounds: 3
+max_review_rounds: 3
+max_conflict_rounds: 2
+# Hosts the execute stage may reach, e.g. ["proxy.golang.org"]
+network_allowlist: []
+# stages:
+#   code-review: { model: claude-fable-5-2 }
