@@ -2,4 +2,4 @@
 topic: env
 ---
 
-In the factory execute sandbox, creating `.idea` dirs inside the worktree is denied, so `pnpm install` fails there (ordered-binary ships a `.idea` folder), but works in a copy under `$TMPDIR` (use `--store-dir $TMPDIR/store`). `pnpm build` (Plasmo/Parcel LMDB cache) fails with "Operation not permitted" even in `$TMPDIR`, so builds cannot be verified in the sandbox. `registry.npmjs.org` must be in `network_allowlist`.
+In the factory execute sandbox, `pnpm install` inside the worktree fails with "Operation not permitted" (observed while pnpm creates a `.idea` dir for `ordered-binary`), but works in a copy under `$TMPDIR` (use `--store-dir $TMPDIR/store`), where vitest runs fine. `pnpm build` (Plasmo/Parcel LMDB cache) failed with "Operation not permitted" even in `$TMPDIR`, so builds could not be verified in the sandbox.
