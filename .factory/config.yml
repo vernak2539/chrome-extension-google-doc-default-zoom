@@ -3,9 +3,17 @@
 # Kept to plain "key: value" lines and standalone comments so common YAML formatters
 # (prettier, oxfmt) leave it unchanged.
 require_plan_approval: false
-# Commands run in the worktree before a PR is opened,
-# e.g. ["go build ./...", "go test ./..."]
-checks: []
+# Commands run in the worktree before a PR is opened, in order; the first failure stops the run.
+# The worktree starts without node_modules, so install first. --ignore-scripts keeps dependency
+# lifecycle scripts (and husky's prepare hook) from running. Mirrors .github/workflows/sanity-check.yml;
+# one build target is enough to catch bundling errors. Tests use "vitest run" because the "test"
+# script runs vitest in watch mode.
+checks:
+  - pnpm install --frozen-lockfile --ignore-scripts
+  - pnpm format:check
+  - pnpm lint
+  - pnpm exec vitest run
+  - pnpm build --target=chrome-mv3
 max_plan_rounds: 3
 max_review_rounds: 3
 max_conflict_rounds: 2
