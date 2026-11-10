@@ -1,5 +1,5 @@
 import { getDefaultIntegrations, Scope } from "@sentry/browser";
-import { Component, type ComponentType, type ReactNode } from "react";
+import { Component, type ComponentType, type ErrorInfo, type ReactNode } from "react";
 import { ErrorFallback } from "src/components/ErrorFallback";
 import type { ExtensionFileSource } from "src/types";
 
@@ -18,7 +18,6 @@ type ErrorBoundaryProps = {
 
 class ErrorBoundaryWithSentry extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   static contextType = LoggerContext;
-  logger!: React.ContextType<typeof LoggerContext>;
 
   constructor(props) {
     super(props);
@@ -30,9 +29,7 @@ class ErrorBoundaryWithSentry extends Component<ErrorBoundaryProps, ErrorBoundar
     return { hasError: true };
   }
 
-  componentDidCatch(error, info) {
-    this.logger.error(error);
-
+  componentDidCatch(error: Error, info: ErrorInfo) {
     this.props.sentryScope.captureException(error, {
       ...{
         mechanism: {
@@ -45,6 +42,14 @@ class ErrorBoundaryWithSentry extends Component<ErrorBoundaryProps, ErrorBoundar
         }
       }
     });
+
+    // Log after reporting, so a logging failure can never block the Sentry report or the fallback
+    try {
+      const logger = this.context as React.ContextType<typeof LoggerContext>;
+      logger?.error("React error boundary caught an error", error);
+    } catch {
+      // intentionally ignored: see above
+    }
   }
 
   render() {
