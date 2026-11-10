@@ -51,6 +51,7 @@
     "bundlesize2": "^0.0.35",
     "execa": "^8.0.1",
     "husky": "^9.1.7",
+    "jsdom": "^26.1.0",
     "jsonfile": "^6.1.0",
     "lint-staged": "^16.4.0",
     "oxfmt": "^0.44.0",
