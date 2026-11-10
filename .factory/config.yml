@@ -1,0 +1,10 @@
+# Software factory per-repo config (read from the default branch only).
+# Models, effort and limits may be tuned per stage; agent commands can only be set locally.
+require_plan_approval: false
+checks: []            # e.g. ["go build ./...", "go test ./..."]
+max_plan_rounds: 3
+max_review_rounds: 3
+max_conflict_rounds: 2
+network_allowlist: [] # e.g. ["proxy.golang.org"]
+# stages:
+#   code-review: { model: claude-fable-5-2 }
