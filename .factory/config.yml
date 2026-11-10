@@ -18,6 +18,7 @@ max_plan_rounds: 3
 max_review_rounds: 3
 max_conflict_rounds: 2
 # Hosts the execute stage may reach, e.g. ["proxy.golang.org"]
-network_allowlist: []
+network_allowlist:
+  - registry.npmjs.org
 # stages:
 #   code-review: { model: claude-fable-5-2 }
