@@ -6,6 +6,10 @@ import localize from "../utils/localize";
 const withSentryErrorBoundary = setupSentryReactErrorBoundary("tab");
 const title = localize("ExtVersionsTabHeader");
 
+// Plasmo fills the HTML <title> from package.json displayName (a __MSG_ placeholder that
+// Chrome doesn't resolve in HTML), so set the localized title at runtime
+document.title = title;
+
 type Data = {
   supported: boolean;
   name: string;
