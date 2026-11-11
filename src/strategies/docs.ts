@@ -1,4 +1,5 @@
 import type { AppStorageState } from "src/types";
+import { findZoomRowIndex } from "src/utils/find-zoom-row-index";
 import { getClosestZoomValue } from "src/utils/get-closest-zoom-value";
 import localize from "src/utils/localize";
 import { pause } from "src/utils/pause";
@@ -65,13 +66,12 @@ class DocsStrategy extends AbstractBaseStrategy {
 
         const zoomValueRows = zoomValueContainer.querySelectorAll(".goog-menuitem.apps-menuitem");
 
-        let newZoomLevelElement = null;
-        for (let i = 0; i < zoomValueRows.length; i++) {
-          const rowContent = zoomValueRows[i].firstChild.textContent;
-          if (rowContent && rowContent.includes(finalZoomValue)) {
-            newZoomLevelElement = zoomValueRows[i].firstChild;
-          }
-        }
+        const rowIndex = findZoomRowIndex(
+          Array.from(zoomValueRows, (row) => row.firstChild?.textContent),
+          finalZoomValue
+        );
+        const newZoomLevelElement =
+          rowIndex === -1 ? null : (zoomValueRows[rowIndex].firstChild as Element);
 
         if (!newZoomLevelElement) {
           getDOMElementAndClick("body");
