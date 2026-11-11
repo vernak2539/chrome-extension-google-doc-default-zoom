@@ -20,5 +20,13 @@ max_conflict_rounds: 2
 # Hosts the execute stage may reach, e.g. ["proxy.golang.org"]
 network_allowlist:
   - registry.npmjs.org
+# GitHub Actions the code review waits for and requires before it can approve. The local checks
+# above build one edition; this workflow also builds and packages the Base edition after
+# pnpm transform-ext, which is what proves "Both editions build". Needs the bot token to read Actions.
+ci:
+  required:
+    - Sanity Check
+  timeout: 15m
+  start_timeout: 2m
 # stages:
 #   code-review: { model: claude-fable-5-2 }
