@@ -75,7 +75,6 @@ export interface UiStrategyConfig {
   uiElements: {
     clickableZoomSelectId: string;
     clickableZoomOptionClass: string;
-    toolbarHelpMenuId?: string;
     toolbarId?: string;
     menubarViewTabId?: string;
   };
@@ -88,5 +87,3 @@ export interface UiStrategyConfig {
 export type Feature = keyof WorkspaceApp["features"];
 
 export type GetFromStorageFn<T> = (storageKey: string) => Promise<T>;
-
-export type CurrentView = "home" | "settings";
