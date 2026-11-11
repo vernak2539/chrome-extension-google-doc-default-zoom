@@ -1,5 +1,4 @@
 import type { ChangeEvent } from "react";
-import { useId } from "react";
 
 import localize from "../../utils/localize";
 import type { ZoomInputProps } from "../shared-props";
@@ -7,16 +6,16 @@ import type { ZoomInputProps } from "../shared-props";
 const SelectOptions = ({ zoomValues }) => {
   return (
     <>
-      {zoomValues.map((value) => {
-        return <option key={useId()}>{value}</option>;
-      })}
+      {zoomValues.map((value) => (
+        <option key={value}>{value}</option>
+      ))}
     </>
   );
 };
 const SelectOptionsWithNa = ({ zoomValues }) => {
   return (
     <>
-      <option key={useId()}>N/A</option>
+      <option key="na">N/A</option>
       <SelectOptions zoomValues={zoomValues} />
     </>
   );

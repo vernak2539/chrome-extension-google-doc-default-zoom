@@ -83,7 +83,6 @@ export const workspaceAppUiStrategyConfigs: Record<WorkspaceAppName, UiStrategyC
     uiElements: {
       clickableZoomSelectId: "#zoomSelect",
       clickableZoomOptionClass: ".goog-menuitem",
-      toolbarHelpMenuId: "#docs-help-menu", // this is required for features.customZoomInput = true
       toolbarId: "#docs-toolbar",
       menubarViewTabId: "#docs-view-menu"
     },
