@@ -37,6 +37,10 @@ describe("redactUrl", () => {
     [
       "chrome-extension://abc/tabs/experimental-features.html?x=1#docs",
       "chrome-extension://abc/tabs/experimental-features.html"
+    ],
+    [
+      "moz-extension://1b2c3d4e-0000-1111-2222-333344445555/popup.html?x=1#y",
+      "moz-extension://[redacted]/popup.html"
     ]
   ])("should redact %s", (input, expected) => {
     expect(redactUrl(input)).toBe(expected);

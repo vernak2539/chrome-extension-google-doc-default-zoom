@@ -19,8 +19,10 @@ export const redactUrl = (href: string): string => {
   }
 
   if (url.protocol !== "http:" && url.protocol !== "https:") {
-    // extension pages (popup, tabs) carry no document data; the path shows which page failed
-    return `${url.protocol}//${url.host}${url.pathname}`;
+    // extension pages (popup, tabs) carry no document data; the path shows which page failed.
+    // Firefox's moz-extension:// host is a per-install UUID, so it is not sent.
+    const host = url.protocol === "moz-extension:" ? REDACTED : url.host;
+    return `${url.protocol}//${host}${url.pathname}`;
   }
 
   const segments = url.pathname.split("/").filter(Boolean);
