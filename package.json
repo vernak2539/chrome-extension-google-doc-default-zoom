@@ -10,7 +10,7 @@
   "scripts": {
     "dev": "plasmo dev",
     "test": "vitest",
-    "build": "plasmo build",
+    "build": "plasmo build --hoist",
     "package": "plasmo package",
     "format": "oxfmt --write .",
     "format:check": "oxfmt --check .",
