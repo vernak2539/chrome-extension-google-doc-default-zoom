@@ -76,6 +76,10 @@ pnpm transform-ext
 
 **Warning:** This script modifies `package.json` and files in `src/` in-place.
 
+### Releasing
+
+Bump with `npm version patch|minor|major` and `git push --follow-tags`; the tag publishes to the stores. See [docs/releasing.md](./docs/releasing.md).
+
 ## Development Conventions
 
 ### Coding Style
