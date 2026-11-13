@@ -123,10 +123,22 @@ if you see any problems please submit an issue!
 
 ## Data Privacy
 
-This Chrome Extension will never collect or transmit any personal data.
+This Chrome Extension will never collect or transmit any personal data. It never reads or sends the text of your
+documents or spreadsheets.
 
-I do use [Sentry](https://sentry.io/welcome/) for error monitoring in diagnose and fix errors more easily. This, in turn,
-makes this extension better. There is no personal data transmitted to them and never will be.
+I do use [Sentry](https://sentry.io/welcome/) for error monitoring to diagnose and fix errors more easily. This, in turn,
+makes this extension better. When an error happens, the following is sent to Sentry:
+
+- the error message and stack trace
+- the extension version and edition, the language of your browser, whether Google Docs or Google Sheets was open, and
+  the version of the extension's settings format
+- your browser's user agent (the browser and operating system version)
+- the address of the page, with the document ID, query string and fragment removed. For example,
+  `https://docs.google.com/document/d/<document ID>/edit?usp=sharing#heading=h.abc` is sent as
+  `https://docs.google.com/document/[redacted]`
+- the layout of the page, as element IDs and class names (no text)
+
+The page that referred you to the document is never sent.
 
 [chrome-webstore-default]: https://chrome.google.com/webstore/detail/google-docs-zoom-default/nflkcdlimipkgbacnfnhfecjgmojhklo
 [chrome-webstore-extended]: https://chrome.google.com/webstore/detail/google-workspace-zoom-def/mdgikencgfhineaememjagpkiclbdkka

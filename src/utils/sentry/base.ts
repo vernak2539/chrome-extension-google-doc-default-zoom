@@ -11,10 +11,11 @@ import type { ExtensionFileSource } from "src/types";
 import { SCHEMA_VERSION_KEY } from "src/utils/storage-migration";
 
 import { SENTRY_BASE_CONFIG, getDefaultTags } from "./config";
+import { redactEventRequest } from "./redact-event";
 
 const createNewSentryClient = (
   source: ExtensionFileSource,
-  browserClientOptions?: Partial<BrowserClientOptions>
+  browserClientOptions?: Partial<Omit<BrowserClientOptions, "beforeSend">>
 ): Scope => {
   const storage = new Storage();
   const extraClientOptions = browserClientOptions || {};
@@ -28,7 +29,10 @@ const createNewSentryClient = (
       );
     }),
     transport: makeFetchTransport,
-    ...extraClientOptions
+    ...extraClientOptions,
+    // Last on purpose: callers can't override it. Strips the Docs/Sheets URL and the referrer that
+    // HttpContext adds to every event (issue #112).
+    beforeSend: (event) => redactEventRequest(event)
   });
 
   const sentryScope = new Scope();
