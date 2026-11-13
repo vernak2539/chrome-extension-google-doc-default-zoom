@@ -11,6 +11,7 @@ import type {
   UiStrategyConfig
 } from "../types";
 import { isGoogleClassroomSubmittedAssignment } from "../utils/classroom-helpers";
+import { findZoomMenu } from "../utils/find-zoom-menu";
 import getIsCustomZoom from "../utils/get-is-custom-zoom";
 import { clickDOMElement, getDOMElement, getDOMElementAndClick } from "../utils/ui-helpers";
 
@@ -68,11 +69,13 @@ export abstract class AbstractBaseStrategy {
   }
 
   private uiExecuteDefinedZoomFlow(zoomInputContainer: Element, zoomValue: string) {
-    // get zoom menu element dropdown
-    const zoomInputContainerAriaOwns = zoomInputContainer.attributes["aria-owns"].value; // this is the link
-    const zoomInputSelect = getDOMElement(
-      `.goog-menu.goog-menu-vertical[aria-activedescendant="${zoomInputContainerAriaOwns}"]`
-    );
+    // get zoom menu element dropdown (linked from the combobox's `aria-owns`)
+    const zoomInputSelect = findZoomMenu(zoomInputContainer);
+
+    if (!zoomInputSelect) {
+      this.closeDropdown();
+      return;
+    }
 
     // figure out zoom value to select
     const zoomInputSelectOptions = zoomInputSelect.querySelectorAll(
@@ -87,6 +90,7 @@ export abstract class AbstractBaseStrategy {
 
     // somehow we may not have matched the right element
     if (!newZoomLevelElement) {
+      this.closeDropdown();
       return;
     }
 
