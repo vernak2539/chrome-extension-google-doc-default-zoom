@@ -1,14 +1,26 @@
 import AnnouncementComponent from "./component";
-import { useAnnouncement } from "./hooks";
+import { useAnnouncements } from "./hooks";
 
-const Announcement = () => {
-  const { announcement, dismiss } = useAnnouncement();
+import * as styles from "../../style.module.css";
 
-  if (!announcement) {
+const Announcements = () => {
+  const { announcements, dismiss } = useAnnouncements();
+
+  if (announcements.length === 0) {
     return null;
   }
 
-  return <AnnouncementComponent announcement={announcement} onDismiss={dismiss} />;
+  return (
+    <div className={styles.announcementList}>
+      {announcements.map((announcement) => (
+        <AnnouncementComponent
+          key={announcement.id}
+          announcement={announcement}
+          onDismiss={() => dismiss(announcement.id)}
+        />
+      ))}
+    </div>
+  );
 };
 
-export default Announcement;
+export default Announcements;

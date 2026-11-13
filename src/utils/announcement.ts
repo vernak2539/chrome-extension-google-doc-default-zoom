@@ -1,13 +1,15 @@
-// Remote announcements let the maintainer show a message in the popup without publishing a new
+// Remote announcements let the maintainer show messages in the popup without publishing a new
 // extension version (e.g. "Google changed something, a fix is on the way").
 // The source file lives in this repo at `announcements/announcement.json` and is served from
 // the default branch via raw.githubusercontent.com, which allows CORS from any origin, so no
 // extra host permissions are required. See docs/announcements.md for the file format.
 
+// Note: raw.githubusercontent.com caches for up to 5 minutes and ignores query strings, so a
+// cache-busting parameter has no effect. Changes take up to 5 minutes to reach users.
 export const ANNOUNCEMENT_URL =
   "https://raw.githubusercontent.com/vernak2539/chrome-extension-google-doc-default-zoom/main/announcements/announcement.json";
 
-export const DISMISSED_ANNOUNCEMENT_STORAGE_KEY = "dismissedAnnouncementId";
+export const DISMISSED_ANNOUNCEMENTS_STORAGE_KEY = "dismissedAnnouncementIds";
 
 const DEFAULT_LOCALE = "en";
 const FETCH_TIMEOUT_MS = 5000;
@@ -73,6 +75,20 @@ export const pickLocalizedMessage = (messages: Record<string, string>, uiLocale:
   return normalisedMessages[locale] || normalisedMessages[language] || messages[DEFAULT_LOCALE];
 };
 
+// The file is a list of announcements. A single object is also accepted. Invalid entries are
+// skipped rather than discarding the whole file, and duplicate ids keep the first entry.
+export const parseAnnouncements = (data: unknown): RemoteAnnouncement[] => {
+  const entries = Array.isArray(data) ? data : [data];
+  const seenIds = new Set<string>();
+
+  return entries.flatMap((entry) => {
+    const announcement = parseAnnouncement(entry);
+    if (!announcement || seenIds.has(announcement.id)) return [];
+    seenIds.add(announcement.id);
+    return [announcement];
+  });
+};
+
 // Compares dotted numeric versions ("0.15.3"). Returns <0, 0 or >0.
 export const compareVersions = (a: string, b: string) => {
   const aParts = a.split(".").map((part) => parseInt(part, 10) || 0);
@@ -89,19 +105,19 @@ export const compareVersions = (a: string, b: string) => {
 interface ResolveOptions {
   uiLocale: string;
   extensionVersion: string;
-  dismissedId?: string | null;
+  dismissedIds?: string[] | null;
 }
 
-// Decides whether, and what, to show the user
+// Decides whether, and what, to show the user for a single announcement
 export const resolveAnnouncement = (
   remote: RemoteAnnouncement | null,
-  { uiLocale, extensionVersion, dismissedId }: ResolveOptions
+  { uiLocale, extensionVersion, dismissedIds }: ResolveOptions
 ): Announcement | null => {
   if (!remote || !remote.active) return null;
   if (remote.maxVersion && compareVersions(extensionVersion, remote.maxVersion) > 0) return null;
 
   const dismissible = remote.dismissible ?? true;
-  if (dismissible && dismissedId === remote.id) return null;
+  if (dismissible && dismissedIds?.includes(remote.id)) return null;
 
   return {
     id: remote.id,
@@ -111,9 +127,13 @@ export const resolveAnnouncement = (
   };
 };
 
-export const fetchAnnouncement = async (
+// Resolves every announcement, keeping the order they appear in the file
+export const resolveAnnouncements = (remote: RemoteAnnouncement[], options: ResolveOptions) =>
+  remote.flatMap((announcement) => resolveAnnouncement(announcement, options) ?? []);
+
+export const fetchAnnouncements = async (
   url: string = ANNOUNCEMENT_URL
-): Promise<RemoteAnnouncement | null> => {
+): Promise<RemoteAnnouncement[]> => {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
 
@@ -124,8 +144,8 @@ export const fetchAnnouncement = async (
       credentials: "omit",
       cache: "no-cache"
     });
-    if (!response.ok) return null;
-    return parseAnnouncement(await response.json());
+    if (!response.ok) return [];
+    return parseAnnouncements(await response.json());
   } finally {
     clearTimeout(timeout);
   }

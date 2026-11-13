@@ -1,15 +1,17 @@
-{
-  "id": "2026-11-google-ui-change",
-  "active": true,
-  "level": "warning",
-  "dismissible": true,
-  "messages": {
-    "en": "Google has changed something in Docs/Sheets that may stop your default zoom from applying. A fix is being worked on and an update will be published soon.",
-    "de": "Google hat etwas in Docs/Sheets geändert, wodurch Ihr Standard-Zoom möglicherweise nicht mehr angewendet wird. An einer Lösung wird gearbeitet und ein Update wird in Kürze veröffentlicht.",
-    "es": "Google ha cambiado algo en Docs/Sheets que puede impedir que se aplique tu zoom predeterminado. Estamos trabajando en una solución y pronto se publicará una actualización.",
-    "fr": "Google a modifié quelque chose dans Docs/Sheets qui peut empêcher l'application de votre zoom par défaut. Un correctif est en cours et une mise à jour sera bientôt publiée.",
-    "it": "Google ha cambiato qualcosa in Documenti/Fogli che potrebbe impedire l'applicazione del tuo zoom predefinito. Stiamo lavorando a una correzione e a breve verrà pubblicato un aggiornamento.",
-    "ja": "Google がドキュメント/スプレッドシートに変更を加えたため、デフォルトのズームが適用されない場合があります。現在修正に取り組んでおり、近日中にアップデートを公開します。",
-    "ru": "Google внёс изменения в Документы/Таблицы, из-за которых масштаб по умолчанию может не применяться. Мы работаем над исправлением, и обновление будет опубликовано в ближайшее время."
+[
+  {
+    "id": "2026-11-google-ui-change",
+    "active": true,
+    "level": "warning",
+    "dismissible": true,
+    "messages": {
+      "en": "Google has changed something in Docs/Sheets that may stop your default zoom from applying. A fix is being worked on and an update will be published soon.",
+      "de": "Google hat etwas in Docs/Sheets geändert, wodurch Ihr Standard-Zoom möglicherweise nicht mehr angewendet wird. An einer Lösung wird gearbeitet und ein Update wird in Kürze veröffentlicht.",
+      "es": "Google ha cambiado algo en Docs/Sheets que puede impedir que se aplique tu zoom predeterminado. Estamos trabajando en una solución y pronto se publicará una actualización.",
+      "fr": "Google a modifié quelque chose dans Docs/Sheets qui peut empêcher l'application de votre zoom par défaut. Un correctif est en cours et une mise à jour sera bientôt publiée.",
+      "it": "Google ha cambiato qualcosa in Documenti/Fogli che potrebbe impedire l'applicazione del tuo zoom predefinito. Stiamo lavorando a una correzione e a breve verrà pubblicato un aggiornamento.",
+      "ja": "Google がドキュメント/スプレッドシートに変更を加えたため、デフォルトのズームが適用されない場合があります。現在修正に取り組んでおり、近日中にアップデートを公開します。",
+      "ru": "Google внёс изменения в Документы/Таблицы, из-за которых масштаб по умолчанию может не применяться. Мы работаем над исправлением, и обновление будет опубликовано в ближайшее время."
+    }
   }
-}
+]
