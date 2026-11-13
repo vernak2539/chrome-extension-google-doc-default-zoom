@@ -203,3 +203,44 @@
   text-align: center;
   margin-top: 20px;
 }
+
+/* Remote announcement banner */
+.announcement {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 1rem;
+  padding: 10px 12px;
+  border: 1px solid var(--pico-primary-border);
+  border-left-width: 4px;
+  border-radius: var(--pico-border-radius);
+  background-color: var(--pico-card-background-color);
+  font-size: 0.85rem;
+}
+
+.announcementWarning {
+  border-color: #c98a00;
+}
+
+.announcementMessage {
+  flex: 1;
+  margin: 0;
+  white-space: pre-line;
+}
+
+.popupContainer .announcementDismiss {
+  flex-shrink: 0;
+  width: auto;
+  margin: 0;
+  padding: 0 4px;
+  border: none;
+  background: none;
+  color: var(--pico-muted-color);
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.popupContainer .announcementDismiss:hover {
+  color: var(--pico-color);
+}
