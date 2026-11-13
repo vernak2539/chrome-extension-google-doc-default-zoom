@@ -44,7 +44,11 @@ describe("execute-enter handler", () => {
   test("should type the zoom value, press Enter, detach, then reply with no error", async () => {
     const calls: string[] = [];
     debuggerApi.attach.mockImplementation(async () => void calls.push("attach"));
-    debuggerApi.sendCommand.mockImplementation(async (_target, method) => void calls.push(method));
+    // Record when a command settles, so detach is only listed after every command has finished.
+    debuggerApi.sendCommand.mockImplementation(async (_target, method) => {
+      await new Promise((resolve) => setTimeout(resolve, 0));
+      calls.push(method);
+    });
     debuggerApi.detach.mockImplementation(async () => void calls.push("detach"));
     const send = vi.fn(() => calls.push("reply"));
 

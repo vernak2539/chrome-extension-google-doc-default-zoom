@@ -117,16 +117,14 @@ export abstract class AbstractBaseStrategy {
       body: {
         zoomValue
       }
-    })
-      .then(({ err }) => {
-        if (err) {
-          fallback();
-          return;
-        }
+    }).then(({ err }) => {
+      if (err) {
+        fallback();
+        return;
+      }
 
-        this.closeDropdown();
-      })
-      .catch(fallback);
+      this.closeDropdown();
+    }, fallback);
   }
   /*--EXTENDED_ONLY_END--*/
 
