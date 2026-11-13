@@ -106,23 +106,27 @@ export abstract class AbstractBaseStrategy {
     zoomInput.focus();
     zoomInput.select();
 
+    const fallback = () =>
+      this.uiExecuteDefinedZoomFlow(
+        zoomInputContainer,
+        getClosestZoomValue(this.config.zoom.zoomValues, zoomValue)
+      );
+
     sendToBackgroundViaRelay<ExecuteEnterRequestBody, ExecuteEnterResponseBody>({
       name: RELAY_EXECUTE_ENTER,
       body: {
         zoomValue
       }
-    }).then(({ err }) => {
-      if (!err) {
+    })
+      .then(({ err }) => {
+        if (err) {
+          fallback();
+          return;
+        }
+
         this.closeDropdown();
-        return;
-      }
-
-      if (err === "no_debugger") {
-        const closestZoomValue = getClosestZoomValue(this.config.zoom.zoomValues, zoomValue);
-
-        this.uiExecuteDefinedZoomFlow(zoomInputContainer, closestZoomValue);
-      }
-    });
+      })
+      .catch(fallback);
   }
   /*--EXTENDED_ONLY_END--*/
 

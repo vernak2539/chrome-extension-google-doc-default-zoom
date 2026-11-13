@@ -7,7 +7,7 @@ export interface ExecuteEnterRequestBody {
 }
 
 export interface ExecuteEnterResponseBody {
-  err: null | "no_debugger";
+  err: null | "no_debugger" | "debugger_failed";
 }
 
 export type WorkspaceAppName = "Docs" | "Sheets";
