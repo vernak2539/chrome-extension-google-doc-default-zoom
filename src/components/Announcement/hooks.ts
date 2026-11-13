@@ -1,9 +1,9 @@
 import { Storage } from "@plasmohq/storage";
 import { useCallback, useContext, useEffect, useState } from "react";
 import {
-  DISMISSED_ANNOUNCEMENT_STORAGE_KEY,
-  fetchAnnouncement,
-  resolveAnnouncement,
+  DISMISSED_ANNOUNCEMENTS_STORAGE_KEY,
+  fetchAnnouncements,
+  resolveAnnouncements,
   type Announcement
 } from "src/utils/announcement";
 import { LoggerContext } from "src/utils/logger/context";
@@ -14,33 +14,35 @@ const storage = new Storage({ area: "local" });
 const getUiLocale = () => chrome?.i18n?.getUILanguage?.() ?? "en";
 const getExtensionVersion = () => chrome?.runtime?.getManifest?.().version ?? "0.0.0";
 
-export const useAnnouncement = () => {
+const getDismissedIds = async () => {
+  const stored = await storage.get<string[]>(DISMISSED_ANNOUNCEMENTS_STORAGE_KEY);
+  return Array.isArray(stored) ? stored : [];
+};
+
+export const useAnnouncements = () => {
   const logger = useContext(LoggerContext);
-  const [announcement, setAnnouncement] = useState<Announcement | null>(null);
+  const [announcements, setAnnouncements] = useState<Announcement[]>([]);
 
   useEffect(() => {
     let isMounted = true;
 
     const load = async () => {
       try {
-        const [remote, dismissedId] = await Promise.all([
-          fetchAnnouncement(),
-          storage.get<string>(DISMISSED_ANNOUNCEMENT_STORAGE_KEY)
-        ]);
+        const [remote, dismissedIds] = await Promise.all([fetchAnnouncements(), getDismissedIds()]);
 
         if (isMounted) {
-          setAnnouncement(
-            resolveAnnouncement(remote, {
+          setAnnouncements(
+            resolveAnnouncements(remote, {
               uiLocale: getUiLocale(),
               extensionVersion: getExtensionVersion(),
-              dismissedId
+              dismissedIds
             })
           );
         }
       } catch (error) {
         // Offline, blocked, timed out, or malformed JSON. Not worth reporting to Sentry,
-        // the popup simply renders without an announcement.
-        logger.info(`Unable to load announcement: ${error}`);
+        // the popup simply renders without announcements.
+        logger.info(`Unable to load announcements: ${error}`);
       }
     };
 
@@ -51,13 +53,21 @@ export const useAnnouncement = () => {
     };
   }, [logger]);
 
-  const dismiss = useCallback(() => {
-    if (!announcement) return;
-    setAnnouncement(null);
-    storage.set(DISMISSED_ANNOUNCEMENT_STORAGE_KEY, announcement.id).catch((error) => {
-      logger.error("Unable to save dismissed announcement", error);
-    });
-  }, [announcement, logger]);
+  const dismiss = useCallback(
+    async (id: string) => {
+      setAnnouncements((current) => current.filter((announcement) => announcement.id !== id));
 
-  return { announcement, dismiss };
+      try {
+        const dismissedIds = await getDismissedIds();
+        if (!dismissedIds.includes(id)) {
+          await storage.set(DISMISSED_ANNOUNCEMENTS_STORAGE_KEY, [...dismissedIds, id]);
+        }
+      } catch (error) {
+        logger.error("Unable to save dismissed announcement", error);
+      }
+    },
+    [logger]
+  );
+
+  return { announcements, dismiss };
 };
