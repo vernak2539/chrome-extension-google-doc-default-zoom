@@ -138,5 +138,9 @@
   "popupSettingsExit": {
     "message": "設定を終了",
     "description": "Button text allowing user to exit settings and return to main part of extension"
+  },
+  "popupAnnouncementDismissLabel": {
+    "message": "メッセージを閉じる",
+    "description": "Accessible label for the button that dismisses the announcement message shown at the top of the popup"
   }
 }

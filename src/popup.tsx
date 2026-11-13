@@ -1,6 +1,7 @@
 // Icon used in Favicon was created by https://www.flaticon.com/authors/royyan-wijaya
 
 import "@picocss/pico/css/pico.min.css";
+import Announcement from "src/components/Announcement";
 import localize from "src/utils/localize";
 import { setupSentryReactErrorBoundary } from "src/utils/sentry/react-error-boundary";
 
@@ -19,6 +20,8 @@ export function IndexPopup() {
     <LoggerProvider>
       <main className={`container ${styles.popupContainer}`}>
         <h1>{extensionName}</h1>
+
+        <Announcement />
 
         <AppRouter />
 

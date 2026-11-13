@@ -150,5 +150,9 @@
   "popupNavSettings": {
     "message": "Settings",
     "description": "Label for the Settings navigation tab"
+  },
+  "popupAnnouncementDismissLabel": {
+    "message": "Dismiss message",
+    "description": "Accessible label for the button that dismisses the announcement message shown at the top of the popup"
   }
 }

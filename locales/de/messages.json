@@ -138,5 +138,9 @@
   "popupSettingsExit": {
     "message": "Einstellungen beenden",
     "description": "Button text allowing user to exit settings and return to main part of extension"
+  },
+  "popupAnnouncementDismissLabel": {
+    "message": "Nachricht schließen",
+    "description": "Accessible label for the button that dismisses the announcement message shown at the top of the popup"
   }
 }
