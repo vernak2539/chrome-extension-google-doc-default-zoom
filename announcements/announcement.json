@@ -1,7 +1,7 @@
 [
   {
     "id": "2026-11-google-ui-change",
-    "active": true,
+    "active": false,
     "level": "warning",
     "dismissible": true,
     "messages": {
