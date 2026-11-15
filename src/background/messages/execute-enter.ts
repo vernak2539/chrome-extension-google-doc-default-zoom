@@ -13,17 +13,23 @@ const handler: PlasmoMessaging.MessageHandler<
     return;
   }
 
+  let attachedTarget: chrome.debugger.Debuggee | undefined;
+  let err: ExecuteEnterResponseBody["err"] = null;
+
   try {
     const target = { tabId: req.sender.tab.id };
 
-    chrome.debugger.attach(target, "1.0");
+    await chrome.debugger.attach(target, "1.0");
+    attachedTarget = target;
 
-    chrome.debugger.sendCommand(target, "Input.insertText", {
+    await chrome.debugger.sendCommand(target, "Input.insertText", {
       text: req.body.zoomValue
     });
 
-    // The two events below have to be used together. I don't know why... but they do...
-    chrome.debugger.sendCommand(target, "Input.dispatchKeyEvent", {
+    // Both events are needed: the original version sent only a `keyUp` with `code`/`key` and did not work
+    // (4fdbe09), and the working pair was found by trial (485a0b0). Why Docs needs the `rawKeyDown` with `text` plus
+    // the `char` event is not documented, so don't drop either one without testing in Docs.
+    await chrome.debugger.sendCommand(target, "Input.dispatchKeyEvent", {
       type: "rawKeyDown",
       code: "Enter",
       key: "Enter",
@@ -33,16 +39,24 @@ const handler: PlasmoMessaging.MessageHandler<
       unmodifiedText: "\r", //This is the critical part
       windowsVirtualKeyCode: 13
     });
-    chrome.debugger.sendCommand(target, "Input.dispatchKeyEvent", {
+    await chrome.debugger.sendCommand(target, "Input.dispatchKeyEvent", {
       type: "char",
       text: "\r"
     });
-
-    chrome.debugger.detach(target);
-    res.send({ err: null });
-  } catch (err) {
-    sentryScope.captureException(err);
+  } catch (error) {
+    sentryScope.captureException(error);
+    err = "debugger_failed";
+  } finally {
+    // Detach only once every command has settled, and always, so the debugging banner doesn't stay up. A failed
+    // detach is reported but doesn't change the reply: the zoom was already applied.
+    if (attachedTarget) {
+      await chrome.debugger
+        .detach(attachedTarget)
+        .catch((error) => sentryScope.captureException(error));
+    }
   }
+
+  res.send({ err });
 };
 
 export default handler;
