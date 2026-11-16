@@ -60,9 +60,14 @@ class DocsStrategy extends AbstractBaseStrategy {
       .then(() => {
         // This is hacky, not sure a better way to do this...
         const fitValue = localize("popupDocsDropdownFitSelection");
-        const zoomValueContainer = getDOMElement(`[aria-label^="${fitValue}"]`).closest(
+        const zoomValueContainer = getDOMElement(`[aria-label^="${fitValue}"]`)?.closest(
           ".goog-menu"
         );
+
+        if (!zoomValueContainer) {
+          getDOMElementAndClick("body");
+          return;
+        }
 
         const zoomValueRows = zoomValueContainer.querySelectorAll(".goog-menuitem.apps-menuitem");
 

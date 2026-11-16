@@ -10,6 +10,7 @@ import {
 import { AbstractBaseStrategy } from "src/strategies/base";
 import DocsStrategy from "src/strategies/docs";
 import SheetsStrategy from "src/strategies/sheets";
+import type { WorkspaceAppName } from "src/types";
 import { isGoogleClassroomDomain } from "src/utils/classroom-helpers";
 import getCurrentApp from "src/utils/get-current-app";
 import BrowserLogger from "src/utils/logger";
@@ -35,6 +36,15 @@ const getAndStringifyContextValue = (selector: string) => {
   return JSON.stringify(walkDOM(document.querySelector(selector)), null, 2);
 };
 
+const createStrategy = (currentApp: WorkspaceAppName | null): AbstractBaseStrategy | undefined => {
+  switch (currentApp) {
+    case "Docs":
+      return new DocsStrategy(workspaceAppUiStrategyConfigs["Docs"]);
+    case "Sheets":
+      return new SheetsStrategy(workspaceAppUiStrategyConfigs["Sheets"]);
+  }
+};
+
 relayMessage({ name: RELAY_GET_APP_STORAGE_STATE });
 
 /*--EXTENDED_ONLY_START--*/
@@ -46,7 +56,7 @@ const main = () => {
   const currentApp = getCurrentApp(window.location.href);
   const stop = stopExecution(currentApp);
 
-  logger.addContext("application", currentApp);
+  logger.addContext("application", String(currentApp));
   logger.info("Executing...");
 
   // Try to place this as high up as possible
@@ -61,20 +71,10 @@ const main = () => {
     return;
   }
 
-  let strategy: AbstractBaseStrategy;
-
-  switch (currentApp) {
-    case "Docs":
-      strategy = new DocsStrategy(workspaceAppUiStrategyConfigs["Docs"]);
-      break;
-    case "Sheets":
-      strategy = new SheetsStrategy(workspaceAppUiStrategyConfigs["Sheets"]);
-      break;
-  }
+  const strategy = createStrategy(currentApp);
 
   // Do not execute if there's no supported strategy or the URL indicates the "doc" being previewed
-  const shouldExecute = strategy && !strategy.isUIPreview(window.location.href);
-  if (!shouldExecute) {
+  if (!strategy || strategy.isUIPreview(window.location.href)) {
     logger.info(`Skipping execution - preview mode or unsupported strategy`);
     return;
   }

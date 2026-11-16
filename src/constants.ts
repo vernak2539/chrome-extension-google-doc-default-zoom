@@ -31,7 +31,7 @@ export const DOCS_ZOOM_VALUES: DocsZoomValues = [
   "150%",
   "200%"
 ];
-export const DOCS_DEFAULT_ZOOM = DOCS_ZOOM_VALUES.at(3);
+export const DOCS_DEFAULT_ZOOM = DOCS_ZOOM_VALUES[3];
 /**  Workspace Application: Docs - End **/
 
 /**  Workspace Application: Sheets - Start **/
@@ -45,7 +45,7 @@ export const SHEETS_ZOOM_VALUES: SheetsZoomValues = [
   "150%",
   "200%"
 ];
-export const SHEETS_DEFAULT_ZOOM = SHEETS_ZOOM_VALUES.at(3);
+export const SHEETS_DEFAULT_ZOOM = SHEETS_ZOOM_VALUES[3];
 /**  Workspace Application: Sheets - End **/
 
 export const workspaceApps: WorkspaceApp[] = [
@@ -75,10 +75,18 @@ export const workspaceApps: WorkspaceApp[] = [
   }
 ];
 
+const getAppFeatures = (name: WorkspaceAppName) => {
+  const app = workspaceApps.find((workspaceApp) => workspaceApp.name === name);
+  if (!app) {
+    throw new Error(`Unknown workspace app: ${name}`);
+  }
+  return app.features;
+};
+
 export const workspaceAppUiStrategyConfigs: Record<WorkspaceAppName, UiStrategyConfig> = {
   Docs: {
     application: "Docs",
-    features: workspaceApps.find((app) => app.name === "Docs").features,
+    features: getAppFeatures("Docs"),
     storageKey: DOCS_STORAGE_KEY,
     uiElements: {
       clickableZoomSelectId: "#zoomSelect",
@@ -93,7 +101,7 @@ export const workspaceAppUiStrategyConfigs: Record<WorkspaceAppName, UiStrategyC
   },
   Sheets: {
     application: "Sheets",
-    features: workspaceApps.find((app) => app.name === "Sheets").features,
+    features: getAppFeatures("Sheets"),
     storageKey: SHEETS_STORAGE_KEY,
     uiElements: {
       clickableZoomSelectId: "#t-zoom",

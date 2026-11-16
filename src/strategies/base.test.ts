@@ -85,4 +85,13 @@ describe("custom zoom flow", () => {
 
     expect(clickedRows).toEqual([NEAREST_PRESET]);
   });
+
+  test("should select the nearest preset when the zoom combobox has no input", async () => {
+    document.querySelector("#zoomSelect input")?.remove();
+
+    await zoomAndSettle();
+
+    expect(relay).not.toHaveBeenCalled();
+    expect(clickedRows).toEqual([NEAREST_PRESET]);
+  });
 });

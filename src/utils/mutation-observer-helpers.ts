@@ -27,12 +27,12 @@ export const observeElementAndExecute = (
   const counter = counterFactory();
 
   const observer = new MutationObserver((_mutationList, observer) => {
-    if (shouldStop(counter.getCount())) {
+    if (shouldStop?.(counter.getCount())) {
       observer.disconnect();
       return;
     }
 
-    if (shouldExecute()) {
+    if (shouldExecute?.()) {
       observer.disconnect();
       callback();
       return;
