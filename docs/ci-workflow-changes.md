@@ -28,6 +28,8 @@ Change the job like this (only the two new step pairs are new):
   run: pnpm typecheck
 - name: Check bundle size
   run: pnpm bundlesize
+  env:
+    INTERNAL_SKIP_CACHE: "1"
 - name: Package extension artifact
   run: |
     pnpm package --target=chrome-mv3
@@ -42,6 +44,8 @@ Change the job like this (only the two new step pairs are new):
     pnpm build --source-maps --target=firefox-mv2
 - name: Check bundle size (default edition)
   run: pnpm bundlesize
+  env:
+    INTERNAL_SKIP_CACHE: "1"
 - name: Package extension artifact
   run: |
     pnpm package --target=chrome-mv3
@@ -50,6 +54,8 @@ Change the job like this (only the two new step pairs are new):
 ```
 
 `bundlesize.config.json` checks only `build/chrome-mv3-prod`. The other two targets are not measured.
+
+Keep `INTERNAL_SKIP_CACHE: "1"` on both bundle size steps. When it detects CI, `bundlesize2` 0.0.35 sends the repository name to an external cache service (`bundlesize-cache.now.sh`). On every pull request run it sends a GET request. On every push to `main` it also sends a PUT request with the branch, the commit SHA and the bundle sizes. That service is not maintained, and the requests have no timeout, so a slow service can stall the step. The variable turns off both requests. Local runs do not contact the service, because `bundlesize2` finds no CI environment.
 
 ## 2. Reusable submit workflow
 
