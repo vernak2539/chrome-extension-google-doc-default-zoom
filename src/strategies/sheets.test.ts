@@ -1,0 +1,41 @@
+// @vitest-environment jsdom
+import { workspaceAppUiStrategyConfigs } from "src/constants";
+import type { AppStorageState } from "src/types";
+import getAppStorageStateFromStorage from "src/utils/get-app-storage-state-from-storage";
+import { describe, expect, test, vi } from "vitest";
+
+import SheetsStrategy from "./sheets";
+
+vi.mock("@plasmohq/messaging", () => ({ sendToBackgroundViaRelay: vi.fn() }));
+vi.mock("src/utils/localize", () => ({ default: (key: string) => key }));
+vi.mock("src/utils/get-app-storage-state-from-storage", () => ({ default: vi.fn() }));
+
+// Sheets ships with the view-only toggle off, so turn it on to reach the view-only branch
+const viewOnlyConfig = {
+  ...workspaceAppUiStrategyConfigs.Sheets,
+  features: { ...workspaceAppUiStrategyConfigs.Sheets.features, enableViewOnlyToggle: true }
+};
+
+const state: AppStorageState = { zoomValue: "150%", viewOnly: true, classroomSupport: false };
+
+describe("Sheets zoom outcome", () => {
+  test("should skip with view_only when the toolbar zoom select is missing", async () => {
+    document.body.innerHTML = "";
+    vi.mocked(getAppStorageStateFromStorage).mockResolvedValue(state);
+
+    expect(await new SheetsStrategy(viewOnlyConfig).execute()).toEqual({
+      status: "skipped",
+      reason: "view_only"
+    });
+  });
+
+  test("should fail with zoom_select_missing when view-only is not enabled", async () => {
+    document.body.innerHTML = "";
+    vi.mocked(getAppStorageStateFromStorage).mockResolvedValue(state);
+
+    expect(await new SheetsStrategy(workspaceAppUiStrategyConfigs.Sheets).execute()).toEqual({
+      status: "failed",
+      reason: "zoom_select_missing"
+    });
+  });
+});

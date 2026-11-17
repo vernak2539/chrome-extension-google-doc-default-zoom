@@ -1,6 +1,11 @@
+import type { ZoomFailReason } from "../types";
 import counterFactory from "./counter-factory";
 
 type Callback = () => void;
+
+type OnStop = (
+  reason: Extract<ZoomFailReason, "watch_element_missing" | "page_load_timeout">
+) => void;
 
 interface Evaluations {
   shouldStop?: (executionCount: number) => boolean;
@@ -21,7 +26,8 @@ export const onElementAvailable = (selector: string, callback: Callback) => {
 export const observeElementAndExecute = (
   selector: string,
   evaluations: Evaluations,
-  callback: Callback
+  callback: Callback,
+  onStop?: OnStop
 ) => {
   const { shouldStop, shouldExecute } = evaluations;
   const counter = counterFactory();
@@ -29,6 +35,7 @@ export const observeElementAndExecute = (
   const observer = new MutationObserver((_mutationList, observer) => {
     if (shouldStop?.(counter.getCount())) {
       observer.disconnect();
+      onStop?.("page_load_timeout");
       return;
     }
 
@@ -43,10 +50,13 @@ export const observeElementAndExecute = (
 
   const element = document.querySelector(selector);
 
-  if (element) {
-    observer.observe(element, {
-      attributes: true,
-      childList: true
-    });
+  if (!element) {
+    onStop?.("watch_element_missing");
+    return;
   }
+
+  observer.observe(element, {
+    attributes: true,
+    childList: true
+  });
 };

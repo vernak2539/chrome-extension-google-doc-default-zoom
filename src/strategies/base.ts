@@ -8,48 +8,55 @@ import type {
   ExecuteEnterRequestBody,
   ExecuteEnterResponseBody,
   Feature,
-  UiStrategyConfig
+  UiStrategyConfig,
+  ZoomOutcome
 } from "../types";
 import { isGoogleClassroomSubmittedAssignment } from "../utils/classroom-helpers";
 import { findZoomMenu } from "../utils/find-zoom-menu";
 import getIsCustomZoom from "../utils/get-is-custom-zoom";
 import { clickDOMElement, getDOMElement, getDOMElementAndClick } from "../utils/ui-helpers";
+import { APPLIED, failed, skipped } from "../utils/zoom-outcome";
 
 export abstract class AbstractBaseStrategy {
   protected readonly config: UiStrategyConfig;
   public abstract isUIPreview(href: string): boolean;
-  protected abstract performZoom(appState: AppStorageState): void | Promise<void>;
+  protected abstract performZoom(appState: AppStorageState): ZoomOutcome | Promise<ZoomOutcome>;
 
   constructor(config: UiStrategyConfig) {
     this.config = config;
   }
 
-  public async execute() {
-    const isGoogleClassroomDocument = isGoogleClassroomSubmittedAssignment();
+  // Resolves with an outcome on every path and never rejects, so the caller can report it in one place
+  public async execute(): Promise<ZoomOutcome> {
+    try {
+      const isGoogleClassroomDocument = isGoogleClassroomSubmittedAssignment();
 
-    const appState = await getAppStorageStateFromStorage(this.config.storageKey);
+      const appState = await getAppStorageStateFromStorage(this.config.storageKey);
 
-    const isClassroomSupportEnabled =
-      this.isFeatureEnabled("classroomSupport") && appState.classroomSupport;
+      const isClassroomSupportEnabled =
+        this.isFeatureEnabled("classroomSupport") && appState.classroomSupport;
 
-    if (isGoogleClassroomDocument && !isClassroomSupportEnabled) {
-      return;
+      if (isGoogleClassroomDocument && !isClassroomSupportEnabled) {
+        return skipped("classroom_support_disabled");
+      }
+
+      return await this.performZoom(appState);
+    } catch (error) {
+      return failed("exception", error);
     }
-
-    await this.performZoom(appState);
   }
 
-  protected uiExecuteFlow(zoomValue: string) {
+  protected async uiExecuteFlow(zoomValue: string): Promise<ZoomOutcome> {
     // don't do anything if zoom level is set to default value or not set
     if (!zoomValue || zoomValue === this.config.zoom.defaultZoom) {
-      return;
+      return skipped("default_zoom");
     }
 
     // get menu element responsible for changing zoom
     const zoomInputContainer = getDOMElementAndClick(this.config.uiElements.clickableZoomSelectId);
 
     if (!zoomInputContainer) {
-      return;
+      return failed("zoom_select_missing");
     }
 
     /*--EXTENDED_ONLY_START--*/
@@ -58,23 +65,20 @@ export abstract class AbstractBaseStrategy {
       getIsCustomZoom(this.config.application, zoomValue);
 
     if (canUseCustomZoom) {
-      this.uiExecuteCustomZoomFlow(zoomInputContainer, zoomValue);
-    } else {
-      /*--EXTENDED_ONLY_END--*/
-
-      this.uiExecuteDefinedZoomFlow(zoomInputContainer, zoomValue);
-      /*--EXTENDED_ONLY_START--*/
+      return this.uiExecuteCustomZoomFlow(zoomInputContainer, zoomValue);
     }
     /*--EXTENDED_ONLY_END--*/
+
+    return this.uiExecuteDefinedZoomFlow(zoomInputContainer, zoomValue);
   }
 
-  private uiExecuteDefinedZoomFlow(zoomInputContainer: Element, zoomValue: string) {
+  private uiExecuteDefinedZoomFlow(zoomInputContainer: Element, zoomValue: string): ZoomOutcome {
     // get zoom menu element dropdown (linked from the combobox's `aria-owns`)
     const zoomInputSelect = findZoomMenu(zoomInputContainer);
 
     if (!zoomInputSelect) {
       this.closeDropdown();
-      return;
+      return failed("zoom_menu_missing");
     }
 
     // figure out zoom value to select
@@ -91,17 +95,21 @@ export abstract class AbstractBaseStrategy {
     // somehow we may not have matched the right element
     if (!newZoomLevelElement) {
       this.closeDropdown();
-      return;
+      return failed("zoom_option_missing");
     }
 
     // select new zoom level
     clickDOMElement(newZoomLevelElement);
 
     this.closeDropdown();
+    return APPLIED;
   }
 
   /*--EXTENDED_ONLY_START--*/
-  private uiExecuteCustomZoomFlow(zoomInputContainer: Element, zoomValue: string) {
+  private async uiExecuteCustomZoomFlow(
+    zoomInputContainer: Element,
+    zoomValue: string
+  ): Promise<ZoomOutcome> {
     const fallback = () =>
       this.uiExecuteDefinedZoomFlow(
         zoomInputContainer,
@@ -109,27 +117,34 @@ export abstract class AbstractBaseStrategy {
       );
 
     const zoomInput = zoomInputContainer.querySelector("input");
+
     if (!zoomInput) {
-      fallback();
-      return;
+      // nothing to type in: use the nearest preset, and report the missing input if that fails too
+      const outcome = fallback();
+      return outcome.status === "applied" ? outcome : failed("zoom_input_missing");
     }
 
     zoomInput.focus();
     zoomInput.select();
 
-    sendToBackgroundViaRelay<ExecuteEnterRequestBody, ExecuteEnterResponseBody>({
-      name: RELAY_EXECUTE_ENTER,
-      body: {
-        zoomValue
-      }
-    }).then(({ err }) => {
-      if (err) {
-        fallback();
-        return;
-      }
+    let response: ExecuteEnterResponseBody | null = null;
+    try {
+      response = await sendToBackgroundViaRelay<ExecuteEnterRequestBody, ExecuteEnterResponseBody>({
+        name: RELAY_EXECUTE_ENTER,
+        body: {
+          zoomValue
+        }
+      });
+    } catch {
+      // the relay failed, so nothing was typed: use the nearest preset instead
+    }
 
-      this.closeDropdown();
-    }, fallback);
+    if (!response || response.err) {
+      return fallback();
+    }
+
+    this.closeDropdown();
+    return APPLIED;
   }
   /*--EXTENDED_ONLY_END--*/
 

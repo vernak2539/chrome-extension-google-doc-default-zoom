@@ -1,9 +1,10 @@
-import type { AppStorageState } from "src/types";
+import type { AppStorageState, ZoomOutcome } from "src/types";
 import { findZoomRowIndex } from "src/utils/find-zoom-row-index";
 import { getClosestZoomValue } from "src/utils/get-closest-zoom-value";
 import localize from "src/utils/localize";
 import { pause } from "src/utils/pause";
 import { clickDOMElement, getDOMElement, getDOMElementAndClick } from "src/utils/ui-helpers";
+import { APPLIED, failed } from "src/utils/zoom-outcome";
 
 import { AbstractBaseStrategy } from "./base";
 
@@ -12,10 +13,10 @@ class DocsStrategy extends AbstractBaseStrategy {
     const isViewOnlyEnabled = this.isFeatureEnabled("enableViewOnlyToggle") && appState.viewOnly;
 
     if (isViewOnlyEnabled && this.isUIViewOnly()) {
-      this.uiExecuteDocsViewOnlyFlow(appState.zoomValue);
-    } else {
-      this.uiExecuteFlow(appState.zoomValue);
+      return this.uiExecuteDocsViewOnlyFlow(appState.zoomValue);
     }
+
+    return this.uiExecuteFlow(appState.zoomValue);
   }
 
   /**
@@ -27,7 +28,7 @@ class DocsStrategy extends AbstractBaseStrategy {
     return /\/preview$/.test(new URL(href).pathname);
   }
 
-  private uiExecuteDocsViewOnlyFlow(zoomValue: string) {
+  private async uiExecuteDocsViewOnlyFlow(zoomValue: string): Promise<ZoomOutcome> {
     // view only Docs don't allow for custom zoom levels, but rather only allow the predefined ones
     let finalZoomValue = zoomValue;
 
@@ -40,51 +41,50 @@ class DocsStrategy extends AbstractBaseStrategy {
     }
 
     // 3. set zoom value (new flow)
-    getDOMElementAndClick(this.config.uiElements.menubarViewTabId);
+    if (!getDOMElementAndClick(this.config.uiElements.menubarViewTabId)) {
+      return failed("view_menu_missing");
+    }
 
     // this may need to change depending on how quickly the menu loads
-    pause(1000)
-      .then(() => {
-        let selector = "span[aria-label^='Zoom']";
-        const zoomRowElement = getDOMElement(selector);
+    await pause(1000);
 
-        if (zoomRowElement) {
-          clickDOMElement(zoomRowElement);
-          return;
-        }
+    const zoomRowElement = getDOMElement("span[aria-label^='Zoom']");
 
-        // fallback selector (trying to account for potential translation differences)
-        selector = ".docs-icon-img-container.docs-icon-img.docs-icon-editors-ia-zoom-in";
-        getDOMElementAndClick(selector);
-      })
-      .then(() => {
-        // This is hacky, not sure a better way to do this...
-        const fitValue = localize("popupDocsDropdownFitSelection");
-        const zoomValueContainer = getDOMElement(`[aria-label^="${fitValue}"]`)?.closest(
-          ".goog-menu"
-        );
+    if (zoomRowElement) {
+      clickDOMElement(zoomRowElement);
+    } else {
+      // fallback selector (trying to account for potential translation differences)
+      const fallbackSelector =
+        ".docs-icon-img-container.docs-icon-img.docs-icon-editors-ia-zoom-in";
 
-        if (!zoomValueContainer) {
-          getDOMElementAndClick("body");
-          return;
-        }
+      if (!getDOMElementAndClick(fallbackSelector)) {
+        return failed("view_zoom_item_missing");
+      }
+    }
 
-        const zoomValueRows = zoomValueContainer.querySelectorAll(".goog-menuitem.apps-menuitem");
+    // This is hacky, not sure a better way to do this...
+    const fitValue = localize("popupDocsDropdownFitSelection");
+    const zoomValueContainer = getDOMElement(`[aria-label^="${fitValue}"]`)?.closest(".goog-menu");
 
-        const rowIndex = findZoomRowIndex(
-          Array.from(zoomValueRows, (row) => row.firstChild?.textContent),
-          finalZoomValue
-        );
-        const newZoomLevelElement =
-          rowIndex === -1 ? null : (zoomValueRows[rowIndex].firstChild as Element);
+    if (!zoomValueContainer) {
+      getDOMElementAndClick("body");
+      return failed("view_zoom_menu_missing");
+    }
 
-        if (!newZoomLevelElement) {
-          getDOMElementAndClick("body");
-          return;
-        }
+    const zoomValueRows = zoomValueContainer.querySelectorAll(".goog-menuitem.apps-menuitem");
 
-        clickDOMElement(newZoomLevelElement);
-      });
+    const rowIndex = findZoomRowIndex(
+      Array.from(zoomValueRows, (row) => row.firstChild?.textContent),
+      finalZoomValue
+    );
+
+    if (rowIndex === -1) {
+      getDOMElementAndClick("body");
+      return failed("view_zoom_option_missing");
+    }
+
+    clickDOMElement(zoomValueRows[rowIndex].firstChild as Element);
+    return APPLIED;
   }
 }
 
