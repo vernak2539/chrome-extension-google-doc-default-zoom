@@ -33,6 +33,12 @@ jobs:
           pnpm build --source-maps --target=chrome-mv3
           pnpm build --source-maps --target=edge-mv3
           pnpm build --source-maps --target=firefox-mv2
+      - name: Typecheck
+        run: pnpm typecheck
+      - name: Check bundle size
+        run: pnpm bundlesize
+        env:
+          INTERNAL_SKIP_CACHE: "1"
       - name: Package extension artifact
         run: |
           pnpm package --target=chrome-mv3
@@ -45,6 +51,10 @@ jobs:
           pnpm build --source-maps --target=chrome-mv3
           pnpm build --source-maps --target=edge-mv3
           pnpm build --source-maps --target=firefox-mv2
+      - name: Check bundle size (default edition)
+        run: pnpm bundlesize
+        env:
+          INTERNAL_SKIP_CACHE: "1"
       - name: Package extension artifact
         run: |
           pnpm package --target=chrome-mv3

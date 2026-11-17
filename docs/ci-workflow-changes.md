@@ -2,62 +2,11 @@
 
 The agent that made this change is not allowed to edit `.github/workflows/`. The maintainer must copy the YAML in this file into the repository. After that, update the table in [`releasing.md`](./releasing.md) (see [Update `releasing.md`](#update-releasingmd)).
 
-Two things are needed:
-
-1. Add `pnpm typecheck` and `pnpm bundlesize` to `sanity-check.yml`.
-2. Replace the two nearly identical store-submission workflows with one reusable workflow and two thin callers.
+The typecheck and bundle size steps for `sanity-check.yml` are applied. One change is still open: replace the two nearly identical store-submission workflows with one reusable workflow and two thin callers.
 
 Do not start the submit workflows to test the new YAML. They publish to the stores for real, and a version tag or `workflow_dispatch` starts them. To test them, open a pull request that contains the YAML, and check it with a YAML linter such as `actionlint`. Then do the first real release with care.
 
-## 1. `sanity-check.yml`: typecheck and bundle size
-
-`pnpm typecheck` needs the `.plasmo/` type declarations, and `pnpm bundlesize` needs `build/chrome-mv3-prod`. Both folders exist only after `pnpm build`. Therefore, add the new steps **after** the build step, not next to `Lint`.
-
-- Run `pnpm typecheck` once, after the Extended build. Do not run it after the Base build. The Base transform deletes `src/background/messages/execute-enter.ts`, but `src/background/execute-enter.test.ts` stays. TypeScript then reports `TS2307` for that test file. The Extended source is a superset of the Base source, so the one check covers both.
-- Run `pnpm bundlesize` after each build block. The second build replaces `build/chrome-mv3-prod`, so the Base bundles are checked separately.
-
-Change the job like this (only the two new step pairs are new):
-
-```yaml
-- name: Build the extension
-  run: |
-    pnpm build --source-maps --target=chrome-mv3
-    pnpm build --source-maps --target=edge-mv3
-    pnpm build --source-maps --target=firefox-mv2
-- name: Typecheck
-  run: pnpm typecheck
-- name: Check bundle size
-  run: pnpm bundlesize
-  env:
-    INTERNAL_SKIP_CACHE: "1"
-- name: Package extension artifact
-  run: |
-    pnpm package --target=chrome-mv3
-    pnpm package --target=edge-mv3
-    pnpm package --target=firefox-mv2
-- name: Transform to "Default zoom for Google Workspace"
-  run: pnpm transform-ext
-- name: Build the extension
-  run: |
-    pnpm build --source-maps --target=chrome-mv3
-    pnpm build --source-maps --target=edge-mv3
-    pnpm build --source-maps --target=firefox-mv2
-- name: Check bundle size (default edition)
-  run: pnpm bundlesize
-  env:
-    INTERNAL_SKIP_CACHE: "1"
-- name: Package extension artifact
-  run: |
-    pnpm package --target=chrome-mv3
-    pnpm package --target=edge-mv3
-    pnpm package --target=firefox-mv2
-```
-
-`bundlesize.config.json` checks only `build/chrome-mv3-prod`. The other two targets are not measured.
-
-Keep `INTERNAL_SKIP_CACHE: "1"` on both bundle size steps. When it detects CI, `bundlesize2` 0.0.35 sends the repository name to an external cache service (`bundlesize-cache.now.sh`). On every pull request run it sends a GET request. On every push to `main` it also sends a PUT request with the branch, the commit SHA and the bundle sizes. That service is not maintained, and the requests have no timeout, so a slow service can stall the step. The variable turns off both requests. Local runs do not contact the service, because `bundlesize2` finds no CI environment.
-
-## 2. Reusable submit workflow
+## Reusable submit workflow
 
 ### `.github/workflows/submit-reusable.yml` (new file)
 
