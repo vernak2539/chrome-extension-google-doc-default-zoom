@@ -1,16 +1,17 @@
-import type { AppStorageState } from "src/types";
+import type { AppStorageState, ZoomOutcome } from "src/types";
+import { skipped } from "src/utils/zoom-outcome";
 
 import { AbstractBaseStrategy } from "./base";
 
 class SheetsStrategy extends AbstractBaseStrategy {
-  protected performZoom(appState: AppStorageState) {
+  protected performZoom(appState: AppStorageState): ZoomOutcome | Promise<ZoomOutcome> {
     const isViewOnlyEnabled = this.isFeatureEnabled("enableViewOnlyToggle") && appState.viewOnly;
 
     if (isViewOnlyEnabled && this.isUIViewOnly()) {
-      return;
+      return skipped("view_only");
     }
 
-    this.uiExecuteFlow(appState.zoomValue);
+    return this.uiExecuteFlow(appState.zoomValue);
   }
 
   /**

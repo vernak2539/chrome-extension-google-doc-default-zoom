@@ -137,6 +137,7 @@ makes this extension better. When an error happens, the following is sent to Sen
   `https://docs.google.com/document/d/<document ID>/edit?usp=sharing#heading=h.abc` is sent as
   `https://docs.google.com/document/[redacted]`
 - the layout of the page, as element IDs and class names (no text)
+- when the zoom cannot be applied, a short reason code, for example `zoom_menu_missing`
 
 The page that referred you to the document is never sent.
 

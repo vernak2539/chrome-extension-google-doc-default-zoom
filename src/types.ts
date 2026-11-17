@@ -10,6 +10,27 @@ export interface ExecuteEnterResponseBody {
   err: null | "no_debugger" | "debugger_failed";
 }
 
+export type ZoomSkipReason = "classroom_support_disabled" | "default_zoom" | "view_only";
+
+// Each reason names a step and a selector of the zoom flow. None of them hold document data.
+export type ZoomFailReason =
+  | "zoom_select_missing"
+  | "zoom_menu_missing"
+  | "zoom_option_missing"
+  | "zoom_input_missing"
+  | "view_menu_missing"
+  | "view_zoom_item_missing"
+  | "view_zoom_menu_missing"
+  | "view_zoom_option_missing"
+  | "watch_element_missing"
+  | "page_load_timeout"
+  | "exception";
+
+export type ZoomOutcome =
+  | { status: "applied" }
+  | { status: "skipped"; reason: ZoomSkipReason }
+  | { status: "failed"; reason: ZoomFailReason; error?: unknown };
+
 export type WorkspaceAppName = "Docs" | "Sheets";
 
 export interface AppStorageState {

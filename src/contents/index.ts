@@ -10,11 +10,13 @@ import {
 import { AbstractBaseStrategy } from "src/strategies/base";
 import DocsStrategy from "src/strategies/docs";
 import SheetsStrategy from "src/strategies/sheets";
+import type { ZoomOutcome } from "src/types";
 import { isGoogleClassroomDomain } from "src/utils/classroom-helpers";
 import getCurrentApp from "src/utils/get-current-app";
 import BrowserLogger from "src/utils/logger";
 import { observeElementAndExecute, onElementAvailable } from "src/utils/mutation-observer-helpers";
 import { createSentryClient } from "src/utils/sentry/base";
+import { reportZoomOutcome } from "src/utils/sentry/report-zoom-outcome";
 import { stopExecution } from "src/utils/stop-exeuction";
 import { walkDOM } from "src/utils/walk-dom";
 
@@ -33,6 +35,12 @@ const logger = new BrowserLogger("content");
 
 const getAndStringifyContextValue = (selector: string) => {
   return JSON.stringify(walkDOM(document.querySelector(selector)), null, 2);
+};
+
+const handleOutcome = (outcome: ZoomOutcome) => {
+  const reason = outcome.status === "applied" ? "" : ` (${outcome.reason})`;
+  logger.info(`Zoom outcome: ${outcome.status}${reason}`);
+  reportZoomOutcome(sentryScope, outcome);
 };
 
 relayMessage({ name: RELAY_GET_APP_STORAGE_STATE });
@@ -81,10 +89,8 @@ const main = () => {
 
   const elementToWatchSelector = strategy.getIsPageLoadingElementToWatch();
   const executeStrategy = () => {
-    strategy.execute().catch((err) => {
-      logger.error("Error executing strategy:", err);
-      sentryScope.captureException(err);
-    });
+    // execute() never rejects: every failure comes back as an outcome
+    strategy.execute().then(handleOutcome);
   };
 
   try {
@@ -107,7 +113,8 @@ const main = () => {
       shouldStop: (executionCount) => executionCount > OBSERVE_EXECUTION_LIMIT,
       shouldExecute: () => !strategy.getIsPageLoading()
     },
-    executeStrategy
+    executeStrategy,
+    (reason) => handleOutcome({ status: "failed", reason })
   );
 };
 
