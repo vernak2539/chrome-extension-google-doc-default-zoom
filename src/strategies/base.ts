@@ -85,10 +85,10 @@ export abstract class AbstractBaseStrategy {
     const zoomInputSelectOptions = zoomInputSelect.querySelectorAll(
       this.config.uiElements.clickableZoomOptionClass
     );
-    let newZoomLevelElement = null;
+    let newZoomLevelElement: Element | null = null;
     for (let i = 0; i < zoomInputSelectOptions.length; i++) {
-      if (zoomInputSelectOptions[i].firstChild.textContent === zoomValue) {
-        newZoomLevelElement = zoomInputSelectOptions[i].firstChild;
+      if (zoomInputSelectOptions[i].firstChild?.textContent === zoomValue) {
+        newZoomLevelElement = zoomInputSelectOptions[i].firstChild as Element;
       }
     }
 
@@ -110,21 +110,22 @@ export abstract class AbstractBaseStrategy {
     zoomInputContainer: Element,
     zoomValue: string
   ): Promise<ZoomOutcome> {
-    const zoomInput = zoomInputContainer.querySelector("input");
-
-    if (!zoomInput) {
-      this.closeDropdown();
-      return failed("zoom_input_missing");
-    }
-
-    zoomInput.focus();
-    zoomInput.select();
-
     const fallback = () =>
       this.uiExecuteDefinedZoomFlow(
         zoomInputContainer,
         getClosestZoomValue(this.config.zoom.zoomValues, zoomValue)
       );
+
+    const zoomInput = zoomInputContainer.querySelector("input");
+
+    if (!zoomInput) {
+      // nothing to type in: use the nearest preset, and report the missing input if that fails too
+      const outcome = fallback();
+      return outcome.status === "applied" ? outcome : failed("zoom_input_missing");
+    }
+
+    zoomInput.focus();
+    zoomInput.select();
 
     let response: ExecuteEnterResponseBody | null = null;
     try {
@@ -188,6 +189,7 @@ export abstract class AbstractBaseStrategy {
 
     const menuBarViewTab = getDOMElement(this.config.uiElements.menubarViewTabId);
 
-    return menuBarViewTab.classList.contains("goog-control-disabled");
+    // without the view tab the menu bar is not usable yet
+    return menuBarViewTab ? menuBarViewTab.classList.contains("goog-control-disabled") : true;
   }
 }

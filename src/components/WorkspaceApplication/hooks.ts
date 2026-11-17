@@ -20,6 +20,15 @@ interface UseWorkspaceStorage {
 
 const NOT_READY = "__NOT_READY__INTERNAL__";
 
+// Storage hands the setter `undefined` while nothing is stored yet, so fall back to the defaults.
+const resolveCurrentState = (
+  prev: AppStorageState | typeof NOT_READY | undefined,
+  defaultZoom: string
+): AppStorageState =>
+  prev === undefined || prev === NOT_READY
+    ? { ...DEFAULT_APP_STATE, zoomValue: defaultZoom }
+    : prev;
+
 export const useWorkspaceStorage = (
   storageKey: string,
   defaultZoom: string
@@ -42,13 +51,12 @@ export const useWorkspaceStorage = (
 
   const isLoading = appState === NOT_READY;
 
-  const state = isLoading ? { ...DEFAULT_APP_STATE, zoomValue: defaultZoom } : appState;
+  const state = resolveCurrentState(appState, defaultZoom);
 
   const updateZoomValue = useCallback(
     (value: string) => {
       setAppState((prev) => {
-        const current =
-          prev === NOT_READY ? { ...DEFAULT_APP_STATE, zoomValue: defaultZoom } : prev;
+        const current = resolveCurrentState(prev, defaultZoom);
         return { ...current, zoomValue: value || defaultZoom };
       });
     },
@@ -58,8 +66,7 @@ export const useWorkspaceStorage = (
   const updateDocsViewOnlyValue = useCallback(
     (value: boolean) => {
       setAppState((prev) => {
-        const current =
-          prev === NOT_READY ? { ...DEFAULT_APP_STATE, zoomValue: defaultZoom } : prev;
+        const current = resolveCurrentState(prev, defaultZoom);
         return { ...current, viewOnly: value ?? false };
       });
     },
@@ -69,8 +76,7 @@ export const useWorkspaceStorage = (
   const updateClassroomSupportValue = useCallback(
     (value: boolean) => {
       setAppState((prev) => {
-        const current =
-          prev === NOT_READY ? { ...DEFAULT_APP_STATE, zoomValue: defaultZoom } : prev;
+        const current = resolveCurrentState(prev, defaultZoom);
         return { ...current, classroomSupport: value ?? false };
       });
     },

@@ -12,8 +12,9 @@ const handler: PlasmoMessaging.MessageHandler<
   GetAppStorageStateRequestBody,
   AppStorageState
 > = async (req, res) => {
+  const storageKey = req.body?.storageKey;
   const defaultZoom =
-    workspaceApps.find((app) => app.storageKey === req.body.storageKey)?.defaultZoom ?? "100%";
+    workspaceApps.find((app) => app.storageKey === storageKey)?.defaultZoom ?? "100%";
 
   const defaultState: AppStorageState = {
     zoomValue: defaultZoom,
@@ -22,8 +23,12 @@ const handler: PlasmoMessaging.MessageHandler<
   };
 
   try {
+    if (storageKey === undefined) {
+      throw new Error("Message is missing the storage key");
+    }
+
     await migrationsReady;
-    const appState = await storage.get<AppStorageState>(req.body.storageKey);
+    const appState = await storage.get<AppStorageState>(storageKey);
 
     res.send({
       zoomValue: appState?.zoomValue ?? defaultState.zoomValue,

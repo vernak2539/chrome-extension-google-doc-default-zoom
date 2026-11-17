@@ -67,6 +67,7 @@ class DocsStrategy extends AbstractBaseStrategy {
     const zoomValueContainer = getDOMElement(`[aria-label^="${fitValue}"]`)?.closest(".goog-menu");
 
     if (!zoomValueContainer) {
+      getDOMElementAndClick("body");
       return failed("view_zoom_menu_missing");
     }
 

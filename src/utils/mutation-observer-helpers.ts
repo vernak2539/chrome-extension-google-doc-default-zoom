@@ -33,13 +33,13 @@ export const observeElementAndExecute = (
   const counter = counterFactory();
 
   const observer = new MutationObserver((_mutationList, observer) => {
-    if (shouldStop(counter.getCount())) {
+    if (shouldStop?.(counter.getCount())) {
       observer.disconnect();
       onStop?.("page_load_timeout");
       return;
     }
 
-    if (shouldExecute()) {
+    if (shouldExecute?.()) {
       observer.disconnect();
       callback();
       return;

@@ -17,13 +17,18 @@ const handler: PlasmoMessaging.MessageHandler<
   let err: ExecuteEnterResponseBody["err"] = null;
 
   try {
-    const target = { tabId: req.sender.tab.id };
+    const tabId = req.sender?.tab?.id;
+    const zoomValue = req.body?.zoomValue;
+    if (tabId === undefined || zoomValue === undefined) {
+      throw new Error("Message is missing the sender tab id or the zoom value");
+    }
+    const target = { tabId };
 
     await chrome.debugger.attach(target, "1.0");
     attachedTarget = target;
 
     await chrome.debugger.sendCommand(target, "Input.insertText", {
-      text: req.body.zoomValue
+      text: zoomValue
     });
 
     // Both events are needed: the original version sent only a `keyUp` with `code`/`key` and did not work

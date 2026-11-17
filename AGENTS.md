@@ -50,6 +50,17 @@ pnpm build
 
 Generates a production-ready bundle in the `build/` directory.
 
+### Type Checking and Bundle Size
+
+Run both after `pnpm build --target=chrome-mv3`. `pnpm typecheck` needs the `.plasmo/` declarations that the build creates, and `pnpm bundlesize` reads `build/chrome-mv3-prod`.
+
+```bash
+pnpm typecheck
+pnpm bundlesize
+```
+
+`pnpm typecheck` runs `tsc --noEmit` and must report no errors. `pnpm bundlesize` checks the gzipped size of every JS bundle against the budgets in `bundlesize.config.json`.
+
 ### Testing
 
 ```bash
@@ -118,6 +129,7 @@ When tasking with addressing PR reviews or managing the PR lifecycle, follow thi
 
 - **Tests:** **ALWAYS** run tests using `pnpm test -- --run` (or similar non-watching flags) to ensure the process terminates automatically.
 - **Build:** Run `pnpm build` to verify the extension bundles correctly.
+- **Types and size:** After the build, run `pnpm typecheck` and `pnpm bundlesize`.
 - **Format/Lint:** Run `pnpm format` and `pnpm lint` as per the mandatory workflow.
 
 ### 2. Addressing Reviews

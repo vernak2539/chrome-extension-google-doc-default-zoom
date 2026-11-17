@@ -2,7 +2,7 @@ import type { WorkspaceApp } from "src/types";
 
 export const getClosestZoomValue = (array: WorkspaceApp["zoomValues"], input: string) => {
   // Initialize the closest value and its difference to infinity.
-  let closestValue = null;
+  let closestValue: number | null = null;
   let closestDifference = Infinity;
   let inputNumber = parseFloat(input.replace("%", ""));
 

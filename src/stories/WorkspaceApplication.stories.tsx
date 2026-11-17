@@ -43,9 +43,13 @@ export const GoogleDocs: Story = {
     zoomValues: DOCS_ZOOM_VALUES,
     features: {
       customZoomInput: false,
-      enableViewOnlyToggle: false
+      enableViewOnlyToggle: false,
+      classroomSupport: false
     },
-    featureDocsViewOnlyEnabled: false
+    featureDocsViewOnlyEnabled: false,
+    updateDocsViewOnly: () => {},
+    featureClassroomSupportEnabled: false,
+    updateClassroomSupport: () => {}
   }
 };
 
@@ -59,9 +63,13 @@ export const GoogleDocsCustomZoom: Story = {
     zoomValues: DOCS_ZOOM_VALUES,
     features: {
       customZoomInput: true,
-      enableViewOnlyToggle: false
+      enableViewOnlyToggle: false,
+      classroomSupport: false
     },
-    featureDocsViewOnlyEnabled: false
+    featureDocsViewOnlyEnabled: false,
+    updateDocsViewOnly: () => {},
+    featureClassroomSupportEnabled: false,
+    updateClassroomSupport: () => {}
   }
 };
 
@@ -75,9 +83,13 @@ export const GoogleDocsViewOnly: Story = {
     zoomValues: DOCS_ZOOM_VALUES,
     features: {
       customZoomInput: false,
-      enableViewOnlyToggle: true
+      enableViewOnlyToggle: true,
+      classroomSupport: false
     },
-    featureDocsViewOnlyEnabled: true
+    featureDocsViewOnlyEnabled: true,
+    updateDocsViewOnly: () => {},
+    featureClassroomSupportEnabled: false,
+    updateClassroomSupport: () => {}
   }
 };
 
@@ -91,9 +103,13 @@ export const GoogleSheets: Story = {
     zoomValues: SHEETS_ZOOM_VALUES,
     features: {
       customZoomInput: false,
-      enableViewOnlyToggle: false
+      enableViewOnlyToggle: false,
+      classroomSupport: false
     },
-    featureDocsViewOnlyEnabled: false
+    featureDocsViewOnlyEnabled: false,
+    updateDocsViewOnly: () => {},
+    featureClassroomSupportEnabled: false,
+    updateClassroomSupport: () => {}
   }
 };
 
@@ -107,8 +123,12 @@ export const GoogleSheetsCustomZoom: Story = {
     zoomValues: SHEETS_ZOOM_VALUES,
     features: {
       customZoomInput: true,
-      enableViewOnlyToggle: false
+      enableViewOnlyToggle: false,
+      classroomSupport: false
     },
-    featureDocsViewOnlyEnabled: false
+    featureDocsViewOnlyEnabled: false,
+    updateDocsViewOnly: () => {},
+    featureClassroomSupportEnabled: false,
+    updateClassroomSupport: () => {}
   }
 };
