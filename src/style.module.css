@@ -6,6 +6,8 @@
 }
 
 .popupContainer {
+  /* Pico pads only `body > main` vertically, and Plasmo mounts the popup inside #__plasmo */
+  padding-top: var(--pico-spacing);
   min-width: 450px;
   min-height: 355px;
 }
