@@ -11,7 +11,11 @@ const renderMenu = (menuId: string, activeItemId: string) => {
       <div class="goog-menuitem" role="option" id="${activeItemId}"><div>100%</div></div>
     </div>`
   );
-  return document.getElementById(menuId);
+  const menu = document.getElementById(menuId);
+  if (!menu) {
+    throw new Error(`Menu ${menuId} was not rendered`);
+  }
+  return menu;
 };
 
 const renderCombobox = (ariaOwns?: string) => {
@@ -47,7 +51,7 @@ describe("findZoomMenu", () => {
 
   test("finds the menu by aria-activedescendant when no element has the aria-owns id", () => {
     const menu = renderMenu("menu", ":by");
-    menu.querySelector("#\\:by").removeAttribute("id");
+    menu.querySelector("#\\:by")!.removeAttribute("id");
     const combobox = renderCombobox(":by");
 
     expect(findZoomMenu(combobox)).toBe(menu);

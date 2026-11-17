@@ -75,8 +75,8 @@ export interface UiStrategyConfig {
   uiElements: {
     clickableZoomSelectId: string;
     clickableZoomOptionClass: string;
-    toolbarId?: string;
-    menubarViewTabId?: string;
+    toolbarId: string;
+    menubarViewTabId: string;
   };
   zoom: {
     defaultZoom: string;

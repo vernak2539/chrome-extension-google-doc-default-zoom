@@ -81,10 +81,10 @@ export abstract class AbstractBaseStrategy {
     const zoomInputSelectOptions = zoomInputSelect.querySelectorAll(
       this.config.uiElements.clickableZoomOptionClass
     );
-    let newZoomLevelElement = null;
+    let newZoomLevelElement: Element | null = null;
     for (let i = 0; i < zoomInputSelectOptions.length; i++) {
-      if (zoomInputSelectOptions[i].firstChild.textContent === zoomValue) {
-        newZoomLevelElement = zoomInputSelectOptions[i].firstChild;
+      if (zoomInputSelectOptions[i].firstChild?.textContent === zoomValue) {
+        newZoomLevelElement = zoomInputSelectOptions[i].firstChild as Element;
       }
     }
 
@@ -102,15 +102,20 @@ export abstract class AbstractBaseStrategy {
 
   /*--EXTENDED_ONLY_START--*/
   private uiExecuteCustomZoomFlow(zoomInputContainer: Element, zoomValue: string) {
-    const zoomInput = zoomInputContainer.querySelector("input");
-    zoomInput.focus();
-    zoomInput.select();
-
     const fallback = () =>
       this.uiExecuteDefinedZoomFlow(
         zoomInputContainer,
         getClosestZoomValue(this.config.zoom.zoomValues, zoomValue)
       );
+
+    const zoomInput = zoomInputContainer.querySelector("input");
+    if (!zoomInput) {
+      fallback();
+      return;
+    }
+
+    zoomInput.focus();
+    zoomInput.select();
 
     sendToBackgroundViaRelay<ExecuteEnterRequestBody, ExecuteEnterResponseBody>({
       name: RELAY_EXECUTE_ENTER,
@@ -169,6 +174,7 @@ export abstract class AbstractBaseStrategy {
 
     const menuBarViewTab = getDOMElement(this.config.uiElements.menubarViewTabId);
 
-    return menuBarViewTab.classList.contains("goog-control-disabled");
+    // without the view tab the menu bar is not usable yet
+    return menuBarViewTab ? menuBarViewTab.classList.contains("goog-control-disabled") : true;
   }
 }

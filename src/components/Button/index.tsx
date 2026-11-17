@@ -1,4 +1,5 @@
 import classnames from "classnames";
+import type { CSSProperties } from "react";
 import { Button as BaseButton, type ButtonProps } from "react-aria-components";
 
 interface Props extends ButtonProps {
@@ -22,7 +23,7 @@ const Button = ({ label, variant, size = "medium", children, className, ...props
       }
       style={
         variant === "danger"
-          ? { "--pico-color": "#de2300", "--pico-border-color": "#de2300" }
+          ? ({ "--pico-color": "#de2300", "--pico-border-color": "#de2300" } as CSSProperties)
           : undefined
       }>
       {children || label}

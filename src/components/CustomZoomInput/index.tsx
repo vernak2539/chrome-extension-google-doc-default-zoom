@@ -16,7 +16,7 @@ const CustomZoomInput = ({ zoomValue, zoomValues, isCustomValue, updateValue }: 
 
   const updateZoom = useCallback(
     (value) => {
-      let boundedValue = null;
+      let boundedValue: string | number | null = null;
       const lowerBound = 50;
       const upperBound = 200;
 

@@ -21,7 +21,7 @@ const WorkspaceApplication = ({ name, zoomValues, defaultZoom, storageKey, featu
     return null;
   }
 
-  const isCustomZoom = zoom && !zoomValues.includes(zoom as any);
+  const isCustomZoom = Boolean(zoom) && !zoomValues.includes(zoom as any);
 
   return (
     <WorkspaceApplicationComponent
