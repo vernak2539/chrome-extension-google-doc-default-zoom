@@ -1,5 +1,5 @@
 ---
-topic: Tests for background message handlers
+topic: testing
 ---
 
-Do not put tests or helper files in `src/background/messages/`. Plasmo imports every `.ts` file there as a message handler, and `bin/remove-files.sh` deletes `execute-enter.ts` in the Base edition, which would break a test there. Put handler tests in `src/background/` and import them from `./messages/<name>` (see `src/background/execute-enter.test.ts`). Tests for Extended-only code (`execute-enter`, the custom zoom flow in `src/strategies/base.test.ts`) fail after `pnpm transform-ext`, because the code is removed. CI runs the tests before the transform.
+Do not put tests or helper files in `src/background/messages/`. Plasmo imports every `.ts` file there as a message handler and bundles it into both editions. Put handler tests in `src/background/` and import them from `./messages/<name>` (see `src/background/execute-enter.test.ts`). `execute-enter.ts` stays in both editions and checks `IS_EXTENDED_EDITION` first, so Base replies `no_debugger` and the minifier drops the debugger code; its tests run in the extended Vitest project only.
