@@ -5,10 +5,14 @@ on:
     tags:
       - "v[0-9]+.[0-9]+.[0-9]+"
 
+permissions:
+  contents: read
+
 jobs:
   submit:
     uses: ./.github/workflows/submit-reusable.yml
-    secrets: inherit
+    secrets:
+      submit_keys: ${{ secrets.SUBMIT_KEYS }}
     with:
       environment: build-package
       edition: base
@@ -16,6 +20,5 @@ jobs:
       chrome_url_prefix: "chrome-extension://nflkcdlimipkgbacnfnhfecjgmojhklo"
       edge_url_prefix: "chrome-extension://hnilnnalkgihkfnegpcbcgpgailgjbnn"
       firefox_url_prefix: "moz-extension://2ea8253c-b2cc-415f-8d0e-8af14a5d29fe"
-      submit_keys_secret: SUBMIT_KEYS
       edition_label: "Default zoom for Google Workspace"
       artifact_prefix: google-workspace-zoom-default
