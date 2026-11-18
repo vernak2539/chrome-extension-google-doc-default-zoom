@@ -14,7 +14,9 @@ export const LIVE_DOC_URL =
   process.env.E2E_LIVE_DOC_URL ??
   "https://docs.google.com/document/d/1o-TwC6JR3zQDcXTllDVssMJpX0UxVlxIcEFvwxBYI1M/edit?tab=t.0";
 // View > Zoom only exists when the Doc can't be edited, so the view-only fixture needs a Doc shared as Viewer
-export const LIVE_VIEW_ONLY_DOC_URL = process.env.E2E_LIVE_VIEW_ONLY_DOC_URL ?? LIVE_DOC_URL;
+export const LIVE_VIEW_ONLY_DOC_URL =
+  process.env.E2E_LIVE_VIEW_ONLY_DOC_URL ??
+  "https://docs.google.com/document/d/1pjLuOnMGrAj7j3JcMEWqs3j2c_XY56j5j5Ud57tm93U/edit?tab=t.0";
 export const LIVE_SHEET_URL =
   process.env.E2E_LIVE_SHEET_URL ??
   "https://docs.google.com/spreadsheets/d/1H_MOO3Xdq4s8lkI4ZAQTlWv7wxXTn4VoWlvq-2zv4N8/edit?gid=0#gid=0";
