@@ -1,3 +1,5 @@
+import { IS_EXTENDED_EDITION } from "src/utils/edition";
+
 import packageJson from "../../../package.json";
 
 export const SENTRY_BASE_CONFIG = {
@@ -20,6 +22,9 @@ export const SENTRY_BASE_CONFIG = {
   ]
 };
 
+// package.json is the same for both editions, so the Base name is spelled out here
+const BASE_EXTENSION_NAME = "google-workspace-zoom-default";
+
 export const getDefaultTags = () => ({
-  extension: packageJson.name
+  extension: IS_EXTENDED_EDITION ? packageJson.name : BASE_EXTENSION_NAME
 });

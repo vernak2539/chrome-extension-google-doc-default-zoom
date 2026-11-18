@@ -1,5 +1,6 @@
 import type { PlasmoMessaging } from "@plasmohq/messaging";
 import type { ExecuteEnterRequestBody, ExecuteEnterResponseBody } from "src/types";
+import { IS_EXTENDED_EDITION } from "src/utils/edition";
 import { createSentryClient } from "src/utils/sentry/base";
 
 const sentryScope = createSentryClient("background");
@@ -8,7 +9,8 @@ const handler: PlasmoMessaging.MessageHandler<
   ExecuteEnterRequestBody,
   ExecuteEnterResponseBody
 > = async (req, res) => {
-  if (!chrome.debugger) {
+  // The edition check is what lets the minifier drop the debugger code from the Base bundle
+  if (!IS_EXTENDED_EDITION || !chrome.debugger) {
     res.send({ err: "no_debugger" });
     return;
   }

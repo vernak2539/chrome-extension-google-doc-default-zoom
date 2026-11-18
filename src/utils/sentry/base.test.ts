@@ -1,4 +1,5 @@
 import type { BrowserOptions } from "@sentry/browser";
+import { IS_EXTENDED_EDITION } from "src/utils/edition";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 
 import { createSentryClient } from "./base";
@@ -64,7 +65,10 @@ const captureEvent = async (href: string) => {
 
   const items = envelopes.flatMap((envelope) => [...envelope[1]]);
   const eventItem = items.find(([header]) => header.type === "event");
-  return eventItem![1] as { request?: { url?: string; headers?: Record<string, string> } };
+  return eventItem![1] as {
+    request?: { url?: string; headers?: Record<string, string> };
+    tags?: Record<string, string>;
+  };
 };
 
 describe("createSentryClient", () => {
@@ -74,6 +78,23 @@ describe("createSentryClient", () => {
 
   afterEach(() => {
     vi.unstubAllGlobals();
+  });
+
+  describe("edition tag", () => {
+    test.runIf(IS_EXTENDED_EDITION)(
+      "should tag events with the Extended extension name",
+      async () => {
+        const event = await captureEvent(cases[0].href);
+
+        expect(event.tags?.extension).toBe("google-workspace-zoom-extended");
+      }
+    );
+
+    test.runIf(!IS_EXTENDED_EDITION)("should tag events with the Base extension name", async () => {
+      const event = await captureEvent(cases[0].href);
+
+      expect(event.tags?.extension).toBe("google-workspace-zoom-default");
+    });
   });
 
   describe.each(cases)("on $name", ({ href, expected }) => {

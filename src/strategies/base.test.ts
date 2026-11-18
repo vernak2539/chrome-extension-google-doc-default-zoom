@@ -2,6 +2,7 @@
 import { sendToBackgroundViaRelay } from "@plasmohq/messaging";
 import { workspaceAppUiStrategyConfigs } from "src/constants";
 import type { AppStorageState } from "src/types";
+import { IS_EXTENDED_EDITION } from "src/utils/edition";
 import getAppStorageStateFromStorage from "src/utils/get-app-storage-state-from-storage";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 
@@ -110,15 +111,31 @@ describe("zoom outcome", () => {
     });
   });
 
-  test("should fail with zoom_input_missing when a custom zoom has no input to type in", async () => {
-    document.body.innerHTML = `<div id="zoomSelect" aria-owns="zoom-menu"></div>`;
+  test.runIf(IS_EXTENDED_EDITION)(
+    "should fail with zoom_input_missing when a custom zoom has no input to type in",
+    async () => {
+      document.body.innerHTML = `<div id="zoomSelect" aria-owns="zoom-menu"></div>`;
 
-    expect(await new TestStrategy(DOCS_CONFIG).zoomTo(CUSTOM_ZOOM)).toEqual({
-      status: "failed",
-      reason: "zoom_input_missing"
-    });
-    expect(relay).not.toHaveBeenCalled();
-  });
+      expect(await new TestStrategy(DOCS_CONFIG).zoomTo(CUSTOM_ZOOM)).toEqual({
+        status: "failed",
+        reason: "zoom_input_missing"
+      });
+      expect(relay).not.toHaveBeenCalled();
+    }
+  );
+
+  test.runIf(!IS_EXTENDED_EDITION)(
+    "should not use the debugger for a custom zoom, and fail with zoom_option_missing",
+    async () => {
+      renderZoomMenu();
+
+      expect(await new TestStrategy(DOCS_CONFIG).zoomTo(CUSTOM_ZOOM)).toEqual({
+        status: "failed",
+        reason: "zoom_option_missing"
+      });
+      expect(relay).not.toHaveBeenCalled();
+    }
+  );
 
   test("should skip with classroom_support_disabled for a submitted assignment", async () => {
     window.history.pushState({}, "", "/document/d/abc/grading");
@@ -157,7 +174,7 @@ describe("zoom outcome", () => {
   });
 });
 
-describe("custom zoom flow", () => {
+describe.runIf(IS_EXTENDED_EDITION)("custom zoom flow", () => {
   let clickedRows: string[];
 
   beforeEach(() => {

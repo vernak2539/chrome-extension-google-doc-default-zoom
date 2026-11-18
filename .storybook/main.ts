@@ -24,6 +24,7 @@ const config: StorybookConfig = {
       define: {
         "process.env.NODE_ENV": JSON.stringify("development"),
         "process.env.PLASMO_BROWSER": JSON.stringify("chrome"),
+        "process.env.PLASMO_TAG": JSON.stringify("extended"),
         "process.env.PLASMO_PUBLIC_SENTRY_DSN": "undefined"
       },
       plugins: [

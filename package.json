@@ -8,10 +8,15 @@
   "repository": "github:vernak2539/chrome-extension-google-doc-default-zoom",
   "type": "module",
   "scripts": {
-    "dev": "plasmo dev",
+    "dev": "plasmo dev --tag=extended",
+    "dev:base": "plasmo dev --tag=base",
     "test": "vitest",
-    "build": "plasmo build --hoist",
-    "package": "plasmo package",
+    "build:base": "plasmo build --hoist --tag=base",
+    "build:extended": "plasmo build --hoist --tag=extended",
+    "build": "pnpm build:extended",
+    "package:base": "plasmo package --tag=base",
+    "package:extended": "plasmo package --tag=extended",
+    "package": "pnpm package:extended",
     "format": "oxfmt --write .",
     "format:check": "oxfmt --check .",
     "lint": "oxlint .",
@@ -20,7 +25,7 @@
     "bundlesize": "bundlesize",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "transform-ext": "node bin/transform-extension.mjs",
+    "check:editions": "node bin/check-edition-build.mjs",
     "prepare": "husky"
   },
   "dependencies": {
@@ -79,17 +84,17 @@
     }
   },
   "manifest": {
-    "name": "__MSG_extensionNameExtended__",
+    "name": "$PLASMO_PUBLIC_EXT_NAME",
     "default_locale": "en",
     "host_permissions": [
       "http://*.google.com/"
     ],
     "permissions": [
-      "debugger"
+      "$DEBUGGER_PERMISSION"
     ],
     "browser_specific_settings": {
       "gecko": {
-        "id": "google-workspace-zoom-extended@vernacchia.dev"
+        "id": "$FIREFOX_EXT_ID"
       }
     }
   }
