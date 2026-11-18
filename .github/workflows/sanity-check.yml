@@ -48,6 +48,11 @@ jobs:
         run: pnpm bundlesize
         env:
           INTERNAL_SKIP_CACHE: "1"
+      - name: Install Chromium for the browser tests
+        run: pnpm exec playwright install --with-deps chromium
+      # Loads build/chrome-mv3-base and build/chrome-mv3-extended against saved Docs and Sheets markup (docs/e2e.md)
+      - name: Browser tests
+        run: pnpm test:e2e
       - name: Package extension artifacts
         run: |
           pnpm package:base --target=chrome-mv3
@@ -56,3 +61,10 @@ jobs:
           pnpm package:extended --target=chrome-mv3
           pnpm package:extended --target=edge-mv3
           pnpm package:extended --target=firefox-mv2
+      - name: Upload browser test screenshots
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-screenshots
+          path: e2e/results/screenshots
+          if-no-files-found: ignore

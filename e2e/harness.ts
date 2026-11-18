@@ -39,22 +39,42 @@ const SENTRY_INGEST_DSN = /https?:\/\/[0-9a-f]+@[^\s"'/]*sentry\.io/i;
 export const FIXTURE_DOC_URL = "https://docs.google.com/document/d/e2e-fixture/edit";
 export const FIXTURE_SHEET_URL = "https://docs.google.com/spreadsheets/d/e2e-fixture/edit";
 
+// Set per Vitest project in e2e/vitest.config.ts
+const getExpectedEdition = (): Edition => {
+  const edition = process.env.E2E_EDITION;
+
+  if (edition !== "base" && edition !== "extended") {
+    throw new Error(`E2E_EDITION must be "base" or "extended", got ${JSON.stringify(edition)}`);
+  }
+
+  return edition;
+};
+
 export const getBuildDir = (): string => {
-  const buildDir = path.resolve(process.env.E2E_EXTENSION_DIR ?? "build/chrome-mv3-prod");
+  const edition = getExpectedEdition();
+  const buildDir = path.resolve(process.env.E2E_EXTENSION_DIR ?? `build/chrome-mv3-${edition}`);
 
   if (!existsSync(path.join(buildDir, "manifest.json"))) {
     throw new Error(
-      `No extension build in ${buildDir}: run \`pnpm build --target=chrome-mv3\` first`
+      `No extension build in ${buildDir}: run \`pnpm build:${edition} --target=chrome-mv3\` first`
     );
   }
 
   return buildDir;
 };
 
+// The edition of the build itself, checked against the one this run expects
 export const getEdition = (): Edition => {
-  const manifest = JSON.parse(readFileSync(path.join(getBuildDir(), "manifest.json"), "utf8"));
+  const expected = getExpectedEdition();
+  const buildDir = getBuildDir();
+  const manifest = JSON.parse(readFileSync(path.join(buildDir, "manifest.json"), "utf8"));
+  const built: Edition = manifest.permissions?.includes("debugger") ? "extended" : "base";
 
-  return manifest.permissions?.includes("debugger") ? "extended" : "base";
+  if (built !== expected) {
+    throw new Error(`${buildDir} holds the ${built} edition, but this run tests ${expected}`);
+  }
+
+  return built;
 };
 
 const listJavaScriptFiles = (directory: string): string[] =>
