@@ -11,6 +11,8 @@ pnpm dev:base   # Base edition
 
 Open your browser and load the appropriate development build. The directory is named after the target and the edition. For example, if you are developing the Extended edition for the chrome browser, using manifest v3, use: `build/chrome-mv3-extended`.
 
+The development server writes to the same `build/<target>-<edition>` directory as the production build, and a dev bundle is unminified. Run `pnpm build:<edition>` again before `pnpm package:<edition>` or `pnpm check:editions`, or the zip or the check would act on the dev bundle.
+
 You can start editing the popup by modifying `popup.tsx`. It should auto-update as you make changes. To add an options page, simply add a `options.tsx` file to the root of the project, with a react component default exported. Likewise to add a content page, add a `content.ts` file to the root of the project, importing some module and do some logic, then reload the extension on your browser.
 
 For further guidance, [visit our Documentation](https://docs.plasmo.com/)
