@@ -1,4 +1,3 @@
-#This is exactly the same as the default one minus the "Transform to "Default zoom for Google Workspace"" and Sentry steps
 name: "(extended) Submit to Web Store"
 on:
   workflow_dispatch:
@@ -7,71 +6,15 @@ on:
       - "v[0-9]+.[0-9]+.[0-9]+"
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    environment:
-      name: build-package-extended
-    env:
-      PLASMO_PUBLIC_SENTRY_DSN: ${{ vars.PLASMO_PUBLIC_SENTRY_DSN }}
-      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-      SENTRY_ORG: ${{ vars.SENTRY_ORG }}
-      SENTRY_PROJECT: ${{ vars.SENTRY_PROJECT }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-        with:
-          run_install: false
-      - name: Use Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22.13.0
-          cache: "pnpm"
-      - name: Install dependencies
-        run: pnpm install
-      - name: Run Tests
-        run: pnpm test
-      - name: Build the extension
-        run: |
-          pnpm build --source-maps --target=chrome-mv3
-          pnpm build --source-maps --target=edge-mv3
-      - name: get-npm-version
-        id: package-version
-        uses: martinbeentjes/npm-get-version-action@v1.3.1
-      - name: Create Sentry release (Chrome Extension)
-        uses: getsentry/action-release@v1
-        with:
-          environment: production
-          sourcemaps: "./build/chrome-mv3-prod"
-          url_prefix: "chrome-extension://mdgikencgfhineaememjagpkiclbdkka"
-          ignore_empty: true
-          ignore_missing: true
-          version: ${{ steps.package-version.outputs.current-version }}
-      - name: Create Sentry release (Edge Extension)
-        uses: getsentry/action-release@v1
-        with:
-          environment: production
-          sourcemaps: "./build/edge-mv3-prod"
-          url_prefix: "chrome-extension://fhjmigdmbgbiodkejhmahfnaebdgnmjb"
-          ignore_empty: true
-          ignore_missing: true
-          version: ${{ steps.package-version.outputs.current-version }}
-      - name: Remove sourcemaps from bundle
-        run: |
-          rm ./build/chrome-mv3-prod/*.map
-          rm ./build/edge-mv3-prod/*.map
-      - name: Package extension artifact
-        run: |
-          pnpm package --target=chrome-mv3
-          pnpm package --target=edge-mv3
-      - name: Browser Platform Publish
-        uses: PlasmoHQ/bpp@v3
-        with:
-          keys: ${{ secrets.SUBMIT_KEYS_EXTENDED }}
-          chrome-file: build/chrome-mv3-prod.zip
-          edge-file: build/edge-mv3-prod.zip
-          edge-notes: "Publishing latest 'Default zoom for Google Workspace (Extended)' version (${{ steps.package-version.outputs.current-version }}) to Edge Store."
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          path: build
-          name: google-workspace-zoom-extended-${{ steps.package-version.outputs.current-version }}
+  submit:
+    uses: ./.github/workflows/submit-reusable.yml
+    secrets: inherit
+    with:
+      environment: build-package-extended
+      edition: extended
+      include_firefox: false
+      chrome_url_prefix: "chrome-extension://mdgikencgfhineaememjagpkiclbdkka"
+      edge_url_prefix: "chrome-extension://fhjmigdmbgbiodkejhmahfnaebdgnmjb"
+      submit_keys_secret: SUBMIT_KEYS_EXTENDED
+      edition_label: "Default zoom for Google Workspace (Extended)"
+      artifact_prefix: google-workspace-zoom-extended

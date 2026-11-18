@@ -1,0 +1,132 @@
+name: Submit to Web Store (reusable)
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description: "GitHub environment that holds the Sentry variables and secrets"
+        type: string
+        required: true
+      edition:
+        description: "Edition to build: base or extended"
+        type: string
+        required: true
+      include_firefox:
+        description: "Build, release, package and publish the Firefox target"
+        type: boolean
+        required: true
+      chrome_url_prefix:
+        type: string
+        required: true
+      edge_url_prefix:
+        type: string
+        required: true
+      firefox_url_prefix:
+        description: "Only used when include_firefox is true"
+        type: string
+        required: false
+        default: ""
+      submit_keys_secret:
+        description: "Name of the secret that holds the bpp keys JSON"
+        type: string
+        required: true
+      edition_label:
+        description: "Store name that is written in the Edge notes"
+        type: string
+        required: true
+      artifact_prefix:
+        description: "Prefix of the artifact name (the version is added)"
+        type: string
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ inputs.environment }}
+    env:
+      PLASMO_PUBLIC_SENTRY_DSN: ${{ vars.PLASMO_PUBLIC_SENTRY_DSN }}
+      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+      SENTRY_ORG: ${{ vars.SENTRY_ORG }}
+      SENTRY_PROJECT: ${{ vars.SENTRY_PROJECT }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.13.0
+          cache: "pnpm"
+      - name: Install dependencies
+        run: pnpm install
+      - name: Run Tests
+        run: pnpm test
+      - name: Build the extension
+        run: |
+          pnpm build:${{ inputs.edition }} --source-maps --target=chrome-mv3
+          pnpm build:${{ inputs.edition }} --source-maps --target=edge-mv3
+      - name: Build the extension (Firefox)
+        if: ${{ inputs.include_firefox }}
+        run: pnpm build:${{ inputs.edition }} --source-maps --target=firefox-mv2
+      - name: Check the built edition
+        run: pnpm check:editions
+      - name: get-npm-version
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@v1.3.1
+      - name: Create Sentry release (Chrome Extension)
+        uses: getsentry/action-release@v1
+        with:
+          environment: production
+          sourcemaps: "./build/chrome-mv3-${{ inputs.edition }}"
+          url_prefix: ${{ inputs.chrome_url_prefix }}
+          ignore_empty: true
+          ignore_missing: true
+          version: ${{ steps.package-version.outputs.current-version }}
+      - name: Create Sentry release (Edge Extension)
+        uses: getsentry/action-release@v1
+        with:
+          environment: production
+          sourcemaps: "./build/edge-mv3-${{ inputs.edition }}"
+          url_prefix: ${{ inputs.edge_url_prefix }}
+          ignore_empty: true
+          ignore_missing: true
+          version: ${{ steps.package-version.outputs.current-version }}
+      - name: Create Sentry release (Firefox Add-on)
+        if: ${{ inputs.include_firefox }}
+        uses: getsentry/action-release@v1
+        with:
+          environment: production
+          sourcemaps: "./build/firefox-mv2-${{ inputs.edition }}"
+          url_prefix: ${{ inputs.firefox_url_prefix }}
+          ignore_empty: true
+          ignore_missing: true
+          version: ${{ steps.package-version.outputs.current-version }}
+      - name: Remove sourcemaps from bundle
+        run: |
+          rm ./build/chrome-mv3-${{ inputs.edition }}/*.map
+          rm ./build/edge-mv3-${{ inputs.edition }}/*.map
+      - name: Remove sourcemaps from bundle (Firefox)
+        if: ${{ inputs.include_firefox }}
+        run: rm ./build/firefox-mv2-${{ inputs.edition }}/*.map
+      - name: Package extension artifact
+        run: |
+          pnpm package:${{ inputs.edition }} --target=chrome-mv3
+          pnpm package:${{ inputs.edition }} --target=edge-mv3
+      - name: Package extension artifact (Firefox)
+        if: ${{ inputs.include_firefox }}
+        run: pnpm package:${{ inputs.edition }} --target=firefox-mv2
+      - name: Browser Platform Publish
+        uses: PlasmoHQ/bpp@v3
+        with:
+          keys: ${{ secrets[inputs.submit_keys_secret] }}
+          chrome-file: build/chrome-mv3-${{ inputs.edition }}.zip
+          edge-file: build/edge-mv3-${{ inputs.edition }}.zip
+          edge-notes: "Publishing latest '${{ inputs.edition_label }}' version (${{ steps.package-version.outputs.current-version }}) to Edge Store."
+          firefox-file: ${{ inputs.include_firefox && format('build/firefox-mv2-{0}.zip', inputs.edition) || '' }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          path: build
+          name: ${{ inputs.artifact_prefix }}-${{ steps.package-version.outputs.current-version }}
