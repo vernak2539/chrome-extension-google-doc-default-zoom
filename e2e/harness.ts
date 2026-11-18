@@ -1,0 +1,252 @@
+/// <reference types="node" />
+import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
+import { mkdir, mkdtemp, readFile, rm } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import path from "node:path";
+
+import { type BrowserContext, chromium, type Page, type Worker } from "playwright";
+
+import { FIXTURES_DIR, RESULTS_DIR } from "./targets";
+
+export interface RecordedEvents {
+  // text of the first child of every menu row that received a click
+  clicks: string[];
+  // value of the focused input whenever Enter was pressed
+  enters: string[];
+}
+
+declare global {
+  interface Window {
+    __e2e: RecordedEvents;
+  }
+}
+
+export interface AppState {
+  zoomValue: string;
+  viewOnly: boolean;
+  classroomSupport: boolean;
+}
+
+export type Edition = "extended" | "base";
+
+const EMPTY_PAGE = "<!doctype html><html><head><title>fixture</title></head><body></body></html>";
+// the content script starts watching the DOM once the page is idle
+const FIXTURE_INSERT_DELAY_MS = 500;
+const SENTRY_INGEST_DSN = /https?:\/\/[0-9a-f]+@[^\s"'/]*sentry\.io/i;
+
+export const FIXTURE_DOC_URL = "https://docs.google.com/document/d/e2e-fixture/edit";
+export const FIXTURE_SHEET_URL = "https://docs.google.com/spreadsheets/d/e2e-fixture/edit";
+
+export const getBuildDir = (): string => {
+  const buildDir = path.resolve(process.env.E2E_EXTENSION_DIR ?? "build/chrome-mv3-prod");
+
+  if (!existsSync(path.join(buildDir, "manifest.json"))) {
+    throw new Error(
+      `No extension build in ${buildDir}: run \`pnpm build --target=chrome-mv3\` first`
+    );
+  }
+
+  return buildDir;
+};
+
+export const getEdition = (): Edition => {
+  const manifest = JSON.parse(readFileSync(path.join(getBuildDir(), "manifest.json"), "utf8"));
+
+  return manifest.permissions?.includes("debugger") ? "extended" : "base";
+};
+
+const listJavaScriptFiles = (directory: string): string[] =>
+  readdirSync(directory).flatMap((entry) => {
+    const entryPath = path.join(directory, entry);
+    if (statSync(entryPath).isDirectory()) {
+      return listJavaScriptFiles(entryPath);
+    }
+    return entry.endsWith(".js") ? [entryPath] : [];
+  });
+
+// Test runs must never report to the real Sentry project
+export const assertNoSentryDsn = () => {
+  const buildWithDsn = listJavaScriptFiles(getBuildDir()).find((file) =>
+    SENTRY_INGEST_DSN.test(readFileSync(file, "utf8"))
+  );
+
+  if (buildWithDsn) {
+    throw new Error(
+      `${buildWithDsn} contains a Sentry DSN: rebuild without PLASMO_PUBLIC_SENTRY_DSN set`
+    );
+  }
+};
+
+const waitForServiceWorker = async (context: BrowserContext): Promise<Worker> =>
+  context.serviceWorkers()[0] ?? (await context.waitForEvent("serviceworker"));
+
+export const launchExtension = async (userDataDir: string) => {
+  const buildDir = getBuildDir();
+  const context = await chromium.launchPersistentContext(userDataDir, {
+    channel: "chromium",
+    headless: true,
+    args: [
+      `--disable-extensions-except=${buildDir}`,
+      `--load-extension=${buildDir}`,
+      "--lang=en-US"
+    ]
+  });
+
+  await context.route(/^https?:\/\/[^/]*sentry\.io\//, (route) => route.abort());
+
+  return { context, serviceWorker: await waitForServiceWorker(context) };
+};
+
+export const setAppState = async (
+  serviceWorker: Worker,
+  storageKey: "docs" | "sheets",
+  state: AppState
+) => {
+  // @plasmohq/storage keeps every value JSON encoded
+  await serviceWorker.evaluate(
+    ([key, value]) => chrome.storage.sync.set({ [key]: value, schemaVersion: "2" }),
+    [storageKey, JSON.stringify(state)]
+  );
+};
+
+// Observes the page's events from the main world. It does not model what Google does with them.
+export const installRecorder = async (context: BrowserContext) => {
+  await context.addInitScript(() => {
+    const recorded: RecordedEvents = { clicks: [], enters: [] };
+    window.__e2e = recorded;
+
+    document.addEventListener(
+      "click",
+      (event) => {
+        const row = (event.target as Element | null)?.closest?.(".goog-menuitem");
+        if (row) {
+          recorded.clicks.push(row.firstChild?.textContent ?? "");
+        }
+      },
+      true
+    );
+
+    document.addEventListener(
+      "keydown",
+      (event) => {
+        if (event.key === "Enter") {
+          recorded.enters.push((event.target as HTMLInputElement).value ?? "");
+        }
+      },
+      true
+    );
+  });
+};
+
+export const readRecorded = (page: Page): Promise<RecordedEvents> =>
+  page.evaluate(() => ({ clicks: [...window.__e2e.clicks], enters: [...window.__e2e.enters] }));
+
+// Serves an empty page for docs.google.com and blocks every other http(s) request. The filter is on the
+// protocol because a catch-all route would also block the extension's own files.
+export const serveFixture = async (context: BrowserContext) => {
+  await context.route(
+    (url) => url.protocol === "http:" || url.protocol === "https:",
+    (route) =>
+      new URL(route.request().url()).hostname === "docs.google.com"
+        ? route.fulfill({ contentType: "text/html", body: EMPTY_PAGE })
+        : route.abort()
+  );
+};
+
+interface InsertOptions {
+  // the page is still loading: Docs disables the zoom control until it is ready
+  zoomControlDisabled?: boolean;
+}
+
+// Inserting is a DOM mutation, which is what makes `onElementAvailable` fire in the content script
+export const insertFixture = async (page: Page, name: string, options: InsertOptions = {}) => {
+  const html = await readFile(path.join(FIXTURES_DIR, `${name}.html`), "utf8");
+
+  await page.waitForTimeout(FIXTURE_INSERT_DELAY_MS);
+  await page.evaluate(
+    ({ markup, disableZoomControl }) => {
+      const template = document.createElement("template");
+      template.innerHTML = markup;
+      if (disableZoomControl) {
+        template.content
+          .querySelector("#zoomSelect, #t-zoom")
+          ?.classList.add("goog-toolbar-combo-button-disabled");
+      }
+      document.body.append(template.content);
+    },
+    { markup: html, disableZoomControl: options.zoomControlDisabled ?? false }
+  );
+};
+
+export const waitForClicks = (page: Page, count: number) =>
+  page.waitForFunction((expected) => window.__e2e.clicks.length >= expected, count, {
+    timeout: 15_000
+  });
+
+export const waitForEnters = (page: Page, count: number) =>
+  page.waitForFunction((expected) => window.__e2e.enters.length >= expected, count, {
+    timeout: 15_000
+  });
+
+export const findSelectors = (page: Page, selectors: string[]): Promise<string[]> =>
+  page.evaluate(
+    (candidates) => candidates.filter((selector) => document.querySelector(selector)),
+    selectors
+  );
+
+const saveScreenshot = async (page: Page | undefined, testName: string) => {
+  if (!page) {
+    return;
+  }
+
+  await mkdir(path.join(RESULTS_DIR, "screenshots"), { recursive: true });
+  const fileName = `${testName.replace(/[^a-z0-9]+/gi, "-")}.png`;
+  await page
+    .screenshot({ path: path.join(RESULTS_DIR, "screenshots", fileName) })
+    .catch(() => undefined);
+};
+
+export interface ExtensionSession {
+  context: BrowserContext;
+  serviceWorker: Worker;
+}
+
+// Runs `run` against the built extension in a fresh browser, and keeps a screenshot when it fails
+export const withExtension = async (
+  testName: string,
+  run: (session: ExtensionSession) => Promise<void>
+) => {
+  assertNoSentryDsn();
+
+  const userDataDir = await mkdtemp(path.join(tmpdir(), "zoom-e2e-"));
+  const session = await launchExtension(userDataDir);
+
+  try {
+    await run(session);
+  } catch (error) {
+    await saveScreenshot(session.context.pages().at(-1), testName);
+    throw error;
+  } finally {
+    await session.context.close();
+    await rm(userDataDir, { recursive: true, force: true });
+  }
+};
+
+// A plain browser without the extension, for capturing pages
+export const withPublicPage = async (testName: string, run: (page: Page) => Promise<void>) => {
+  const browser = await chromium.launch({ channel: "chromium", headless: true });
+
+  try {
+    const context = await browser.newContext({ locale: "en-US" });
+    const page = await context.newPage();
+
+    try {
+      await run(page);
+    } catch (error) {
+      await saveScreenshot(page, testName);
+      throw error;
+    }
+  } finally {
+    await browser.close();
+  }
+};

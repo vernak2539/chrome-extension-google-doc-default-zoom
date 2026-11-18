@@ -10,6 +10,9 @@
   "scripts": {
     "dev": "plasmo dev",
     "test": "vitest",
+    "test:e2e": "vitest run --config e2e/vitest.config.ts e2e/zoom-fixtures",
+    "test:e2e:live": "vitest run --config e2e/vitest.config.ts e2e/zoom-live",
+    "e2e:capture": "vitest run --config e2e/vitest.config.ts e2e/capture && vitest run --config e2e/vitest.config.ts e2e/sanitize",
     "build": "plasmo build --hoist",
     "package": "plasmo package",
     "format": "oxfmt --write .",

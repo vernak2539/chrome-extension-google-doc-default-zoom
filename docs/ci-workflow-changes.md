@@ -1,8 +1,8 @@
-# CI workflow changes for issue #101
+# CI workflow changes for issues #101 and #103
 
 The agent that made this change is not allowed to edit `.github/workflows/`. The maintainer must copy the YAML in this file into the repository. After that, update the table in [`releasing.md`](./releasing.md) (see [Update `releasing.md`](#update-releasingmd)).
 
-The typecheck and bundle size steps for `sanity-check.yml` are applied. One change is still open: replace the two nearly identical store-submission workflows with one reusable workflow and two thin callers.
+The typecheck and bundle size steps for `sanity-check.yml` are applied. One change is still open: replace the two nearly identical store-submission workflows with one reusable workflow and two thin callers. The browser tests for #103 need further changes, at the end of this file ([Browser tests (#103)](#browser-tests-103)).
 
 Do not start the submit workflows to test the new YAML. They publish to the stores for real, and a version tag or `workflow_dispatch` starts them. To test them, open a pull request that contains the YAML, and check it with a YAML linter such as `actionlint`. Then do the first real release with care.
 
@@ -243,3 +243,105 @@ After you apply the YAML, update [`releasing.md`](./releasing.md):
 - Change the sentence "the Base workflow runs `pnpm transform-ext` first" to refer to the `transform` input.
 - Keep the environment and keys-secret columns. They now come from the `environment` and `submit_keys_secret` inputs.
 - Delete this file (`docs/ci-workflow-changes.md`), or reduce it to a link to the final workflows, when the change is merged.
+
+## Browser tests (#103)
+
+The harness in [`e2e/`](../e2e) is described in [`e2e.md`](./e2e.md). It needs two workflow changes that the agent could not make: the fixture tests in `sanity-check.yml`, and a new weekly `e2e-live.yml`. Neither uses a secret, and neither signs in to Google. Apply them in this order, then capture the real fixtures (see "Capture and refresh the fixtures" in `e2e.md`).
+
+### `.github/workflows/sanity-check.yml` (add steps)
+
+Add the first two steps after "Check bundle size" (Extended build) and the next two after "Check bundle size (default edition)" (Base build). Both editions are built into `build/chrome-mv3-prod`, so the second run tests the Base build. Add the upload step once, at the end of the job.
+
+```yaml
+- name: Install Chromium for the browser tests
+  run: pnpm exec playwright install --with-deps chromium
+- name: Browser tests (Extended)
+  run: pnpm test:e2e
+
+# ... package and transform steps stay as they are ...
+
+- name: Browser tests (default edition)
+  run: pnpm test:e2e
+
+- name: Upload browser test screenshots
+  if: failure()
+  uses: actions/upload-artifact@v4
+  with:
+    name: e2e-results
+    path: e2e/results
+    if-no-files-found: ignore
+```
+
+The build step does not set `PLASMO_PUBLIC_SENTRY_DSN`, which is what the tests need: the harness fails when a built file holds a DSN.
+
+### `.github/workflows/e2e-live.yml` (new file)
+
+Runs weekly and by hand. Every step that touches Google has `continue-on-error: true`, so the screenshots and the captured fixtures are uploaded even when a live step fails. The last step then fails the job.
+
+```yaml
+name: E2E live
+
+on:
+  schedule:
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+jobs:
+  live:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.13.0
+          cache: "pnpm"
+      - name: Install dependencies
+        run: pnpm install
+      - name: Install Chromium
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Build the extension
+        run: pnpm build --source-maps --target=chrome-mv3
+      - name: Live check (Extended)
+        id: live_extended
+        continue-on-error: true
+        run: pnpm test:e2e:live
+      - name: Capture fixtures
+        id: capture
+        continue-on-error: true
+        run: pnpm e2e:capture
+      - name: Transform to "Default zoom for Google Workspace"
+        run: pnpm transform-ext
+      - name: Build the extension (default edition)
+        run: pnpm build --source-maps --target=chrome-mv3
+      - name: Live check (default edition)
+        id: live_default
+        continue-on-error: true
+        run: pnpm test:e2e:live
+      - name: Upload fixtures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fixtures
+          path: e2e/fixtures
+          if-no-files-found: ignore
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-screenshots
+          path: e2e/results/screenshots
+          if-no-files-found: ignore
+      - name: Fail when a live step failed
+        if: always() && (steps.live_extended.outcome == 'failure' || steps.capture.outcome == 'failure' || steps.live_default.outcome == 'failure')
+        run: |
+          echo "live_extended=${{ steps.live_extended.outcome }} capture=${{ steps.capture.outcome }} live_default=${{ steps.live_default.outcome }}"
+          exit 1
+```
+
+The `fixtures` artifact holds sanitized files only. The raw captures stay in `e2e/results/raw`, which is not uploaded. `pnpm transform-ext` changes only files under `src/` and `package.json`, so it does not alter the captured fixtures.
+
+A scheduled run can fail because Google changed its markup, or because a CI runner is blocked or shown a sign-in page. The failure message lists the selectors that were found; compare it with the fixtures before assuming the extension broke.

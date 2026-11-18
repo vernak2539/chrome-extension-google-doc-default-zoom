@@ -50,3 +50,6 @@ tsconfig.tsbuildinfo
 
 # Gemini Visual Testing
 docs/preview.png
+
+# E2E harness: raw captures, screenshots
+e2e/results/

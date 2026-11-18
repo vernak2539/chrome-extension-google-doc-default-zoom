@@ -1,6 +1,6 @@
 {
   "extends": "plasmo/templates/tsconfig.base",
-  "exclude": ["node_modules", "vite.config.ts"],
+  "exclude": ["node_modules", "vite.config.ts", "e2e/vitest.config.ts"],
   "include": [".plasmo/index.d.ts", ".plasmo/messaging.d.ts", "./**/*.ts", "./**/*.tsx"],
   "compilerOptions": {
     "paths": {
