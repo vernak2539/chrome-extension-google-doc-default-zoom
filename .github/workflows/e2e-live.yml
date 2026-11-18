@@ -6,6 +6,12 @@ on:
   schedule:
     - cron: "0 6 * * 1"
   workflow_dispatch:
+  # TEMPORARY: checks the live and capture paths on #139 before it merges. Remove before merging.
+  pull_request:
+    branches: [main]
+    paths:
+      - "e2e/**"
+      - ".github/workflows/e2e-live.yml"
 
 permissions:
   contents: read
