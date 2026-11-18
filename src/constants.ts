@@ -8,6 +8,7 @@ import type {
   WorkspaceApp,
   WorkspaceAppName
 } from "src/types";
+import { IS_EXTENDED_EDITION } from "src/utils/edition";
 import localize from "src/utils/localize";
 
 export const GOOGLE_CLASSROOM_DOMAIN = "classroom.google.com";
@@ -56,7 +57,7 @@ export const workspaceApps: WorkspaceApp[] = [
     storageKey: DOCS_STORAGE_KEY,
     isEnabled: true,
     features: {
-      customZoomInput: true,
+      customZoomInput: IS_EXTENDED_EDITION,
       enableViewOnlyToggle: true,
       classroomSupport: true
     }
@@ -68,7 +69,7 @@ export const workspaceApps: WorkspaceApp[] = [
     storageKey: SHEETS_STORAGE_KEY,
     isEnabled: true,
     features: {
-      customZoomInput: true,
+      customZoomInput: IS_EXTENDED_EDITION,
       enableViewOnlyToggle: false,
       classroomSupport: true
     }

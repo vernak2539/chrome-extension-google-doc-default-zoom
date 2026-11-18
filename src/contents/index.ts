@@ -12,6 +12,7 @@ import DocsStrategy from "src/strategies/docs";
 import SheetsStrategy from "src/strategies/sheets";
 import type { WorkspaceAppName, ZoomOutcome } from "src/types";
 import { isGoogleClassroomDomain } from "src/utils/classroom-helpers";
+import { IS_EXTENDED_EDITION } from "src/utils/edition";
 import getCurrentApp from "src/utils/get-current-app";
 import BrowserLogger from "src/utils/logger";
 import { observeElementAndExecute, onElementAvailable } from "src/utils/mutation-observer-helpers";
@@ -54,9 +55,9 @@ const createStrategy = (currentApp: WorkspaceAppName | null): AbstractBaseStrate
 
 relayMessage({ name: RELAY_GET_APP_STORAGE_STATE });
 
-/*--EXTENDED_ONLY_START--*/
-relayMessage({ name: RELAY_EXECUTE_ENTER });
-/*--EXTENDED_ONLY_END--*/
+if (IS_EXTENDED_EDITION) {
+  relayMessage({ name: RELAY_EXECUTE_ENTER });
+}
 
 const main = () => {
   // this should be first to stop execution if no current app

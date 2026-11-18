@@ -59,7 +59,6 @@ export abstract class AbstractBaseStrategy {
       return failed("zoom_select_missing");
     }
 
-    /*--EXTENDED_ONLY_START--*/
     const canUseCustomZoom =
       this.isFeatureEnabled("customZoomInput") &&
       getIsCustomZoom(this.config.application, zoomValue);
@@ -67,7 +66,6 @@ export abstract class AbstractBaseStrategy {
     if (canUseCustomZoom) {
       return this.uiExecuteCustomZoomFlow(zoomInputContainer, zoomValue);
     }
-    /*--EXTENDED_ONLY_END--*/
 
     return this.uiExecuteDefinedZoomFlow(zoomInputContainer, zoomValue);
   }
@@ -105,7 +103,6 @@ export abstract class AbstractBaseStrategy {
     return APPLIED;
   }
 
-  /*--EXTENDED_ONLY_START--*/
   private async uiExecuteCustomZoomFlow(
     zoomInputContainer: Element,
     zoomValue: string
@@ -146,7 +143,6 @@ export abstract class AbstractBaseStrategy {
     this.closeDropdown();
     return APPLIED;
   }
-  /*--EXTENDED_ONLY_END--*/
 
   private closeDropdown() {
     // close dropdown with blur event (may need to check again to see if it's closed)

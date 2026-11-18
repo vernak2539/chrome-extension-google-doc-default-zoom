@@ -2,6 +2,7 @@
 
 import "@picocss/pico/css/pico.min.css";
 import Announcement from "src/components/Announcement";
+import { IS_EXTENDED_EDITION } from "src/utils/edition";
 import localize from "src/utils/localize";
 import { setupSentryReactErrorBoundary } from "src/utils/sentry/react-error-boundary";
 
@@ -12,8 +13,7 @@ import * as styles from "src/style.module.css";
 
 const withSentryErrorBoundary = setupSentryReactErrorBoundary("popup");
 
-// "extensionName"/"extensionNameExtended" WILL BE CHANGED. DON'T CHANGE WITHOUT MAKING OTHER CHANGES
-const extensionName = localize("extensionNameExtended");
+const extensionName = localize(IS_EXTENDED_EDITION ? "extensionNameExtended" : "extensionName");
 
 export function IndexPopup() {
   return (

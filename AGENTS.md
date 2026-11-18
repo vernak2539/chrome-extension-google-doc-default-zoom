@@ -23,36 +23,54 @@ The project follows a strategy-based architecture to handle different Google Wor
 - **`src/background/`:** Handles background tasks, notably using the `chrome.debugger` API in the "Extended" version to simulate keyboard events for custom zoom values.
 - **`src/utils/`:** Provides helper functions for DOM manipulation (`ui-helpers.ts`), localization (`localize.ts`), and storage.
 
-### "Base" vs "Extended" Versions
+### "Base" vs "Extended" Editions
 
-The project maintains a single codebase for two versions of the extension:
+The project maintains a single codebase for two editions of the extension:
 
 1.  **Base:** Supports only predefined zoom levels.
 2.  **Extended:** Supports custom zoom levels by using the `debugger` permission (not available on Firefox).
 
-Transformation between these versions is handled by scripts in the `bin/` directory (`transform-extension.mjs`, `update-code-files.sh`), which strip code blocks marked with `/*--EXTENDED_ONLY_START--*/` and `/*--EXTENDED_ONLY_END--*/`.
+Each edition is a Plasmo build tag (`plasmo build --tag=base|extended`). The source is never rewritten, so what is tested is what ships.
+
+- **Code:** `IS_EXTENDED_EDITION` in `src/utils/edition.ts` is `process.env.PLASMO_TAG === "extended"`. An unset tag means Base. Branch on it where the editions differ; search for it to find every such place. Plasmo bundles every file in `src/background/messages/`, so a handler must check the edition itself for the minifier to drop its code from Base.
+- **Manifest:** `package.json` `manifest` holds `$PLASMO_PUBLIC_EXT_NAME`, `$DEBUGGER_PERMISSION` and `$FIREFOX_EXT_ID`. Plasmo fills them from the committed `.env.base` and `.env.extended` (non-secret values only; `.gitignore` has exceptions for these two files). A missing variable does **not** fail the build: an empty `$DEBUGGER_PERMISSION` silently drops the permission and a missing `PLASMO_PUBLIC_EXT_NAME` falls back to the Extended name. `pnpm check:editions` catches both.
+- **Icons:** `assets/icon.base.png` and `assets/icon.extended.png`. Plasmo picks `icon.<tag>.png` before `icon.png`, and there is no untagged icon.
+- **Output:** `build/<target>-<edition>` (for example `build/chrome-mv3-base`) and `build/<target>-<edition>.zip`. `plasmo dev` uses the same `--tag` and writes to the same `build/<target>-<edition>` directory, so a dev build overwrites a production build. Always rebuild (`pnpm build:<edition>`) before `pnpm package:<edition>` or `pnpm check:editions`: a dev bundle is unminified and keeps debugger code that the minifier removes from Base.
+- **Tests:** Vitest runs every test file once per edition (the `base` and `extended` projects in `vite.config.ts` set `PLASMO_TAG`). Tests for Extended-only code use `describe.runIf(IS_EXTENDED_EDITION)` or `test.runIf(IS_EXTENDED_EDITION)`. Storybook defines `PLASMO_TAG` as `extended`.
 
 ## Building and Running
 
 ### Development
 
 ```bash
-pnpm dev
+pnpm dev        # Extended edition
+pnpm dev:base   # Base edition
 ```
 
-This starts the Plasmo development server. Load the generated extension from `build/chrome-mv3-dev` (or the appropriate target directory) into your browser.
+This starts the Plasmo development server. Load the generated extension from `build/chrome-mv3-extended` or `build/chrome-mv3-base` (or the appropriate target directory) into your browser.
 
 ### Production Build
 
 ```bash
-pnpm build
+pnpm build:base
+pnpm build:extended   # `pnpm build` is the same
+pnpm package:base     # zips build/<target>-base
+pnpm package:extended # `pnpm package` is the same
 ```
 
-Generates a production-ready bundle in the `build/` directory.
+Pass `--target=chrome-mv3|edge-mv3|firefox-mv2` and `--source-maps` as usual. The bundles are written to `build/<target>-<edition>`.
+
+### Edition Check
+
+```bash
+pnpm check:editions
+```
+
+Run it after building. It fails when a built manifest or bundle in `build/<target>-<edition>` doesn't match its edition (permissions, name, Firefox add-on id, debugger code), or when it finds no build.
 
 ### Type Checking and Bundle Size
 
-Run both after `pnpm build --target=chrome-mv3`. `pnpm typecheck` needs the `.plasmo/` declarations that the build creates, and `pnpm bundlesize` reads `build/chrome-mv3-prod`.
+Run both after `pnpm build:base --target=chrome-mv3` and `pnpm build:extended --target=chrome-mv3`. `pnpm typecheck` needs the `.plasmo/` declarations that the build creates, and `pnpm bundlesize` reads `build/chrome-mv3-*`, so it measures every edition you built for `chrome-mv3`.
 
 ```bash
 pnpm typecheck
@@ -67,7 +85,7 @@ pnpm bundlesize
 pnpm test
 ```
 
-Runs the Vitest suite.
+Runs the Vitest suite once for each edition (use `pnpm test -- --run` to exit after one run).
 
 ### Storybook
 
@@ -76,16 +94,6 @@ pnpm storybook
 ```
 
 Runs the Storybook development server for component documentation.
-
-### Version Transformation
-
-To transform the "Extended" source (the default state of the repository) into the "Base" version:
-
-```bash
-pnpm transform-ext
-```
-
-**Warning:** This script modifies `package.json` and files in `src/` in-place.
 
 ### Releasing
 
@@ -113,12 +121,14 @@ For instructions on adding new languages or managing translations, refer to [doc
 
 ### Conditional Code
 
-Use the following markers for code that should only exist in the "Extended" version:
+Branch on `IS_EXTENDED_EDITION` (`src/utils/edition.ts`) for code that should only run in the "Extended" edition. Both editions are built from the same source, so a branch has to compile in both:
 
 ```typescript
-/*--EXTENDED_ONLY_START--*/
-// Extended-only logic here
-/*--EXTENDED_ONLY_END--*/
+import { IS_EXTENDED_EDITION } from "src/utils/edition";
+
+if (IS_EXTENDED_EDITION) {
+  // Extended-only logic here
+}
 ```
 
 ## Pull Request & Code Review Workflow
@@ -128,8 +138,8 @@ When tasking with addressing PR reviews or managing the PR lifecycle, follow thi
 ### 1. Verification
 
 - **Tests:** **ALWAYS** run tests using `pnpm test -- --run` (or similar non-watching flags) to ensure the process terminates automatically.
-- **Build:** Run `pnpm build` to verify the extension bundles correctly.
-- **Types and size:** After the build, run `pnpm typecheck` and `pnpm bundlesize`.
+- **Build:** Run `pnpm build:base` and `pnpm build:extended`, then `pnpm check:editions`, to verify both editions bundle correctly.
+- **Types and size:** After building both editions, run `pnpm typecheck` and `pnpm bundlesize`.
 - **Format/Lint:** Run `pnpm format` and `pnpm lint` as per the mandatory workflow.
 
 ### 2. Addressing Reviews

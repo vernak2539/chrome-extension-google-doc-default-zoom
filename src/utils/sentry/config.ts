@@ -1,3 +1,5 @@
+import { IS_EXTENDED_EDITION } from "src/utils/edition";
+
 import packageJson from "../../../package.json";
 
 export const SENTRY_BASE_CONFIG = {
@@ -21,5 +23,7 @@ export const SENTRY_BASE_CONFIG = {
 };
 
 export const getDefaultTags = () => ({
-  extension: packageJson.name
+  extension: IS_EXTENDED_EDITION
+    ? "google-workspace-zoom-extended"
+    : "google-workspace-zoom-default"
 });
