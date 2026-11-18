@@ -1,0 +1,71 @@
+name: E2E live
+
+# Opens the maintainer's public Docs and Sheet signed out, checks both editions against them and
+# captures fresh fixtures (docs/e2e.md), so a change on Google's side shows up on the next pull request.
+# Nothing here signs in to Google or uses a secret. Run it by hand from the Actions tab ("Run workflow").
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  live:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.13.0
+          cache: "pnpm"
+      - name: Install dependencies
+        run: pnpm install
+      - name: Install Chromium
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Build both editions
+        run: |
+          pnpm build:base --target=chrome-mv3
+          pnpm build:extended --target=chrome-mv3
+      # Each step that touches Google may fail; the artifacts are uploaded anyway and the last step fails the job
+      - name: Live check (Base)
+        id: live_base
+        continue-on-error: true
+        run: pnpm test:e2e:live --project base
+      - name: Live check (Extended)
+        id: live_extended
+        continue-on-error: true
+        run: pnpm test:e2e:live --project extended
+      - name: Capture fixtures
+        id: capture
+        continue-on-error: true
+        run: pnpm e2e:capture
+      # Sanitized files only: the raw captures in e2e/results/raw are never uploaded
+      - name: Upload fixtures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fixtures
+          path: e2e/fixtures
+          if-no-files-found: ignore
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-screenshots
+          path: e2e/results/screenshots
+          if-no-files-found: ignore
+      - name: Fail when a live step failed
+        if: always() && (steps.live_base.outcome == 'failure' || steps.live_extended.outcome == 'failure' || steps.capture.outcome == 'failure')
+        env:
+          LIVE_BASE: ${{ steps.live_base.outcome }}
+          LIVE_EXTENDED: ${{ steps.live_extended.outcome }}
+          CAPTURE: ${{ steps.capture.outcome }}
+        run: |
+          echo "live_base=$LIVE_BASE live_extended=$LIVE_EXTENDED capture=$CAPTURE"
+          exit 1

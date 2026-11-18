@@ -87,6 +87,8 @@ pnpm test
 
 Runs the Vitest suite once for each edition (use `pnpm test -- --run` to exit after one run).
 
+Browser tests that load the built extension against saved or live Docs and Sheets pages are described in [docs/e2e.md](docs/e2e.md) (`pnpm test:e2e`).
+
 ### Storybook
 
 ```bash

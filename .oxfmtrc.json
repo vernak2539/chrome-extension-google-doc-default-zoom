@@ -8,5 +8,6 @@
   "trailingComma": "none",
   "bracketSpacing": true,
   "bracketSameLine": true,
-  "sortImports": true
+  "sortImports": true,
+  "ignorePatterns": ["e2e/fixtures/**"]
 }
