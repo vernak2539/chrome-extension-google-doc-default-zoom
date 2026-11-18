@@ -37,7 +37,7 @@ pnpm test:e2e:live                    # both editions
 pnpm test:e2e:live --project base     # one edition
 ```
 
-Set `E2E_LIVE_DOC_URL` and `E2E_LIVE_SHEET_URL` to use other public documents. If a page is blocked or has no zoom control, the failure message lists the selectors that were found (`#docs-chrome`, `#zoomSelect`, `#t-zoom`, `#docs-view-menu`, ...).
+Set `E2E_LIVE_DOC_URL` and `E2E_LIVE_SHEET_URL` to use other public documents. If a page is blocked or has no zoom control, the failure message says where the page went (a Google sign-in page means the document is not shared publicly) and lists the selectors that were found (`#docs-chrome`, `#zoomSelect`, `#t-zoom`, `#docs-view-menu`, ...).
 
 ## Capture and refresh the fixtures
 
@@ -53,15 +53,16 @@ Instead of steps 1 and 2, you can download the `fixtures` artifact of a run of t
 
 Capture fails, and writes nothing, when:
 
-- the zoom control or the View menu never becomes enabled (the message names the selectors that were found). For the editor fixtures the public Doc and Sheet have to allow editing signed out. A view-only page has no `#zoomSelect` or `#t-zoom`;
+- the zoom control or the View menu never becomes enabled (the message says where the page went and names the selectors that were found). For the editor fixtures the public Doc and Sheet have to allow editing signed out. A view-only page has no `#zoomSelect` or `#t-zoom`;
+- the View menu has no Zoom item. Only a Doc that can't be edited has View > Zoom, so `docs-view-only` needs its own Doc shared as Viewer (`E2E_LIVE_VIEW_ONLY_DOC_URL`);
 - a required selector is missing after sanitizing;
 - the sanitized markup still holds a script, iframe, svg, `on*` attribute, URL or email address.
 
-A failing target does not stop the others: `pnpm e2e:capture` always runs the sanitize step, which skips a target that has no raw file (its fixture keeps its previous content), and then exits non-zero if any capture failed. Both Docs fixtures come from the same Doc, so a Doc that is view-only signed out fails `docs-editor` while `docs-view-only` and the Sheet are still refreshed. Set `E2E_LIVE_DOC_URL` to an editable public Doc if you need the editor fixture too.
+A failing target does not stop the others: `pnpm e2e:capture` always runs the sanitize step, which skips a target that has no raw file (its fixture keeps its previous content), and then exits non-zero if any capture failed. The Docs fixtures need two Docs: `docs-editor` one that can be edited signed out (`E2E_LIVE_DOC_URL`), and `docs-view-only` one shared as Viewer (`E2E_LIVE_VIEW_ONLY_DOC_URL`).
 
 ### What the sanitizer keeps
 
-Everything is an allowlist. It keeps `#docs-chrome`, every menu (`.goog-menu`) with rows, and one empty `<canvas>`. It removes `svg`, `#gb`, `script`, `style`, `link`, `iframe`, `img`, `noscript` and `meta`, and keeps only the attributes `id`, `class`, `role`, `type`, `value`, `aria-label`, `aria-owns` and `aria-activedescendant`. Text is kept only inside menu rows. URLs and email addresses in what remains become `[redacted]`. Input values are cleared, except in the zoom boxes. Element IDs are kept as captured; they were not checked for document specific values, so look at them in the diff.
+Everything is an allowlist. It keeps `#docs-chrome`, every menu (`.goog-menu`) with rows, and one empty `<canvas>`. It removes `svg`, `#gb`, `script`, `style`, `link`, `iframe`, `img`, `noscript`, `meta` and the `docs-presence` widgets (the people in the document), and keeps only the attributes `id`, `class`, `role`, `type`, `value`, `aria-label`, `aria-owns` and `aria-activedescendant`. Text is kept only inside menu rows. URLs and email addresses in what remains become `[redacted]`. Input values and labels are cleared, except in the zoom boxes (Docs labels the title box with the document title). Element IDs are kept as captured; they were not checked for document specific values, so look at them in the diff.
 
 The capture is the only step that needs a browser session, and it is signed out. Do not paste a DOM from a signed-in session.
 

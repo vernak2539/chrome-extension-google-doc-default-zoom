@@ -8,7 +8,9 @@ export type FixtureMode = "editor" | "view";
 const ELEMENT_NODE = 1;
 const TEXT_NODE = 3;
 
-const REMOVED_ELEMENTS = "svg, #gb, script, style, link, iframe, img, noscript, meta";
+// `docs-presence` widgets name the people in the document: random animals signed out, real names signed in
+const REMOVED_ELEMENTS =
+  "svg, #gb, script, style, link, iframe, img, noscript, meta, [class*='docs-presence']";
 const KEPT_ATTRIBUTES = new Set([
   "id",
   "class",
@@ -37,10 +39,12 @@ const scrubAttributes = (element: Element) => {
     }
   }
 
-  // typed text can be anything, only the zoom boxes have a value the extension cares about
+  // typed text can be anything, only the zoom boxes have a value the extension cares about. Docs also
+  // labels the title box with the document title.
   const isFormField = element.matches("input, textarea");
   if (isFormField && !element.closest(ZOOM_CONTROLS)) {
     element.removeAttribute("value");
+    element.removeAttribute("aria-label");
   }
 };
 

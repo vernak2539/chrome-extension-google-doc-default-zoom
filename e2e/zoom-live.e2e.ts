@@ -2,6 +2,7 @@ import type { Page } from "playwright";
 import { describe, expect, test } from "vitest";
 
 import {
+  describeLocation,
   findSelectors,
   getEdition,
   installRecorder,
@@ -23,7 +24,7 @@ const KNOWN_SELECTORS = [
 ];
 
 const describeFoundSelectors = async (page: Page) =>
-  `selectors found on the page: ${(await findSelectors(page, KNOWN_SELECTORS)).join(", ") || "none"}`;
+  `${describeLocation(page)}; selectors found on the page: ${(await findSelectors(page, KNOWN_SELECTORS)).join(", ") || "none"}`;
 
 const waitForChrome = async (page: Page) => {
   try {

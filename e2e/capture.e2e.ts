@@ -5,10 +5,11 @@ import path from "node:path";
 import type { Page } from "playwright";
 import { describe, test } from "vitest";
 
-import { findSelectors, withPublicPage } from "./harness";
+import { describeLocation, findSelectors, withPublicPage } from "./harness";
 import { CAPTURE_TARGETS, type CaptureTarget, RAW_DIR } from "./targets";
 
 const CONTROL_TIMEOUT_MS = 30_000;
+const MENU_TIMEOUT_MS = 10_000;
 const KNOWN_SELECTORS = [
   "#docs-chrome",
   "#docs-toolbar",
@@ -24,7 +25,7 @@ const waitForEnabled = async (page: Page, selector: string) => {
   } catch {
     const found = await findSelectors(page, KNOWN_SELECTORS);
     throw new Error(
-      `${selector} never became available signed out; selectors found: ${found.join(", ") || "none"}`
+      `${selector} never became available signed out; ${describeLocation(page)}; selectors found: ${found.join(", ") || "none"}`
     );
   }
 };
@@ -41,8 +42,17 @@ const openZoomMenu = async (page: Page, target: CaptureTarget) => {
 
   await waitForEnabled(page, "#docs-view-menu:not(.goog-control-disabled)");
   await page.click("#docs-view-menu");
-  await page.hover("span[aria-label^='Zoom']");
-  await page.click("span[aria-label^='Zoom']");
+  const zoomItem = page.locator("span[aria-label^='Zoom']:visible").first();
+  try {
+    await zoomItem.waitFor({ timeout: MENU_TIMEOUT_MS });
+  } catch {
+    throw new Error(
+      "The View menu shows no Zoom item. Docs only has View > Zoom when the Doc can't be edited, so this " +
+        "Doc is probably editable signed out: set E2E_LIVE_VIEW_ONLY_DOC_URL to a public Doc shared as Viewer"
+    );
+  }
+  await zoomItem.hover();
+  await zoomItem.click();
   await page.waitForSelector("[aria-label^='Fit']", { timeout: CONTROL_TIMEOUT_MS });
 };
 

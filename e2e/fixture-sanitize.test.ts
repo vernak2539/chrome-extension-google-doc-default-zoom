@@ -21,7 +21,8 @@ const DIRTY_PAGE = `
   <div id="docs-chrome" data-doc-id="1AbC" style="color:red" onclick="steal()">
     <img src="https://lh3.googleusercontent.com/a/avatar.png" alt="Jane Doe">
     <svg><path d="M0 0"></path></svg>
-    <input id="docs-title-input" aria-label="Rename" value="Q3 salary plan, ask jane.doe@example.com">
+    <input id="docs-title-input" aria-label="Q3 salary plan" value="Q3 salary plan, ask jane.doe@example.com">
+    <div class="docs-presence-plus-collab-widget-container" role="button" aria-label="Jane Doe"></div>
     <div id="docs-toolbar">
       <span>Shared with https://example.com/team</span>
       <div id="zoomSelect" class="goog-toolbar-combo-button" role="combobox" aria-owns="zoom-menu" aria-label="Zoom, see https://example.com/help">
@@ -45,7 +46,15 @@ describe("sanitizeFixture", () => {
     const html = sanitize("editor");
 
     expect(findFixtureLeaks(html)).toEqual([]);
-    for (const leaked of ["salary", "jane.doe", "Confidential", "steal", "data-doc-id", "<img"]) {
+    for (const leaked of [
+      "salary",
+      "jane.doe",
+      "Jane Doe",
+      "Confidential",
+      "steal",
+      "data-doc-id",
+      "<img"
+    ]) {
       expect(html).not.toContain(leaked);
     }
   });

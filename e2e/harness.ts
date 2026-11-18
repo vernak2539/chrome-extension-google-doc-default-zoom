@@ -224,6 +224,16 @@ export const waitForEnters = (page: Page, count: number) =>
     timeout: 15_000
   });
 
+// Where the page ended up, without the query string (a sign-in URL carries the document URL)
+export const describeLocation = (page: Page): string => {
+  const { hostname, pathname } = new URL(page.url());
+  const location = `${hostname}${pathname}`;
+
+  return hostname === "accounts.google.com"
+    ? `the page went to Google sign-in (${location}), so the document is not shared publicly`
+    : `the page is at ${location}`;
+};
+
 export const findSelectors = (page: Page, selectors: string[]): Promise<string[]> =>
   page.evaluate(
     (candidates) => candidates.filter((selector) => document.querySelector(selector)),
