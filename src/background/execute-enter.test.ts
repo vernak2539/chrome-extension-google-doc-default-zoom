@@ -1,5 +1,6 @@
-// Lives outside src/background/messages: Plasmo bundles every file in that folder as a message handler, and the
-// Base edition deletes execute-enter.ts.
+// Lives outside src/background/messages: Plasmo bundles every file in that folder as a message handler.
+// The handler only types the zoom value in the Extended edition, so these tests run for that edition only.
+import { IS_EXTENDED_EDITION } from "src/utils/edition";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({ captureException: vi.fn() }));
@@ -28,7 +29,7 @@ const runHandler = async (send = vi.fn()) => {
   return send;
 };
 
-describe("execute-enter handler", () => {
+describe.runIf(IS_EXTENDED_EDITION)("execute-enter handler", () => {
   let debuggerApi: ReturnType<typeof createDebugger>;
 
   beforeEach(() => {

@@ -23,7 +23,9 @@ Any tag matching `v[0-9]+.[0-9]+.[0-9]+` starts two workflows. Both can also be 
 | [`submit.yml`](../.github/workflows/submit.yml) "(default) Submit to Web Store"                    | Base     | Chrome, Edge, Firefox | `SUBMIT_KEYS`          | `build-package`          |
 | [`submit-extended.yml`](../.github/workflows/submit-extended.yml) "(extended) Submit to Web Store" | Extended | Chrome, Edge          | `SUBMIT_KEYS_EXTENDED` | `build-package-extended` |
 
-Each run tests, builds (the Base workflow runs `pnpm transform-ext` first), creates a Sentry release with source maps, strips the maps, packages, then hands the zips to [`PlasmoHQ/bpp`](https://github.com/PlasmoHQ/bpp) in the "Browser Platform Publish" step. The built zips are always uploaded as a run artifact (`google-workspace-zoom-default-<version>` / `google-workspace-zoom-extended-<version>`), even when publishing fails.
+Both files are thin callers of [`submit-reusable.yml`](../.github/workflows/submit-reusable.yml). The per-edition values in the table above (edition, Firefox on or off, environment, Sentry URL prefixes) are the `with:` inputs of each caller. Each caller passes only its own store keys secret, as `submit_keys`; the Sentry token comes from the job's environment. The workflows give `GITHUB_TOKEN` only `contents: read`.
+
+Each run tests, builds its own edition (the `edition` input: `pnpm build:base` or `pnpm build:extended`), runs `pnpm check:editions`, creates a Sentry release with source maps, strips the maps, packages, then hands the zips to [`PlasmoHQ/bpp`](https://github.com/PlasmoHQ/bpp) in the "Browser Platform Publish" step. The built zips are always uploaded as a run artifact (`google-workspace-zoom-default-<version>` / `google-workspace-zoom-extended-<version>`), even when publishing fails.
 
 Follow the runs with:
 
@@ -49,7 +51,7 @@ Successfully updated "nflkcdlimipkgbacnfnhfecjgmojhklo" (...) to version 0.15.4 
 - For any other error (e.g. Edge returning 400 on upload, often because a previous submission is still in review or a draft is stuck), sort it out in the store dashboard and upload the zip from the run artifact there.
 
 ```bash
-gh run download <run-id> -D /tmp/release   # contains build/<target>-prod.zip
+gh run download <run-id> -D /tmp/release   # contains build/<target>-<edition>.zip
 ```
 
 If every store failed, fix the cause and re-run: `gh run rerun <run-id>`.

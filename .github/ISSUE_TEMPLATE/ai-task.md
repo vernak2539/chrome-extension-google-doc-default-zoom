@@ -32,7 +32,6 @@ assignees: ""
 - Approval means a collaborator's comment saying so.
 - Label all evidence **Tested** (you ran it), **Measured** (real build or tool output) or **Read** (code or docs only). Never present Read as Tested.
 - If you couldn't check something, say so. Do not sign in to Google or send anything to the real Sentry project.
-- `pnpm transform-ext` rewrites source in place. Run it only in a throwaway copy and never commit its output.
 - Follow `AGENTS.md`. Report anything else you find as a suggested follow-up instead of fixing it here.
 - If this is too big for one reviewable PR, propose a split in your findings and wait.
 - `spike` issues end at the findings comment.

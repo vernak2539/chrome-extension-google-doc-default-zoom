@@ -8,13 +8,18 @@
   "repository": "github:vernak2539/chrome-extension-google-doc-default-zoom",
   "type": "module",
   "scripts": {
-    "dev": "plasmo dev",
+    "dev": "plasmo dev --tag=extended",
+    "dev:base": "plasmo dev --tag=base",
     "test": "vitest",
     "test:e2e": "vitest run --config e2e/vitest.config.ts e2e/zoom-fixtures",
     "test:e2e:live": "vitest run --config e2e/vitest.config.ts e2e/zoom-live",
     "e2e:capture": "vitest run --config e2e/vitest.config.ts e2e/capture; status=$?; vitest run --config e2e/vitest.config.ts e2e/sanitize && exit $status",
-    "build": "plasmo build --hoist",
-    "package": "plasmo package",
+    "build:base": "plasmo build --hoist --tag=base",
+    "build:extended": "plasmo build --hoist --tag=extended",
+    "build": "pnpm build:extended",
+    "package:base": "plasmo package --tag=base",
+    "package:extended": "plasmo package --tag=extended",
+    "package": "pnpm package:extended",
     "format": "oxfmt --write .",
     "format:check": "oxfmt --check .",
     "lint": "oxlint .",
@@ -23,7 +28,7 @@
     "bundlesize": "bundlesize",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "transform-ext": "node bin/transform-extension.mjs",
+    "check:editions": "node bin/check-edition-build.mjs",
     "prepare": "husky"
   },
   "dependencies": {
@@ -52,10 +57,8 @@
     "@types/react-dom": "18.2.22",
     "@vitejs/plugin-react": "^4.3.3",
     "bundlesize2": "^0.0.35",
-    "execa": "^8.0.1",
     "husky": "^9.1.7",
     "jsdom": "^26.1.0",
-    "jsonfile": "^6.1.0",
     "lint-staged": "^16.4.0",
     "oxfmt": "^0.44.0",
     "oxlint": "^1.59.0",
@@ -82,17 +85,17 @@
     }
   },
   "manifest": {
-    "name": "__MSG_extensionNameExtended__",
+    "name": "$PLASMO_PUBLIC_EXT_NAME",
     "default_locale": "en",
     "host_permissions": [
       "http://*.google.com/"
     ],
     "permissions": [
-      "debugger"
+      "$DEBUGGER_PERMISSION"
     ],
     "browser_specific_settings": {
       "gecko": {
-        "id": "google-workspace-zoom-extended@vernacchia.dev"
+        "id": "$FIREFOX_EXT_ID"
       }
     }
   }
