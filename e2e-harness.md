@@ -1,0 +1,6 @@
+---
+topic: testing
+source_issue: 103
+---
+
+`e2e/` holds a Playwright harness (`playwright` ^1.64.1 devDependency, no `@playwright/test`) run through Vitest with `e2e/vitest.config.ts`. That config has three projects: `base` and `extended` (include `e2e/zoom-*.e2e.ts`, set `E2E_EDITION`) and `fixtures` (`e2e/capture.e2e.ts`, `e2e/sanitize.e2e.ts`). Each edition project loads `build/chrome-mv3-<edition>` (override with `E2E_EXTENSION_DIR`), so build with `pnpm build:base --target=chrome-mv3` and `pnpm build:extended --target=chrome-mv3` first. The root `vitest run` only collects `*.test.ts`, so it picks up `e2e/fixture-sanitize.test.ts` but not the browser tests. Commands: `pnpm test:e2e` (saved fixtures served as docs.google.com), `pnpm test:e2e:live` (maintainer's public Doc/Sheet signed out), `pnpm e2e:capture` (capture then sanitize into `e2e/fixtures/`); add `--project base|extended` to run one edition. Details in `docs/e2e.md`. The harness checks the built manifest edition (`debugger` permission = Extended) against the project, and refuses to run if a built `.js` contains a Sentry DSN. Chromium cannot launch in the factory sandbox, so browser tests only run in CI or on a host. All `e2e/*.ts` that use Node APIs need `/// <reference types="node" />` because tsconfig `types` is limited to `vite-plugin-svgr/client` and `chrome`.
