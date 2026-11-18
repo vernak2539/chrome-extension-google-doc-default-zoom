@@ -32,7 +32,7 @@ The project maintains a single codebase for two editions of the extension:
 
 Each edition is a Plasmo build tag (`plasmo build --tag=base|extended`). The source is never rewritten, so what is tested is what ships.
 
-- **Code:** `IS_EXTENDED_EDITION` in `src/utils/edition.ts` is `process.env.PLASMO_TAG === "extended"`. An unset tag means Base. Branch on it where the editions differ (`customZoomInput` in `src/constants.ts`, the `execute-enter` relay in `src/contents/index.ts`, the guard in `src/background/messages/execute-enter.ts`, the popup heading, the Sentry `extension` tag). Plasmo bundles every file in `src/background/messages/`, so a handler must check the edition itself for the minifier to drop its code from Base.
+- **Code:** `IS_EXTENDED_EDITION` in `src/utils/edition.ts` is `process.env.PLASMO_TAG === "extended"`. An unset tag means Base. Branch on it where the editions differ; search for it to find every such place. Plasmo bundles every file in `src/background/messages/`, so a handler must check the edition itself for the minifier to drop its code from Base.
 - **Manifest:** `package.json` `manifest` holds `$PLASMO_PUBLIC_EXT_NAME`, `$DEBUGGER_PERMISSION` and `$FIREFOX_EXT_ID`. Plasmo fills them from the committed `.env.base` and `.env.extended` (non-secret values only; `.gitignore` has exceptions for these two files). A missing variable does **not** fail the build: an empty `$DEBUGGER_PERMISSION` silently drops the permission and a missing `PLASMO_PUBLIC_EXT_NAME` falls back to the Extended name. `pnpm check:editions` catches both.
 - **Icons:** `assets/icon.base.png` and `assets/icon.extended.png`. Plasmo picks `icon.<tag>.png` before `icon.png`, and there is no untagged icon.
 - **Output:** `build/<target>-<edition>` (for example `build/chrome-mv3-base`) and `build/<target>-<edition>.zip`. `plasmo dev` uses the same `--tag` and writes to the same `build/<target>-<edition>` directory, so a dev build overwrites a production build. Always rebuild (`pnpm build:<edition>`) before `pnpm package:<edition>` or `pnpm check:editions`: a dev bundle is unminified and keeps debugger code that the minifier removes from Base.
@@ -66,7 +66,7 @@ Pass `--target=chrome-mv3|edge-mv3|firefox-mv2` and `--source-maps` as usual. Th
 pnpm check:editions
 ```
 
-Run it after building. It checks every `build/<target>-<edition>` directory and exits with 1 when a manifest has an unexpanded `$VARIABLE` or an empty permission, when Base has the `debugger` permission or Extended does not, when the manifest name or the Firefox add-on id is wrong, when a Base bundle contains `Input.insertText`, `Input.dispatchKeyEvent` or the Extended popup heading, or when no Extended bundle contains `Input.insertText`. It also fails when it finds no build.
+Run it after building. It fails when a built manifest or bundle in `build/<target>-<edition>` doesn't match its edition (permissions, name, Firefox add-on id, debugger code), or when it finds no build.
 
 ### Type Checking and Bundle Size
 

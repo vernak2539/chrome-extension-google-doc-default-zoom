@@ -80,21 +80,12 @@ describe("createSentryClient", () => {
     vi.unstubAllGlobals();
   });
 
-  describe("edition tag", () => {
-    test.runIf(IS_EXTENDED_EDITION)(
-      "should tag events with the Extended extension name",
-      async () => {
-        const event = await captureEvent(cases[0].href);
+  test("should tag events with the extension name of the edition", async () => {
+    const event = await captureEvent(cases[0].href);
 
-        expect(event.tags?.extension).toBe("google-workspace-zoom-extended");
-      }
+    expect(event.tags?.extension).toBe(
+      IS_EXTENDED_EDITION ? "google-workspace-zoom-extended" : "google-workspace-zoom-default"
     );
-
-    test.runIf(!IS_EXTENDED_EDITION)("should tag events with the Base extension name", async () => {
-      const event = await captureEvent(cases[0].href);
-
-      expect(event.tags?.extension).toBe("google-workspace-zoom-default");
-    });
   });
 
   describe.each(cases)("on $name", ({ href, expected }) => {
