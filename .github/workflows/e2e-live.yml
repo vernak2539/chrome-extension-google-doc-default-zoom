@@ -1,17 +1,12 @@
 name: E2E live
 
-# Opens the maintainer's public Doc and Sheet signed out, checks both editions against them and
-# captures fresh fixtures (docs/e2e.md). Nothing here signs in to Google or uses a secret.
+# Opens the maintainer's public Docs and Sheet signed out, checks both editions against them and
+# captures fresh fixtures (docs/e2e.md), so a change on Google's side shows up on the next pull request.
+# Nothing here signs in to Google or uses a secret. Run it by hand from the Actions tab ("Run workflow").
 on:
-  schedule:
-    - cron: "0 6 * * 1"
-  workflow_dispatch:
-  # TEMPORARY: checks the live and capture paths on #139 before it merges. Remove before merging.
   pull_request:
     branches: [main]
-    paths:
-      - "e2e/**"
-      - ".github/workflows/e2e-live.yml"
+  workflow_dispatch:
 
 permissions:
   contents: read

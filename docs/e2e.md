@@ -4,11 +4,11 @@ The unit tests fake the DOM the zoom flow drives. These tests load the **built e
 
 There are two modes:
 
-| Mode        | Command              | Pages                                                                                        | Runs                                    |
-| ----------- | -------------------- | -------------------------------------------------------------------------------------------- | --------------------------------------- |
-| **Fixture** | `pnpm test:e2e`      | Saved markup in [`e2e/fixtures/`](../e2e/fixtures), served as `docs.google.com`. No network. | Every pull request (`sanity-check.yml`) |
-| **Live**    | `pnpm test:e2e:live` | The maintainer's public Doc and Sheet, **signed out**. The harness never signs in to Google. | Weekly and on demand (`e2e-live.yml`)   |
-| Capture     | `pnpm e2e:capture`   | Opens the same public pages signed out, saves them, and sanitizes them into `e2e/fixtures/`. | By hand, or in `e2e-live.yml`           |
+| Mode        | Command              | Pages                                                                                        | Runs                                            |
+| ----------- | -------------------- | -------------------------------------------------------------------------------------------- | ----------------------------------------------- |
+| **Fixture** | `pnpm test:e2e`      | Saved markup in [`e2e/fixtures/`](../e2e/fixtures), served as `docs.google.com`. No network. | Every pull request (`sanity-check.yml`)         |
+| **Live**    | `pnpm test:e2e:live` | The maintainer's public Doc and Sheet, **signed out**. The harness never signs in to Google. | Every pull request and by hand (`e2e-live.yml`) |
+| Capture     | `pnpm e2e:capture`   | Opens the same public pages signed out, saves them, and sanitizes them into `e2e/fixtures/`. | By hand, or in `e2e-live.yml`                   |
 
 The fixture tests cover a preset zoom (Docs and Sheets), a custom zoom (Extended only), the Docs view-only flow, and a page that is still loading. Every browser test runs once per edition, like `pnpm test`: `e2e/vitest.config.ts` has a `base` and an `extended` project, each loading `build/chrome-mv3-<edition>`. In the Base edition the custom-zoom test is replaced by one that checks nothing is clicked or typed.
 
@@ -49,7 +49,7 @@ The fixtures that ship with this change are **synthetic**: written from the sele
 4. `pnpm exec vitest run e2e/fixture-sanitize.test.ts` (checks that each fixture has what the extension needs and no leaks).
 5. Commit `e2e/fixtures/`.
 
-Instead of steps 1 and 2, you can download the `fixtures` artifact of a run of the `E2E live` workflow ([`.github/workflows/e2e-live.yml`](../.github/workflows/e2e-live.yml), weekly or started by hand), copy its files into `e2e/fixtures/`, and continue at step 3.
+Instead of steps 1 and 2, you can download the `fixtures` artifact of a run of the `E2E live` workflow ([`.github/workflows/e2e-live.yml`](../.github/workflows/e2e-live.yml), on a pull request or started by hand from the Actions tab), copy its files into `e2e/fixtures/`, and continue at step 3.
 
 Capture fails, and writes nothing, when:
 
