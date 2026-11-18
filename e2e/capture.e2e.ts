@@ -1,5 +1,5 @@
 /// <reference types="node" />
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 import type { Page } from "playwright";
@@ -51,11 +51,15 @@ const openZoomMenu = async (page: Page, target: CaptureTarget) => {
 describe("capture the raw pages (signed out)", () => {
   test.each(CAPTURE_TARGETS)("$name", (target) =>
     withPublicPage(`capture-${target.name}`, async (page) => {
+      const rawPath = path.join(RAW_DIR, `${target.name}.html`);
+      // a failed capture must not leave an older raw file for the sanitize step to pick up
+      await rm(rawPath, { force: true });
+
       await page.goto(target.url);
       await openZoomMenu(page, target);
 
       await mkdir(RAW_DIR, { recursive: true });
-      await writeFile(path.join(RAW_DIR, `${target.name}.html`), await page.content());
+      await writeFile(rawPath, await page.content());
     })
   );
 });

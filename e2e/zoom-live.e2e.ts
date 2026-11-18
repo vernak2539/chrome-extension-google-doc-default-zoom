@@ -1,5 +1,4 @@
 import type { Page } from "playwright";
-/// <reference types="node" />
 import { describe, expect, test } from "vitest";
 
 import {

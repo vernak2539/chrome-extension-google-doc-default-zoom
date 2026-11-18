@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 /// <reference types="node" />
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
@@ -18,16 +18,21 @@ const playwrightVersion = JSON.parse(
   readFileSync("node_modules/playwright/package.json", "utf8")
 ).version;
 
-// Writes e2e/fixtures/<name>.html from the raw capture, and refuses to when anything looks wrong
+// Writes e2e/fixtures/<name>.html from the raw capture, and refuses to when anything looks wrong.
+// A target whose capture failed has no raw file and is skipped, so one failing page doesn't stop the
+// others from being refreshed (its fixture keeps the previous content).
 describe("sanitize the raw captures", () => {
-  test.each(CAPTURE_TARGETS)("$name", async ({ name, mode }) => {
-    const raw = await readFile(path.join(RAW_DIR, `${name}.html`), "utf8");
-    const sanitized = sanitizeFixture(parseFixture(raw), mode);
+  for (const { name, mode } of CAPTURE_TARGETS) {
+    const rawPath = path.join(RAW_DIR, `${name}.html`);
 
-    expect(missingSelectors(parseFixture(sanitized), mode)).toEqual([]);
-    expect(findFixtureLeaks(sanitized)).toEqual([]);
+    test.skipIf(!existsSync(rawPath))(name, async () => {
+      const sanitized = sanitizeFixture(parseFixture(await readFile(rawPath, "utf8")), mode);
 
-    const header = `<!-- captured ${new Date().toISOString().slice(0, 10)}, signed out, playwright ${playwrightVersion}, mode ${mode} -->`;
-    await writeFile(path.join(FIXTURES_DIR, `${name}.html`), `${header}\n${sanitized}\n`);
-  });
+      expect(missingSelectors(parseFixture(sanitized), mode)).toEqual([]);
+      expect(findFixtureLeaks(sanitized)).toEqual([]);
+
+      const header = `<!-- captured ${new Date().toISOString().slice(0, 10)}, signed out, playwright ${playwrightVersion}, mode ${mode} -->`;
+      await writeFile(path.join(FIXTURES_DIR, `${name}.html`), `${header}\n${sanitized}\n`);
+    });
+  }
 });

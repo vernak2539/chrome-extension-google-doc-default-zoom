@@ -68,6 +68,8 @@ Capture fails, and writes nothing, when:
 - a required selector is missing after sanitizing;
 - the sanitized markup still holds a script, iframe, svg, `on*` attribute, URL or email address.
 
+A failing target does not stop the others: `pnpm e2e:capture` always runs the sanitize step, which skips a target that has no raw file (its fixture keeps its previous content), and then exits non-zero if any capture failed. Both Docs fixtures come from the same Doc, so a Doc that is view-only signed out fails `docs-editor` while `docs-view-only` and the Sheet are still refreshed. Set `E2E_LIVE_DOC_URL` to an editable public Doc if you need the editor fixture too.
+
 ### What the sanitizer keeps
 
 Everything is an allowlist. It keeps `#docs-chrome`, every menu (`.goog-menu`) with rows, and one empty `<canvas>`. It removes `svg`, `#gb`, `script`, `style`, `link`, `iframe`, `img`, `noscript` and `meta`, and keeps only the attributes `id`, `class`, `role`, `type`, `value`, `aria-label`, `aria-owns` and `aria-activedescendant`. Text is kept only inside menu rows. URLs and email addresses in what remains become `[redacted]`. Input values are cleared, except in the zoom boxes. Element IDs are kept as captured; they were not checked for document specific values, so look at them in the diff.

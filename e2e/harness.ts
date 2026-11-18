@@ -13,6 +13,8 @@ export interface RecordedEvents {
   clicks: string[];
   // value of the focused input whenever Enter was pressed
   enters: string[];
+  // id of the zoom control (#zoomSelect or #t-zoom) each time it was clicked: proof the content script ran
+  controlClicks: string[];
 }
 
 declare global {
@@ -112,15 +114,20 @@ export const setAppState = async (
 // Observes the page's events from the main world. It does not model what Google does with them.
 export const installRecorder = async (context: BrowserContext) => {
   await context.addInitScript(() => {
-    const recorded: RecordedEvents = { clicks: [], enters: [] };
+    const recorded: RecordedEvents = { clicks: [], enters: [], controlClicks: [] };
     window.__e2e = recorded;
 
     document.addEventListener(
       "click",
       (event) => {
-        const row = (event.target as Element | null)?.closest?.(".goog-menuitem");
+        const target = event.target as Element | null;
+        const row = target?.closest?.(".goog-menuitem");
         if (row) {
           recorded.clicks.push(row.firstChild?.textContent ?? "");
+        }
+        const control = target?.closest?.("#zoomSelect, #t-zoom");
+        if (control) {
+          recorded.controlClicks.push(control.id);
         }
       },
       true
@@ -139,7 +146,11 @@ export const installRecorder = async (context: BrowserContext) => {
 };
 
 export const readRecorded = (page: Page): Promise<RecordedEvents> =>
-  page.evaluate(() => ({ clicks: [...window.__e2e.clicks], enters: [...window.__e2e.enters] }));
+  page.evaluate(() => ({
+    clicks: [...window.__e2e.clicks],
+    enters: [...window.__e2e.enters],
+    controlClicks: [...window.__e2e.controlClicks]
+  }));
 
 // Serves an empty page for docs.google.com and blocks every other http(s) request. The filter is on the
 // protocol because a catch-all route would also block the extension's own files.
@@ -180,6 +191,11 @@ export const insertFixture = async (page: Page, name: string, options: InsertOpt
 
 export const waitForClicks = (page: Page, count: number) =>
   page.waitForFunction((expected) => window.__e2e.clicks.length >= expected, count, {
+    timeout: 15_000
+  });
+
+export const waitForControlClicks = (page: Page, count: number) =>
+  page.waitForFunction((expected) => window.__e2e.controlClicks.length >= expected, count, {
     timeout: 15_000
   });
 

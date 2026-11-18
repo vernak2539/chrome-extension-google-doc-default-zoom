@@ -13,6 +13,7 @@ import {
   serveFixture,
   setAppState,
   waitForClicks,
+  waitForControlClicks,
   waitForEnters,
   withExtension
 } from "./harness";
@@ -72,16 +73,21 @@ describe(`zoom flow against saved Docs and Sheets markup (${edition} edition)`, 
   );
 
   test.skipIf(edition === "extended")(
-    "Docs ignores a custom zoom: it neither clicks nor types",
+    "Docs opens the zoom menu for a custom zoom but selects no row and types nothing",
     () =>
       withExtension("docs-custom-base", async (session) => {
         await setAppState(session.serviceWorker, "docs", state("140%"));
         const page = await openPage(session, FIXTURE_DOC_URL);
 
         await insertFixture(page, "docs-editor");
-        await page.waitForTimeout(2000);
+        // the content script ran: it opened the zoom menu, found no "140%" row and gave up
+        await waitForControlClicks(page, 1);
+        await page.waitForTimeout(1000);
 
-        expect(await readRecorded(page)).toEqual({ clicks: [], enters: [] });
+        const recorded = await readRecorded(page);
+        expect(recorded.controlClicks).toEqual(["zoomSelect"]);
+        expect(recorded.clicks).toEqual([]);
+        expect(recorded.enters).toEqual([]);
       })
   );
 
