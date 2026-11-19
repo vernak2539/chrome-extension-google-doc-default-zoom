@@ -1,59 +1,46 @@
-import { Storage } from "@plasmohq/storage";
 import { createSentryClient } from "src/utils/sentry/base";
+import { CURRENT_SCHEMA_VERSION, SCHEMA_VERSION_KEY, storage } from "src/utils/storage";
 import {
-  CURRENT_SCHEMA_VERSION,
   migrateV1ToV2,
-  SCHEMA_VERSION_KEY,
   V1_STORAGE_KEYS,
-  type V1FlatStorageData
+  type V1FlatStorageData,
+  type V2StorageData
 } from "src/utils/storage-migration";
 
-const storage = new Storage();
 const sentryScope = createSentryClient("background");
 
-async function hasExistingV1Data() {
-  for (const key of V1_STORAGE_KEYS) {
-    const value = await storage.get(key);
-    if (value !== undefined) {
-      return true;
-    }
-  }
-  return false;
-}
-
-async function migrateToV2() {
-  // Read all V1 flat keys
-  const v1Data: V1FlatStorageData = {};
-
-  for (const key of V1_STORAGE_KEYS) {
-    const value = await storage.get(key);
-    if (value !== undefined) {
-      (v1Data as Record<string, unknown>)[key] = value;
-    }
-  }
-
-  // Transform to V2 structure
-  const v2Data = migrateV1ToV2(v1Data);
-
-  // Write the new per-application objects
-  await storage.set("docs", v2Data.docs);
-  await storage.set("sheets", v2Data.sheets);
-
-  // Clean up old flat keys
-  for (const key of V1_STORAGE_KEYS) {
-    await storage.remove(key);
-  }
-}
-
+// Every step below is safe to run again. The V2 values and the schema version go out in one write,
+// and the V1 keys are removed after it, so an interrupted run leaves either the old V1 keys alone
+// or the new values plus leftover V1 keys. The leftovers are removed on the next run and never
+// replace a stored V2 value.
 async function runMigrations() {
-  const currentVersion = (await storage.get<number>(SCHEMA_VERSION_KEY)) ?? 0;
+  const stored = await storage.getMany<unknown>([
+    ...V1_STORAGE_KEYS,
+    "docs",
+    "sheets",
+    SCHEMA_VERSION_KEY
+  ]);
+
+  const currentVersion = (stored[SCHEMA_VERSION_KEY] as number | undefined) ?? 0;
+  const leftoverV1Keys = V1_STORAGE_KEYS.filter((key) => stored[key] !== undefined);
 
   if (currentVersion < CURRENT_SCHEMA_VERSION) {
-    if (await hasExistingV1Data()) {
-      await migrateToV2();
+    if (leftoverV1Keys.length === 0) {
+      // Nothing to migrate. Defaults are not written; readers fill them in.
+      await storage.set(SCHEMA_VERSION_KEY, CURRENT_SCHEMA_VERSION);
+      return;
     }
 
-    await storage.set(SCHEMA_VERSION_KEY, CURRENT_SCHEMA_VERSION);
+    const v1Data = Object.fromEntries(
+      leftoverV1Keys.map((key) => [key, stored[key]])
+    ) as V1FlatStorageData;
+    const v2Data = migrateV1ToV2(v1Data, stored as Partial<V2StorageData>);
+
+    await storage.setMany({ ...v2Data, [SCHEMA_VERSION_KEY]: CURRENT_SCHEMA_VERSION });
+  }
+
+  if (leftoverV1Keys.length > 0) {
+    await storage.removeMany([...leftoverV1Keys]);
   }
 }
 

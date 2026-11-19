@@ -13,8 +13,12 @@
  *   "docs"  -> { zoomValue, viewOnly, classroomSupport }
  *   "sheets" -> { zoomValue, viewOnly, classroomSupport }
  *   "schemaVersion" -> 2
+ *
+ * The migration is safe to run again after an interruption (see src/utils/migrations.ts): a V2 app
+ * object that is already stored always wins over V1 keys.
  */
 
+import { fillAppState } from "src/constants";
 import type { AppStorageState } from "src/types";
 
 export interface V1FlatStorageData {
@@ -31,20 +35,29 @@ export interface V2StorageData {
   sheets: AppStorageState;
 }
 
-const DEFAULT_ZOOM = "100%";
-
-export function migrateV1ToV2(v1Data: V1FlatStorageData): V2StorageData {
+/**
+ * @param current V2 app objects that are already stored. They are kept as they are, so a rerun
+ * after an interrupted migration does not replace saved values with V1 values or defaults.
+ */
+export function migrateV1ToV2(
+  v1Data: V1FlatStorageData,
+  current: Partial<V2StorageData> = {}
+): V2StorageData {
   return {
-    docs: {
-      zoomValue: v1Data["zoomValue"] ?? DEFAULT_ZOOM,
-      viewOnly: v1Data["zoomValue:viewOnly"] ?? false,
-      classroomSupport: v1Data["zoomValue:classroomSupport"] ?? false
-    },
-    sheets: {
-      zoomValue: v1Data["sheets:zoomValue"] ?? DEFAULT_ZOOM,
-      viewOnly: v1Data["sheets:zoomValue:viewOnly"] ?? false,
-      classroomSupport: v1Data["sheets:zoomValue:classroomSupport"] ?? false
-    }
+    docs:
+      current.docs ??
+      fillAppState("docs", {
+        zoomValue: v1Data["zoomValue"],
+        viewOnly: v1Data["zoomValue:viewOnly"],
+        classroomSupport: v1Data["zoomValue:classroomSupport"]
+      }),
+    sheets:
+      current.sheets ??
+      fillAppState("sheets", {
+        zoomValue: v1Data["sheets:zoomValue"],
+        viewOnly: v1Data["sheets:zoomValue:viewOnly"],
+        classroomSupport: v1Data["sheets:zoomValue:classroomSupport"]
+      })
   };
 }
 
@@ -57,6 +70,3 @@ export const V1_STORAGE_KEYS = [
   "sheets:zoomValue:viewOnly",
   "sheets:zoomValue:classroomSupport"
 ] as const;
-
-export const SCHEMA_VERSION_KEY = "schemaVersion";
-export const CURRENT_SCHEMA_VERSION = 2;

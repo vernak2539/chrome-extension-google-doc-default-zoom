@@ -1,6 +1,6 @@
 import WorkspaceApplication from "src/components/WorkspaceApplication";
 import WorkspaceApplicationList from "src/components/WorkspaceApplicationList";
-import { workspaceApps } from "src/constants";
+import { APPS } from "src/constants";
 import { showExtensionVersionsTab } from "src/utils/get-browser";
 import localize from "src/utils/localize";
 
@@ -9,7 +9,7 @@ const HomeView = () => {
     <>
       <p>{localize("popupMainSectionDescription")}</p>
       <WorkspaceApplicationList>
-        {workspaceApps
+        {Object.values(APPS)
           .filter((app) => app.isEnabled)
           .map((app) => (
             <WorkspaceApplication

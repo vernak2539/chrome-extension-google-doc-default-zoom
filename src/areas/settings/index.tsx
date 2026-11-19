@@ -1,26 +1,18 @@
-import { Storage } from "@plasmohq/storage";
 import { useStorage } from "@plasmohq/storage/hook";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "src/components/Button";
-import type { AppStorageState, StorageKey } from "src/types";
+import { APPS, getDefaultAppState } from "src/constants";
+import type { AppStorageState } from "src/types";
 import localize from "src/utils/localize";
 import { createSentryClient } from "src/utils/sentry/base";
-import { SCHEMA_VERSION_KEY } from "src/utils/storage-migration";
-
-const DEFAULT_APP_STATE: AppStorageState = {
-  zoomValue: "100%",
-  viewOnly: false,
-  classroomSupport: false
-};
+import { SCHEMA_VERSION_KEY, storage } from "src/utils/storage";
 
 const sentryScope = createSentryClient("popup");
 
 const SettingsView = () => {
-  const storage = new Storage();
   const navigate = useNavigate();
-  const [schemaVersion] = useStorage<number>(SCHEMA_VERSION_KEY, 1);
-  const storageKeys: StorageKey[] = ["docs", "sheets"];
+  const [schemaVersion] = useStorage<number>({ key: SCHEMA_VERSION_KEY, instance: storage }, 1);
   const [isBusy, setIsBusy] = useState(false);
   const isMounted = useRef(true);
 
@@ -32,10 +24,12 @@ const SettingsView = () => {
 
   const onResetZoomSettingsClick = async () => {
     setIsBusy(true);
-    const resetPromises = storageKeys.map((key) => storage.set(key, { ...DEFAULT_APP_STATE }));
+    const defaultStates = Object.fromEntries(
+      Object.keys(APPS).map((storageKey) => [storageKey, getDefaultAppState(storageKey)])
+    );
 
     try {
-      await Promise.all(resetPromises);
+      await storage.setMany(defaultStates);
     } catch (error) {
       sentryScope.captureException(error);
       console.error("Failed to reset storage", error);

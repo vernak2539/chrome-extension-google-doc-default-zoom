@@ -1,12 +1,8 @@
 import { useStorage } from "@plasmohq/storage/hook";
 import { useCallback } from "react";
-import type { AppStorageState } from "src/types";
-
-const DEFAULT_APP_STATE: AppStorageState = {
-  zoomValue: "",
-  viewOnly: false,
-  classroomSupport: false
-};
+import { fillAppState, getDefaultAppState } from "src/constants";
+import type { AppStorageState, StorageKey } from "src/types";
+import { storage } from "src/utils/storage";
 
 interface UseWorkspaceStorage {
   zoom: string;
@@ -18,69 +14,43 @@ interface UseWorkspaceStorage {
   isLoading: boolean;
 }
 
-const NOT_READY = "__NOT_READY__INTERNAL__";
+export const useWorkspaceStorage = (storageKey: StorageKey): UseWorkspaceStorage => {
+  // No initial value on purpose: Plasmo saves whatever a function initializer returns, which wrote
+  // to storage every time the popup opened.
+  const [appState, setAppState, { isLoading }] = useStorage<AppStorageState>({
+    key: storageKey,
+    instance: storage
+  });
 
-// Storage hands the setter `undefined` while nothing is stored yet, so fall back to the defaults.
-const resolveCurrentState = (
-  prev: AppStorageState | typeof NOT_READY | undefined,
-  defaultZoom: string
-): AppStorageState =>
-  prev === undefined || prev === NOT_READY
-    ? { ...DEFAULT_APP_STATE, zoomValue: defaultZoom }
-    : prev;
-
-export const useWorkspaceStorage = (
-  storageKey: string,
-  defaultZoom: string
-): UseWorkspaceStorage => {
-  const [appState, setAppState] = useStorage<AppStorageState | typeof NOT_READY>(
-    storageKey,
-    (stored, isHydrating) => {
-      if (stored !== undefined) {
-        return stored;
-      }
-      if (isHydrating === undefined) {
-        return NOT_READY;
-      }
-      return {
-        ...DEFAULT_APP_STATE,
-        zoomValue: defaultZoom
-      };
-    }
-  );
-
-  const isLoading = appState === NOT_READY;
-
-  const state = resolveCurrentState(appState, defaultZoom);
+  // Nothing is stored until the user changes a setting, so the stored state and the setter's
+  // `prev` can be `undefined`, or an object that lacks a field. `fillAppState` fills both in.
+  const state = fillAppState(storageKey, appState);
 
   const updateZoomValue = useCallback(
     (value: string) => {
-      setAppState((prev) => {
-        const current = resolveCurrentState(prev, defaultZoom);
-        return { ...current, zoomValue: value || defaultZoom };
-      });
+      setAppState((prev) => ({
+        ...fillAppState(storageKey, prev),
+        zoomValue: value || getDefaultAppState(storageKey).zoomValue
+      }));
     },
-    [setAppState, defaultZoom]
+    [setAppState, storageKey]
   );
 
   const updateDocsViewOnlyValue = useCallback(
     (value: boolean) => {
-      setAppState((prev) => {
-        const current = resolveCurrentState(prev, defaultZoom);
-        return { ...current, viewOnly: value ?? false };
-      });
+      setAppState((prev) => ({ ...fillAppState(storageKey, prev), viewOnly: value ?? false }));
     },
-    [setAppState, defaultZoom]
+    [setAppState, storageKey]
   );
 
   const updateClassroomSupportValue = useCallback(
     (value: boolean) => {
-      setAppState((prev) => {
-        const current = resolveCurrentState(prev, defaultZoom);
-        return { ...current, classroomSupport: value ?? false };
-      });
+      setAppState((prev) => ({
+        ...fillAppState(storageKey, prev),
+        classroomSupport: value ?? false
+      }));
     },
-    [setAppState, defaultZoom]
+    [setAppState, storageKey]
   );
 
   return {

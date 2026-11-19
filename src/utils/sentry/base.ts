@@ -1,4 +1,3 @@
-import { Storage } from "@plasmohq/storage";
 import {
   BrowserClient,
   Scope,
@@ -8,7 +7,7 @@ import {
 } from "@sentry/browser";
 import type { BrowserClientOptions } from "@sentry/browser/build/npm/types/client";
 import type { ExtensionFileSource } from "src/types";
-import { SCHEMA_VERSION_KEY } from "src/utils/storage-migration";
+import { SCHEMA_VERSION_KEY, storage } from "src/utils/storage";
 
 import { SENTRY_BASE_CONFIG, getDefaultTags } from "./config";
 import { redactEventRequest } from "./redact-event";
@@ -17,7 +16,6 @@ const createNewSentryClient = (
   source: ExtensionFileSource,
   browserClientOptions?: Partial<Omit<BrowserClientOptions, "beforeSend">>
 ): Scope => {
-  const storage = new Storage();
   const extraClientOptions = browserClientOptions || {};
 
   const sentryClient = new BrowserClient({

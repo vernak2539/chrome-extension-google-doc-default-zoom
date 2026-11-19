@@ -3,7 +3,7 @@ import type { WorkspaceApp } from "src/types";
 import WorkspaceApplicationComponent from "./component";
 import { useWorkspaceStorage } from "./hooks";
 
-type Props = Omit<WorkspaceApp, "isEnabled">;
+type Props = Omit<WorkspaceApp, "isEnabled" | "uiElements">;
 
 const WorkspaceApplication = ({ name, zoomValues, defaultZoom, storageKey, features }: Props) => {
   const {
@@ -14,7 +14,7 @@ const WorkspaceApplication = ({ name, zoomValues, defaultZoom, storageKey, featu
     updateDocsViewOnlyValue,
     updateClassroomSupportValue,
     isLoading
-  } = useWorkspaceStorage(storageKey, defaultZoom);
+  } = useWorkspaceStorage(storageKey);
 
   // we have not fetched the values required to render from storage, so we're not ready to render yet
   if (isLoading) {

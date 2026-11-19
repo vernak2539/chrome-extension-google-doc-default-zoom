@@ -1,6 +1,9 @@
-import { describe, expect, test } from "vitest";
+import { describe, expect, test, vi } from "vitest";
 
 import { type V1FlatStorageData, type V2StorageData, migrateV1ToV2 } from "./storage-migration";
+
+// src/constants calls localize at import time, which needs the chrome global
+vi.mock("src/utils/localize", () => ({ default: (key: string) => key }));
 
 describe("migrateV1ToV2", () => {
   test("should migrate fully populated V1 data to V2 structure", () => {

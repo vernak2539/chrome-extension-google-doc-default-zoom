@@ -1,6 +1,18 @@
 # Data Storage Schema
 
-Over time, this extension has migrated its Chrome storage structure (`chrome.storage.local`) to improve maintainability and expandability. If you are ever debugging or looking into the local storage data, this document outlines what each schema version looks like.
+Over time, this extension has migrated its Chrome storage structure to improve maintainability and expandability. If you are ever debugging or looking into the stored data, this document outlines where it lives and what each schema version looks like.
+
+## Where data is stored
+
+- **Settings** (everything below) live in `chrome.storage.sync`. All code reaches them through the shared `storage` instance in `src/utils/storage.ts`, which names the area explicitly.
+- **Announcement dismissals** live in `chrome.storage.local`, because they are per-device UI state (`src/components/Announcement/hooks.ts`).
+- [Plasmo's storage](https://docs.plasmo.com/framework/storage) stores each value as a JSON string. In the shapes below, `schemaVersion` is stored as the string `"2"` and each app object as a JSON string; the examples show the parsed values.
+
+## Who reads and writes
+
+- The popup only **reads** storage when it opens. It writes only when the user changes a setting or uses "Reset to factory settings".
+- A missing app object, or a field missing from one, means "use the defaults". Defaults come from one place, `getDefaultAppState` in `src/constants.ts`. Readers apply them with `fillAppState`, and reading never writes them to storage.
+- The background script runs the migration on startup (`src/utils/migrations.ts`).
 
 ## Schema Versions
 
@@ -28,6 +40,14 @@ The legacy flat-key structure created massive clutter in the root storage space.
   }
 }
 ```
+
+**Migration from V1:**
+
+The migration can be interrupted (for example when the service worker stops) and is safe to run again. On each startup:
+
+1. `schemaVersion` below 2 and V1 keys exist: `docs`, `sheets` and `schemaVersion` are written in one `chrome.storage.sync.set` call, then all V1 keys are removed in one call. An app object that is already stored is kept; V1 values only fill in an app that has none, and defaults fill in any field the V1 keys lack.
+2. `schemaVersion` below 2 and no V1 keys (a fresh install): only `schemaVersion` is written.
+3. `schemaVersion` is 2 and V1 keys are left over from an interrupted run: only those keys are removed.
 
 ---
 
