@@ -4,12 +4,13 @@ The unit tests fake the DOM the zoom flow drives. These tests load the **built e
 
 There are two modes:
 
-| Mode        | Command                 | Pages                                                                                            | Runs                                            |
-| ----------- | ----------------------- | ------------------------------------------------------------------------------------------------ | ----------------------------------------------- |
-| **Fixture** | `pnpm test:e2e`         | Saved markup in [`e2e/fixtures/`](../e2e/fixtures), served as `docs.google.com`. No network.     | Every pull request (`sanity-check.yml`)         |
-| **Live**    | `pnpm test:e2e:live`    | The maintainer's public Doc and Sheet, **signed out**. The harness never signs in to Google.     | Every pull request and by hand (`e2e-live.yml`) |
-| Firefox     | `pnpm test:e2e:firefox` | The same saved markup, in Firefox stable with `build/firefox-mv2-base`. See [Firefox](#firefox). | Every pull request (`sanity-check.yml`)         |
-| Capture     | `pnpm e2e:capture`      | Opens the same public pages signed out, saves them, and sanitizes them into `e2e/fixtures/`.     | By hand, or in `e2e-live.yml`                   |
+| Mode         | Command                      | Pages                                                                                                    | Runs                                            |
+| ------------ | ---------------------------- | -------------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
+| **Fixture**  | `pnpm test:e2e`              | Saved markup in [`e2e/fixtures/`](../e2e/fixtures), served as `docs.google.com`. No network.             | Every pull request (`sanity-check.yml`)         |
+| **Live**     | `pnpm test:e2e:live`         | The maintainer's public Doc and Sheet, **signed out**. The harness never signs in to Google.             | Every pull request and by hand (`e2e-live.yml`) |
+| Firefox      | `pnpm test:e2e:firefox`      | The same saved markup, in Firefox stable with `build/firefox-mv2-base`. See [Firefox](#firefox).         | Every pull request (`sanity-check.yml`)         |
+| Firefox live | `pnpm test:e2e:live:firefox` | The same public Doc and Sheet as live mode, signed out, in Firefox stable with `build/firefox-mv2-base`. | Every pull request and by hand (`e2e-live.yml`) |
+| Capture      | `pnpm e2e:capture`           | Opens the same public pages signed out, saves them, and sanitizes them into `e2e/fixtures/`.             | By hand, or in `e2e-live.yml`                   |
 
 The fixture tests cover a preset zoom (Docs and Sheets), a custom zoom (Extended only), the Docs view-only flow, a page that is still loading, and a zoom picked in the popup and then changed. Every browser test runs once per edition, like `pnpm test`: `e2e/vitest.config.ts` has a `base` and an `extended` project, each loading `build/chrome-mv3-<edition>`. In the Base edition the custom-zoom test is replaced by one that checks nothing is clicked or typed.
 
@@ -42,16 +43,19 @@ Set `E2E_LIVE_DOC_URL` and `E2E_LIVE_SHEET_URL` to use other public documents. I
 
 ## Firefox
 
-`sanity-check.yml` installs Mozilla's Firefox stable with `@puppeteer/browsers` and runs `pnpm test:e2e:firefox` against `build/firefox-mv2-base`. Firefox ships only the Base edition, so there is no Extended run.
+`sanity-check.yml` installs Mozilla's Firefox stable with `@puppeteer/browsers` and runs `pnpm test:e2e:firefox` against `build/firefox-mv2-base`. `e2e-live.yml` does the same and runs `pnpm test:e2e:live:firefox`. Firefox ships only the Base edition, so there is no Extended run.
 
-Playwright can't load an extension into Firefox, so [`e2e/firefox.e2e.ts`](../e2e/firefox.e2e.ts) drives Firefox with Puppeteer over WebDriver BiDi and does not use `e2e/harness.ts`. It repeats the Base fixture tests except the popup round trip. When you change a fixture test in `e2e/zoom-fixtures.e2e.ts`, change it there too.
+Playwright can't load an extension into Firefox, so [`e2e/firefox-harness.ts`](../e2e/firefox-harness.ts) drives Firefox with Puppeteer over WebDriver BiDi instead of using `e2e/harness.ts`. Two files use it:
+
+- [`e2e/firefox.e2e.ts`](../e2e/firefox.e2e.ts) repeats the Base fixture tests except the popup round trip. When you change a fixture test in `e2e/zoom-fixtures.e2e.ts`, change it there too.
+- [`e2e/firefox-live.e2e.ts`](../e2e/firefox-live.e2e.ts) repeats the live tests in `e2e/zoom-live.e2e.ts`, against the same documents (`E2E_LIVE_DOC_URL` and `E2E_LIVE_SHEET_URL` apply). It checks that the extension works on the markup Google sends to Firefox, which the fixtures (captured in Chromium) can't show.
 
 What differs from Chromium:
 
 - Settings are written from the popup page. Firefox MV2 has a background page instead of a service worker, and Puppeteer doesn't expose it.
 - The `extensions.webextensions.uuids` pref pins the extension's `moz-extension://` host, which is otherwise random per profile.
 - Firefox starts with `MOZ_REMOTE_ALLOW_SYSTEM_ACCESS=1`. Without it WebDriver BiDi doesn't open `moz-extension://` pages.
-- Requests from the background page can't be routed, so the check for a Sentry DSN in the build is the only guard for them.
+- Requests from the background page can't be routed, so the check for a Sentry DSN in the build is the only guard for them. The live pages abort requests to `*.sentry.io` and let everything else through.
 
 To run it on Linux:
 
@@ -59,9 +63,10 @@ To run it on Linux:
 pnpm build:base --target=firefox-mv2   # without PLASMO_PUBLIC_SENTRY_DSN set
 export FIREFOX_BIN="$(pnpm exec browsers install firefox@stable --path e2e/results/browsers --format '{{path}}')"
 pnpm test:e2e:firefox
+pnpm test:e2e:live:firefox             # the live pages; needs the network
 ```
 
-Screenshots of failed tests go to `e2e/results/screenshots/firefox-<test>.png`.
+Screenshots of failed tests go to `e2e/results/screenshots/firefox-<test>.png` (`firefox-live-docs.png` and `firefox-live-sheets.png` for the live tests).
 
 ## Capture and refresh the fixtures
 

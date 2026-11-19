@@ -21,6 +21,16 @@ export const LIVE_SHEET_URL =
   process.env.E2E_LIVE_SHEET_URL ??
   "https://docs.google.com/spreadsheets/d/1H_MOO3Xdq4s8lkI4ZAQTlWv7wxXTn4VoWlvq-2zv4N8/edit?gid=0#gid=0";
 
+// Listed in a live test's failure message, to show how far the page got
+export const LIVE_PAGE_SELECTORS = [
+  "#docs-chrome",
+  "#docs-toolbar",
+  "#zoomSelect",
+  "#t-zoom",
+  "#docs-view-menu",
+  "canvas"
+];
+
 export interface CaptureTarget {
   // file name (without extension) in e2e/fixtures
   name: string;

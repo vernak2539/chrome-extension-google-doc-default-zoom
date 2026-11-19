@@ -1,7 +1,7 @@
 name: E2E live
 
-# Opens the maintainer's public Docs and Sheet signed out, checks both editions against them and
-# captures fresh fixtures (docs/e2e.md), so a change on Google's side shows up on the next pull request.
+# Opens the maintainer's public Docs and Sheet signed out, checks both editions against them in Chromium and Base
+# in Firefox, and captures fresh fixtures (docs/e2e.md), so a change on Google's side shows up on the next pull request.
 # Nothing here signs in to Google or uses a secret. Run it by hand from the Actions tab ("Run workflow").
 on:
   pull_request:
@@ -28,10 +28,18 @@ jobs:
         run: pnpm install
       - name: Install Chromium
         run: pnpm exec playwright install --with-deps chromium
+      # Mozilla's Firefox stable build, driven by Puppeteer: Playwright can't load an extension into Firefox.
+      # Playwright's install-deps adds the system libraries Firefox needs.
+      - name: Install Firefox
+        run: |
+          pnpm exec playwright install-deps firefox
+          FIREFOX_BIN=$(pnpm exec browsers install firefox@stable --path "$RUNNER_TEMP/browsers" --format '{{path}}')
+          echo "FIREFOX_BIN=$FIREFOX_BIN" >> "$GITHUB_ENV"
       - name: Build both editions
         run: |
           pnpm build:base --target=chrome-mv3
           pnpm build:extended --target=chrome-mv3
+          pnpm build:base --target=firefox-mv2
       # Each step that touches Google may fail; the artifacts are uploaded anyway and the last step fails the job
       - name: Live check (Base)
         id: live_base
@@ -41,6 +49,11 @@ jobs:
         id: live_extended
         continue-on-error: true
         run: pnpm test:e2e:live --project extended
+      # Firefox ships Base only
+      - name: Live check (Firefox)
+        id: live_firefox
+        continue-on-error: true
+        run: pnpm test:e2e:live:firefox
       - name: Capture fixtures
         id: capture
         continue-on-error: true
@@ -61,11 +74,12 @@ jobs:
           path: e2e/results/screenshots
           if-no-files-found: ignore
       - name: Fail when a live step failed
-        if: always() && (steps.live_base.outcome == 'failure' || steps.live_extended.outcome == 'failure' || steps.capture.outcome == 'failure')
+        if: always() && (steps.live_base.outcome == 'failure' || steps.live_extended.outcome == 'failure' || steps.live_firefox.outcome == 'failure' || steps.capture.outcome == 'failure')
         env:
           LIVE_BASE: ${{ steps.live_base.outcome }}
           LIVE_EXTENDED: ${{ steps.live_extended.outcome }}
+          LIVE_FIREFOX: ${{ steps.live_firefox.outcome }}
           CAPTURE: ${{ steps.capture.outcome }}
         run: |
-          echo "live_base=$LIVE_BASE live_extended=$LIVE_EXTENDED capture=$CAPTURE"
+          echo "live_base=$LIVE_BASE live_extended=$LIVE_EXTENDED live_firefox=$LIVE_FIREFOX capture=$CAPTURE"
           exit 1

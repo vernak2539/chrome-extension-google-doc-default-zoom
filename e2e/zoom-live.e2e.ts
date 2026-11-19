@@ -10,21 +10,13 @@ import {
   setAppState,
   withExtension
 } from "./harness";
-import { LIVE_DOC_URL, LIVE_SHEET_URL } from "./targets";
+import { LIVE_DOC_URL, LIVE_PAGE_SELECTORS, LIVE_SHEET_URL } from "./targets";
 
 const edition = getEdition();
 const PAGE_TIMEOUT_MS = 30_000;
-const KNOWN_SELECTORS = [
-  "#docs-chrome",
-  "#docs-toolbar",
-  "#zoomSelect",
-  "#t-zoom",
-  "#docs-view-menu",
-  "canvas"
-];
 
 const describeFoundSelectors = async (page: Page) =>
-  `${describeLocation(page)}; selectors found on the page: ${(await findSelectors(page, KNOWN_SELECTORS)).join(", ") || "none"}`;
+  `${describeLocation(page)}; selectors found on the page: ${(await findSelectors(page, LIVE_PAGE_SELECTORS)).join(", ") || "none"}`;
 
 const waitForChrome = async (page: Page) => {
   try {
