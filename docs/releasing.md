@@ -2,6 +2,14 @@
 
 Releases are published to the stores by GitHub Actions when a version tag is pushed. There is no manual store upload in the normal flow.
 
+## Manual check before a release
+
+CI opens real Docs and Sheets signed out ([`e2e-live.yml`](../.github/workflows/e2e-live.yml)), but it can't sign in to Google, so it never sees Google Classroom. Check that by hand when a release changes the manifest, the content script's `matches` or `all_frames`, or anything in `src/strategies/`:
+
+1. `pnpm build:base`, then in `chrome://extensions` turn on Developer mode and choose "Load unpacked" for `build/chrome-mv3-base`. Disable the store copy while you test.
+2. In the popup, set a Docs zoom other than the default and turn on "Classroom support".
+3. In Google Classroom, open a student submission (a Doc shown in the grading view) and confirm it zooms. With "Classroom support" off it must not.
+
 ## Cut a release
 
 From an up-to-date, clean `main`:
