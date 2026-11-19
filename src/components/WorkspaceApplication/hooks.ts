@@ -1,6 +1,6 @@
 import { useStorage } from "@plasmohq/storage/hook";
 import { useCallback } from "react";
-import { getDefaultAppState } from "src/constants";
+import { fillAppState, getDefaultAppState } from "src/constants";
 import type { AppStorageState, StorageKey } from "src/types";
 import { storage } from "src/utils/storage";
 
@@ -14,16 +14,7 @@ interface UseWorkspaceStorage {
   isLoading: boolean;
 }
 
-// Nothing is stored until the user changes a setting, so the setter can be handed `undefined`.
-const resolveCurrentState = (
-  prev: AppStorageState | undefined,
-  storageKey: StorageKey
-): AppStorageState => prev ?? getDefaultAppState(storageKey);
-
-export const useWorkspaceStorage = (
-  storageKey: StorageKey,
-  defaultZoom: string
-): UseWorkspaceStorage => {
+export const useWorkspaceStorage = (storageKey: StorageKey): UseWorkspaceStorage => {
   // No initial value on purpose: Plasmo saves whatever a function initializer returns, which wrote
   // to storage every time the popup opened.
   const [appState, setAppState, { isLoading }] = useStorage<AppStorageState>({
@@ -31,34 +22,33 @@ export const useWorkspaceStorage = (
     instance: storage
   });
 
-  const state = resolveCurrentState(appState, storageKey);
+  // Nothing is stored until the user changes a setting, so the stored state and the setter's
+  // `prev` can be `undefined`, or an object that lacks a field. `fillAppState` fills both in.
+  const state = fillAppState(storageKey, appState);
 
   const updateZoomValue = useCallback(
     (value: string) => {
-      setAppState((prev) => {
-        const current = resolveCurrentState(prev, storageKey);
-        return { ...current, zoomValue: value || defaultZoom };
-      });
+      setAppState((prev) => ({
+        ...fillAppState(storageKey, prev),
+        zoomValue: value || getDefaultAppState(storageKey).zoomValue
+      }));
     },
-    [setAppState, storageKey, defaultZoom]
+    [setAppState, storageKey]
   );
 
   const updateDocsViewOnlyValue = useCallback(
     (value: boolean) => {
-      setAppState((prev) => {
-        const current = resolveCurrentState(prev, storageKey);
-        return { ...current, viewOnly: value ?? false };
-      });
+      setAppState((prev) => ({ ...fillAppState(storageKey, prev), viewOnly: value ?? false }));
     },
     [setAppState, storageKey]
   );
 
   const updateClassroomSupportValue = useCallback(
     (value: boolean) => {
-      setAppState((prev) => {
-        const current = resolveCurrentState(prev, storageKey);
-        return { ...current, classroomSupport: value ?? false };
-      });
+      setAppState((prev) => ({
+        ...fillAppState(storageKey, prev),
+        classroomSupport: value ?? false
+      }));
     },
     [setAppState, storageKey]
   );

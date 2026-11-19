@@ -14,7 +14,7 @@ const WorkspaceApplication = ({ name, zoomValues, defaultZoom, storageKey, featu
     updateDocsViewOnlyValue,
     updateClassroomSupportValue,
     isLoading
-  } = useWorkspaceStorage(storageKey, defaultZoom);
+  } = useWorkspaceStorage(storageKey);
 
   // we have not fetched the values required to render from storage, so we're not ready to render yet
   if (isLoading) {

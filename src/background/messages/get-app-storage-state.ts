@@ -1,5 +1,5 @@
 import type { PlasmoMessaging } from "@plasmohq/messaging";
-import { getDefaultAppState } from "src/constants";
+import { fillAppState, getDefaultAppState } from "src/constants";
 import type { AppStorageState, GetAppStorageStateRequestBody } from "src/types";
 import { migrationsReady } from "src/utils/migrations";
 import { createSentryClient } from "src/utils/sentry/base";
@@ -22,11 +22,7 @@ const handler: PlasmoMessaging.MessageHandler<
     await migrationsReady;
     const appState = await storage.get<AppStorageState>(storageKey);
 
-    res.send({
-      zoomValue: appState?.zoomValue ?? defaultState.zoomValue,
-      viewOnly: appState?.viewOnly ?? defaultState.viewOnly,
-      classroomSupport: appState?.classroomSupport ?? defaultState.classroomSupport
-    });
+    res.send(fillAppState(storageKey, appState));
   } catch (err) {
     sentryScope.captureException(err);
     res.send(defaultState);

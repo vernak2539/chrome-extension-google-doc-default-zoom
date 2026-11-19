@@ -29,7 +29,7 @@ describe("useWorkspaceStorage", () => {
     const { useWorkspaceStorage } = await import("./hooks");
 
     const Probe = () => {
-      latest = useWorkspaceStorage("docs", "100%");
+      latest = useWorkspaceStorage("docs");
       return null;
     };
     await act(async () => {
@@ -78,5 +78,34 @@ describe("useWorkspaceStorage", () => {
       { docs: JSON.stringify({ zoomValue: "75%", viewOnly: false, classroomSupport: false }) }
     ]);
     expect(latest.zoom).toBe("75%");
+  });
+
+  test("should fill the fields a saved state lacks, and write them all on a change", async () => {
+    await mountHook({ docs: JSON.stringify({ zoomValue: "150%" }) });
+
+    expect(latest.zoom).toBe("150%");
+    expect(latest.viewOnly).toBe(false);
+    expect(latest.classroomSupport).toBe(false);
+    expect(fake.setCalls).toEqual([]);
+
+    await act(async () => {
+      latest.updateClassroomSupportValue(true);
+    });
+
+    expect(fake.setCalls).toEqual([
+      { docs: JSON.stringify({ zoomValue: "150%", viewOnly: false, classroomSupport: true }) }
+    ]);
+  });
+
+  test("should show the defaults again when the saved state is removed", async () => {
+    await mountHook({ docs: JSON.stringify(SAVED_DOCS) });
+
+    await act(async () => {
+      await chrome.storage.sync.remove(["docs"]);
+    });
+
+    expect(latest.zoom).toBe("100%");
+    expect(latest.viewOnly).toBe(false);
+    expect(fake.setCalls).toEqual([]);
   });
 });

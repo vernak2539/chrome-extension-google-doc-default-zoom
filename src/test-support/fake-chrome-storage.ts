@@ -45,7 +45,14 @@ export const createFakeChromeStorage = (
     },
     remove: async (keys: string[]) => {
       fake.removeCalls.push([...keys]);
+      // Like Chrome, report only the keys that were stored, and fire nothing if none were
+      const changes = Object.fromEntries(
+        keys.filter((key) => key in fake.data).map((key) => [key, { oldValue: fake.data[key] }])
+      );
       keys.forEach((key) => delete fake.data[key]);
+      if (Object.keys(changes).length > 0) {
+        listeners.forEach((listener) => listener(changes, "sync"));
+      }
     }
   };
 

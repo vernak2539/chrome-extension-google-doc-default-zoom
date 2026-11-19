@@ -11,7 +11,7 @@ Over time, this extension has migrated its Chrome storage structure to improve m
 ## Who reads and writes
 
 - The popup only **reads** storage when it opens. It writes only when the user changes a setting or uses "Reset to factory settings".
-- A missing app object means "use the defaults". Defaults come from one place, `getDefaultAppState` in `src/constants.ts`, and are applied when reading. They are not written to storage.
+- A missing app object, or a field missing from one, means "use the defaults". Defaults come from one place, `getDefaultAppState` in `src/constants.ts`. Readers apply them with `fillAppState`, and reading never writes them to storage.
 - The background script runs the migration on startup (`src/utils/migrations.ts`).
 
 ## Schema Versions

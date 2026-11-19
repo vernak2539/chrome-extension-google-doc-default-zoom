@@ -18,7 +18,7 @@
  * object that is already stored always wins over V1 keys.
  */
 
-import { getDefaultAppState } from "src/constants";
+import { fillAppState } from "src/constants";
 import type { AppStorageState } from "src/types";
 
 export interface V1FlatStorageData {
@@ -35,20 +35,6 @@ export interface V2StorageData {
   sheets: AppStorageState;
 }
 
-const migrateV1App = (
-  storageKey: keyof V2StorageData,
-  zoomValue: string | undefined,
-  viewOnly: boolean | undefined,
-  classroomSupport: boolean | undefined
-): AppStorageState => {
-  const defaults = getDefaultAppState(storageKey);
-  return {
-    zoomValue: zoomValue ?? defaults.zoomValue,
-    viewOnly: viewOnly ?? defaults.viewOnly,
-    classroomSupport: classroomSupport ?? defaults.classroomSupport
-  };
-};
-
 /**
  * @param current V2 app objects that are already stored. They are kept as they are, so a rerun
  * after an interrupted migration does not replace saved values with V1 values or defaults.
@@ -60,20 +46,18 @@ export function migrateV1ToV2(
   return {
     docs:
       current.docs ??
-      migrateV1App(
-        "docs",
-        v1Data["zoomValue"],
-        v1Data["zoomValue:viewOnly"],
-        v1Data["zoomValue:classroomSupport"]
-      ),
+      fillAppState("docs", {
+        zoomValue: v1Data["zoomValue"],
+        viewOnly: v1Data["zoomValue:viewOnly"],
+        classroomSupport: v1Data["zoomValue:classroomSupport"]
+      }),
     sheets:
       current.sheets ??
-      migrateV1App(
-        "sheets",
-        v1Data["sheets:zoomValue"],
-        v1Data["sheets:zoomValue:viewOnly"],
-        v1Data["sheets:zoomValue:classroomSupport"]
-      )
+      fillAppState("sheets", {
+        zoomValue: v1Data["sheets:zoomValue"],
+        viewOnly: v1Data["sheets:zoomValue:viewOnly"],
+        classroomSupport: v1Data["sheets:zoomValue:classroomSupport"]
+      })
   };
 }
 

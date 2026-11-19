@@ -90,12 +90,28 @@ export const APPS: Record<StorageKey, WorkspaceApp> = {
   }
 };
 
-/** The one place a missing or partial stored app state is filled in. */
+/** The one place storage defaults are defined. An unknown key gets the "100%" zoom. */
 export const getDefaultAppState = (storageKey?: string): AppStorageState => ({
   zoomValue: APPS[storageKey as StorageKey]?.defaultZoom ?? "100%",
   viewOnly: false,
   classroomSupport: false
 });
+
+/**
+ * The one place a stored app state is filled in from the defaults: all of it when nothing is
+ * stored, or each field a stored object lacks (for example one saved before the field existed).
+ */
+export const fillAppState = (
+  storageKey: string | undefined,
+  stored?: Partial<AppStorageState>
+): AppStorageState => {
+  const defaults = getDefaultAppState(storageKey);
+  return {
+    zoomValue: stored?.zoomValue ?? defaults.zoomValue,
+    viewOnly: stored?.viewOnly ?? defaults.viewOnly,
+    classroomSupport: stored?.classroomSupport ?? defaults.classroomSupport
+  };
+};
 
 const toUiStrategyConfig = (app: WorkspaceApp): UiStrategyConfig => ({
   application: app.name,
