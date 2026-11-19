@@ -14,14 +14,6 @@ vi.mock("./base", () => ({
   createSentryClient: vi.fn(() => fakeScope)
 }));
 
-// The real logger deep-imports tslog, which the jsdom (browser-condition) resolver can't resolve.
-// The default LoggerContext value only needs an object with an `error` method here.
-vi.mock("../logger/index", () => ({
-  default: class {
-    error = vi.fn();
-  }
-}));
-
 const boom = new Error("boom");
 
 const Thrower = () => {
