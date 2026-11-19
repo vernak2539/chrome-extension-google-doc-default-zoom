@@ -49,6 +49,10 @@ The migration can be interrupted (for example when the service worker stops) and
 2. `schemaVersion` below 2 and no V1 keys (a fresh install): only `schemaVersion` is written.
 3. `schemaVersion` is 2 and V1 keys are left over from an interrupted run: only those keys are removed.
 
+**Docs "Fit" zoom value (still schema version 2):**
+
+`docs.zoomValue` is `"fit"` for the Docs Fit zoom. It is never a translated label; the popup shows the localized text and the content script matches the Docs menu row against every translation. Older versions stored the translated label itself (`Fit`, `Ajustar`, `Adatta`, `Anpassen`, `Ajuster`, `Подогнать`, `フィット`). On each startup, a stored `docs.zoomValue` with one of those labels is rewritten to `"fit"` in its own write, with the other fields kept. Every reader also maps a legacy label to `"fit"` (`fillAppState`), because a device that has not updated can still sync one.
+
 ---
 
 ### V1 Storage (Legacy)

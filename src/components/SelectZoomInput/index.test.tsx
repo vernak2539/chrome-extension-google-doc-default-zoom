@@ -51,6 +51,15 @@ describe("SelectZoomInput", () => {
     expect(optionTexts()).toEqual(["50%", "100%"]);
   });
 
+  it("shows the localized label for fit but keeps fit as the option value", () => {
+    render(["fit", "100%"]);
+    expect(optionTexts()).toEqual(["popupDocsDropdownFitSelection", "100%"]);
+    expect(Array.from(container.querySelectorAll("option"), (option) => option.value)).toEqual([
+      "fit",
+      "100%"
+    ]);
+  });
+
   it("re-renders when the number of zoom values grows", () => {
     render(["50%", "100%"]);
     expect(() => render(["50%", "75%", "100%"])).not.toThrow();

@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { sendToBackgroundViaRelay } from "@plasmohq/messaging";
-import { workspaceAppUiStrategyConfigs } from "src/constants";
+import { DOCS_FIT_LABELS, DOCS_ZOOM_VALUE_FIT, workspaceAppUiStrategyConfigs } from "src/constants";
 import type { AppStorageState } from "src/types";
 import { IS_EXTENDED_EDITION } from "src/utils/edition";
 import getAppStorageStateFromStorage from "src/utils/get-app-storage-state-from-storage";
@@ -83,6 +83,27 @@ describe("zoom outcome", () => {
         status: "skipped",
         reason: "default_zoom"
       });
+    }
+  );
+
+  test.each(DOCS_FIT_LABELS)(
+    'should select the Fit row labeled "%s" for the stored value "fit"',
+    async (label) => {
+      document.body.innerHTML = `
+        <div id="zoomSelect" aria-owns="zoom-menu"><input /></div>
+        <div class="goog-menu goog-menu-vertical" id="zoom-menu">
+          <div class="goog-menuitem"><div>${label}</div></div>
+          <div class="goog-menuitem"><div>150%</div></div>
+        </div>`;
+      const clicked: string[] = [];
+      document.querySelectorAll(".goog-menuitem").forEach((row) => {
+        row.firstElementChild?.addEventListener("click", () => clicked.push(row.textContent ?? ""));
+      });
+
+      expect(await new TestStrategy(DOCS_CONFIG).zoomTo(DOCS_ZOOM_VALUE_FIT)).toEqual({
+        status: "applied"
+      });
+      expect(clicked).toEqual([label]);
     }
   );
 

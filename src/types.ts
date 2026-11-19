@@ -38,14 +38,8 @@ export interface AppStorageState {
   viewOnly: boolean;
   classroomSupport: boolean;
 }
-export type DocsZoomValueFit =
-  | "Fit"
-  | "Adatta"
-  | "Anpassen"
-  | "Ajuster"
-  | "Подогнать"
-  | "フィット"
-  | "Ajustar";
+/** The stored value for Docs "Fit". It is never translated; the popup shows the localized label. */
+export type DocsZoomValueFit = "fit";
 
 export type DocsStorageKey = "docs";
 export type DocsZoomValues = [DocsZoomValueFit, "50%", "75%", "100%", "125%", "150%", "200%"];
