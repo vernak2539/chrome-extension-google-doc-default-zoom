@@ -65,7 +65,7 @@
     "playwright": "^1.65.1",
     "puppeteer-core": "25.18.1",
     "storybook": "^10.6.7",
-    "typescript": "5.9.3",
+    "typescript": "6.0.3",
     "vite": "^8.3.8",
     "vite-plugin-svgr": "^5.2.0",
     "vitest": "^5.1.1",

@@ -4,11 +4,11 @@
   "include": [".plasmo/index.d.ts", ".plasmo/messaging.d.ts", "./**/*.ts", "./**/*.tsx"],
   "compilerOptions": {
     "paths": {
-      //      "~*": ["./src/*"]
+      "src/*": ["./src/*"]
     },
-    "baseUrl": ".",
     "strictNullChecks": true,
     "moduleResolution": "bundler",
+    "noUncheckedSideEffectImports": false,
     "jsx": "react-jsx",
     "types": ["vite-plugin-svgr/client", "chrome"]
   },
