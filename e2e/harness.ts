@@ -17,9 +17,18 @@ export interface RecordedEvents {
   controlClicks: string[];
 }
 
+// One chrome.storage call that writes, made by an extension page
+export interface StorageWrite {
+  area: "sync" | "local";
+  method: "set" | "remove" | "clear";
+  // the first argument: the items for `set`, the keys for `remove`
+  arg: unknown;
+}
+
 declare global {
   interface Window {
     __e2e: RecordedEvents;
+    __e2eStorageWrites: StorageWrite[];
   }
 }
 
@@ -171,6 +180,62 @@ export const readRecorded = (page: Page): Promise<RecordedEvents> =>
     enters: [...window.__e2e.enters],
     controlClicks: [...window.__e2e.controlClicks]
   }));
+
+// Records every chrome.storage write made by an extension page, such as the popup. Plasmo looks the
+// method up on each call, so wrapping it before the page's own scripts run catches every write.
+// Count calls, not chrome.storage.onChanged events: Chrome sends none when a value is rewritten unchanged.
+export const installStorageRecorder = async (context: BrowserContext) => {
+  await context.addInitScript(() => {
+    if (location.protocol !== "chrome-extension:") {
+      return;
+    }
+
+    const writes: StorageWrite[] = [];
+    window.__e2eStorageWrites = writes;
+
+    for (const area of ["sync", "local"] as const) {
+      const storageArea = chrome.storage[area] as unknown as Record<
+        StorageWrite["method"],
+        (...args: unknown[]) => unknown
+      >;
+      for (const method of ["set", "remove", "clear"] as const) {
+        const original = storageArea[method].bind(storageArea);
+        storageArea[method] = (...args) => {
+          writes.push({ area, method, arg: structuredClone(args[0] ?? null) });
+          return original(...args);
+        };
+      }
+    }
+  });
+};
+
+export const readStorageWrites = (page: Page): Promise<StorageWrite[]> =>
+  page.evaluate(() => [...window.__e2eStorageWrites]);
+
+export const waitForStorageWrites = (page: Page, count: number) =>
+  page.waitForFunction((expected) => window.__e2eStorageWrites.length >= expected, count, {
+    timeout: 15_000
+  });
+
+// The zoom dropdown in one app's row of the popup
+export const popupZoomSelect = (popup: Page, appName: "Docs" | "Sheets") =>
+  popup
+    .locator("li")
+    .filter({ has: popup.getByText(appName, { exact: true }) })
+    .locator("select");
+
+// Opens the popup as a tab. Each app's row renders nothing until its saved state has been read, so
+// once both dropdowns are shown the popup has finished opening.
+export const openPopup = async ({ context, serviceWorker }: ExtensionSession) => {
+  const extensionId = new URL(serviceWorker.url()).host;
+  const popup = await context.newPage();
+
+  await popup.goto(`chrome-extension://${extensionId}/popup.html`);
+  await popupZoomSelect(popup, "Docs").waitFor();
+  await popupZoomSelect(popup, "Sheets").waitFor();
+
+  return popup;
+};
 
 // Serves an empty page for docs.google.com and blocks every other http(s) request. The filter is on the
 // protocol because a catch-all route would also block the extension's own files.
