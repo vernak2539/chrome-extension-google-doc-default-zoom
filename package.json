@@ -58,7 +58,7 @@
     "@vitejs/plugin-react": "^6.3.0",
     "bundlesize2": "^0.0.35",
     "husky": "^9.1.7",
-    "jsdom": "^29.1.1",
+    "jsdom": "31.0.1",
     "lint-staged": "^16.4.0",
     "oxfmt": "^0.79.0",
     "oxlint": "^1.94.0",
