@@ -8,6 +8,7 @@
     },
     "baseUrl": ".",
     "strictNullChecks": true,
+    "moduleResolution": "bundler",
     "jsx": "react-jsx",
     "types": ["vite-plugin-svgr/client", "chrome"]
   },
