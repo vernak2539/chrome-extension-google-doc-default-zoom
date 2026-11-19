@@ -53,6 +53,16 @@ jobs:
       # Loads build/chrome-mv3-base and build/chrome-mv3-extended against saved Docs and Sheets markup (docs/e2e.md)
       - name: Browser tests
         run: pnpm test:e2e
+      # Mozilla's Firefox stable build, driven by Puppeteer: Playwright can't load an extension into Firefox.
+      # Playwright's install-deps adds the system libraries Firefox needs.
+      - name: Install Firefox for the browser tests
+        run: |
+          pnpm exec playwright install-deps firefox
+          FIREFOX_BIN=$(pnpm exec browsers install firefox@stable --path "$RUNNER_TEMP/browsers" --format '{{path}}')
+          echo "FIREFOX_BIN=$FIREFOX_BIN" >> "$GITHUB_ENV"
+      # Loads build/firefox-mv2-base (Firefox ships Base only) against the same saved markup
+      - name: Browser tests (Firefox)
+        run: pnpm test:e2e:firefox
       - name: Package extension artifacts
         run: |
           pnpm package:base --target=chrome-mv3
