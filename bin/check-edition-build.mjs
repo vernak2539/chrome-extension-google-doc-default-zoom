@@ -42,6 +42,18 @@ const checkBuild = (directory, target, edition) => {
       `manifest ${expected.hasDebugger ? "is missing" : "leaks"} the "debugger" permission`
     );
   }
+  // The content script needs no host permission: its `matches` already inject it. A host permission adds an
+  // install warning, and adding one back later would ask every user to accept it. Firefox MV2 lists host
+  // patterns in `permissions`, so look there too.
+  const hostPermissions = [
+    ...(manifest.host_permissions ?? []),
+    ...(manifest.permissions ?? []).filter(
+      (permission) => permission.includes("://") || permission === "<all_urls>"
+    )
+  ];
+  if (hostPermissions.length > 0) {
+    problems.push(`manifest requests host permissions: ${hostPermissions.join(", ")}`);
+  }
   if (manifest.name !== expected.name) {
     problems.push(`manifest name is "${manifest.name}", expected "${expected.name}"`);
   }

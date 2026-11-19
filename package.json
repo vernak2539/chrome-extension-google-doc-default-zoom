@@ -87,9 +87,6 @@
   "manifest": {
     "name": "$PLASMO_PUBLIC_EXT_NAME",
     "default_locale": "en",
-    "host_permissions": [
-      "http://*.google.com/"
-    ],
     "permissions": [
       "$DEBUGGER_PERMISSION"
     ],
