@@ -13,6 +13,7 @@
     "test": "vitest",
     "test:e2e": "vitest run --config e2e/vitest.config.ts e2e/zoom-fixtures",
     "test:e2e:live": "vitest run --config e2e/vitest.config.ts e2e/zoom-live",
+    "test:e2e:firefox": "vitest run --config e2e/vitest.config.ts --project firefox",
     "e2e:capture": "vitest run --config e2e/vitest.config.ts e2e/capture; status=$?; vitest run --config e2e/vitest.config.ts e2e/sanitize && exit $status",
     "build:base": "plasmo build --hoist --tag=base",
     "build:extended": "plasmo build --hoist --tag=extended",
@@ -45,6 +46,7 @@
   },
   "devDependencies": {
     "@google-cloud/translate": "^10.3.0",
+    "@puppeteer/browsers": "3.2.7",
     "@storybook/addon-a11y": "^9.1.21",
     "@storybook/addon-docs": "^9.1.21",
     "@storybook/addon-links": "^9.1.21",
@@ -61,6 +63,7 @@
     "oxfmt": "^0.79.0",
     "oxlint": "^1.94.0",
     "playwright": "^1.65.1",
+    "puppeteer-core": "25.18.1",
     "storybook": "^9.1.21",
     "typescript": "5.9.3",
     "vite": "^5.4.21",

@@ -15,6 +15,8 @@ export default defineConfig({
     projects: [
       editionProject("base"),
       editionProject("extended"),
+      // Firefox ships Base only; e2e/firefox.e2e.ts loads build/firefox-mv2-base with Puppeteer
+      { extends: true, test: { name: "firefox", include: ["e2e/firefox.e2e.ts"] } },
       // capturing and sanitizing fixtures does not load the extension, so it runs once
       {
         extends: true,
