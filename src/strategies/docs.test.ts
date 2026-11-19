@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { workspaceAppUiStrategyConfigs } from "src/constants";
+import { DOCS_FIT_LABELS, DOCS_ZOOM_VALUE_FIT, workspaceAppUiStrategyConfigs } from "src/constants";
 import type { AppStorageState } from "src/types";
 import getAppStorageStateFromStorage from "src/utils/get-app-storage-state-from-storage";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
@@ -10,8 +10,6 @@ vi.mock("@plasmohq/messaging", () => ({ sendToBackgroundViaRelay: vi.fn() }));
 vi.mock("src/utils/localize", () => ({ default: (key: string) => key }));
 vi.mock("src/utils/get-app-storage-state-from-storage", () => ({ default: vi.fn() }));
 
-const FIT_LABEL = "popupDocsDropdownFitSelection";
-
 const viewOnlyState: AppStorageState = {
   zoomValue: "150%",
   viewOnly: true,
@@ -20,12 +18,13 @@ const viewOnlyState: AppStorageState = {
 
 const VIEW_MENU = `<div id="docs-view-menu"></div>`;
 const ZOOM_ITEM = `<span aria-label="Zoom"></span>`;
-const ZOOM_MENU = `
+const zoomMenu = (fitLabel: string) => `
   <div class="goog-menu">
-    <div class="goog-menuitem apps-menuitem"><div aria-label="${FIT_LABEL}">${FIT_LABEL}</div></div>
+    <div class="goog-menuitem apps-menuitem"><div aria-label="${fitLabel}">${fitLabel}</div></div>
     <div class="goog-menuitem apps-menuitem"><div>100%</div></div>
     <div class="goog-menuitem apps-menuitem"><div>150%</div></div>
   </div>`;
+const ZOOM_MENU = zoomMenu("Fit");
 
 const runViewOnlyFlow = async () => {
   const outcome = new DocsStrategy(workspaceAppUiStrategyConfigs.Docs).execute();
@@ -53,6 +52,24 @@ describe("Docs view-only zoom outcome", () => {
     expect(await runViewOnlyFlow()).toEqual({ status: "applied" });
     expect(clicked).toEqual(["150%"]);
   });
+
+  test.each(DOCS_FIT_LABELS)(
+    'should click the Fit row labeled "%s" for the stored value "fit"',
+    async (label) => {
+      vi.mocked(getAppStorageStateFromStorage).mockResolvedValue({
+        ...viewOnlyState,
+        zoomValue: DOCS_ZOOM_VALUE_FIT
+      });
+      document.body.innerHTML = VIEW_MENU + ZOOM_ITEM + zoomMenu(label);
+      const clicked: string[] = [];
+      document.querySelectorAll(".goog-menuitem").forEach((row) => {
+        row.firstElementChild?.addEventListener("click", () => clicked.push(row.textContent ?? ""));
+      });
+
+      expect(await runViewOnlyFlow()).toEqual({ status: "applied" });
+      expect(clicked).toEqual([label]);
+    }
+  );
 
   test("should fail with view_menu_missing when the View menu is not on the page", async () => {
     document.body.innerHTML = ZOOM_ITEM + ZOOM_MENU;

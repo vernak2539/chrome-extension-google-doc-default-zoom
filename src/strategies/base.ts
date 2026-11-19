@@ -2,7 +2,7 @@ import { sendToBackgroundViaRelay } from "@plasmohq/messaging";
 import getAppStorageStateFromStorage from "src/utils/get-app-storage-state-from-storage";
 import { getClosestZoomValue } from "src/utils/get-closest-zoom-value";
 
-import { RELAY_EXECUTE_ENTER } from "../constants";
+import { RELAY_EXECUTE_ENTER, getZoomRowLabels } from "../constants";
 import type {
   AppStorageState,
   ExecuteEnterRequestBody,
@@ -83,9 +83,11 @@ export abstract class AbstractBaseStrategy {
     const zoomInputSelectOptions = zoomInputSelect.querySelectorAll(
       this.config.uiElements.clickableZoomOptionClass
     );
+    const rowLabels = getZoomRowLabels(zoomValue);
     let newZoomLevelElement: Element | null = null;
     for (let i = 0; i < zoomInputSelectOptions.length; i++) {
-      if (zoomInputSelectOptions[i].firstChild?.textContent === zoomValue) {
+      const rowText = zoomInputSelectOptions[i].firstChild?.textContent;
+      if (rowText && rowLabels.includes(rowText)) {
         newZoomLevelElement = zoomInputSelectOptions[i].firstChild as Element;
       }
     }

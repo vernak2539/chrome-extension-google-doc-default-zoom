@@ -11,7 +11,6 @@ import type {
   WorkspaceAppName
 } from "src/types";
 import { IS_EXTENDED_EDITION } from "src/utils/edition";
-import localize from "src/utils/localize";
 
 export const GOOGLE_CLASSROOM_DOMAIN = "classroom.google.com";
 
@@ -25,8 +24,22 @@ export const RELAY_EXECUTE_ENTER = "execute-enter";
 
 /**  Workspace Application: Docs - Start **/
 export const DOCS_STORAGE_KEY: DocsStorageKey = "docs";
+export const DOCS_ZOOM_VALUE_FIT: DocsZoomValueFit = "fit";
+
+// Every translation of popupDocsDropdownFitSelection in locales/*/messages.json. Docs shows the
+// Fit row in the Chrome language, and older versions stored the label itself as the zoom value.
+export const DOCS_FIT_LABELS = [
+  "Fit",
+  "Ajustar",
+  "Adatta",
+  "Anpassen",
+  "Ajuster",
+  "Подогнать",
+  "フィット"
+] as const;
+
 export const DOCS_ZOOM_VALUES: DocsZoomValues = [
-  localize("popupDocsDropdownFitSelection") as DocsZoomValueFit,
+  DOCS_ZOOM_VALUE_FIT,
   "50%",
   "75%",
   "100%",
@@ -97,9 +110,18 @@ export const getDefaultAppState = (storageKey?: string): AppStorageState => ({
   classroomSupport: false
 });
 
+/** Turns a translated Docs "Fit" label that an older version stored into the stable `"fit"`. */
+export const toStableZoomValue = (zoomValue: string): string =>
+  (DOCS_FIT_LABELS as readonly string[]).includes(zoomValue) ? DOCS_ZOOM_VALUE_FIT : zoomValue;
+
+/** The texts a zoom menu row can have for a stored zoom value: every Fit translation, or the value. */
+export const getZoomRowLabels = (zoomValue: string): readonly string[] =>
+  zoomValue === DOCS_ZOOM_VALUE_FIT ? DOCS_FIT_LABELS : [zoomValue];
+
 /**
  * The one place a stored app state is filled in from the defaults: all of it when nothing is
  * stored, or each field a stored object lacks (for example one saved before the field existed).
+ * It also reads a legacy translated "Fit" as `"fit"`, as another device can still sync one.
  */
 export const fillAppState = (
   storageKey: string | undefined,
@@ -107,7 +129,7 @@ export const fillAppState = (
 ): AppStorageState => {
   const defaults = getDefaultAppState(storageKey);
   return {
-    zoomValue: stored?.zoomValue ?? defaults.zoomValue,
+    zoomValue: toStableZoomValue(stored?.zoomValue ?? defaults.zoomValue),
     viewOnly: stored?.viewOnly ?? defaults.viewOnly,
     classroomSupport: stored?.classroomSupport ?? defaults.classroomSupport
   };

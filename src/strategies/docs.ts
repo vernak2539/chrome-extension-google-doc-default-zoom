@@ -1,7 +1,7 @@
+import { DOCS_FIT_LABELS, getZoomRowLabels } from "src/constants";
 import type { AppStorageState, ZoomOutcome } from "src/types";
 import { findZoomRowIndex } from "src/utils/find-zoom-row-index";
 import { getClosestZoomValue } from "src/utils/get-closest-zoom-value";
-import localize from "src/utils/localize";
 import { pause } from "src/utils/pause";
 import { clickDOMElement, getDOMElement, getDOMElementAndClick } from "src/utils/ui-helpers";
 import { APPLIED, failed } from "src/utils/zoom-outcome";
@@ -63,8 +63,9 @@ class DocsStrategy extends AbstractBaseStrategy {
     }
 
     // This is hacky, not sure a better way to do this...
-    const fitValue = localize("popupDocsDropdownFitSelection");
-    const zoomValueContainer = getDOMElement(`[aria-label^="${fitValue}"]`)?.closest(".goog-menu");
+    // The Fit row is the one the zoom menu is found by, in whichever language Docs shows it
+    const fitRowSelector = DOCS_FIT_LABELS.map((label) => `[aria-label^="${label}"]`).join(", ");
+    const zoomValueContainer = getDOMElement(fitRowSelector)?.closest(".goog-menu");
 
     if (!zoomValueContainer) {
       getDOMElementAndClick("body");
@@ -73,12 +74,12 @@ class DocsStrategy extends AbstractBaseStrategy {
 
     const zoomValueRows = zoomValueContainer.querySelectorAll(".goog-menuitem.apps-menuitem");
 
-    const rowIndex = findZoomRowIndex(
-      Array.from(zoomValueRows, (row) => row.firstChild?.textContent),
-      finalZoomValue
-    );
+    const rowTexts = Array.from(zoomValueRows, (row) => row.firstChild?.textContent);
+    const rowIndex = getZoomRowLabels(finalZoomValue)
+      .map((label) => findZoomRowIndex(rowTexts, label))
+      .find((index) => index !== -1);
 
-    if (rowIndex === -1) {
+    if (rowIndex === undefined) {
       getDOMElementAndClick("body");
       return failed("view_zoom_option_missing");
     }
