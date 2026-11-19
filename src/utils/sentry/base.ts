@@ -5,12 +5,13 @@ import {
   getDefaultIntegrations,
   makeFetchTransport
 } from "@sentry/browser";
-import type { BrowserClientOptions } from "@sentry/browser/build/npm/types/client";
 import type { ExtensionFileSource } from "src/types";
 import { SCHEMA_VERSION_KEY, storage } from "src/utils/storage";
 
 import { SENTRY_BASE_CONFIG, getDefaultTags } from "./config";
 import { redactEventRequest } from "./redact-event";
+
+type BrowserClientOptions = ConstructorParameters<typeof BrowserClient>[0];
 
 const createNewSentryClient = (
   source: ExtensionFileSource,
