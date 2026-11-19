@@ -9,12 +9,18 @@ import {
   getEdition,
   insertFixture,
   installRecorder,
+  installStorageRecorder,
+  openPopup,
+  popupZoomSelect,
   readRecorded,
+  readStorageWrites,
   serveFixture,
   setAppState,
+  type StorageWrite,
   waitForClicks,
   waitForControlClicks,
   waitForEnters,
+  waitForStorageWrites,
   withExtension
 } from "./harness";
 
@@ -33,6 +39,16 @@ const state = (zoomValue: string, viewOnly = false): AppState => ({
   viewOnly,
   classroomSupport: false
 });
+
+// @plasmohq/storage writes each value as a JSON string; decode them to compare with `state`
+const decodeWrites = (writes: StorageWrite[]) =>
+  writes.map(({ area, method, arg }) => ({
+    area,
+    method,
+    arg: Object.fromEntries(
+      Object.entries(arg as Record<string, string>).map(([key, value]) => [key, JSON.parse(value)])
+    )
+  }));
 
 describe(`zoom flow against saved Docs and Sheets markup (${edition} edition)`, () => {
   test("Docs applies a preset zoom by clicking its menu row", () =>
@@ -126,5 +142,42 @@ describe(`zoom flow against saved Docs and Sheets markup (${edition} edition)`, 
       await waitForClicks(page, 1);
 
       expect((await readRecorded(page)).clicks).toEqual(["150%"]);
+    }));
+
+  // The other tests write the setting from the service worker. This one saves it the way a user
+  // does, so it also covers the popup: what it writes, and that opening it writes nothing.
+  test("Docs applies a zoom picked in the popup, and a new pick after a reload", () =>
+    withExtension("popup-round-trip", async (session) => {
+      // before the popup opens, so its announcements request never reaches the network
+      await serveFixture(session.context);
+      await installStorageRecorder(session.context);
+      await installRecorder(session.context);
+
+      const popup = await openPopup(session);
+      expect(await readStorageWrites(popup)).toEqual([]);
+
+      await popupZoomSelect(popup, "Docs").selectOption("150%");
+      await waitForStorageWrites(popup, 1);
+      expect(decodeWrites(await readStorageWrites(popup))).toEqual([
+        { area: "sync", method: "set", arg: { docs: state("150%") } }
+      ]);
+
+      const docsPage = await session.context.newPage();
+      await docsPage.goto(FIXTURE_DOC_URL);
+      await insertFixture(docsPage, "docs-editor");
+      await waitForClicks(docsPage, 1);
+      expect((await readRecorded(docsPage)).clicks).toEqual(["150%"]);
+
+      await popupZoomSelect(popup, "Docs").selectOption("75%");
+      await waitForStorageWrites(popup, 2);
+      expect(decodeWrites(await readStorageWrites(popup))).toEqual([
+        { area: "sync", method: "set", arg: { docs: state("150%") } },
+        { area: "sync", method: "set", arg: { docs: state("75%") } }
+      ]);
+
+      await docsPage.reload();
+      await insertFixture(docsPage, "docs-editor");
+      await waitForClicks(docsPage, 1);
+      expect((await readRecorded(docsPage)).clicks).toEqual(["75%"]);
     }));
 });

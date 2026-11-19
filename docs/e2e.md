@@ -10,7 +10,7 @@ There are two modes:
 | **Live**    | `pnpm test:e2e:live` | The maintainer's public Doc and Sheet, **signed out**. The harness never signs in to Google. | Every pull request and by hand (`e2e-live.yml`) |
 | Capture     | `pnpm e2e:capture`   | Opens the same public pages signed out, saves them, and sanitizes them into `e2e/fixtures/`. | By hand, or in `e2e-live.yml`                   |
 
-The fixture tests cover a preset zoom (Docs and Sheets), a custom zoom (Extended only), the Docs view-only flow, and a page that is still loading. Every browser test runs once per edition, like `pnpm test`: `e2e/vitest.config.ts` has a `base` and an `extended` project, each loading `build/chrome-mv3-<edition>`. In the Base edition the custom-zoom test is replaced by one that checks nothing is clicked or typed.
+The fixture tests cover a preset zoom (Docs and Sheets), a custom zoom (Extended only), the Docs view-only flow, a page that is still loading, and a zoom picked in the popup and then changed. Every browser test runs once per edition, like `pnpm test`: `e2e/vitest.config.ts` has a `base` and an `extended` project, each loading `build/chrome-mv3-<edition>`. In the Base edition the custom-zoom test is replaced by one that checks nothing is clicked or typed.
 
 The browser tests are named `*.e2e.ts` and use their own config (`e2e/vitest.config.ts`), so `pnpm test` does not collect them. `e2e/fixture-sanitize.test.ts` is a normal unit test and runs with `pnpm test`.
 
@@ -71,13 +71,18 @@ The capture is the only step that needs a browser session, and it is signed out.
 Do this once after setting it up, or after changing the harness:
 
 1. In `src/constants.ts`, change `clickableZoomSelectId: "#zoomSelect"` (Docs) to `"#zoomSelectX"`.
-2. `pnpm build:extended --target=chrome-mv3 && pnpm test:e2e --project extended`. The Docs preset, custom zoom and page-still-loading tests fail, because the content script no longer finds the zoom control.
+2. `pnpm build:extended --target=chrome-mv3 && pnpm test:e2e --project extended`. The Docs preset, custom zoom, page-still-loading and popup tests fail, because the content script no longer finds the zoom control.
 3. Revert the change, rebuild, and see the tests pass.
+
+To check the popup side, make the `onChange` of the dropdown in `src/components/SelectZoomInput/index.tsx` do nothing instead. The popup test then times out waiting for a storage write.
 
 ## How it works
 
 - `e2e/harness.ts` launches Chromium with `launchPersistentContext` and the build loaded as an extension. It aborts requests to `*.sentry.io`, and in fixture mode it serves an empty page for `docs.google.com` and aborts every other `http(s)` request (it filters on the protocol, so the extension's own files still load).
-- Saved settings are written from the extension's service worker, to `chrome.storage.sync`, as the popup would.
+- Most tests write saved settings from the extension's service worker, to `chrome.storage.sync`, as the popup would.
+- The popup test saves them through the popup instead. It opens `popup.html` as a tab, picks a zoom in the Docs dropdown, and checks that the Docs page applies it. Then it picks another and checks the reloaded page applies that one.
+  - `installStorageRecorder` wraps the `chrome.storage` write calls on extension pages. The test uses it to check that opening the popup writes nothing, and that each pick writes the whole Docs state once.
+  - It counts calls rather than `chrome.storage.onChanged` events, because Chrome sends no event when a value is rewritten unchanged.
 - A recorder script in the page's main world observes events, and does not model Google: it records the text of every menu row that gets a `click`, and the value of the focused input when Enter is pressed.
 - A fixture is inserted into the page 500 ms after load. The insert is a DOM mutation, which is what makes the content script start (`onElementAvailable`).
 - The page-still-loading test disables the zoom control, waits, then enables it and also changes an attribute on `#docs-toolbar`. The content script only watches the toolbar element itself, not its subtree.
