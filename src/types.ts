@@ -55,6 +55,13 @@ export type SheetsZoomValues = ["50%", "75%", "90%", "100%", "125%", "150%", "20
 
 export type StorageKey = DocsStorageKey | SheetsStorageKey;
 
+export interface UiElements {
+  clickableZoomSelectId: string;
+  clickableZoomOptionClass: string;
+  toolbarId: string;
+  menubarViewTabId: string;
+}
+
 export interface WorkspaceApp {
   /* Name of the Google Workspace Application */
   name: WorkspaceAppName;
@@ -69,7 +76,10 @@ export interface WorkspaceApp {
   zoomValues: DocsZoomValues | SheetsZoomValues;
 
   /* Key defining where the zoom value is stored in chrome.storage */
-  storageKey: string;
+  storageKey: StorageKey;
+
+  /* Selectors for the application's zoom controls */
+  uiElements: UiElements;
 
   /* If the app is enabled in the extension */
   isEnabled: boolean;
@@ -93,12 +103,7 @@ export interface UiStrategyConfig {
   application: WorkspaceAppName;
   features: WorkspaceApp["features"];
   storageKey: StorageKey;
-  uiElements: {
-    clickableZoomSelectId: string;
-    clickableZoomOptionClass: string;
-    toolbarId: string;
-    menubarViewTabId: string;
-  };
+  uiElements: UiElements;
   zoom: {
     defaultZoom: string;
     zoomValues: DocsZoomValues | SheetsZoomValues;

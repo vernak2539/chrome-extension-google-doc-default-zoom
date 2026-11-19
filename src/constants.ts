@@ -1,8 +1,10 @@
 import type {
+  AppStorageState,
   DocsStorageKey,
   DocsZoomValueFit,
   DocsZoomValues,
   SheetsStorageKey,
+  StorageKey,
   SheetsZoomValues,
   UiStrategyConfig,
   WorkspaceApp,
@@ -49,8 +51,8 @@ export const SHEETS_ZOOM_VALUES: SheetsZoomValues = [
 export const SHEETS_DEFAULT_ZOOM = SHEETS_ZOOM_VALUES[3];
 /**  Workspace Application: Sheets - End **/
 
-export const workspaceApps: WorkspaceApp[] = [
-  {
+export const APPS: Record<StorageKey, WorkspaceApp> = {
+  [DOCS_STORAGE_KEY]: {
     name: "Docs",
     defaultZoom: DOCS_DEFAULT_ZOOM,
     zoomValues: DOCS_ZOOM_VALUES,
@@ -60,9 +62,15 @@ export const workspaceApps: WorkspaceApp[] = [
       customZoomInput: IS_EXTENDED_EDITION,
       enableViewOnlyToggle: true,
       classroomSupport: true
+    },
+    uiElements: {
+      clickableZoomSelectId: "#zoomSelect",
+      clickableZoomOptionClass: ".goog-menuitem",
+      toolbarId: "#docs-toolbar",
+      menubarViewTabId: "#docs-view-menu"
     }
   },
-  {
+  [SHEETS_STORAGE_KEY]: {
     name: "Sheets",
     defaultZoom: SHEETS_DEFAULT_ZOOM,
     zoomValues: SHEETS_ZOOM_VALUES,
@@ -72,47 +80,35 @@ export const workspaceApps: WorkspaceApp[] = [
       customZoomInput: IS_EXTENDED_EDITION,
       enableViewOnlyToggle: false,
       classroomSupport: true
-    }
-  }
-];
-
-const getAppFeatures = (name: WorkspaceAppName) => {
-  const app = workspaceApps.find((workspaceApp) => workspaceApp.name === name);
-  if (!app) {
-    throw new Error(`Unknown workspace app: ${name}`);
-  }
-  return app.features;
-};
-
-export const workspaceAppUiStrategyConfigs: Record<WorkspaceAppName, UiStrategyConfig> = {
-  Docs: {
-    application: "Docs",
-    features: getAppFeatures("Docs"),
-    storageKey: DOCS_STORAGE_KEY,
-    uiElements: {
-      clickableZoomSelectId: "#zoomSelect",
-      clickableZoomOptionClass: ".goog-menuitem",
-      toolbarId: "#docs-toolbar",
-      menubarViewTabId: "#docs-view-menu"
     },
-    zoom: {
-      defaultZoom: DOCS_DEFAULT_ZOOM,
-      zoomValues: DOCS_ZOOM_VALUES
-    }
-  },
-  Sheets: {
-    application: "Sheets",
-    features: getAppFeatures("Sheets"),
-    storageKey: SHEETS_STORAGE_KEY,
     uiElements: {
       clickableZoomSelectId: "#t-zoom",
       clickableZoomOptionClass: ".goog-menuitem",
       toolbarId: "#docs-toolbar",
       menubarViewTabId: "#docs-view-menu"
-    },
-    zoom: {
-      defaultZoom: SHEETS_DEFAULT_ZOOM,
-      zoomValues: SHEETS_ZOOM_VALUES
     }
   }
+};
+
+/** The one place a missing or partial stored app state is filled in. */
+export const getDefaultAppState = (storageKey?: string): AppStorageState => ({
+  zoomValue: APPS[storageKey as StorageKey]?.defaultZoom ?? "100%",
+  viewOnly: false,
+  classroomSupport: false
+});
+
+const toUiStrategyConfig = (app: WorkspaceApp): UiStrategyConfig => ({
+  application: app.name,
+  features: app.features,
+  storageKey: app.storageKey,
+  uiElements: app.uiElements,
+  zoom: {
+    defaultZoom: app.defaultZoom,
+    zoomValues: app.zoomValues
+  }
+});
+
+export const workspaceAppUiStrategyConfigs: Record<WorkspaceAppName, UiStrategyConfig> = {
+  Docs: toUiStrategyConfig(APPS[DOCS_STORAGE_KEY]),
+  Sheets: toUiStrategyConfig(APPS[SHEETS_STORAGE_KEY])
 };
