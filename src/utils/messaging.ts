@@ -3,12 +3,14 @@ import type {
   AppStorageState,
   ExecuteEnterRequestBody,
   ExecuteEnterResponseBody,
-  GetAppStorageStateRequestBody
+  GetAppStorageStateRequestBody,
+  ReportContentErrorRequestBody
 } from "src/types";
 
 interface ProtocolMap {
   getAppStorageState(data: GetAppStorageStateRequestBody): AppStorageState;
   executeEnter(data: ExecuteEnterRequestBody): ExecuteEnterResponseBody;
+  reportContentError(data: ReportContentErrorRequestBody): object;
 }
 
 export const { sendMessage, onMessage } = defineExtensionMessaging<ProtocolMap>();
