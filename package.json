@@ -14,6 +14,7 @@
     "test:e2e": "vitest run --config e2e/vitest.config.ts e2e/zoom-fixtures",
     "test:e2e:live": "vitest run --config e2e/vitest.config.ts e2e/zoom-live",
     "test:e2e:firefox": "vitest run --config e2e/vitest.config.ts --project firefox",
+    "test:e2e:live:firefox": "vitest run --config e2e/vitest.config.ts --project firefox-live",
     "e2e:capture": "vitest run --config e2e/vitest.config.ts e2e/capture; status=$?; vitest run --config e2e/vitest.config.ts e2e/sanitize && exit $status",
     "build:base": "plasmo build --hoist --tag=base",
     "build:extended": "plasmo build --hoist --tag=extended",

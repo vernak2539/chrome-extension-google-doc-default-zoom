@@ -290,7 +290,8 @@ export const waitForEnters = (page: Page, count: number) =>
   });
 
 // Where the page ended up, without the query string (a sign-in URL carries the document URL)
-export const describeLocation = (page: Page): string => {
+// Takes a Playwright or a Puppeteer page
+export const describeLocation = (page: Pick<Page, "url">): string => {
   const { hostname, pathname } = new URL(page.url());
   const location = `${hostname}${pathname}`;
 
