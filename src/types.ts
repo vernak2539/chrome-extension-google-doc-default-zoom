@@ -33,6 +33,23 @@ export type ZoomOutcome =
 
 export type WorkspaceAppName = "Docs" | "Sheets";
 
+/** An `Error` that can cross `chrome.runtime` messaging, which only carries JSON */
+export interface SerializedError {
+  name: string;
+  message: string;
+  stack?: string;
+}
+
+export interface ReportContentErrorRequestBody {
+  application: WorkspaceAppName | null;
+  /** Set for a failed zoom outcome; unset for an exception that escaped `main()` */
+  reason?: ZoomFailReason;
+  error?: SerializedError;
+  inlineLoadingError?: SerializedError;
+  /** The page structure (ids and class names only), built by the content script when it reports */
+  dom: { menu: string; body: string };
+}
+
 export interface AppStorageState {
   zoomValue: string;
   viewOnly: boolean;
