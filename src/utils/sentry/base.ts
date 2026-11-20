@@ -21,7 +21,7 @@ const createNewSentryClient = (
 
   const sentryClient = new BrowserClient({
     ...SENTRY_BASE_CONFIG,
-    // Plasmo copies the package.json version into the manifest, and the release workflow names the Sentry
+    // WXT copies the package.json version into the manifest, and the release workflow names the Sentry
     // release with that same version, so uploaded source maps match.
     release: chrome?.runtime?.getManifest?.().version,
     stackParser: defaultStackParser,
