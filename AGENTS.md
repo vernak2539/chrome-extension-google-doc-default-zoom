@@ -19,7 +19,7 @@ A browser extension (Chrome, Edge, Firefox) designed to set a default zoom level
 The project follows a strategy-based architecture to handle different Google Workspace applications:
 
 - **`src/contents/index.ts`:** The main entry point for the content script, which detects the current application (Docs or Sheets) and executes the appropriate strategy.
-- **`src/strategies/`:** Contains `DocsStrategy` and `SheetsStrategy`, both inheriting from `AbstractBaseStrategy`. These classes encapsulate the logic for finding and interacting with the zoom UI elements.
+- **`src/strategies/`:** Zoom decisions are made by the pure `planZoom` in `plan-zoom.ts` (no DOM, unit tested). `DocsStrategy` and `SheetsStrategy`, both inheriting from `AbstractBaseStrategy`, read the page, ask `planZoom` for a plan and run it by finding and interacting with the zoom UI elements.
 - **`src/background/`:** Handles background tasks, notably using the `chrome.debugger` API in the "Extended" version to simulate keyboard events for custom zoom values.
 - **`src/utils/`:** Provides helper functions for DOM manipulation (`ui-helpers.ts`), localization (`localize.ts`), and storage.
 
