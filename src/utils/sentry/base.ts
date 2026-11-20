@@ -26,7 +26,9 @@ const createNewSentryClient = (
     release: chrome?.runtime?.getManifest?.().version,
     stackParser: defaultStackParser,
     integrations: getDefaultIntegrations({}).filter((defaultIntegration) => {
-      return !["BrowserApiErrors", "Breadcrumbs", "GlobalHandlers"].includes(
+      // Dedupe drops an event equal to the previous one of the same client. A client that lives in
+      // the background worker serves many tabs, and each failure must still be counted.
+      return !["BrowserApiErrors", "Breadcrumbs", "Dedupe", "GlobalHandlers"].includes(
         defaultIntegration.name
       );
     }),

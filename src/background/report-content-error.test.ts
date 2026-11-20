@@ -135,4 +135,11 @@ describe("report-content-error handler", () => {
     expect(event.tags).toMatchObject({ application: "Sheets" });
     expect(event.tags).not.toHaveProperty("zoomFailReason");
   });
+
+  test("should send every report of an identical failure, as each one is a separate failure", async () => {
+    await reportAndCollectEvent({ ...baseBody, reason: "zoom_menu_missing" });
+    const { event } = await reportAndCollectEvent({ ...baseBody, reason: "zoom_menu_missing" });
+
+    expect(event.message).toBe("Zoom failed: zoom_menu_missing");
+  });
 });
