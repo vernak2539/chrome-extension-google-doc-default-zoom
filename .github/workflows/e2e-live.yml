@@ -37,9 +37,9 @@ jobs:
           echo "FIREFOX_BIN=$FIREFOX_BIN" >> "$GITHUB_ENV"
       - name: Build both editions
         run: |
-          pnpm build:base --target=chrome-mv3
-          pnpm build:extended --target=chrome-mv3
-          pnpm build:base --target=firefox-mv2
+          pnpm build:base -b chrome
+          pnpm build:extended -b chrome
+          pnpm build:base -b firefox
       # Each step that touches Google may fail; the artifacts are uploaded anyway and the last step fails the job
       - name: Live check (Base)
         id: live_base

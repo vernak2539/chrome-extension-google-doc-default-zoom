@@ -1,15 +1,15 @@
 {
   "files": [
     {
-      "path": "build/chrome-mv3-*/popup.*.js",
+      "path": "build/chrome-mv3-*/chunks/*.js",
       "maxSize": "200 kB"
     },
     {
-      "path": "build/chrome-mv3-*/static/background/index.js",
+      "path": "build/chrome-mv3-*/background.js",
       "maxSize": "200 kB"
     },
     {
-      "path": "build/chrome-mv3-*/**/!(popup.*).js",
+      "path": "build/chrome-mv3-*/content-scripts/*.js",
       "maxSize": "100 kB"
     }
   ]

@@ -65,7 +65,7 @@ export const getBuildDir = (): string => {
 
   if (!existsSync(path.join(buildDir, "manifest.json"))) {
     throw new Error(
-      `No extension build in ${buildDir}: run \`pnpm build:${edition} --target=chrome-mv3\` first`
+      `No extension build in ${buildDir}: run \`pnpm build:${edition} -b chrome\` first`
     );
   }
 
@@ -102,9 +102,7 @@ export const assertNoSentryDsn = () => {
   );
 
   if (buildWithDsn) {
-    throw new Error(
-      `${buildWithDsn} contains a Sentry DSN: rebuild without PLASMO_PUBLIC_SENTRY_DSN set`
-    );
+    throw new Error(`${buildWithDsn} contains a Sentry DSN: rebuild without WXT_SENTRY_DSN set`);
   }
 };
 
@@ -133,10 +131,21 @@ export const setAppState = async (
   storageKey: "docs" | "sheets",
   state: AppState
 ) => {
-  // @plasmohq/storage keeps every value JSON encoded
   await serviceWorker.evaluate(
-    ([key, value]) => chrome.storage.sync.set({ [key]: value, schemaVersion: "2" }),
-    [storageKey, JSON.stringify(state)]
+    ({ key, value }) => chrome.storage.sync.set({ [key]: value, schemaVersion: 2 }),
+    { key: storageKey, value: state }
+  );
+};
+
+// What the Plasmo versions left behind: JSON text and schemaVersion "2"
+export const setLegacyAppState = async (
+  serviceWorker: Worker,
+  storageKey: "docs" | "sheets",
+  state: AppState
+) => {
+  await serviceWorker.evaluate(
+    ({ key, value }) => chrome.storage.sync.set({ [key]: value, schemaVersion: "2" }),
+    { key: storageKey, value: JSON.stringify(state) }
   );
 };
 
@@ -181,8 +190,8 @@ export const readRecorded = (page: Page): Promise<RecordedEvents> =>
     controlClicks: [...window.__e2e.controlClicks]
   }));
 
-// Records every chrome.storage write made by an extension page, such as the popup. Plasmo looks the
-// method up on each call, so wrapping it before the page's own scripts run catches every write.
+// Records every chrome.storage write made by an extension page, such as the popup. WXT storage looks
+// the method up on each call, so wrapping it before the page's own scripts run catches every write.
 // Count calls, not chrome.storage.onChanged events: Chrome sends none when a value is rewritten unchanged.
 export const installStorageRecorder = async (context: BrowserContext) => {
   await context.addInitScript(() => {

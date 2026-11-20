@@ -1,8 +1,9 @@
 /**
  * Checks the output of `pnpm build:base` and `pnpm build:extended` (`build/<target>-<edition>`).
  *
- * The editions differ only by Plasmo env files, and a missing variable silently changes the manifest instead of
- * failing the build. This fails when a built edition has the wrong permissions, name, Firefox add-on id or code.
+ * The editions differ only by the build mode (the `EDITIONS` map in wxt.config.ts), and a wrong mode silently
+ * changes the manifest instead of failing the build. This fails when a built edition has the wrong permissions,
+ * name, Firefox add-on id or code.
  *
  * Run it after building: `pnpm check:editions`
  */
@@ -26,7 +27,7 @@ const EDITIONS = {
   }
 };
 
-// Sent only by the debugger relay, which the minifier drops from Base
+// Typed only by the debugger handler, which the minifier drops from Base
 const DEBUGGER_CODE = "Input.insertText";
 
 const checkBuild = (directory, target, edition) => {
@@ -34,9 +35,6 @@ const checkBuild = (directory, target, edition) => {
   const manifest = JSON.parse(readFileSync(path.join(directory, "manifest.json"), "utf8"));
   const problems = [];
 
-  if (JSON.stringify(manifest).includes('"$')) {
-    problems.push("manifest has an unexpanded $VARIABLE");
-  }
   if ((manifest.permissions ?? []).includes("debugger") !== expected.hasDebugger) {
     problems.push(
       `manifest ${expected.hasDebugger ? "is missing" : "leaks"} the "debugger" permission`
