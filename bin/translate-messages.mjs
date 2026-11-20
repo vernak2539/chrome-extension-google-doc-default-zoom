@@ -27,7 +27,7 @@ const argv = yargs(hideBin(process.argv))
 async function main() {
   const { key: targetKey } = argv;
 
-  const localesDir = path.resolve(__dirname, "../locales");
+  const localesDir = path.resolve(__dirname, "../public/_locales");
   const sourceFile = path.join(localesDir, "en/messages.json");
 
   if (!fs.existsSync(sourceFile)) {

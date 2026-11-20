@@ -3,7 +3,7 @@ import { fn } from "storybook/test";
 
 import AnnouncementComponent from "../components/Announcement/component";
 
-import * as styles from "../style.module.css";
+import styles from "../style.module.css";
 
 const meta = {
   title: "Announcement",

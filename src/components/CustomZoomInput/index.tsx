@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import localize from "../../utils/localize";
 import type { ZoomInputProps } from "../shared-props";
 
-import * as style from "../../style.module.css";
+import style from "../../style.module.css";
 
 const CustomZoomInput = ({ zoomValue, zoomValues, isCustomValue, updateValue }: ZoomInputProps) => {
   const [localZoom, setLocalZoom] = useState(zoomValue || "");

@@ -4,7 +4,7 @@ import HomeView from "./areas/home";
 import SettingsView from "./areas/settings";
 import localize from "./utils/localize";
 
-import * as styles from "./style.module.css";
+import styles from "./style.module.css";
 
 export function AppRouter() {
   return (

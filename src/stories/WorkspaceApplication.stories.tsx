@@ -9,7 +9,7 @@ import {
   SHEETS_ZOOM_VALUES
 } from "../constants";
 
-import * as styles from "../style.module.css";
+import styles from "../style.module.css";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta = {

@@ -1,7 +1,7 @@
 import React from "react";
 import localize from "src/utils/localize";
 
-import * as style from "src/style.module.css";
+import style from "src/style.module.css";
 
 interface Props {
   children: React.ReactNode;

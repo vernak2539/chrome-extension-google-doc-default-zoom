@@ -9,7 +9,7 @@ import { setupSentryReactErrorBoundary } from "src/utils/sentry/react-error-boun
 import { AppRouter } from "./router";
 import { LoggerProvider } from "./utils/logger/context";
 
-import * as styles from "src/style.module.css";
+import styles from "src/style.module.css";
 
 const withSentryErrorBoundary = setupSentryReactErrorBoundary("popup");
 

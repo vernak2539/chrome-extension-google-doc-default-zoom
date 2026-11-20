@@ -6,7 +6,7 @@
 }
 
 .popupContainer {
-  /* Pico pads only `body > main` vertically, and Plasmo mounts the popup inside #__plasmo */
+  /* Pico pads only `body > main` vertically, and the popup mounts inside #root */
   padding-top: var(--pico-spacing);
   min-width: 450px;
   min-height: 355px;
@@ -123,11 +123,11 @@
 }
 
 .applicationImageDocs {
-  background-image: url("/assets/popup_icons/docs.svg");
+  background-image: url("../assets/popup_icons/docs.svg");
 }
 
 .applicationImageSheets {
-  background-image: url("/assets/popup_icons/sheets.svg");
+  background-image: url("../assets/popup_icons/sheets.svg");
 }
 
 .applicationInputContainer {
