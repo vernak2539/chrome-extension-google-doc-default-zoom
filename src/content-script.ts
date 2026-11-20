@@ -1,9 +1,5 @@
-import { relayMessage } from "@plasmohq/messaging";
-import type { PlasmoCSConfig } from "plasmo";
 import {
   OBSERVE_EXECUTION_LIMIT,
-  RELAY_EXECUTE_ENTER,
-  RELAY_GET_APP_STORAGE_STATE,
   SELECTOR_PAGE_HEADER,
   workspaceAppUiStrategyConfigs
 } from "src/constants";
@@ -12,7 +8,6 @@ import DocsStrategy from "src/strategies/docs";
 import SheetsStrategy from "src/strategies/sheets";
 import type { WorkspaceAppName, ZoomOutcome } from "src/types";
 import { isGoogleClassroomDomain } from "src/utils/classroom-helpers";
-import { IS_EXTENDED_EDITION } from "src/utils/edition";
 import getCurrentApp from "src/utils/get-current-app";
 import BrowserLogger from "src/utils/logger";
 import { observeElementAndExecute, onElementAvailable } from "src/utils/mutation-observer-helpers";
@@ -20,16 +15,6 @@ import { createSentryClient } from "src/utils/sentry/base";
 import { reportZoomOutcome } from "src/utils/sentry/report-zoom-outcome";
 import { stopExecution } from "src/utils/stop-exeuction";
 import { walkDOM } from "src/utils/walk-dom";
-
-export const config: PlasmoCSConfig = {
-  matches: [
-    "https://docs.google.com/document/*",
-    "https://docs.google.com/spreadsheets/*",
-    "https://classroom.google.com/*"
-  ],
-  exclude_matches: ["https://docs.google.com/offline/*"],
-  all_frames: true
-};
 
 const sentryScope = createSentryClient("content");
 const logger = new BrowserLogger("content");
@@ -52,12 +37,6 @@ const createStrategy = (currentApp: WorkspaceAppName | null): AbstractBaseStrate
       return new SheetsStrategy(workspaceAppUiStrategyConfigs["Sheets"]);
   }
 };
-
-relayMessage({ name: RELAY_GET_APP_STORAGE_STATE });
-
-if (IS_EXTENDED_EDITION) {
-  relayMessage({ name: RELAY_EXECUTE_ENTER });
-}
 
 const main = () => {
   // this should be first to stop execution if no current app
@@ -118,7 +97,7 @@ const main = () => {
   );
 };
 
-(() => {
+export const runContentScript = (): void => {
   logger.addContext("url", window.location.href);
 
   if (isGoogleClassroomDomain()) {
@@ -134,4 +113,4 @@ const main = () => {
       sentryScope.captureException(err);
     }
   });
-})();
+};
