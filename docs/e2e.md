@@ -21,8 +21,8 @@ The browser tests are named `*.e2e.ts` and use their own config (`e2e/vitest.con
 ```bash
 pnpm install
 pnpm exec playwright install --with-deps chromium   # once
-pnpm build:base --target=chrome-mv3                  # without PLASMO_PUBLIC_SENTRY_DSN set
-pnpm build:extended --target=chrome-mv3
+pnpm build:base -b chrome                  # without WXT_SENTRY_DSN set
+pnpm build:extended -b chrome
 pnpm test:e2e                                        # both editions
 pnpm test:e2e --project extended                     # one edition
 ```
@@ -60,7 +60,7 @@ What differs from Chromium:
 To run it on Linux:
 
 ```bash
-pnpm build:base --target=firefox-mv2   # without PLASMO_PUBLIC_SENTRY_DSN set
+pnpm build:base -b firefox   # without WXT_SENTRY_DSN set
 export FIREFOX_BIN="$(pnpm exec browsers install firefox@stable --path e2e/results/browsers --format '{{path}}')"
 pnpm test:e2e:firefox
 pnpm test:e2e:live:firefox             # the live pages; needs the network
@@ -100,7 +100,7 @@ The capture is the only step that needs a browser session, and it is signed out.
 Do this once after setting it up, or after changing the harness:
 
 1. In `src/constants.ts`, change `clickableZoomSelectId: "#zoomSelect"` (Docs) to `"#zoomSelectX"`.
-2. `pnpm build:extended --target=chrome-mv3 && pnpm test:e2e --project extended`. The Docs preset, custom zoom, page-still-loading and popup tests fail, because the content script no longer finds the zoom control.
+2. `pnpm build:extended -b chrome && pnpm test:e2e --project extended`. The Docs preset, custom zoom, page-still-loading and popup tests fail, because the content script no longer finds the zoom control.
 3. Revert the change, rebuild, and see the tests pass.
 
 To check the popup side, make the `onChange` of the dropdown in `src/components/SelectZoomInput/index.tsx` do nothing instead. The popup test then times out waiting for a storage write.
@@ -108,7 +108,8 @@ To check the popup side, make the `onChange` of the dropdown in `src/components/
 ## How it works
 
 - `e2e/harness.ts` launches Chromium with `launchPersistentContext` and the build loaded as an extension. It aborts requests to `*.sentry.io`, and in fixture mode it serves an empty page for `docs.google.com` and aborts every other `http(s)` request (it filters on the protocol, so the extension's own files still load).
-- Most tests write saved settings from the extension's service worker, to `chrome.storage.sync`, as the popup would.
+- Most tests write saved settings from the extension's service worker, to `chrome.storage.sync`, as the popup would. Values are plain (`schemaVersion: 2`), the format the current build writes.
+- One test seeds the format the Plasmo versions wrote (`JSON.stringify(state)` and `schemaVersion: "2"`) and checks that the new build migrates it and still applies the saved zoom. That is the upgrade path users get when they update.
 - The popup test saves them through the popup instead. It opens `popup.html` as a tab, picks a zoom in the Docs dropdown, and checks that the Docs page applies it. Then it picks another and checks the reloaded page applies that one.
   - `installStorageRecorder` wraps the `chrome.storage` write calls on extension pages. The test uses it to check that opening the popup writes nothing, and that each pick writes the whole Docs state once.
   - It counts calls rather than `chrome.storage.onChanged` events, because Chrome sends no event when a value is rewritten unchanged.

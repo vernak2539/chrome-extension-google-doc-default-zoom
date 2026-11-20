@@ -6,7 +6,7 @@ A browser extension (Chrome, Edge, Firefox) designed to set a default zoom level
 
 ### Key Technologies
 
-- **Framework:** [Plasmo](https://docs.plasmo.com/) (Browser extension framework)
+- **Framework:** [WXT](https://wxt.dev/) (Browser extension framework)
 - **Library:** React 18
 - **Language:** TypeScript
 - **Styling:** CSS Modules, Vanilla CSS
@@ -18,7 +18,7 @@ A browser extension (Chrome, Edge, Firefox) designed to set a default zoom level
 
 The project follows a strategy-based architecture to handle different Google Workspace applications:
 
-- **`src/contents/index.ts`:** The main entry point for the content script, which detects the current application (Docs or Sheets) and executes the appropriate strategy.
+- **`src/entrypoints/`:** WXT entrypoints: `background.ts`, `content.ts` (which calls `src/content-script.ts`), `popup/index.html`, and the two unlisted pages (`ext-versions`, `experimental-features`). `src/content-script.ts` detects the current application (Docs or Sheets) and executes the appropriate strategy.
 - **`src/strategies/`:** Contains `DocsStrategy` and `SheetsStrategy`, both inheriting from `AbstractBaseStrategy`. These classes encapsulate the logic for finding and interacting with the zoom UI elements.
 - **`src/background/`:** Handles background tasks, notably using the `chrome.debugger` API in the "Extended" version to simulate keyboard events for custom zoom values.
 - **`src/utils/`:** Provides helper functions for DOM manipulation (`ui-helpers.ts`), localization (`localize.ts`), and storage.
@@ -30,13 +30,13 @@ The project maintains a single codebase for two editions of the extension:
 1.  **Base:** Supports only predefined zoom levels.
 2.  **Extended:** Supports custom zoom levels by using the `debugger` permission (not available on Firefox).
 
-Each edition is a Plasmo build tag (`plasmo build --tag=base|extended`). The source is never rewritten, so what is tested is what ships.
+Each edition is a WXT build mode (`wxt build --mode base|extended`). The source is never rewritten, so what is tested is what ships. The browser comes from `-b chrome|edge|firefox`; Chrome and Edge build MV3 and Firefox builds MV2.
 
-- **Code:** `IS_EXTENDED_EDITION` in `src/utils/edition.ts` is `process.env.PLASMO_TAG === "extended"`. An unset tag means Base. Branch on it where the editions differ; search for it to find every such place. Plasmo bundles every file in `src/background/messages/`, so a handler must check the edition itself for the minifier to drop its code from Base.
-- **Manifest:** `package.json` `manifest` holds `$PLASMO_PUBLIC_EXT_NAME`, `$DEBUGGER_PERMISSION` and `$FIREFOX_EXT_ID`. Plasmo fills them from the committed `.env.base` and `.env.extended` (non-secret values only; `.gitignore` has exceptions for these two files). A missing variable does **not** fail the build: an empty `$DEBUGGER_PERMISSION` silently drops the permission and a missing `PLASMO_PUBLIC_EXT_NAME` falls back to the Extended name. `pnpm check:editions` catches both.
-- **Icons:** `assets/icon.base.png` and `assets/icon.extended.png`. Plasmo picks `icon.<tag>.png` before `icon.png`, and there is no untagged icon.
-- **Output:** `build/<target>-<edition>` (for example `build/chrome-mv3-base`) and `build/<target>-<edition>.zip`. `plasmo dev` uses the same `--tag` and writes to the same `build/<target>-<edition>` directory, so a dev build overwrites a production build. Always rebuild (`pnpm build:<edition>`) before `pnpm package:<edition>` or `pnpm check:editions`: a dev bundle is unminified and keeps debugger code that the minifier removes from Base.
-- **Tests:** Vitest runs every test file once per edition (the `base` and `extended` projects in `vite.config.ts` set `PLASMO_TAG`). Tests for Extended-only code use `describe.runIf(IS_EXTENDED_EDITION)` or `test.runIf(IS_EXTENDED_EDITION)`. Storybook defines `PLASMO_TAG` as `extended`.
+- **Code:** `IS_EXTENDED_EDITION` in `src/utils/edition.ts` is `import.meta.env.MODE === "extended"`. Any other mode means Base. Branch on it where the editions differ; search for it to find every such place. The background handler must check the edition itself for the minifier to drop its debugger code from Base.
+- **Manifest:** the `EDITIONS` map in `wxt.config.ts` holds the name, Firefox add-on id and permissions for each mode. The manifest function writes them; there are no env files. `pnpm check:editions` fails when a built manifest or bundle does not match its edition.
+- **Icons:** `assets/icons/<edition>/<size>.png` at 16, 32, 48, 64 and 128 px, supplied by the `build:publicAssets` hook. `assets/icon.base.png` and `assets/icon.extended.png` are the 662 px masters.
+- **Output:** `build/<browser>-mv<n>-<edition>` (for example `build/chrome-mv3-base`) and `build/<browser>-mv<n>-<edition>.zip`. `wxt` dev uses the same mode and writes to the same directory, so a dev build overwrites a production build. Always rebuild (`pnpm build:<edition>`) before `pnpm package:<edition>` or `pnpm check:editions`: a dev bundle is unminified and keeps debugger code that the minifier removes from Base. `wxt zip` always builds, and it leaves sourcemaps out of the zip.
+- **Tests:** Vitest runs every test file once per edition (the `base` and `extended` projects in `vite.config.ts` set the mode). Tests for Extended-only code use `describe.runIf(IS_EXTENDED_EDITION)` or `test.runIf(IS_EXTENDED_EDITION)`. Storybook defines `MODE` as `extended`.
 
 ## Building and Running
 
@@ -47,7 +47,7 @@ pnpm dev        # Extended edition
 pnpm dev:base   # Base edition
 ```
 
-This starts the Plasmo development server. Load the generated extension from `build/chrome-mv3-extended` or `build/chrome-mv3-base` (or the appropriate target directory) into your browser.
+This starts the WXT development server. Load the generated extension from `build/chrome-mv3-extended` or `build/chrome-mv3-base` (or the appropriate `-b` browser directory) into your browser.
 
 ### Production Build
 
@@ -58,7 +58,7 @@ pnpm package:base     # zips build/<target>-base
 pnpm package:extended # `pnpm package` is the same
 ```
 
-Pass `--target=chrome-mv3|edge-mv3|firefox-mv2` and `--source-maps` as usual. The bundles are written to `build/<target>-<edition>`.
+Pass `-b chrome|edge|firefox` as usual. Chrome and Edge build MV3, Firefox builds MV2. Sourcemaps are always written next to the bundles in `build/<browser>-mv<n>-<edition>` and left out of the zips.
 
 ### Edition Check
 
@@ -70,7 +70,7 @@ Run it after building. It fails when a built manifest or bundle in `build/<targe
 
 ### Type Checking and Bundle Size
 
-Run both after `pnpm build:base --target=chrome-mv3` and `pnpm build:extended --target=chrome-mv3`. `pnpm typecheck` needs the `.plasmo/` declarations that the build creates, and `pnpm bundlesize` reads `build/chrome-mv3-*`, so it measures every edition you built for `chrome-mv3`.
+Run both after `pnpm build:base -b chrome` and `pnpm build:extended -b chrome`. `pnpm typecheck` needs the `.wxt/` declarations that `wxt prepare` (or any build) creates, and `pnpm bundlesize` reads `build/chrome-mv3-*`, so it measures every edition you built for `chrome`.
 
 ```bash
 pnpm typecheck
@@ -117,7 +117,7 @@ Google Docs/Sheets UI is complex. Use the `simulateClick` helper in `src/utils/u
 
 ### Localization
 
-All user-facing strings should be localized using `src/utils/localize.ts`, which wraps `chrome.i18n.getMessage`. Localized strings are stored in `locales/`.
+All user-facing strings should be localized using `src/utils/localize.ts`, which wraps `chrome.i18n.getMessage`. Localized strings are stored in `public/_locales/`.
 
 For instructions on adding new languages or managing translations, refer to [docs/localization.md](./docs/localization.md).
 

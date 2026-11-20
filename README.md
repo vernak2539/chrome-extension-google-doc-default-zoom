@@ -92,9 +92,9 @@ with the former (option #1 :wink:) via a Chrome Extension.
 
 ## Actually Doing It
 
-I ended up using [Plasmo](https://docs.plasmo.com/) to get up and running quickly. Chrome Extensions are new to me, so
+I started with [Plasmo](https://docs.plasmo.com/) to get up and running quickly. Chrome Extensions were new to me, so
 this allowed me to get started pretty quickly (still figuring out the messaging aspect between content scripts, background,
-and popup :grimacing:).
+and popup :grimacing:). The build has since moved to [WXT](https://wxt.dev/); the extension still does the same thing.
 
 Ended up getting a simple prototype built in a couple hours and submitted to the Webstore :crossed_fingers: (will update
 if / when approved).
@@ -106,7 +106,7 @@ It's pretty bare bones now and likely will have some quirks. This is likely due 
 2. Is quite finicky when you try to simulate events (due to the first point)
 
 Issues are always appreciated, and I'll try to answer accordingly. Please remember that I do this in my spare time and
-Chrome Extensions and Plasmo are quite new to me.
+Chrome Extensions are still fairly new to me.
 
 ## Does it work with the Google Docs redesign?
 
