@@ -19,9 +19,10 @@ export const OBSERVE_EXECUTION_LIMIT = 1000;
 
 export const SELECTOR_PAGE_HEADER = "#docs-chrome";
 
-// This needs to match the file name ./src/background/messages/get-app-storage-state.ts
+// These need to match the file names in ./src/background/messages/
 export const RELAY_GET_APP_STORAGE_STATE = "get-app-storage-state";
 export const RELAY_EXECUTE_ENTER = "execute-enter";
+export const RELAY_REPORT_CONTENT_ERROR = "report-content-error";
 
 /**  Workspace Application: Docs - Start **/
 export const DOCS_STORAGE_KEY: DocsStorageKey = "docs";

@@ -21,9 +21,14 @@ const createNewSentryClient = (
 
   const sentryClient = new BrowserClient({
     ...SENTRY_BASE_CONFIG,
+    // Plasmo copies the package.json version into the manifest, and the release workflow names the Sentry
+    // release with that same version, so uploaded source maps match.
+    release: chrome?.runtime?.getManifest?.().version,
     stackParser: defaultStackParser,
     integrations: getDefaultIntegrations({}).filter((defaultIntegration) => {
-      return !["BrowserApiErrors", "Breadcrumbs", "GlobalHandlers"].includes(
+      // Dedupe drops an event equal to the previous one of the same client. A client that lives in
+      // the background worker serves many tabs, and each failure must still be counted.
+      return !["BrowserApiErrors", "Breadcrumbs", "Dedupe", "GlobalHandlers"].includes(
         defaultIntegration.name
       );
     }),
