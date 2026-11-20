@@ -8,12 +8,12 @@ describe("isChrome", () => {
   });
 
   test("should return true when chrome", () => {
-    vi.stubEnv("PLASMO_BROWSER", "chrome");
+    vi.stubEnv("BROWSER", "chrome");
     expect(isChrome()).toBe(true);
   });
 
   test("should return false when not chrome", () => {
-    vi.stubEnv("PLASMO_BROWSER", "firefox");
+    vi.stubEnv("BROWSER", "firefox");
     expect(isChrome()).toBe(false);
   });
 });
@@ -24,12 +24,12 @@ describe("isEdge", () => {
   });
 
   test("should return true when edge", () => {
-    vi.stubEnv("PLASMO_BROWSER", "edge");
+    vi.stubEnv("BROWSER", "edge");
     expect(isEdge()).toBe(true);
   });
 
   test("should return false when not edge", () => {
-    vi.stubEnv("PLASMO_BROWSER", "firefox");
+    vi.stubEnv("BROWSER", "firefox");
     expect(isEdge()).toBe(false);
   });
 });
@@ -40,17 +40,17 @@ describe("showExtensionVersionsTab", () => {
   });
 
   test("should be true when chrome", () => {
-    vi.stubEnv("PLASMO_BROWSER", "chrome");
+    vi.stubEnv("BROWSER", "chrome");
     expect(showExtensionVersionsTab()).toBe(true);
   });
 
   test("should be true when edge", () => {
-    vi.stubEnv("PLASMO_BROWSER", "edge");
+    vi.stubEnv("BROWSER", "edge");
     expect(showExtensionVersionsTab()).toBe(true);
   });
 
   test("should be false when firefox", () => {
-    vi.stubEnv("PLASMO_BROWSER", "firefox");
+    vi.stubEnv("BROWSER", "firefox");
     expect(showExtensionVersionsTab()).toBe(false);
   });
 });

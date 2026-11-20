@@ -3,12 +3,12 @@ import { IS_EXTENDED_EDITION } from "src/utils/edition";
 import packageJson from "../../../package.json";
 
 export const SENTRY_BASE_CONFIG = {
-  dsn: process.env.PLASMO_PUBLIC_SENTRY_DSN,
+  dsn: import.meta.env.WXT_SENTRY_DSN,
 
   // We recommend adjusting this value in production, or using tracesSampler
   // for finer control
   tracesSampleRate: 1.0,
-  environment: process.env.NODE_ENV || "development",
+  environment: import.meta.env.COMMAND === "build" ? "production" : "development",
   release: packageJson.version,
   ignoreErrors: [
     // The debugger handler only detaches once its commands have settled, so this now means someone else detached
