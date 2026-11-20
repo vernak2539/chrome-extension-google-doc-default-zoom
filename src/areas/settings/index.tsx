@@ -1,18 +1,24 @@
-import { useStorage } from "@plasmohq/storage/hook";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "src/components/Button";
-import { APPS, getDefaultAppState } from "src/constants";
 import type { AppStorageState } from "src/types";
 import localize from "src/utils/localize";
 import { createSentryClient } from "src/utils/sentry/base";
-import { SCHEMA_VERSION_KEY, storage } from "src/utils/storage";
+import {
+  appStateKey,
+  readStoredValue,
+  SCHEMA_VERSION_KEY,
+  CURRENT_SCHEMA_VERSION
+} from "src/utils/storage";
+import { resetStorageToDefaults, writeStorageInLegacyFormat } from "src/utils/storage-dev-tools";
+import { useStoredValue } from "src/utils/use-stored-value";
+import { storage, type StorageItemKey } from "wxt/utils/storage";
 
 const sentryScope = createSentryClient("popup");
 
 const SettingsView = () => {
   const navigate = useNavigate();
-  const [schemaVersion] = useStorage<number>({ key: SCHEMA_VERSION_KEY, instance: storage }, 1);
+  const [schemaVersion] = useStoredValue<number>(SCHEMA_VERSION_KEY);
   const [isBusy, setIsBusy] = useState(false);
   const isMounted = useRef(true);
 
@@ -24,12 +30,9 @@ const SettingsView = () => {
 
   const onResetZoomSettingsClick = async () => {
     setIsBusy(true);
-    const defaultStates = Object.fromEntries(
-      Object.keys(APPS).map((storageKey) => [storageKey, getDefaultAppState(storageKey)])
-    );
 
     try {
-      await storage.setMany(defaultStates);
+      await resetStorageToDefaults();
     } catch (error) {
       sentryScope.captureException(error);
       console.error("Failed to reset storage", error);
@@ -45,28 +48,34 @@ const SettingsView = () => {
 
     try {
       // Read current V2 state before deleting
-      const docsState = await storage.get<AppStorageState>("docs");
-      const sheetsState = await storage.get<AppStorageState>("sheets");
+      const docsState = await readStoredValue<AppStorageState>(appStateKey("docs"));
+      const sheetsState = await readStoredValue<AppStorageState>(appStateKey("sheets"));
 
       // Delete V2 keys
-      await storage.remove("docs");
-      await storage.remove("sheets");
-      await storage.remove(SCHEMA_VERSION_KEY);
+      await storage.removeItems([appStateKey("docs"), appStateKey("sheets"), SCHEMA_VERSION_KEY]);
 
       // Recreate V1 flat keys from the current state
+      const v1Writes: { key: StorageItemKey; value: unknown }[] = [];
       if (docsState) {
-        await storage.set("zoomValue", docsState.zoomValue);
-        await storage.set("zoomValue:viewOnly", docsState.viewOnly);
-        await storage.set("zoomValue:classroomSupport", docsState.classroomSupport);
+        v1Writes.push(
+          { key: "sync:zoomValue", value: docsState.zoomValue },
+          { key: "sync:zoomValue:viewOnly", value: docsState.viewOnly },
+          { key: "sync:zoomValue:classroomSupport", value: docsState.classroomSupport }
+        );
       }
       if (sheetsState) {
-        await storage.set("sheets:zoomValue", sheetsState.zoomValue);
-        await storage.set("sheets:zoomValue:viewOnly", sheetsState.viewOnly);
-        await storage.set("sheets:zoomValue:classroomSupport", sheetsState.classroomSupport);
+        v1Writes.push(
+          { key: "sync:sheets:zoomValue", value: sheetsState.zoomValue },
+          { key: "sync:sheets:zoomValue:viewOnly", value: sheetsState.viewOnly },
+          { key: "sync:sheets:zoomValue:classroomSupport", value: sheetsState.classroomSupport }
+        );
+      }
+      if (v1Writes.length > 0) {
+        await storage.setItems(v1Writes);
       }
 
       alert(
-        "Downgraded to V1 flat keys. The background script will auto-migrate to V2 the next time the extension restarts (e.g. from chrome://extensions)."
+        `Downgraded to V1 flat keys. The background script will auto-migrate to V${CURRENT_SCHEMA_VERSION} the next time the extension restarts (e.g. from chrome://extensions).`
       );
     } catch (error) {
       sentryScope.captureException(error);
@@ -74,6 +83,24 @@ const SettingsView = () => {
       alert(
         "Failed to downgrade to V1 flat keys. Storage may be partially updated; please retry or inspect extension storage before continuing."
       );
+    } finally {
+      if (isMounted.current) {
+        setIsBusy(false);
+      }
+    }
+  };
+  const onWriteLegacyFormatClick = async () => {
+    setIsBusy(true);
+
+    try {
+      await writeStorageInLegacyFormat();
+      alert(
+        'Wrote the settings as the old format (JSON text and schemaVersion "2"). Restart the extension (e.g. from chrome://extensions) to see the background migrate them to plain values.'
+      );
+    } catch (error) {
+      sentryScope.captureException(error);
+      console.error("Failed to write storage in the legacy format", error);
+      alert("Failed to write the legacy storage format. Check the extension console for details.");
     } finally {
       if (isMounted.current) {
         setIsBusy(false);
@@ -97,7 +124,7 @@ const SettingsView = () => {
         </Button>
       </section>
 
-      {process.env.NODE_ENV === "development" && (
+      {import.meta.env.COMMAND === "serve" && (
         <>
           <hr />
           <br />
@@ -112,6 +139,18 @@ const SettingsView = () => {
               isDisabled={isBusy}
               size="small">
               Downgrade to V1 Format
+            </Button>
+            <p>
+              Write the current settings as JSON text with schemaVersion "2", the way the Plasmo
+              versions stored them. Reload the extension and check that it still applies the same
+              zoom.
+            </p>
+            <Button
+              variant="danger"
+              onPress={onWriteLegacyFormatClick}
+              isDisabled={isBusy}
+              size="small">
+              Write Settings in Plasmo Format
             </Button>
           </section>
         </>
@@ -134,7 +173,10 @@ const SettingsView = () => {
           color: "var(--pico-muted-color)",
           textAlign: "center"
         }}>
-        {localize("popupSettingsStorageVersion").replace("{schemaVersion}", String(schemaVersion))}
+        {localize("popupSettingsStorageVersion").replace(
+          "{schemaVersion}",
+          String(schemaVersion ?? 1)
+        )}
       </p>
     </div>
   );

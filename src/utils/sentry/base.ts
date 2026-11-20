@@ -6,7 +6,7 @@ import {
   makeFetchTransport
 } from "@sentry/browser";
 import type { ExtensionFileSource } from "src/types";
-import { SCHEMA_VERSION_KEY, storage } from "src/utils/storage";
+import { readStoredValue, SCHEMA_VERSION_KEY } from "src/utils/storage";
 
 import { SENTRY_BASE_CONFIG, getDefaultTags } from "./config";
 import { redactEventRequest } from "./redact-event";
@@ -45,7 +45,7 @@ const createNewSentryClient = (
   sentryClient.init(); // initializing has to be done after setting the client on the scope
 
   // set schema version... async should be fine as it will be quick, but there are potentials for race conditions
-  storage.get<number>(SCHEMA_VERSION_KEY).then((version) => {
+  readStoredValue<number>(SCHEMA_VERSION_KEY).then((version) => {
     sentryScope.setTag("storageSchemaVersion", version ?? 1);
   });
 
