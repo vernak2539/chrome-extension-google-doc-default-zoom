@@ -42,14 +42,20 @@ export default defineConfig({
     exclude: ["**/*.map"],
     zipSources: false
   },
-  vite: ({ command }) =>
-    command === "build"
+  vite: ({ command }) => {
+    if (command === "build") {
+      // WXT sets Vite's mode to the edition, so Vite would treat the build as non-production and
+      // @vitejs/plugin-react would compile JSX for development. Vite decides production from NODE_ENV.
+      process.env.NODE_ENV = "production";
+    }
+
+    return command === "build"
       ? {
-          // WXT sets process.env.NODE_ENV to the mode (base/extended) for scripts; pages keep React's production build
           define: { "process.env.NODE_ENV": JSON.stringify("production") },
           build: { sourcemap: true }
         }
-      : {},
+      : {};
+  },
   manifest: ({ browser, mode }) => {
     const edition = EDITIONS[EDITION_BY_MODE[mode] ?? "base"];
     return {
