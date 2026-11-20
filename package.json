@@ -1,6 +1,5 @@
 {
   "name": "google-workspace-zoom-extended",
-  "displayName": "__MSG_extensionNameExtended__",
   "version": "0.15.4",
   "description": "__MSG_extensionDescription__",
   "license": "MIT WITH Commons-Clause",
@@ -8,19 +7,19 @@
   "repository": "github:vernak2539/chrome-extension-google-doc-default-zoom",
   "type": "module",
   "scripts": {
-    "dev": "plasmo dev --tag=extended",
-    "dev:base": "plasmo dev --tag=base",
+    "dev": "wxt --mode extended",
+    "dev:base": "wxt --mode base",
     "test": "vitest",
     "test:e2e": "vitest run --config e2e/vitest.config.ts e2e/zoom-fixtures",
     "test:e2e:live": "vitest run --config e2e/vitest.config.ts e2e/zoom-live",
     "test:e2e:firefox": "vitest run --config e2e/vitest.config.ts --project firefox",
     "test:e2e:live:firefox": "vitest run --config e2e/vitest.config.ts --project firefox-live",
     "e2e:capture": "vitest run --config e2e/vitest.config.ts e2e/capture; status=$?; vitest run --config e2e/vitest.config.ts e2e/sanitize && exit $status",
-    "build:base": "plasmo build --hoist --tag=base",
-    "build:extended": "plasmo build --hoist --tag=extended",
+    "build:base": "wxt build --mode base",
+    "build:extended": "wxt build --mode extended",
     "build": "pnpm build:extended",
-    "package:base": "plasmo package --tag=base",
-    "package:extended": "plasmo package --tag=extended",
+    "package:base": "wxt zip --mode base",
+    "package:extended": "wxt zip --mode extended",
     "package": "pnpm package:extended",
     "format": "oxfmt --write .",
     "format:check": "oxfmt --check .",
@@ -31,15 +30,14 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "check:editions": "node bin/check-edition-build.mjs",
+    "postinstall": "wxt prepare",
     "prepare": "husky"
   },
   "dependencies": {
     "@picocss/pico": "^2.1.1",
-    "@plasmohq/messaging": "^0.7.2",
-    "@plasmohq/storage": "^1.15.0",
     "@sentry/browser": "^9.47.2",
+    "@webext-core/messaging": "^4.0.1",
     "classnames": "^2.5.1",
-    "plasmo": "0.90.5",
     "react": "18.3.1",
     "react-aria-components": "^1.22.1",
     "react-dom": "18.3.1",
@@ -57,6 +55,7 @@
     "@types/react": "18.3.27",
     "@types/react-dom": "18.3.7",
     "@vitejs/plugin-react": "^6.3.0",
+    "@wxt-dev/module-react": "1.2.2",
     "bundlesize2": "^0.0.35",
     "husky": "^9.1.7",
     "jsdom": "31.0.1",
@@ -70,6 +69,7 @@
     "vite": "^8.3.8",
     "vite-plugin-svgr": "^5.2.0",
     "vitest": "^5.1.1",
+    "wxt": "0.21.5",
     "yargs": "^18.2.0"
   },
   "lint-staged": {
@@ -83,18 +83,6 @@
   "pnpm": {
     "overrides": {
       "nanoid": "3.3.20"
-    }
-  },
-  "manifest": {
-    "name": "$PLASMO_PUBLIC_EXT_NAME",
-    "default_locale": "en",
-    "permissions": [
-      "$DEBUGGER_PERMISSION"
-    ],
-    "browser_specific_settings": {
-      "gecko": {
-        "id": "$FIREFOX_EXT_ID"
-      }
     }
   }
 }

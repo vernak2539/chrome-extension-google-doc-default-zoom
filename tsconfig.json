@@ -1,13 +1,15 @@
 {
-  "extends": "plasmo/templates/tsconfig.base",
-  "exclude": ["node_modules", "vite.config.ts", "e2e/vitest.config.ts"],
-  "include": [".plasmo/index.d.ts", ".plasmo/messaging.d.ts", "./**/*.ts", "./**/*.tsx"],
+  "extends": "./.wxt/tsconfig.json",
+  "exclude": ["node_modules", "vite.config.ts", "e2e/vitest.config.ts", "build"],
+  "include": [".wxt/wxt.d.ts", "./**/*.ts", "./**/*.tsx"],
   "compilerOptions": {
-    "paths": {
-      "src/*": ["./src/*"]
-    },
+    "strict": false,
     "strictNullChecks": true,
-    "moduleResolution": "bundler",
+    "noUncheckedIndexedAccess": false,
+    "noImplicitOverride": false,
+    "noFallthroughCasesInSwitch": false,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
     "noUncheckedSideEffectImports": false,
     "jsx": "react-jsx",
     "types": ["vite-plugin-svgr/client", "chrome"]

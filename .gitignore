@@ -27,15 +27,13 @@ yarn-error.log*
 
 # local env files
 .env*
-!.env.base
-!.env.extended
 
 out/
 build/
 dist/
 
-# plasmo - https://www.plasmo.com
-.plasmo
+# wxt
+.wxt
 
 # bpp - http://bpp.browser.market/
 keys.json
