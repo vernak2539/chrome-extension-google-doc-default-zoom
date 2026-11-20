@@ -19,10 +19,6 @@ export const OBSERVE_EXECUTION_LIMIT = 1000;
 
 export const SELECTOR_PAGE_HEADER = "#docs-chrome";
 
-// This needs to match the file name ./src/background/messages/get-app-storage-state.ts
-export const RELAY_GET_APP_STORAGE_STATE = "get-app-storage-state";
-export const RELAY_EXECUTE_ENTER = "execute-enter";
-
 /**  Workspace Application: Docs - Start **/
 export const DOCS_STORAGE_KEY: DocsStorageKey = "docs";
 export const DOCS_ZOOM_VALUES: DocsZoomValues = [
@@ -103,7 +99,7 @@ export const getDefaultAppState = (storageKey?: string): AppStorageState => ({
  */
 export const fillAppState = (
   storageKey: string | undefined,
-  stored?: Partial<AppStorageState>
+  stored?: Partial<AppStorageState> | null
 ): AppStorageState => {
   const defaults = getDefaultAppState(storageKey);
   return {

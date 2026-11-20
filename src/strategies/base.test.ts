@@ -1,14 +1,14 @@
 // @vitest-environment jsdom
-import { sendToBackgroundViaRelay } from "@plasmohq/messaging";
 import { workspaceAppUiStrategyConfigs } from "src/constants";
 import type { AppStorageState } from "src/types";
 import { IS_EXTENDED_EDITION } from "src/utils/edition";
 import getAppStorageStateFromStorage from "src/utils/get-app-storage-state-from-storage";
+import { sendMessage } from "src/utils/messaging";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 
 import { AbstractBaseStrategy } from "./base";
 
-vi.mock("@plasmohq/messaging", () => ({ sendToBackgroundViaRelay: vi.fn() }));
+vi.mock("src/utils/messaging", () => ({ sendMessage: vi.fn() }));
 vi.mock("src/utils/localize", () => ({ default: (key: string) => key }));
 vi.mock("src/utils/get-app-storage-state-from-storage", () => ({ default: vi.fn() }));
 
@@ -24,7 +24,7 @@ class TestStrategy extends AbstractBaseStrategy {
   }
 }
 
-const relay = vi.mocked(sendToBackgroundViaRelay);
+const sendMessageMock = vi.mocked(sendMessage);
 const getStoredState = vi.mocked(getAppStorageStateFromStorage);
 
 // "130%" is not a Docs preset, so it takes the custom zoom flow; the nearest preset is "125%"
@@ -57,7 +57,7 @@ const storedState = (zoomValue: string): AppStorageState => ({
 describe("zoom outcome", () => {
   beforeEach(() => {
     vi.useFakeTimers();
-    relay.mockReset();
+    sendMessageMock.mockReset();
     getStoredState.mockReset();
     document.body.innerHTML = "";
   });
@@ -120,7 +120,7 @@ describe("zoom outcome", () => {
         status: "failed",
         reason: "zoom_input_missing"
       });
-      expect(relay).not.toHaveBeenCalled();
+      expect(sendMessageMock).not.toHaveBeenCalled();
     }
   );
 
@@ -133,7 +133,7 @@ describe("zoom outcome", () => {
         status: "failed",
         reason: "zoom_option_missing"
       });
-      expect(relay).not.toHaveBeenCalled();
+      expect(sendMessageMock).not.toHaveBeenCalled();
     }
   );
 
@@ -179,7 +179,7 @@ describe.runIf(IS_EXTENDED_EDITION)("custom zoom flow", () => {
 
   beforeEach(() => {
     vi.useFakeTimers();
-    relay.mockReset();
+    sendMessageMock.mockReset();
     clickedRows = renderZoomMenu();
   });
 
@@ -194,7 +194,7 @@ describe.runIf(IS_EXTENDED_EDITION)("custom zoom flow", () => {
   };
 
   test("should not select a preset when the debugger typed the value", async () => {
-    relay.mockResolvedValue({ err: null });
+    sendMessageMock.mockResolvedValue({ err: null });
 
     const outcome = await zoomAndSettle();
 
@@ -205,7 +205,7 @@ describe.runIf(IS_EXTENDED_EDITION)("custom zoom flow", () => {
   test.each(["no_debugger", "debugger_failed"] as const)(
     "should select the nearest preset when the handler replies %s",
     async (err) => {
-      relay.mockResolvedValue({ err });
+      sendMessageMock.mockResolvedValue({ err });
 
       const outcome = await zoomAndSettle();
 
@@ -214,8 +214,8 @@ describe.runIf(IS_EXTENDED_EDITION)("custom zoom flow", () => {
     }
   );
 
-  test("should select the nearest preset when the relay rejects", async () => {
-    relay.mockRejectedValue(new Error("Could not establish connection"));
+  test("should select the nearest preset when the message rejects", async () => {
+    sendMessageMock.mockRejectedValue(new Error("Could not establish connection"));
 
     const outcome = await zoomAndSettle();
 
@@ -228,7 +228,7 @@ describe.runIf(IS_EXTENDED_EDITION)("custom zoom flow", () => {
 
     await zoomAndSettle();
 
-    expect(relay).not.toHaveBeenCalled();
+    expect(sendMessageMock).not.toHaveBeenCalled();
     expect(clickedRows).toEqual([NEAREST_PRESET]);
   });
 });

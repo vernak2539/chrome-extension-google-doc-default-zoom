@@ -6,7 +6,7 @@ import { describe, expect, test, vi } from "vitest";
 
 import SheetsStrategy from "./sheets";
 
-vi.mock("@plasmohq/messaging", () => ({ sendToBackgroundViaRelay: vi.fn() }));
+vi.mock("src/utils/messaging", () => ({ sendMessage: vi.fn() }));
 vi.mock("src/utils/localize", () => ({ default: (key: string) => key }));
 vi.mock("src/utils/get-app-storage-state-from-storage", () => ({ default: vi.fn() }));
 

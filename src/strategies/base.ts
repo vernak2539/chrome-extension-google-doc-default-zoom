@@ -1,11 +1,9 @@
-import { sendToBackgroundViaRelay } from "@plasmohq/messaging";
 import getAppStorageStateFromStorage from "src/utils/get-app-storage-state-from-storage";
 import { getClosestZoomValue } from "src/utils/get-closest-zoom-value";
+import { sendMessage } from "src/utils/messaging";
 
-import { RELAY_EXECUTE_ENTER } from "../constants";
 import type {
   AppStorageState,
-  ExecuteEnterRequestBody,
   ExecuteEnterResponseBody,
   Feature,
   UiStrategyConfig,
@@ -126,14 +124,9 @@ export abstract class AbstractBaseStrategy {
 
     let response: ExecuteEnterResponseBody | null = null;
     try {
-      response = await sendToBackgroundViaRelay<ExecuteEnterRequestBody, ExecuteEnterResponseBody>({
-        name: RELAY_EXECUTE_ENTER,
-        body: {
-          zoomValue
-        }
-      });
+      response = await sendMessage("executeEnter", { zoomValue });
     } catch {
-      // the relay failed, so nothing was typed: use the nearest preset instead
+      // the message failed, so nothing was typed: use the nearest preset instead
     }
 
     if (!response || response.err) {
