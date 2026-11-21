@@ -126,12 +126,11 @@ describe("zoom flow in Firefox against saved Docs and Sheets markup (base editio
       await new Promise((resolve) => setTimeout(resolve, 1500));
       expect((await readRecorded(page)).clicks).toEqual([]);
 
-      // the content script only watches #docs-toolbar itself (no subtree), so the toolbar has to mutate too
+      // only the class of the zoom control changes, which is a descendant of the watched toolbar
       await page.evaluate(() => {
         document
           .querySelector("#zoomSelect")
           ?.classList.remove("goog-toolbar-combo-button-disabled");
-        document.querySelector("#docs-toolbar")?.setAttribute("data-e2e-ready", "true");
       });
       await waitForRecorded(page, "clicks", 1);
 

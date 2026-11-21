@@ -64,4 +64,19 @@ describe("observeElementAndExecute", () => {
     expect(callback).toHaveBeenCalledOnce();
     expect(onStop).not.toHaveBeenCalled();
   });
+
+  test("should execute when only the class of a descendant of the watched element changes", async () => {
+    document.body.innerHTML = `<div id="watched"><div id="child" class="disabled"></div></div>`;
+    const callback = vi.fn();
+
+    observeElementAndExecute(
+      WATCHED,
+      { shouldStop: () => false, shouldExecute: () => true },
+      callback
+    );
+    document.querySelector("#child")?.classList.remove("disabled");
+    await Promise.resolve();
+
+    expect(callback).toHaveBeenCalledOnce();
+  });
 });

@@ -72,7 +72,7 @@ export abstract class AbstractBaseStrategy {
     const zoomInputSelect = findZoomMenu(zoomInputContainer);
 
     if (!zoomInputSelect) {
-      this.closeDropdown();
+      this.closeDropdown(zoomInputContainer);
       return failed("zoom_menu_missing");
     }
 
@@ -89,14 +89,14 @@ export abstract class AbstractBaseStrategy {
 
     // somehow we may not have matched the right element
     if (!newZoomLevelElement) {
-      this.closeDropdown();
+      this.closeDropdown(zoomInputContainer);
       return failed("zoom_option_missing");
     }
 
     // select new zoom level
     clickDOMElement(newZoomLevelElement);
 
-    this.closeDropdown();
+    this.closeDropdown(zoomInputContainer);
     return APPLIED;
   }
 
@@ -129,15 +129,13 @@ export abstract class AbstractBaseStrategy {
       return fallback();
     }
 
-    this.closeDropdown();
+    this.closeDropdown(zoomInputContainer);
     return APPLIED;
   }
 
-  private closeDropdown() {
-    // close dropdown with blur event (may need to check again to see if it's closed)
-    setTimeout(() => {
-      getDOMElementAndClick("canvas");
-    }, 500);
+  // Blurs only the zoom input: document.activeElement can be the editor, and a click on the page can move the caret
+  private closeDropdown(zoomInputContainer: Element) {
+    zoomInputContainer.querySelector("input")?.blur();
   }
 
   protected isUIViewOnly() {

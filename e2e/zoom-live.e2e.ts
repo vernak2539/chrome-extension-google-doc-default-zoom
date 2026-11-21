@@ -49,6 +49,27 @@ const waitForZoomClick = async (page: Page, zoomValue: string) => {
   }
 };
 
+// The zoom dropdown is closed once no visible menu still lists the zoom value as a row
+const expectZoomMenuClosed = async (page: Page, zoomValue: string) => {
+  await expect
+    .poll(
+      () =>
+        page.evaluate(
+          (value) =>
+            Array.from(document.querySelectorAll(".goog-menu")).some(
+              (menu) =>
+                menu.getClientRects().length > 0 &&
+                Array.from(menu.querySelectorAll(".goog-menuitem")).some(
+                  (row) => row.firstChild?.textContent === value
+                )
+            ),
+          zoomValue
+        ),
+      { timeout: PAGE_TIMEOUT_MS }
+    )
+    .toBe(false);
+};
+
 const expectZoomBoxValue = async (page: Page, selector: string, zoomValue: string) => {
   if (await page.$(selector)) {
     await expect
@@ -74,6 +95,7 @@ describe(`zoom flow on the live Docs and Sheets pages (${edition} edition)`, () 
       await waitForChrome(page);
       await waitForZoomClick(page, "150%");
       await expectZoomBoxValue(page, "#zoomSelect input", "150%");
+      await expectZoomMenuClosed(page, "150%");
     }));
 
   test("Sheets applies 125%", () =>
@@ -90,5 +112,6 @@ describe(`zoom flow on the live Docs and Sheets pages (${edition} edition)`, () 
       await waitForChrome(page);
       await waitForZoomClick(page, "125%");
       await expectZoomBoxValue(page, "#t-zoom input", "125%");
+      await expectZoomMenuClosed(page, "125%");
     }));
 });

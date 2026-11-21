@@ -1,11 +1,17 @@
 import type { ZoomOutcome } from "src/types";
 import { findZoomRowIndex } from "src/utils/find-zoom-row-index";
 import localize from "src/utils/localize";
-import { pause } from "src/utils/pause";
 import { clickDOMElement, getDOMElement, getDOMElementAndClick } from "src/utils/ui-helpers";
+import { waitFor } from "src/utils/wait-for";
 import { APPLIED, failed } from "src/utils/zoom-outcome";
 
 import { AbstractBaseStrategy } from "./base";
+
+const ZOOM_MENU_WAIT_MS = 1000;
+const ZOOM_ITEM_SELECTOR = "span[aria-label^='Zoom']";
+// fallback selector (trying to account for potential translation differences)
+const ZOOM_ITEM_FALLBACK_SELECTOR =
+  ".docs-icon-img-container.docs-icon-img.docs-icon-editors-ia-zoom-in";
 
 class DocsStrategy extends AbstractBaseStrategy {
   /**
@@ -22,26 +28,22 @@ class DocsStrategy extends AbstractBaseStrategy {
       return failed("view_menu_missing");
     }
 
-    // this may need to change depending on how quickly the menu loads
-    await pause(1000);
+    const zoomItem = await waitFor(
+      `${ZOOM_ITEM_SELECTOR}, ${ZOOM_ITEM_FALLBACK_SELECTOR}`,
+      ZOOM_MENU_WAIT_MS
+    );
 
-    const zoomRowElement = getDOMElement("span[aria-label^='Zoom']");
-
-    if (zoomRowElement) {
-      clickDOMElement(zoomRowElement);
-    } else {
-      // fallback selector (trying to account for potential translation differences)
-      const fallbackSelector =
-        ".docs-icon-img-container.docs-icon-img.docs-icon-editors-ia-zoom-in";
-
-      if (!getDOMElementAndClick(fallbackSelector)) {
-        return failed("view_zoom_item_missing");
-      }
+    if (!zoomItem) {
+      return failed("view_zoom_item_missing");
     }
+
+    // a combined selector returns the first match in document order, so look for the span first
+    clickDOMElement(getDOMElement(ZOOM_ITEM_SELECTOR) ?? zoomItem);
 
     // This is hacky, not sure a better way to do this...
     const fitValue = localize("popupDocsDropdownFitSelection");
-    const zoomValueContainer = getDOMElement(`[aria-label^="${fitValue}"]`)?.closest(".goog-menu");
+    const fitRow = await waitFor(`[aria-label^="${fitValue}"]`, ZOOM_MENU_WAIT_MS);
+    const zoomValueContainer = fitRow?.closest(".goog-menu");
 
     if (!zoomValueContainer) {
       getDOMElementAndClick("body");

@@ -57,6 +57,8 @@ export const observeElementAndExecute = (
 
   observer.observe(element, {
     attributes: true,
-    childList: true
+    childList: true,
+    // the zoom control is a descendant of the toolbar, and only its class changes when the page is ready
+    subtree: true
   });
 };
