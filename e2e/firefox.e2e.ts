@@ -99,6 +99,8 @@ describe("zoom flow in Firefox against saved Docs and Sheets markup (base editio
       expect(recorded.controlClicks).toEqual(["zoomSelect"]);
       expect(recorded.clicks).toEqual([]);
       expect(recorded.enters).toEqual([]);
+      // the input was never focused, so the flow closes the menu it opened with an outside press on body
+      expect(recorded.dismissals).toEqual(["body"]);
     }));
 
   test("Docs view-only opens View > Zoom and clicks the zoom row", () =>

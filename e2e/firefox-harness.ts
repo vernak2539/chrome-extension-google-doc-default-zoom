@@ -106,8 +106,19 @@ export const setAppState = async (
 // Observes the page's events from the main world, like installRecorder in e2e/harness.ts
 export const installRecorder = (page: Page) =>
   page.evaluateOnNewDocument(() => {
-    const recorded: RecordedEvents = { clicks: [], enters: [], controlClicks: [] };
+    const recorded: RecordedEvents = { clicks: [], enters: [], controlClicks: [], dismissals: [] };
     window.__e2e = recorded;
+
+    document.addEventListener(
+      "mousedown",
+      (event) => {
+        const target = event.target as Element | null;
+        if (target?.tagName && !target.closest?.("#zoomSelect, #t-zoom, .goog-menu")) {
+          recorded.dismissals.push(target.tagName.toLowerCase());
+        }
+      },
+      true
+    );
 
     document.addEventListener(
       "click",
@@ -140,7 +151,8 @@ export const readRecorded = (page: Page): Promise<RecordedEvents> =>
   page.evaluate(() => ({
     clicks: [...window.__e2e.clicks],
     enters: [...window.__e2e.enters],
-    controlClicks: [...window.__e2e.controlClicks]
+    controlClicks: [...window.__e2e.controlClicks],
+    dismissals: [...window.__e2e.dismissals]
   }));
 
 export const waitForRecorded = (page: Page, kind: keyof RecordedEvents, count: number) =>

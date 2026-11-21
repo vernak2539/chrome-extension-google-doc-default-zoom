@@ -174,6 +174,42 @@ describe("zoom outcome", () => {
   });
 });
 
+describe("closing the zoom dropdown", () => {
+  const recordMousedownTargets = () => {
+    const targets: string[] = [];
+    document.addEventListener("mousedown", (event) => {
+      targets.push((event.target as Element).tagName.toLowerCase());
+    });
+    return targets;
+  };
+
+  beforeEach(() => {
+    document.body.innerHTML = "";
+  });
+
+  // The menu is opened with synthetic events, which don't focus the input, so a blur alone would leave it open
+  test("should press outside the editor when no row matches, so a menu opened without focus closes", async () => {
+    renderZoomMenu();
+    document.body.insertAdjacentHTML("beforeend", "<canvas></canvas>");
+    const mousedownTargets = recordMousedownTargets();
+
+    await new TestStrategy(DOCS_CONFIG).zoomTo("200%");
+
+    expect(mousedownTargets.at(-1)).toBe("body");
+    expect(mousedownTargets).not.toContain("canvas");
+  });
+
+  test("should blur the zoom input when a row is applied", async () => {
+    renderZoomMenu();
+    const input = document.querySelector<HTMLInputElement>("#zoomSelect input")!;
+    input.focus();
+
+    await new TestStrategy(DOCS_CONFIG).zoomTo("150%");
+
+    expect(document.activeElement).not.toBe(input);
+  });
+});
+
 describe.runIf(IS_EXTENDED_EDITION)("custom zoom flow", () => {
   let clickedRows: string[];
 

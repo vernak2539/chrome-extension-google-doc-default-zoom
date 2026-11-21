@@ -8,6 +8,7 @@ import {
   installRecorder,
   readRecorded,
   setAppState,
+  waitForDismissals,
   withExtension
 } from "./harness";
 import { LIVE_DOC_URL, LIVE_PAGE_SELECTORS, LIVE_SHEET_URL } from "./targets";
@@ -114,4 +115,25 @@ describe(`zoom flow on the live Docs and Sheets pages (${edition} edition)`, () 
       await expectZoomBoxValue(page, "#t-zoom input", "125%");
       await expectZoomMenuClosed(page, "125%");
     }));
+
+  // No row is clicked here, so only the outside press can close the menu the flow opened. Base cannot
+  // type a custom value, so it opens the menu, finds no "140%" row and gives up.
+  test.skipIf(edition === "extended")(
+    "Sheets closes the zoom menu it opened when no row matches",
+    () =>
+      withExtension("live-sheets-no-row", async ({ context, serviceWorker }) => {
+        await setAppState(serviceWorker, "sheets", {
+          zoomValue: "140%",
+          viewOnly: false,
+          classroomSupport: false
+        });
+        await installRecorder(context);
+        const page = await context.newPage();
+        await page.goto(LIVE_SHEET_URL);
+
+        await waitForChrome(page);
+        await waitForDismissals(page, 1);
+        await expectZoomMenuClosed(page, "125%");
+      })
+  );
 });

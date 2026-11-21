@@ -15,6 +15,8 @@ export interface RecordedEvents {
   enters: string[];
   // id of the zoom control (#zoomSelect or #t-zoom) each time it was clicked: proof the content script ran
   controlClicks: string[];
+  // tag name of the target of every mousedown outside the zoom control and its menu: what Google's menu treats as an outside click
+  dismissals: string[];
 }
 
 // One chrome.storage call that writes, made by an extension page
@@ -152,8 +154,19 @@ export const setLegacyAppState = async (
 // Observes the page's events from the main world. It does not model what Google does with them.
 export const installRecorder = async (context: BrowserContext) => {
   await context.addInitScript(() => {
-    const recorded: RecordedEvents = { clicks: [], enters: [], controlClicks: [] };
+    const recorded: RecordedEvents = { clicks: [], enters: [], controlClicks: [], dismissals: [] };
     window.__e2e = recorded;
+
+    document.addEventListener(
+      "mousedown",
+      (event) => {
+        const target = event.target as Element | null;
+        if (target?.tagName && !target.closest?.("#zoomSelect, #t-zoom, .goog-menu")) {
+          recorded.dismissals.push(target.tagName.toLowerCase());
+        }
+      },
+      true
+    );
 
     document.addEventListener(
       "click",
@@ -187,7 +200,8 @@ export const readRecorded = (page: Page): Promise<RecordedEvents> =>
   page.evaluate(() => ({
     clicks: [...window.__e2e.clicks],
     enters: [...window.__e2e.enters],
-    controlClicks: [...window.__e2e.controlClicks]
+    controlClicks: [...window.__e2e.controlClicks],
+    dismissals: [...window.__e2e.dismissals]
   }));
 
 // Records every chrome.storage write made by an extension page, such as the popup. WXT storage looks
@@ -290,6 +304,11 @@ export const waitForClicks = (page: Page, count: number) =>
 
 export const waitForControlClicks = (page: Page, count: number) =>
   page.waitForFunction((expected) => window.__e2e.controlClicks.length >= expected, count, {
+    timeout: 15_000
+  });
+
+export const waitForDismissals = (page: Page, count: number) =>
+  page.waitForFunction((expected) => window.__e2e.dismissals.length >= expected, count, {
     timeout: 15_000
   });
 

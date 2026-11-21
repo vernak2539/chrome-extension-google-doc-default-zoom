@@ -133,9 +133,13 @@ export abstract class AbstractBaseStrategy {
     return APPLIED;
   }
 
-  // Blurs only the zoom input: document.activeElement can be the editor, and a click on the page can move the caret
+  // Only the custom flow focuses the zoom input, and we open the menu with synthetic events that don't move focus. So
+  // the blur closes the menu after typing, and a click on `body` is the outside click that closes it on every other
+  // path. Neither touches the editor: document.activeElement can be the editor, and a click on a canvas can move the
+  // caret or the selected cell.
   private closeDropdown(zoomInputContainer: Element) {
     zoomInputContainer.querySelector("input")?.blur();
+    getDOMElementAndClick("body");
   }
 
   protected isUIViewOnly() {
