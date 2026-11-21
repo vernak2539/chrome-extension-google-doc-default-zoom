@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { fn } from "storybook/test";
 
 import WorkspaceApplication from "../components/WorkspaceApplication/component";
 import WorkspaceApplicationList from "../components/WorkspaceApplicationList";
@@ -35,100 +36,100 @@ type Story = StoryObj<typeof meta>;
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 export const GoogleDocs: Story = {
   args: {
-    applicationName: "Docs",
-    isCustomZoomLevel: false,
-    updateZoomLevel: () => {},
-    zoomLevel: DOCS_DEFAULT_ZOOM,
-    zoomLevelCustom: "",
-    zoomValues: DOCS_ZOOM_VALUES,
-    features: {
-      customZoomInput: false,
-      enableViewOnlyToggle: false,
+    app: {
+      name: "Docs",
+      zoomValues: DOCS_ZOOM_VALUES,
+      features: {
+        customZoomInput: false,
+        enableViewOnlyToggle: false,
+        classroomSupport: false
+      }
+    },
+    settings: {
+      zoomValue: DOCS_DEFAULT_ZOOM,
+      viewOnly: false,
       classroomSupport: false
     },
-    featureDocsViewOnlyEnabled: false,
-    updateDocsViewOnly: () => {},
-    featureClassroomSupportEnabled: false,
-    updateClassroomSupport: () => {}
+    onChange: fn()
   }
 };
 
 export const GoogleDocsCustomZoom: Story = {
   args: {
-    applicationName: "Docs",
-    isCustomZoomLevel: true,
-    updateZoomLevel: () => {},
-    zoomLevel: "",
-    zoomLevelCustom: "123%",
-    zoomValues: DOCS_ZOOM_VALUES,
-    features: {
-      customZoomInput: true,
-      enableViewOnlyToggle: false,
+    app: {
+      name: "Docs",
+      zoomValues: DOCS_ZOOM_VALUES,
+      features: {
+        customZoomInput: true,
+        enableViewOnlyToggle: false,
+        classroomSupport: false
+      }
+    },
+    settings: {
+      zoomValue: "123%",
+      viewOnly: false,
       classroomSupport: false
     },
-    featureDocsViewOnlyEnabled: false,
-    updateDocsViewOnly: () => {},
-    featureClassroomSupportEnabled: false,
-    updateClassroomSupport: () => {}
+    onChange: fn()
   }
 };
 
 export const GoogleDocsViewOnly: Story = {
   args: {
-    applicationName: "Docs",
-    isCustomZoomLevel: false,
-    updateZoomLevel: () => {},
-    zoomLevel: "100%",
-    zoomLevelCustom: "",
-    zoomValues: DOCS_ZOOM_VALUES,
-    features: {
-      customZoomInput: false,
-      enableViewOnlyToggle: true,
+    app: {
+      name: "Docs",
+      zoomValues: DOCS_ZOOM_VALUES,
+      features: {
+        customZoomInput: false,
+        enableViewOnlyToggle: true,
+        classroomSupport: false
+      }
+    },
+    settings: {
+      zoomValue: "100%",
+      viewOnly: true,
       classroomSupport: false
     },
-    featureDocsViewOnlyEnabled: true,
-    updateDocsViewOnly: () => {},
-    featureClassroomSupportEnabled: false,
-    updateClassroomSupport: () => {}
+    onChange: fn()
   }
 };
 
 export const GoogleSheets: Story = {
   args: {
-    applicationName: "Sheets",
-    isCustomZoomLevel: false,
-    updateZoomLevel: () => {},
-    zoomLevel: SHEETS_DEFAULT_ZOOM,
-    zoomLevelCustom: "",
-    zoomValues: SHEETS_ZOOM_VALUES,
-    features: {
-      customZoomInput: false,
-      enableViewOnlyToggle: false,
+    app: {
+      name: "Sheets",
+      zoomValues: SHEETS_ZOOM_VALUES,
+      features: {
+        customZoomInput: false,
+        enableViewOnlyToggle: false,
+        classroomSupport: false
+      }
+    },
+    settings: {
+      zoomValue: SHEETS_DEFAULT_ZOOM,
+      viewOnly: false,
       classroomSupport: false
     },
-    featureDocsViewOnlyEnabled: false,
-    updateDocsViewOnly: () => {},
-    featureClassroomSupportEnabled: false,
-    updateClassroomSupport: () => {}
+    onChange: fn()
   }
 };
 
 export const GoogleSheetsCustomZoom: Story = {
   args: {
-    applicationName: "Sheets",
-    isCustomZoomLevel: true,
-    updateZoomLevel: () => {},
-    zoomLevel: "",
-    zoomLevelCustom: "123%",
-    zoomValues: SHEETS_ZOOM_VALUES,
-    features: {
-      customZoomInput: true,
-      enableViewOnlyToggle: false,
+    app: {
+      name: "Sheets",
+      zoomValues: SHEETS_ZOOM_VALUES,
+      features: {
+        customZoomInput: true,
+        enableViewOnlyToggle: false,
+        classroomSupport: false
+      }
+    },
+    settings: {
+      zoomValue: "123%",
+      viewOnly: false,
       classroomSupport: false
     },
-    featureDocsViewOnlyEnabled: false,
-    updateDocsViewOnly: () => {},
-    featureClassroomSupportEnabled: false,
-    updateClassroomSupport: () => {}
+    onChange: fn()
   }
 };

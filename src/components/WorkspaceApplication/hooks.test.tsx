@@ -7,7 +7,7 @@ import {
   createFakeChromeStorage,
   type FakeChromeStorage
 } from "../../test-support/fake-chrome-storage";
-import type { UseWorkspaceStorage } from "./hooks";
+import type { UseAppSettings } from "./hooks";
 
 // src/constants calls localize at import time, and jsdom has no chrome global
 vi.mock("src/utils/localize", () => ({ default: (key: string) => key }));
@@ -19,21 +19,21 @@ declare global {
 
 const SAVED_DOCS = { zoomValue: "150%", viewOnly: true, classroomSupport: false };
 
-describe("useWorkspaceStorage", () => {
+describe("useAppSettings", () => {
   let container: HTMLDivElement;
   let root: Root;
   let fake: FakeChromeStorage;
-  let latest: UseWorkspaceStorage;
+  let latest: UseAppSettings;
 
   const mountHook = async (initialStorage: Record<string, unknown>) => {
     fake = createFakeChromeStorage(initialStorage);
     vi.stubGlobal("chrome", fake.chrome);
     // Static import would capture the chrome global once; each test needs a fresh one.
     vi.resetModules();
-    const { useWorkspaceStorage } = await import("./hooks");
+    const { useAppSettings } = await import("./hooks");
 
     const Probe = () => {
-      latest = useWorkspaceStorage("docs");
+      latest = useAppSettings("docs");
       return null;
     };
     await act(async () => {
@@ -58,7 +58,7 @@ describe("useWorkspaceStorage", () => {
     await mountHook({});
 
     expect(latest.isLoading).toBe(false);
-    expect(latest.zoom).toBe("100%");
+    expect(latest.settings.zoomValue).toBe("100%");
     expect(fake.setCalls).toEqual([]);
   });
 
@@ -66,8 +66,8 @@ describe("useWorkspaceStorage", () => {
     await mountHook({ docs: SAVED_DOCS });
 
     expect(latest.isLoading).toBe(false);
-    expect(latest.zoom).toBe("150%");
-    expect(latest.viewOnly).toBe(true);
+    expect(latest.settings.zoomValue).toBe("150%");
+    expect(latest.settings.viewOnly).toBe(true);
     expect(fake.setCalls).toEqual([]);
   });
 
@@ -75,8 +75,8 @@ describe("useWorkspaceStorage", () => {
     await mountHook({ docs: JSON.stringify(SAVED_DOCS) });
 
     expect(latest.isLoading).toBe(false);
-    expect(latest.zoom).toBe("150%");
-    expect(latest.viewOnly).toBe(true);
+    expect(latest.settings.zoomValue).toBe("150%");
+    expect(latest.settings.viewOnly).toBe(true);
     expect(fake.setCalls).toEqual([]);
   });
 
@@ -84,25 +84,25 @@ describe("useWorkspaceStorage", () => {
     await mountHook({});
 
     await act(async () => {
-      latest.updateZoomValue("75%");
+      latest.updateSettings({ zoomValue: "75%" });
     });
 
     expect(fake.setCalls).toEqual([
       { docs: { zoomValue: "75%", viewOnly: false, classroomSupport: false } }
     ]);
-    expect(latest.zoom).toBe("75%");
+    expect(latest.settings.zoomValue).toBe("75%");
   });
 
   test("should fill the fields a saved state lacks, and write them all on a change", async () => {
     await mountHook({ docs: { zoomValue: "150%" } });
 
-    expect(latest.zoom).toBe("150%");
-    expect(latest.viewOnly).toBe(false);
-    expect(latest.classroomSupport).toBe(false);
+    expect(latest.settings.zoomValue).toBe("150%");
+    expect(latest.settings.viewOnly).toBe(false);
+    expect(latest.settings.classroomSupport).toBe(false);
     expect(fake.setCalls).toEqual([]);
 
     await act(async () => {
-      latest.updateClassroomSupportValue(true);
+      latest.updateSettings({ classroomSupport: true });
     });
 
     expect(fake.setCalls).toEqual([
@@ -117,8 +117,20 @@ describe("useWorkspaceStorage", () => {
       await chrome.storage.sync.remove(["docs"]);
     });
 
-    expect(latest.zoom).toBe("100%");
-    expect(latest.viewOnly).toBe(false);
+    expect(latest.settings.zoomValue).toBe("100%");
+    expect(latest.settings.viewOnly).toBe(false);
     expect(fake.setCalls).toEqual([]);
+  });
+
+  test("should save the default zoom when the zoom is cleared", async () => {
+    await mountHook({ docs: SAVED_DOCS });
+
+    await act(async () => {
+      latest.updateSettings({ zoomValue: "" });
+    });
+
+    expect(fake.setCalls).toEqual([
+      { docs: { zoomValue: "100%", viewOnly: true, classroomSupport: false } }
+    ]);
   });
 });

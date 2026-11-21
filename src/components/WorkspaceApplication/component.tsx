@@ -1,5 +1,5 @@
 import classnames from "classnames";
-import type { WorkspaceApp, WorkspaceAppName } from "src/types";
+import type { AppStorageState, WorkspaceApp } from "src/types";
 
 import localize from "../../utils/localize";
 import CustomZoomInput from "../CustomZoomInput";
@@ -8,17 +8,9 @@ import SelectZoomInput from "../SelectZoomInput";
 import style from "../../style.module.css";
 
 type WorkspaceApplicationComponentProps = {
-  applicationName: WorkspaceAppName;
-  zoomLevel: string;
-  zoomLevelCustom: string;
-  zoomValues: WorkspaceApp["zoomValues"];
-  features: WorkspaceApp["features"];
-  featureDocsViewOnlyEnabled: boolean;
-  isCustomZoomLevel: boolean;
-  updateZoomLevel: (newZoomValue: string) => void;
-  updateDocsViewOnly: (newDocsViewOnlyValue: boolean) => void;
-  featureClassroomSupportEnabled: boolean;
-  updateClassroomSupport: (newClassroomSupportValue: boolean) => void;
+  app: Pick<WorkspaceApp, "name" | "zoomValues" | "features">;
+  settings: AppStorageState;
+  onChange: (patch: Partial<AppStorageState>) => void;
 };
 
 // Checkbox that is very much tied to experimental features
@@ -64,40 +56,36 @@ const ExperimentalFeatureCheckbox = ({
 };
 
 const WorkspaceApplicationComponent = ({
-  applicationName,
-  isCustomZoomLevel,
-  zoomLevel,
-  zoomLevelCustom,
-  zoomValues,
-  features,
-  updateZoomLevel,
-  updateClassroomSupport,
-  updateDocsViewOnly,
-  featureDocsViewOnlyEnabled,
-  featureClassroomSupportEnabled
+  app,
+  settings,
+  onChange
 }: WorkspaceApplicationComponentProps) => {
+  const { name, zoomValues, features } = app;
+  const isCustomZoom = !(zoomValues as readonly string[]).includes(settings.zoomValue);
+  const updateZoom = (zoomValue: string) => onChange({ zoomValue });
+
   return (
     <li className={style.applicationListItem}>
       <div className={style.applicationListItemRow}>
         <span
           className={classnames(style.applicationIcon, {
-            [style.applicationImageDocs]: applicationName === "Docs",
-            [style.applicationImageSheets]: applicationName === "Sheets"
+            [style.applicationImageDocs]: name === "Docs",
+            [style.applicationImageSheets]: name === "Sheets"
           })}
         />
-        <span className={style.applicationTitle}>{applicationName}</span>
+        <span className={style.applicationTitle}>{name}</span>
         <div className={style.applicationInputContainer}>
           <SelectZoomInput
-            isCustomValue={isCustomZoomLevel}
-            updateValue={updateZoomLevel}
-            zoomValue={zoomLevel}
+            isCustomValue={isCustomZoom}
+            updateValue={updateZoom}
+            zoomValue={settings.zoomValue}
             zoomValues={zoomValues}
           />
           {features.customZoomInput && (
             <CustomZoomInput
-              isCustomValue={isCustomZoomLevel}
-              updateValue={updateZoomLevel}
-              zoomValue={zoomLevelCustom}
+              isCustomValue={isCustomZoom}
+              updateValue={updateZoom}
+              zoomValue={isCustomZoom ? settings.zoomValue : ""}
               zoomValues={zoomValues}
             />
           )}
@@ -107,8 +95,8 @@ const WorkspaceApplicationComponent = ({
         <div className={style.applicationCheckboxContainer}>
           <span className={style.applicationItemRowSpacer} />
           <ExperimentalFeatureCheckbox
-            isChecked={featureDocsViewOnlyEnabled}
-            onChange={updateDocsViewOnly}
+            isChecked={settings.viewOnly}
+            onChange={(viewOnly) => onChange({ viewOnly })}
             linkText="popupViewOnlyDocsExperimentalLabel"
             content="popupViewOnlyDocsExperimentalContent"
             linkAnchor="docs-view-only"
@@ -119,8 +107,8 @@ const WorkspaceApplicationComponent = ({
         <div className={style.applicationCheckboxContainer}>
           <span className={style.applicationItemRowSpacer} />
           <ExperimentalFeatureCheckbox
-            isChecked={featureClassroomSupportEnabled}
-            onChange={updateClassroomSupport}
+            isChecked={settings.classroomSupport}
+            onChange={(classroomSupport) => onChange({ classroomSupport })}
             linkText="popupClassroomSupportExperimentalLabel"
             content="popupClassroomSupportExperimentalContent"
             linkAnchor="classroom-support"

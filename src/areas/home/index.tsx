@@ -12,14 +12,7 @@ const HomeView = () => {
         {Object.values(APPS)
           .filter((app) => app.isEnabled)
           .map((app) => (
-            <WorkspaceApplication
-              key={app.name}
-              name={app.name}
-              zoomValues={app.zoomValues}
-              defaultZoom={app.defaultZoom}
-              storageKey={app.storageKey}
-              features={app.features}
-            />
+            <WorkspaceApplication key={app.name} app={app} />
           ))}
       </WorkspaceApplicationList>
       {showExtensionVersionsTab() && (
