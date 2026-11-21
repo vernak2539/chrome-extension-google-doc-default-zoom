@@ -1,24 +1,16 @@
 import getAppStorageStateFromStorage from "src/utils/get-app-storage-state-from-storage";
-import { getClosestZoomValue } from "src/utils/get-closest-zoom-value";
 import { sendMessage } from "src/utils/messaging";
 
-import type {
-  AppStorageState,
-  ExecuteEnterResponseBody,
-  Feature,
-  UiStrategyConfig,
-  ZoomOutcome
-} from "../types";
+import type { ExecuteEnterResponseBody, UiStrategyConfig, ZoomOutcome } from "../types";
 import { isGoogleClassroomSubmittedAssignment } from "../utils/classroom-helpers";
 import { findZoomMenu } from "../utils/find-zoom-menu";
-import getIsCustomZoom from "../utils/get-is-custom-zoom";
 import { clickDOMElement, getDOMElement, getDOMElementAndClick } from "../utils/ui-helpers";
 import { APPLIED, failed, skipped } from "../utils/zoom-outcome";
+import { planToolbarZoom, planZoom, type ZoomPlan } from "./plan-zoom";
 
 export abstract class AbstractBaseStrategy {
   protected readonly config: UiStrategyConfig;
   public abstract isUIPreview(href: string): boolean;
-  protected abstract performZoom(appState: AppStorageState): ZoomOutcome | Promise<ZoomOutcome>;
 
   constructor(config: UiStrategyConfig) {
     this.config = config;
@@ -27,45 +19,52 @@ export abstract class AbstractBaseStrategy {
   // Resolves with an outcome on every path and never rejects, so the caller can report it in one place
   public async execute(): Promise<ZoomOutcome> {
     try {
-      const isGoogleClassroomDocument = isGoogleClassroomSubmittedAssignment();
+      const isClassroomSubmission = isGoogleClassroomSubmittedAssignment();
 
       const appState = await getAppStorageStateFromStorage(this.config.storageKey);
 
-      const isClassroomSupportEnabled =
-        this.isFeatureEnabled("classroomSupport") && appState.classroomSupport;
+      const plan = planZoom(this.config, appState, {
+        isClassroomSubmission,
+        hasZoomSelect: !this.isUIViewOnly()
+      });
 
-      if (isGoogleClassroomDocument && !isClassroomSupportEnabled) {
-        return skipped("classroom_support_disabled");
-      }
-
-      return await this.performZoom(appState);
+      return await this.runPlan(plan);
     } catch (error) {
       return failed("exception", error);
     }
   }
 
-  protected async uiExecuteFlow(zoomValue: string): Promise<ZoomOutcome> {
-    // don't do anything if zoom level is set to default value or not set
-    if (!zoomValue || zoomValue === this.config.zoom.defaultZoom) {
-      return skipped("default_zoom");
+  protected uiExecuteFlow(zoomValue: string): Promise<ZoomOutcome> {
+    return this.runPlan(planToolbarZoom(this.config, zoomValue));
+  }
+
+  protected async runPlan(plan: ZoomPlan): Promise<ZoomOutcome> {
+    switch (plan.action) {
+      case "skip":
+        return skipped(plan.reason);
+      case "view_menu_preset":
+        return this.uiExecuteViewMenuFlow(plan.zoomValue);
+      case "select_preset":
+      case "type_custom": {
+        // get menu element responsible for changing zoom
+        const zoomInputContainer = getDOMElementAndClick(
+          this.config.uiElements.clickableZoomSelectId
+        );
+
+        if (!zoomInputContainer) {
+          return failed("zoom_select_missing");
+        }
+
+        return plan.action === "type_custom"
+          ? this.uiExecuteCustomZoomFlow(zoomInputContainer, plan.zoomValue, plan.fallbackZoomValue)
+          : this.uiExecuteDefinedZoomFlow(zoomInputContainer, plan.zoomValue);
+      }
     }
+  }
 
-    // get menu element responsible for changing zoom
-    const zoomInputContainer = getDOMElementAndClick(this.config.uiElements.clickableZoomSelectId);
-
-    if (!zoomInputContainer) {
-      return failed("zoom_select_missing");
-    }
-
-    const canUseCustomZoom =
-      this.isFeatureEnabled("customZoomInput") &&
-      getIsCustomZoom(this.config.application, zoomValue);
-
-    if (canUseCustomZoom) {
-      return this.uiExecuteCustomZoomFlow(zoomInputContainer, zoomValue);
-    }
-
-    return this.uiExecuteDefinedZoomFlow(zoomInputContainer, zoomValue);
+  // Only Docs plans a view menu zoom, and it overrides this method
+  protected async uiExecuteViewMenuFlow(_zoomValue: string): Promise<ZoomOutcome> {
+    return failed("view_menu_missing");
   }
 
   private uiExecuteDefinedZoomFlow(zoomInputContainer: Element, zoomValue: string): ZoomOutcome {
@@ -103,13 +102,10 @@ export abstract class AbstractBaseStrategy {
 
   private async uiExecuteCustomZoomFlow(
     zoomInputContainer: Element,
-    zoomValue: string
+    zoomValue: string,
+    fallbackZoomValue: string
   ): Promise<ZoomOutcome> {
-    const fallback = () =>
-      this.uiExecuteDefinedZoomFlow(
-        zoomInputContainer,
-        getClosestZoomValue(this.config.zoom.zoomValues, zoomValue)
-      );
+    const fallback = () => this.uiExecuteDefinedZoomFlow(zoomInputContainer, fallbackZoomValue);
 
     const zoomInput = zoomInputContainer.querySelector("input");
 
@@ -142,10 +138,6 @@ export abstract class AbstractBaseStrategy {
     setTimeout(() => {
       getDOMElementAndClick("canvas");
     }, 500);
-  }
-
-  protected isFeatureEnabled(feature: Feature): boolean {
-    return Boolean(this.config.features[feature]);
   }
 
   protected isUIViewOnly() {
