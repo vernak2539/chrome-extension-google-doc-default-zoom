@@ -1,9 +1,9 @@
 export const isChrome = () => {
-  return process.env.PLASMO_BROWSER === "chrome";
+  return import.meta.env.BROWSER === "chrome";
 };
 
 export const isEdge = () => {
-  return process.env.PLASMO_BROWSER === "edge";
+  return import.meta.env.BROWSER === "edge";
 };
 
 export const showExtensionVersionsTab = () => {

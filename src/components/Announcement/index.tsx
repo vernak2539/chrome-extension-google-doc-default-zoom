@@ -1,7 +1,7 @@
 import AnnouncementComponent from "./component";
 import { useAnnouncements } from "./hooks";
 
-import * as styles from "../../style.module.css";
+import styles from "../../style.module.css";
 
 const Announcements = () => {
   const { announcements, dismiss } = useAnnouncements();

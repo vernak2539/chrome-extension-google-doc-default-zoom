@@ -1,13 +1,7 @@
-import { sendToBackgroundViaRelay } from "@plasmohq/messaging";
 import getAppStorageStateFromStorage from "src/utils/get-app-storage-state-from-storage";
+import { sendMessage } from "src/utils/messaging";
 
-import { RELAY_EXECUTE_ENTER } from "../constants";
-import type {
-  ExecuteEnterRequestBody,
-  ExecuteEnterResponseBody,
-  UiStrategyConfig,
-  ZoomOutcome
-} from "../types";
+import type { ExecuteEnterResponseBody, UiStrategyConfig, ZoomOutcome } from "../types";
 import { isGoogleClassroomSubmittedAssignment } from "../utils/classroom-helpers";
 import { findZoomMenu } from "../utils/find-zoom-menu";
 import { clickDOMElement, getDOMElement, getDOMElementAndClick } from "../utils/ui-helpers";
@@ -126,14 +120,9 @@ export abstract class AbstractBaseStrategy {
 
     let response: ExecuteEnterResponseBody | null = null;
     try {
-      response = await sendToBackgroundViaRelay<ExecuteEnterRequestBody, ExecuteEnterResponseBody>({
-        name: RELAY_EXECUTE_ENTER,
-        body: {
-          zoomValue
-        }
-      });
+      response = await sendMessage("executeEnter", { zoomValue });
     } catch {
-      // the relay failed, so nothing was typed: use the nearest preset instead
+      // the message failed, so nothing was typed: use the nearest preset instead
     }
 
     if (!response || response.err) {

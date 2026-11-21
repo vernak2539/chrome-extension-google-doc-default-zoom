@@ -23,7 +23,7 @@ assignees: vernak2539
 
 Please follow the steps below to update an existing translation:
 
-1. Update the value in the English translations file (`locales/en/messages.json`)
+1. Update the value in the English translations file (`public/_locales/en/messages.json`)
 2. Update all other translation files based on the changes you made in the English translations file
 
 ## Add support for new locale
@@ -32,8 +32,8 @@ Please follow the steps below to update an existing translation:
 
 Please follow the steps below to add support for a new locale:
 
-1. Create a new file in the `locales` directory with the appropriate language code (e.g. `locales/fr/messages.json` for French)
-2. Copy the structure from the English translation file (e.g. `locales/en/messages.json`) and translate the values into the new language
+1. Create a new file in the `public/_locales` directory with the appropriate language code (e.g. `public/_locales/fr/messages.json` for French)
+2. Copy the structure from the English translation file (e.g. `public/_locales/en/messages.json`) and translate the values into the new language
 
 ### Images for Context
 

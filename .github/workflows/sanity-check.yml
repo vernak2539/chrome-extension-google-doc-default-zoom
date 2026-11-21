@@ -32,14 +32,15 @@ jobs:
       # Vitest runs every test file once for each edition (see vite.config.ts)
       - name: Run Tests
         run: pnpm test
-      - name: Build both editions
+      # `wxt zip` writes sourcemaps into the build directory and leaves them out of the zip
+      # Firefox has no Extended edition, so only Base builds it
+      - name: Build and package both editions
         run: |
-          pnpm build:base --source-maps --target=chrome-mv3
-          pnpm build:base --source-maps --target=edge-mv3
-          pnpm build:base --source-maps --target=firefox-mv2
-          pnpm build:extended --source-maps --target=chrome-mv3
-          pnpm build:extended --source-maps --target=edge-mv3
-          pnpm build:extended --source-maps --target=firefox-mv2
+          pnpm package:base -b chrome
+          pnpm package:base -b edge
+          pnpm package:base -b firefox
+          pnpm package:extended -b chrome
+          pnpm package:extended -b edge
       - name: Check the built editions
         run: pnpm check:editions
       - name: Typecheck
@@ -63,14 +64,6 @@ jobs:
       # Loads build/firefox-mv2-base (Firefox ships Base only) against the same saved markup
       - name: Browser tests (Firefox)
         run: pnpm test:e2e:firefox
-      - name: Package extension artifacts
-        run: |
-          pnpm package:base --target=chrome-mv3
-          pnpm package:base --target=edge-mv3
-          pnpm package:base --target=firefox-mv2
-          pnpm package:extended --target=chrome-mv3
-          pnpm package:extended --target=edge-mv3
-          pnpm package:extended --target=firefox-mv2
       - name: Upload browser test screenshots
         if: failure()
         uses: actions/upload-artifact@v4

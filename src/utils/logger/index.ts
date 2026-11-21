@@ -18,7 +18,7 @@ class BrowserLogger {
   }
 
   public info(message: string) {
-    if (process.env.NODE_ENV === "production") {
+    if (import.meta.env.COMMAND === "build") {
       return;
     }
 

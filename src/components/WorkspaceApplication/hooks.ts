@@ -1,10 +1,10 @@
-import { useStorage } from "@plasmohq/storage/hook";
 import { useCallback } from "react";
 import { fillAppState, getDefaultAppState } from "src/constants";
 import type { AppStorageState, StorageKey } from "src/types";
-import { storage } from "src/utils/storage";
+import { appStateKey } from "src/utils/storage";
+import { useStoredValue } from "src/utils/use-stored-value";
 
-interface UseWorkspaceStorage {
+export interface UseWorkspaceStorage {
   zoom: string;
   viewOnly: boolean;
   classroomSupport: boolean;
@@ -15,12 +15,9 @@ interface UseWorkspaceStorage {
 }
 
 export const useWorkspaceStorage = (storageKey: StorageKey): UseWorkspaceStorage => {
-  // No initial value on purpose: Plasmo saves whatever a function initializer returns, which wrote
-  // to storage every time the popup opened.
-  const [appState, setAppState, { isLoading }] = useStorage<AppStorageState>({
-    key: storageKey,
-    instance: storage
-  });
+  const [appState, setAppState, { isLoading }] = useStoredValue<Partial<AppStorageState>>(
+    appStateKey(storageKey)
+  );
 
   // Nothing is stored until the user changes a setting, so the stored state and the setter's
   // `prev` can be `undefined`, or an object that lacks a field. `fillAppState` fills both in.

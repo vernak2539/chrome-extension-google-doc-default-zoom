@@ -20,13 +20,13 @@ export const LANGUAGES = [...{ code: "pt", name: "Portuguese" }];
 
 ### 2. Generate UI Translations
 
-The translation script works in "diff mode" by default, meaning it will only translate keys that are present in `locales/en/messages.json` but missing in the target language.
+The translation script works in "diff mode" by default, meaning it will only translate keys that are present in `public/_locales/en/messages.json` but missing in the target language.
 
 1.  **Run the script:**
     ```bash
     GOOGLE_APPLICATION_CREDENTIALS=./creds.json node bin/translate-messages.mjs
     ```
-    This will automatically create the `locales/pt/` directory and generate a `messages.json` file with translations for all keys.
+    This will automatically create the `public/_locales/pt/` directory and generate a `messages.json` file with translations for all keys.
 
 ### 3. Generate Store Listing Translations
 

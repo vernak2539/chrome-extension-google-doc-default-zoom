@@ -16,7 +16,7 @@ import {
   readStorageWrites,
   serveFixture,
   setAppState,
-  type StorageWrite,
+  setLegacyAppState,
   waitForClicks,
   waitForControlClicks,
   waitForEnters,
@@ -40,20 +40,22 @@ const state = (zoomValue: string, viewOnly = false): AppState => ({
   classroomSupport: false
 });
 
-// @plasmohq/storage writes each value as a JSON string; decode them to compare with `state`
-const decodeWrites = (writes: StorageWrite[]) =>
-  writes.map(({ area, method, arg }) => ({
-    area,
-    method,
-    arg: Object.fromEntries(
-      Object.entries(arg as Record<string, string>).map(([key, value]) => [key, JSON.parse(value)])
-    )
-  }));
-
 describe(`zoom flow against saved Docs and Sheets markup (${edition} edition)`, () => {
   test("Docs applies a preset zoom by clicking its menu row", () =>
     withExtension("docs-preset", async (session) => {
       await setAppState(session.serviceWorker, "docs", state("150%"));
+      const page = await openPage(session, FIXTURE_DOC_URL);
+
+      await insertFixture(page, "docs-editor");
+      await waitForClicks(page, 1);
+
+      expect((await readRecorded(page)).clicks).toEqual(["150%"]);
+    }));
+
+  // The upgrade path: values written by a build that still uses Plasmo's JSON text
+  test("Docs applies a preset zoom saved as JSON text by the Plasmo versions", () =>
+    withExtension("docs-legacy-format", async (session) => {
+      await setLegacyAppState(session.serviceWorker, "docs", state("150%"));
       const page = await openPage(session, FIXTURE_DOC_URL);
 
       await insertFixture(page, "docs-editor");
@@ -158,7 +160,7 @@ describe(`zoom flow against saved Docs and Sheets markup (${edition} edition)`, 
 
       await popupZoomSelect(popup, "Docs").selectOption("150%");
       await waitForStorageWrites(popup, 1);
-      expect(decodeWrites(await readStorageWrites(popup))).toEqual([
+      expect(await readStorageWrites(popup)).toEqual([
         { area: "sync", method: "set", arg: { docs: state("150%") } }
       ]);
 
@@ -170,7 +172,7 @@ describe(`zoom flow against saved Docs and Sheets markup (${edition} edition)`, 
 
       await popupZoomSelect(popup, "Docs").selectOption("75%");
       await waitForStorageWrites(popup, 2);
-      expect(decodeWrites(await readStorageWrites(popup))).toEqual([
+      expect(await readStorageWrites(popup)).toEqual([
         { area: "sync", method: "set", arg: { docs: state("150%") } },
         { area: "sync", method: "set", arg: { docs: state("75%") } }
       ]);

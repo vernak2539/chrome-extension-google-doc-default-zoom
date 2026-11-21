@@ -1,26 +1,24 @@
-import type { PlasmoMessaging } from "@plasmohq/messaging";
 import type { ExecuteEnterRequestBody, ExecuteEnterResponseBody } from "src/types";
 import { IS_EXTENDED_EDITION } from "src/utils/edition";
 import { createSentryClient } from "src/utils/sentry/base";
 
 const sentryScope = createSentryClient("background");
 
-const handler: PlasmoMessaging.MessageHandler<
-  ExecuteEnterRequestBody,
-  ExecuteEnterResponseBody
-> = async (req, res) => {
+export const executeEnter = async (
+  body: ExecuteEnterRequestBody | undefined,
+  sender: chrome.runtime.MessageSender
+): Promise<ExecuteEnterResponseBody> => {
   // The edition check is what lets the minifier drop the debugger code from the Base bundle
   if (!IS_EXTENDED_EDITION || !chrome.debugger) {
-    res.send({ err: "no_debugger" });
-    return;
+    return { err: "no_debugger" };
   }
 
   let attachedTarget: chrome.debugger.Debuggee | undefined;
   let err: ExecuteEnterResponseBody["err"] = null;
 
   try {
-    const tabId = req.sender?.tab?.id;
-    const zoomValue = req.body?.zoomValue;
+    const tabId = sender?.tab?.id;
+    const zoomValue = body?.zoomValue;
     if (tabId === undefined || zoomValue === undefined) {
       throw new Error("Message is missing the sender tab id or the zoom value");
     }
@@ -63,7 +61,5 @@ const handler: PlasmoMessaging.MessageHandler<
     }
   }
 
-  res.send({ err });
+  return { err };
 };
-
-export default handler;

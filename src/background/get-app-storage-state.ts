@@ -1,17 +1,15 @@
-import type { PlasmoMessaging } from "@plasmohq/messaging";
 import { fillAppState, getDefaultAppState } from "src/constants";
 import type { AppStorageState, GetAppStorageStateRequestBody } from "src/types";
 import { migrationsReady } from "src/utils/migrations";
 import { createSentryClient } from "src/utils/sentry/base";
-import { storage } from "src/utils/storage";
+import { appStateKey, readStoredValue } from "src/utils/storage";
 
 const sentryScope = createSentryClient("background");
 
-const handler: PlasmoMessaging.MessageHandler<
-  GetAppStorageStateRequestBody,
-  AppStorageState
-> = async (req, res) => {
-  const storageKey = req.body?.storageKey;
+export const getAppStorageState = async (
+  body: GetAppStorageStateRequestBody | undefined
+): Promise<AppStorageState> => {
+  const storageKey = body?.storageKey;
   const defaultState = getDefaultAppState(storageKey);
 
   try {
@@ -20,13 +18,11 @@ const handler: PlasmoMessaging.MessageHandler<
     }
 
     await migrationsReady;
-    const appState = await storage.get<AppStorageState>(storageKey);
+    const appState = await readStoredValue<AppStorageState>(appStateKey(storageKey));
 
-    res.send(fillAppState(storageKey, appState));
+    return fillAppState(storageKey, appState);
   } catch (err) {
     sentryScope.captureException(err);
-    res.send(defaultState);
+    return defaultState;
   }
 };
-
-export default handler;

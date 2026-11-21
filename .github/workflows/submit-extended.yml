@@ -16,8 +16,8 @@ jobs:
     with:
       environment: build-package-extended
       edition: extended
+      # Firefox has no Extended edition
       include_firefox: false
       chrome_url_prefix: "chrome-extension://mdgikencgfhineaememjagpkiclbdkka"
       edge_url_prefix: "chrome-extension://fhjmigdmbgbiodkejhmahfnaebdgnmjb"
-      edition_label: "Default zoom for Google Workspace (Extended)"
       artifact_prefix: google-workspace-zoom-extended

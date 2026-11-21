@@ -7,12 +7,15 @@ import {
   createFakeChromeStorage,
   type FakeChromeStorage
 } from "../../test-support/fake-chrome-storage";
+import type { UseWorkspaceStorage } from "./hooks";
 
 // src/constants calls localize at import time, and jsdom has no chrome global
 vi.mock("src/utils/localize", () => ({ default: (key: string) => key }));
 
-type UseWorkspaceStorage = typeof import("./hooks").useWorkspaceStorage;
-type HookResult = ReturnType<UseWorkspaceStorage>;
+declare global {
+  // React reads this to enable act() outside a test runner integration
+  var IS_REACT_ACT_ENVIRONMENT: boolean | undefined;
+}
 
 const SAVED_DOCS = { zoomValue: "150%", viewOnly: true, classroomSupport: false };
 
@@ -20,11 +23,12 @@ describe("useWorkspaceStorage", () => {
   let container: HTMLDivElement;
   let root: Root;
   let fake: FakeChromeStorage;
-  let latest: HookResult;
+  let latest: UseWorkspaceStorage;
 
   const mountHook = async (initialStorage: Record<string, unknown>) => {
     fake = createFakeChromeStorage(initialStorage);
     vi.stubGlobal("chrome", fake.chrome);
+    // Static import would capture the chrome global once; each test needs a fresh one.
     vi.resetModules();
     const { useWorkspaceStorage } = await import("./hooks");
 
@@ -38,7 +42,7 @@ describe("useWorkspaceStorage", () => {
   };
 
   beforeEach(() => {
-    (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
+    globalThis.IS_REACT_ACT_ENVIRONMENT = true;
     container = document.createElement("div");
     document.body.appendChild(container);
     root = createRoot(container);
@@ -58,7 +62,16 @@ describe("useWorkspaceStorage", () => {
     expect(fake.setCalls).toEqual([]);
   });
 
-  test("should show the saved state without writing", async () => {
+  test("should show a state saved as plain values without writing", async () => {
+    await mountHook({ docs: SAVED_DOCS });
+
+    expect(latest.isLoading).toBe(false);
+    expect(latest.zoom).toBe("150%");
+    expect(latest.viewOnly).toBe(true);
+    expect(fake.setCalls).toEqual([]);
+  });
+
+  test("should decode a state saved as JSON text by the Plasmo versions", async () => {
     await mountHook({ docs: JSON.stringify(SAVED_DOCS) });
 
     expect(latest.isLoading).toBe(false);
@@ -75,13 +88,13 @@ describe("useWorkspaceStorage", () => {
     });
 
     expect(fake.setCalls).toEqual([
-      { docs: JSON.stringify({ zoomValue: "75%", viewOnly: false, classroomSupport: false }) }
+      { docs: { zoomValue: "75%", viewOnly: false, classroomSupport: false } }
     ]);
     expect(latest.zoom).toBe("75%");
   });
 
   test("should fill the fields a saved state lacks, and write them all on a change", async () => {
-    await mountHook({ docs: JSON.stringify({ zoomValue: "150%" }) });
+    await mountHook({ docs: { zoomValue: "150%" } });
 
     expect(latest.zoom).toBe("150%");
     expect(latest.viewOnly).toBe(false);
@@ -93,12 +106,12 @@ describe("useWorkspaceStorage", () => {
     });
 
     expect(fake.setCalls).toEqual([
-      { docs: JSON.stringify({ zoomValue: "150%", viewOnly: false, classroomSupport: true }) }
+      { docs: { zoomValue: "150%", viewOnly: false, classroomSupport: true } }
     ]);
   });
 
   test("should show the defaults again when the saved state is removed", async () => {
-    await mountHook({ docs: JSON.stringify(SAVED_DOCS) });
+    await mountHook({ docs: SAVED_DOCS });
 
     await act(async () => {
       await chrome.storage.sync.remove(["docs"]);
