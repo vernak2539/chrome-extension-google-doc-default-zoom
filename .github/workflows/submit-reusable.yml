@@ -26,17 +26,13 @@ on:
         type: string
         required: false
         default: ""
-      edition_label:
-        description: "Store name that is written in the Edge notes"
-        type: string
-        required: true
       artifact_prefix:
         description: "Prefix of the artifact name (the version is added)"
         type: string
         required: true
     secrets:
       submit_keys:
-        description: "bpp keys JSON for the store listings of this edition"
+        description: "Store credentials JSON for this edition, read by bin/wxt-submit-credentials.mjs"
         required: true
       SENTRY_AUTH_TOKEN:
         description: "Not passed by the callers. The value is the secret of the job's environment, which takes precedence."
@@ -114,14 +110,22 @@ jobs:
           ignore_empty: true
           ignore_missing: true
           version: ${{ steps.package-version.outputs.current-version }}
-      - name: Browser Platform Publish
-        uses: PlasmoHQ/bpp@v3
-        with:
-          keys: ${{ secrets.submit_keys }}
-          chrome-file: build/chrome-mv3-${{ inputs.edition }}.zip
-          edge-file: build/edge-mv3-${{ inputs.edition }}.zip
-          edge-notes: "Publishing latest '${{ inputs.edition_label }}' version (${{ steps.package-version.outputs.current-version }}) to Edge Store."
-          firefox-file: ${{ inputs.include_firefox && inputs.edition == 'base' && format('build/firefox-mv2-{0}.zip', inputs.edition) || '' }}
+      - name: Prepare the store credentials
+        env:
+          SUBMIT_KEYS: ${{ secrets.submit_keys }}
+          INCLUDE_FIREFOX: ${{ inputs.include_firefox }}
+        run: node bin/wxt-submit-credentials.mjs
+      - name: Submit to the stores
+        shell: bash
+        run: |
+          args=(
+            --chrome-zip "build/chrome-mv3-${{ inputs.edition }}.zip"
+            --edge-zip "build/edge-mv3-${{ inputs.edition }}.zip"
+          )
+          if [[ "${{ inputs.include_firefox && inputs.edition == 'base' }}" == "true" ]]; then
+            args+=(--firefox-zip "build/firefox-mv2-${{ inputs.edition }}.zip")
+          fi
+          pnpm exec wxt submit "${args[@]}"
       - uses: actions/upload-artifact@v4
         if: always()
         with:

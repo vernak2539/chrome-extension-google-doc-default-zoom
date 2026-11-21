@@ -20,5 +20,4 @@ jobs:
       chrome_url_prefix: "chrome-extension://nflkcdlimipkgbacnfnhfecjgmojhklo"
       edge_url_prefix: "chrome-extension://hnilnnalkgihkfnegpcbcgpgailgjbnn"
       firefox_url_prefix: "moz-extension://2ea8253c-b2cc-415f-8d0e-8af14a5d29fe"
-      edition_label: "Default zoom for Google Workspace"
       artifact_prefix: google-workspace-zoom-default
