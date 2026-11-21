@@ -7,7 +7,7 @@ The comparison is same-source: the WXT branch has `main` merged, and the Plasmo 
 - **Plasmo baseline:** `origin/main` @ `dac44a0`, built with `pnpm build:base|extended --target=chrome-mv3` (no `--source-maps`; `main`'s scripts do not pass it).
 - **WXT:** this branch, built with `pnpm package:base|extended -b chrome`.
 
-Chrome MV3 is shown. Edge MV3 and Firefox MV2 differ by at most 3 bytes in the numbers below.
+Chrome MV3 is shown. Edge MV3 and Firefox MV2 (Base only) differ by at most 3 bytes in the numbers below.
 
 ## Bundle sizes
 
