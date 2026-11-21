@@ -4,10 +4,9 @@ import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 
 import { createSentryClient } from "./base";
 
-vi.mock("@plasmohq/storage", () => ({
-  Storage: class {
-    get = async () => undefined;
-  }
+vi.mock("src/utils/storage", () => ({
+  SCHEMA_VERSION_KEY: "sync:schemaVersion",
+  readStoredValue: async () => null
 }));
 
 type Envelope = Parameters<ReturnType<NonNullable<BrowserOptions["transport"]>>["send"]>[0];

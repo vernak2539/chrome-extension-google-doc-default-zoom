@@ -10,10 +10,11 @@ require_plan_approval: false
 # script runs vitest in watch mode.
 checks:
   - pnpm install --frozen-lockfile --ignore-scripts
+  - pnpm exec wxt prepare
   - pnpm format:check
   - pnpm lint
   - pnpm exec vitest run
-  - pnpm build --target=chrome-mv3
+  - pnpm build -b chrome
 max_plan_rounds: 3
 max_review_rounds: 3
 max_conflict_rounds: 2

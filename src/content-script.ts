@@ -1,10 +1,5 @@
-import { relayMessage, sendToBackground } from "@plasmohq/messaging";
-import type { PlasmoCSConfig } from "plasmo";
 import {
   OBSERVE_EXECUTION_LIMIT,
-  RELAY_EXECUTE_ENTER,
-  RELAY_GET_APP_STORAGE_STATE,
-  RELAY_REPORT_CONTENT_ERROR,
   SELECTOR_PAGE_HEADER,
   workspaceAppUiStrategyConfigs
 } from "src/constants";
@@ -18,23 +13,13 @@ import type {
   ZoomOutcome
 } from "src/types";
 import { isGoogleClassroomDomain } from "src/utils/classroom-helpers";
-import { IS_EXTENDED_EDITION } from "src/utils/edition";
 import getCurrentApp from "src/utils/get-current-app";
 import BrowserLogger from "src/utils/logger";
+import { sendMessage } from "src/utils/messaging";
 import { observeElementAndExecute, onElementAvailable } from "src/utils/mutation-observer-helpers";
 import { serializeError } from "src/utils/serialize-error";
 import { stopExecution } from "src/utils/stop-exeuction";
 import { walkDOM } from "src/utils/walk-dom";
-
-export const config: PlasmoCSConfig = {
-  matches: [
-    "https://docs.google.com/document/*",
-    "https://docs.google.com/spreadsheets/*",
-    "https://classroom.google.com/*"
-  ],
-  exclude_matches: ["https://docs.google.com/offline/*"],
-  all_frames: true
-};
 
 const logger = new BrowserLogger("content");
 
@@ -61,7 +46,7 @@ const reportFailure = (reason: ZoomFailReason | undefined, error?: unknown) => {
       }
     };
 
-    sendToBackground({ name: RELAY_REPORT_CONTENT_ERROR, body }).catch((sendError) =>
+    sendMessage("reportContentError", body).catch((sendError) =>
       logger.error("Could not send the error report to the background", sendError)
     );
   } catch (reportError) {
@@ -86,12 +71,6 @@ const createStrategy = (currentApp: WorkspaceAppName | null): AbstractBaseStrate
       return new SheetsStrategy(workspaceAppUiStrategyConfigs["Sheets"]);
   }
 };
-
-relayMessage({ name: RELAY_GET_APP_STORAGE_STATE });
-
-if (IS_EXTENDED_EDITION) {
-  relayMessage({ name: RELAY_EXECUTE_ENTER });
-}
 
 const main = () => {
   // this should be first to stop execution if no current app
@@ -145,7 +124,7 @@ const main = () => {
   );
 };
 
-(() => {
+export const runContentScript = (): void => {
   logger.addContext("url", window.location.href);
 
   if (isGoogleClassroomDomain()) {
@@ -161,4 +140,4 @@ const main = () => {
       reportFailure(undefined, err);
     }
   });
-})();
+};

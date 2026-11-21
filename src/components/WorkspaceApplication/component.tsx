@@ -5,7 +5,7 @@ import localize from "../../utils/localize";
 import CustomZoomInput from "../CustomZoomInput";
 import SelectZoomInput from "../SelectZoomInput";
 
-import * as style from "../../style.module.css";
+import style from "../../style.module.css";
 
 type WorkspaceApplicationComponentProps = {
   applicationName: WorkspaceAppName;
@@ -39,7 +39,7 @@ const ExperimentalFeatureCheckbox = ({
 }: ExperimentalFeatureCheckboxProps) => {
   const onEduClick = () => {
     chrome.tabs.create({
-      url: `./tabs/experimental-features.html#${linkAnchor}`
+      url: `./experimental-features.html#${linkAnchor}`
     });
   };
 

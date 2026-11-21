@@ -2,7 +2,7 @@ import classnames from "classnames";
 import type { Announcement } from "src/utils/announcement";
 import localize from "src/utils/localize";
 
-import * as styles from "../../style.module.css";
+import styles from "../../style.module.css";
 
 interface Props {
   announcement: Announcement;

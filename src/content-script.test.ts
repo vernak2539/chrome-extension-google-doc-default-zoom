@@ -1,20 +1,17 @@
 // @vitest-environment jsdom
 // @vitest-environment-options {"url": "https://docs.google.com/document/d/DOC_ID_123/edit"}
-// Lives outside src/contents: Plasmo turns every file in that folder into a content script.
 import type { ReportContentErrorRequestBody, ZoomOutcome } from "src/types";
 import { beforeEach, describe, expect, test, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({
-  sendToBackground: vi.fn(),
+  sendMessage: vi.fn(),
   walkDOM: vi.fn(),
   execute: vi.fn(),
   isUIPreview: vi.fn()
 }));
 
-vi.mock("@plasmohq/messaging", () => ({
-  relayMessage: vi.fn(),
-  sendToBackground: mocks.sendToBackground,
-  sendToBackgroundViaRelay: vi.fn()
+vi.mock("src/utils/messaging", () => ({
+  sendMessage: mocks.sendMessage
 }));
 vi.mock("src/utils/localize", () => ({ default: (key: string) => key }));
 vi.mock("src/utils/walk-dom", async (importOriginal) => {
@@ -34,7 +31,8 @@ vi.mock("src/strategies/sheets", () => ({ default: class {} }));
 
 const startContentScript = async () => {
   document.body.innerHTML = `<div id="docs-chrome" class="chrome"><div id="docs-toolbar"></div></div>`;
-  await import("./contents/index");
+  const { runContentScript } = await import("./content-script");
+  runContentScript();
 
   // The script starts on the first DOM mutation after it was injected
   document.body.append(document.createElement("div"));
@@ -42,16 +40,16 @@ const startContentScript = async () => {
 };
 
 const sentReport = (): ReportContentErrorRequestBody => {
-  expect(mocks.sendToBackground).toHaveBeenCalledTimes(1);
-  expect(mocks.sendToBackground.mock.calls[0][0].name).toBe("report-content-error");
-  return mocks.sendToBackground.mock.calls[0][0].body;
+  expect(mocks.sendMessage).toHaveBeenCalledTimes(1);
+  expect(mocks.sendMessage.mock.calls[0][0]).toBe("reportContentError");
+  return mocks.sendMessage.mock.calls[0][1];
 };
 
 describe("content script error reporting", () => {
   beforeEach(() => {
     vi.resetModules();
     vi.clearAllMocks();
-    mocks.sendToBackground.mockResolvedValue({});
+    mocks.sendMessage.mockResolvedValue({});
     mocks.isUIPreview.mockReturnValue(false);
     mocks.execute.mockResolvedValue({ status: "applied" } satisfies ZoomOutcome);
   });
@@ -61,7 +59,7 @@ describe("content script error reporting", () => {
 
     expect(mocks.execute).toHaveBeenCalledTimes(1);
     expect(mocks.walkDOM).not.toHaveBeenCalled();
-    expect(mocks.sendToBackground).not.toHaveBeenCalled();
+    expect(mocks.sendMessage).not.toHaveBeenCalled();
   });
 
   test("should send a failed outcome with its reason and the page structure", async () => {
@@ -97,7 +95,7 @@ describe("content script error reporting", () => {
 
   test("should not throw when the background cannot be reached", async () => {
     mocks.execute.mockResolvedValue({ status: "failed", reason: "exception" });
-    mocks.sendToBackground.mockRejectedValue(new Error("Extension context invalidated."));
+    mocks.sendMessage.mockRejectedValue(new Error("Extension context invalidated."));
     const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
 
     await startContentScript();

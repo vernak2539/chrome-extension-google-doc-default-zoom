@@ -1,4 +1,3 @@
-import { Storage } from "@plasmohq/storage";
 import { useCallback, useContext, useEffect, useState } from "react";
 import {
   DISMISSED_ANNOUNCEMENTS_STORAGE_KEY,
@@ -7,15 +6,14 @@ import {
   type Announcement
 } from "src/utils/announcement";
 import { LoggerContext } from "src/utils/logger/context";
-
-// Dismissal is a per-device UI preference, so keep it out of synced settings
-const storage = new Storage({ area: "local" });
+import { readStoredValue } from "src/utils/storage";
+import { storage } from "wxt/utils/storage";
 
 const getUiLocale = () => chrome?.i18n?.getUILanguage?.() ?? "en";
 const getExtensionVersion = () => chrome?.runtime?.getManifest?.().version ?? "0.0.0";
 
 const getDismissedIds = async () => {
-  const stored = await storage.get<string[]>(DISMISSED_ANNOUNCEMENTS_STORAGE_KEY);
+  const stored = await readStoredValue<string[]>(DISMISSED_ANNOUNCEMENTS_STORAGE_KEY);
   return Array.isArray(stored) ? stored : [];
 };
 
@@ -60,7 +58,7 @@ export const useAnnouncements = () => {
       try {
         const dismissedIds = await getDismissedIds();
         if (!dismissedIds.includes(id)) {
-          await storage.set(DISMISSED_ANNOUNCEMENTS_STORAGE_KEY, [...dismissedIds, id]);
+          await storage.setItem(DISMISSED_ANNOUNCEMENTS_STORAGE_KEY, [...dismissedIds, id]);
         }
       } catch (error) {
         logger.error("Unable to save dismissed announcement", error);

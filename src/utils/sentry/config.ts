@@ -1,12 +1,12 @@
 import { IS_EXTENDED_EDITION } from "src/utils/edition";
 
 export const SENTRY_BASE_CONFIG = {
-  dsn: process.env.PLASMO_PUBLIC_SENTRY_DSN,
+  dsn: import.meta.env.WXT_SENTRY_DSN,
 
   // We recommend adjusting this value in production, or using tracesSampler
   // for finer control
   tracesSampleRate: 1.0,
-  environment: process.env.NODE_ENV || "development",
+  environment: import.meta.env.COMMAND === "build" ? "production" : "development",
   // The release is set in `createSentryClient`: importing package.json here put all of it, devDependencies
   // included, into every bundle.
   ignoreErrors: [

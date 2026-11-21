@@ -51,7 +51,7 @@ jobs:
     environment:
       name: ${{ inputs.environment }}
     env:
-      PLASMO_PUBLIC_SENTRY_DSN: ${{ vars.PLASMO_PUBLIC_SENTRY_DSN }}
+      WXT_SENTRY_DSN: ${{ vars.PLASMO_PUBLIC_SENTRY_DSN }}
       SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
       SENTRY_ORG: ${{ vars.SENTRY_ORG }}
       SENTRY_PROJECT: ${{ vars.SENTRY_PROJECT }}
@@ -69,13 +69,18 @@ jobs:
         run: pnpm install
       - name: Run Tests
         run: pnpm test
-      - name: Build the extension
+      - name: Check the Firefox edition
+        if: ${{ inputs.include_firefox && inputs.edition != 'base' }}
         run: |
-          pnpm build:${{ inputs.edition }} --source-maps --target=chrome-mv3
-          pnpm build:${{ inputs.edition }} --source-maps --target=edge-mv3
-      - name: Build the extension (Firefox)
-        if: ${{ inputs.include_firefox }}
-        run: pnpm build:${{ inputs.edition }} --source-maps --target=firefox-mv2
+          echo "Firefox ships only the Base edition." >&2
+          exit 1
+      - name: Build and package the extension
+        run: |
+          pnpm package:${{ inputs.edition }} -b chrome
+          pnpm package:${{ inputs.edition }} -b edge
+      - name: Build and package the extension (Firefox)
+        if: ${{ inputs.include_firefox && inputs.edition == 'base' }}
+        run: pnpm package:${{ inputs.edition }} -b firefox
       - name: Check the built edition
         run: pnpm check:editions
       - name: get-npm-version
@@ -100,7 +105,7 @@ jobs:
           ignore_missing: true
           version: ${{ steps.package-version.outputs.current-version }}
       - name: Create Sentry release (Firefox Add-on)
-        if: ${{ inputs.include_firefox }}
+        if: ${{ inputs.include_firefox && inputs.edition == 'base' }}
         uses: getsentry/action-release@v1
         with:
           environment: production
@@ -109,20 +114,6 @@ jobs:
           ignore_empty: true
           ignore_missing: true
           version: ${{ steps.package-version.outputs.current-version }}
-      - name: Remove sourcemaps from bundle
-        run: |
-          rm ./build/chrome-mv3-${{ inputs.edition }}/*.map
-          rm ./build/edge-mv3-${{ inputs.edition }}/*.map
-      - name: Remove sourcemaps from bundle (Firefox)
-        if: ${{ inputs.include_firefox }}
-        run: rm ./build/firefox-mv2-${{ inputs.edition }}/*.map
-      - name: Package extension artifact
-        run: |
-          pnpm package:${{ inputs.edition }} --target=chrome-mv3
-          pnpm package:${{ inputs.edition }} --target=edge-mv3
-      - name: Package extension artifact (Firefox)
-        if: ${{ inputs.include_firefox }}
-        run: pnpm package:${{ inputs.edition }} --target=firefox-mv2
       - name: Browser Platform Publish
         uses: PlasmoHQ/bpp@v3
         with:
@@ -130,7 +121,7 @@ jobs:
           chrome-file: build/chrome-mv3-${{ inputs.edition }}.zip
           edge-file: build/edge-mv3-${{ inputs.edition }}.zip
           edge-notes: "Publishing latest '${{ inputs.edition_label }}' version (${{ steps.package-version.outputs.current-version }}) to Edge Store."
-          firefox-file: ${{ inputs.include_firefox && format('build/firefox-mv2-{0}.zip', inputs.edition) || '' }}
+          firefox-file: ${{ inputs.include_firefox && inputs.edition == 'base' && format('build/firefox-mv2-{0}.zip', inputs.edition) || '' }}
       - uses: actions/upload-artifact@v4
         if: always()
         with:

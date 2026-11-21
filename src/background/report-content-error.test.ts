@@ -1,12 +1,10 @@
-// Lives outside src/background/messages: Plasmo bundles every file in that folder as a message handler.
 // Runs the real Sentry client against a fake DSN and records what it sends, so it checks what reaches the transport.
 import type { ReportContentErrorRequestBody } from "src/types";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 
-vi.mock("@plasmohq/storage", () => ({
-  Storage: class {
-    get = async () => undefined;
-  }
+vi.mock("src/utils/storage", () => ({
+  SCHEMA_VERSION_KEY: "sync:schemaVersion",
+  readStoredValue: async () => undefined
 }));
 
 interface SentEvent {
@@ -30,21 +28,20 @@ const baseBody: ReportContentErrorRequestBody = {
 };
 
 const reportAndCollectEvent = async (body: ReportContentErrorRequestBody) => {
-  const { default: handler } = await import("./messages/report-content-error");
-  const send = vi.fn();
+  const { reportContentError } = await import("./report-content-error");
 
-  await handler({ body, sender: { url: DOCS_URL } } as any, { send } as any);
+  const response = await reportContentError(body, DOCS_URL);
   await vi.waitFor(() => expect(requests.length).toBeGreaterThan(0));
 
   const eventLine = requests.pop()!.split("\n")[2];
-  return { event: JSON.parse(eventLine) as SentEvent, send };
+  return { event: JSON.parse(eventLine) as SentEvent, response };
 };
 
 describe("report-content-error handler", () => {
   beforeEach(() => {
     requests.length = 0;
     vi.resetModules();
-    vi.stubEnv("PLASMO_PUBLIC_SENTRY_DSN", "https://public@example.invalid/1");
+    vi.stubEnv("WXT_SENTRY_DSN", "https://public@example.invalid/1");
     vi.stubGlobal("chrome", {
       i18n: { getUILanguage: () => "en" },
       runtime: { getManifest: () => ({ version: "1.2.3" }) }
@@ -64,7 +61,7 @@ describe("report-content-error handler", () => {
   });
 
   test("should send a content script error with its own stack frames", async () => {
-    const { event, send } = await reportAndCollectEvent({
+    const { event, response } = await reportAndCollectEvent({
       ...baseBody,
       error: {
         name: "TypeError",
@@ -89,7 +86,7 @@ describe("report-content-error handler", () => {
     ]);
     expect(event.tags).toMatchObject({ source: "content", application: "Docs" });
     expect(event.release).toBe("1.2.3");
-    expect(send).toHaveBeenCalledExactlyOnceWith({});
+    expect(response).toEqual({});
   });
 
   test("should show no background frames for an error that has no stack", async () => {

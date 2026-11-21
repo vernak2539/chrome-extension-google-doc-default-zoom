@@ -28,7 +28,7 @@ const HomeView = () => {
             href="#"
             onClick={() => {
               chrome.tabs.create({
-                url: "./tabs/ext-versions.html"
+                url: "./ext-versions.html"
               });
             }}>
             <small>{localize("popupToExtensionVersionsTab")}</small>

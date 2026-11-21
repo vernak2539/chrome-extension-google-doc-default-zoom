@@ -13,6 +13,7 @@ const DOCS_150 = { zoomValue: "150%", viewOnly: true, classroomSupport: true };
 const runMigrationsAgainst = async (initial: Record<string, unknown>) => {
   const fake = createFakeChromeStorage(initial);
   vi.stubGlobal("chrome", fake.chrome);
+  // Static import would run the migration once, before chrome is stubbed; re-import after resetModules.
   vi.resetModules();
   await (
     await import("./migrations")
@@ -30,7 +31,7 @@ describe("storage migrations", () => {
     vi.restoreAllMocks();
   });
 
-  test("should migrate V1 keys in one write and then remove them", async () => {
+  test("should migrate V1 keys in one plain-value write and then remove them", async () => {
     const fake = await runMigrationsAgainst({
       zoomValue: json("150%"),
       "zoomValue:viewOnly": json(true),
@@ -39,11 +40,17 @@ describe("storage migrations", () => {
 
     expect(fake.setCalls).toEqual([
       {
-        docs: json({ zoomValue: "150%", viewOnly: true, classroomSupport: false }),
-        sheets: json({ zoomValue: "75%", viewOnly: false, classroomSupport: false }),
-        schemaVersion: json(2)
+        docs: { zoomValue: "150%", viewOnly: true, classroomSupport: false },
+        sheets: { zoomValue: "75%", viewOnly: false, classroomSupport: false },
+        schemaVersion: 2
       }
     ]);
+    expect(fake.data.docs).toEqual({
+      zoomValue: "150%",
+      viewOnly: true,
+      classroomSupport: false
+    });
+    expect(fake.data.schemaVersion).toBe(2);
     expect(Object.keys(fake.data).sort()).toEqual(["docs", "schemaVersion", "sheets"]);
   });
 
@@ -55,39 +62,46 @@ describe("storage migrations", () => {
       "zoomValue:viewOnly": json(false)
     });
 
-    expect(JSON.parse(fake.data.docs as string)).toEqual(DOCS_150);
-    expect(JSON.parse(fake.data.sheets as string)).toEqual({
+    expect(fake.data.docs).toEqual(DOCS_150);
+    expect(fake.data.sheets).toEqual({
       zoomValue: "75%",
       viewOnly: false,
       classroomSupport: false
     });
-    expect(fake.data.schemaVersion).toBe(json(2));
+    expect(fake.data.schemaVersion).toBe(2);
     expect(Object.keys(fake.data).sort()).toEqual(["docs", "schemaVersion", "sheets"]);
   });
 
   test("should only remove leftover V1 keys once the schema version is current", async () => {
     const fake = await runMigrationsAgainst({
-      schemaVersion: json(2),
-      docs: json(DOCS_150),
+      schemaVersion: 2,
+      docs: DOCS_150,
       "sheets:zoomValue": json("75%")
     });
 
     expect(fake.setCalls).toEqual([]);
     expect(fake.removeCalls).toEqual([["sheets:zoomValue"]]);
-    expect(JSON.parse(fake.data.docs as string)).toEqual(DOCS_150);
+    expect(fake.data.docs).toEqual(DOCS_150);
   });
 
   test("should write only the schema version on a fresh install", async () => {
     const fake = await runMigrationsAgainst({});
 
-    expect(fake.setCalls).toEqual([{ schemaVersion: json(2) }]);
+    expect(fake.setCalls).toEqual([{ schemaVersion: 2 }]);
     expect(fake.removeCalls).toEqual([]);
   });
 
   test("should not write when storage is already current", async () => {
-    const fake = await runMigrationsAgainst({ schemaVersion: json(2), docs: json(DOCS_150) });
+    const fake = await runMigrationsAgainst({ schemaVersion: 2, docs: DOCS_150 });
 
     expect(fake.setCalls).toEqual([]);
+    expect(fake.removeCalls).toEqual([]);
+  });
+
+  test("should rewrite values the Plasmo versions saved as JSON text", async () => {
+    const fake = await runMigrationsAgainst({ schemaVersion: json(2), docs: json(DOCS_150) });
+
+    expect(fake.setCalls).toEqual([{ docs: DOCS_150, schemaVersion: 2 }]);
     expect(fake.removeCalls).toEqual([]);
   });
 });

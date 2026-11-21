@@ -9,7 +9,7 @@
 export const ANNOUNCEMENT_URL =
   "https://raw.githubusercontent.com/vernak2539/chrome-extension-google-doc-default-zoom/main/announcements/announcement.json";
 
-export const DISMISSED_ANNOUNCEMENTS_STORAGE_KEY = "dismissedAnnouncementIds";
+export const DISMISSED_ANNOUNCEMENTS_STORAGE_KEY = "local:dismissedAnnouncementIds" as const;
 
 const DEFAULT_LOCALE = "en";
 const FETCH_TIMEOUT_MS = 5000;
@@ -59,7 +59,7 @@ export const parseAnnouncement = (data: unknown): RemoteAnnouncement | null => {
   return { id, active, level, dismissible, maxVersion, messages };
 };
 
-// Normalises "pt-BR" / "pt_br" to "pt_BR" to match the locales/ folder naming
+// Normalises "pt-BR" / "pt_br" to "pt_BR" to match the public/_locales/ folder naming
 const normaliseLocale = (locale: string) => {
   const [language, region] = locale.replace("-", "_").split("_");
   return region ? `${language.toLowerCase()}_${region.toUpperCase()}` : language.toLowerCase();

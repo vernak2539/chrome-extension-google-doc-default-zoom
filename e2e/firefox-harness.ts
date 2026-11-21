@@ -32,9 +32,7 @@ export const assertFirefoxBuild = () => {
     );
   }
   if (!existsSync(path.join(BUILD_DIR, "manifest.json"))) {
-    throw new Error(
-      `No extension build in ${BUILD_DIR}: run \`pnpm build:base --target=firefox-mv2\` first`
-    );
+    throw new Error(`No extension build in ${BUILD_DIR}: run \`pnpm build:base -b firefox\` first`);
   }
   if (readManifest().permissions?.includes("debugger")) {
     throw new Error(`${BUILD_DIR} holds the Extended edition, but Firefox only ships Base`);
@@ -45,9 +43,7 @@ export const assertFirefoxBuild = () => {
     .filter((file) => file.endsWith(".js"))
     .find((file) => SENTRY_INGEST_DSN.test(readFileSync(path.join(BUILD_DIR, file), "utf8")));
   if (buildWithDsn) {
-    throw new Error(
-      `${buildWithDsn} contains a Sentry DSN: rebuild without PLASMO_PUBLIC_SENTRY_DSN set`
-    );
+    throw new Error(`${buildWithDsn} contains a Sentry DSN: rebuild without WXT_SENTRY_DSN set`);
   }
 };
 
@@ -99,11 +95,10 @@ export const setAppState = async (
   await popup.waitForFunction(() => typeof browser !== "undefined" && !!browser.storage?.sync, {
     timeout: WAIT_TIMEOUT_MS
   });
-  // @plasmohq/storage keeps every value JSON encoded
   await popup.evaluate(
-    (key, value) => browser.storage.sync.set({ [key]: value, schemaVersion: "2" }),
+    (key, value) => browser.storage.sync.set({ [key]: value, schemaVersion: 2 }),
     storageKey,
-    JSON.stringify(state)
+    state
   );
   await popup.close();
 };

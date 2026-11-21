@@ -22,21 +22,15 @@ const config: StorybookConfig = {
 
     return mergeConfig(config, {
       define: {
-        "process.env.NODE_ENV": JSON.stringify("development"),
-        "process.env.PLASMO_BROWSER": JSON.stringify("chrome"),
-        "process.env.PLASMO_TAG": JSON.stringify("extended"),
-        "process.env.PLASMO_PUBLIC_SENTRY_DSN": "undefined"
+        "import.meta.env.MODE": JSON.stringify("extended"),
+        "import.meta.env.BROWSER": JSON.stringify("chrome"),
+        "import.meta.env.COMMAND": JSON.stringify("serve"),
+        "import.meta.env.WXT_SENTRY_DSN": "undefined"
       },
-      plugins: [
-        react(),
-        svgr({
-          include: ["**/*.svg?react", "react:~**/*.svg", "**/*.svg"]
-        })
-      ],
+      plugins: [react(), svgr({ include: ["**/*.svg?react", "**/*.svg"] })],
       resolve: {
         alias: {
-          src: path.resolve(process.cwd(), "src"),
-          "react:~": path.resolve(process.cwd())
+          src: path.resolve(process.cwd(), "src")
         }
       }
     });

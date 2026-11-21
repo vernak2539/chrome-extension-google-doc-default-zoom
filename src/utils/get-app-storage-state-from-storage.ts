@@ -1,13 +1,8 @@
-import { sendToBackgroundViaRelay } from "@plasmohq/messaging";
-
-import { RELAY_GET_APP_STORAGE_STATE } from "../constants";
-import type { AppStorageState, GetAppStorageStateRequestBody, GetFromStorageFn } from "../types";
+import type { AppStorageState, GetFromStorageFn } from "../types";
+import { sendMessage } from "./messaging";
 
 const getAppStorageStateFromStorage: GetFromStorageFn<AppStorageState> = async (storageKey) => {
-  return await sendToBackgroundViaRelay<GetAppStorageStateRequestBody, AppStorageState>({
-    name: RELAY_GET_APP_STORAGE_STATE,
-    body: { storageKey }
-  });
+  return await sendMessage("getAppStorageState", { storageKey });
 };
 
 export default getAppStorageStateFromStorage;
