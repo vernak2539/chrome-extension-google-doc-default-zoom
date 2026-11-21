@@ -192,8 +192,12 @@ describe("closing the zoom dropdown", () => {
     renderZoomMenu();
     document.body.insertAdjacentHTML("beforeend", "<canvas></canvas>");
     const mousedownTargets = recordMousedownTargets();
+    vi.useFakeTimers();
 
     await new TestStrategy(DOCS_CONFIG).zoomTo("200%");
+    // A canvas press behind a timer, as the old flow did, would land here
+    await vi.advanceTimersByTimeAsync(1000);
+    vi.useRealTimers();
 
     expect(mousedownTargets.at(-1)).toBe("body");
     expect(mousedownTargets).not.toContain("canvas");
