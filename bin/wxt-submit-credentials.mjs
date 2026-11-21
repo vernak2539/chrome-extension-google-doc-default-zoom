@@ -5,9 +5,10 @@
  * `FIREFOX_*` variables. The repository keeps one JSON secret per edition, so this writes the matching
  * variables to `$GITHUB_ENV` before the submit step.
  *
- * Chrome API v1.1 shut down on 2026-10-15. A `chrome` object with `serviceAccountClientEmail`, a
- * `serviceAccountAccessToken`, or `apiVersion: "v2"` selects the v2 service-account credentials; the old
- * `clientId` / `clientSecret` / `refreshToken` fields are still accepted for older secrets.
+ * Chrome API v1.1 is at end of life (Google's shutdown date is 2026-10-15). A `chrome` object with
+ * `serviceAccountClientEmail`, a `serviceAccountAccessToken`, or `apiVersion: "v2"` selects the v2
+ * service-account credentials; the old `clientId` / `clientSecret` / `refreshToken` fields are still
+ * accepted for older secrets.
  */
 
 import { appendFileSync } from "node:fs";
@@ -99,13 +100,13 @@ if (includeFirefox) {
 const envFile = process.env.GITHUB_ENV;
 if (envFile == null) throw new Error("GITHUB_ENV is not set");
 
-// Mask credentials only: masking a value like "v2" or "false" would redact unrelated log lines
+// Mask credentials only: masking a value like "v2" or "false" would redact unrelated log lines.
+// The service-account private key is multiline, so it can't use the workflow command; it is never printed.
 const SECRET_KEYS = new Set([
   "CHROME_CLIENT_ID",
   "CHROME_CLIENT_SECRET",
   "CHROME_REFRESH_TOKEN",
   "CHROME_SERVICE_ACCOUNT_CLIENT_EMAIL",
-  "CHROME_SERVICE_ACCOUNT_PRIVATE_KEY",
   "CHROME_SERVICE_ACCOUNT_ACCESS_TOKEN",
   "EDGE_CLIENT_ID",
   "EDGE_API_KEY",

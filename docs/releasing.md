@@ -67,7 +67,7 @@ If an [announcement](./announcements.md) is warning users about the bug the rele
 
 `SUBMIT_KEYS` and `SUBMIT_KEYS_EXTENDED` are repository secrets holding the store credentials JSON. The Extended one has no `firefox` block and uses the Extended listings' Chrome `extensionId` and Edge `productId`. The workflow passes the JSON to `bin/wxt-submit-credentials.mjs`, which writes `CHROME_*`, `EDGE_*` and `FIREFOX_*` for `wxt submit`.
 
-Chrome Web Store API v1.1 is deprecated and at end of life (the tooling drops it on 2026-10-15). Use a service account (v2):
+Chrome Web Store API v1.1 is at end of life (Google's shutdown date is 2026-10-15). Use a service account (v2):
 
 ```json
 {
@@ -83,7 +83,7 @@ Chrome Web Store API v1.1 is deprecated and at end of life (the tooling drops it
 }
 ```
 
-`apiVersion` is optional when `serviceAccountClientEmail` is present. `serviceAccountAccessToken` can replace the email and private key, but it is short-lived. The legacy v1.1 shape (`clientId`, `clientSecret`, `refreshToken`, `extId`) is still read for older secrets, but v1.1 is at end of life; move those secrets to v2.
+`bin/wxt-submit-credentials.mjs` is the schema source: it defines which fields are read and how `extId`/`apiKey`/`apiSecret` map to the tool's variables. `apiVersion` is optional when `serviceAccountClientEmail` is present. `serviceAccountAccessToken` can replace the email and private key, but it is short-lived. The legacy v1.1 shape (`clientId`, `clientSecret`, `refreshToken`, `extId`) is still read for older secrets, but v1.1 is at end of life; move those secrets to v2.
 
 Secrets can't be read back from GitHub, so updating one value means setting the whole JSON again:
 
