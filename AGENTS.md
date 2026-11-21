@@ -30,7 +30,7 @@ The project maintains a single codebase for two editions of the extension:
 1.  **Base:** Supports only predefined zoom levels.
 2.  **Extended:** Supports custom zoom levels by using the `debugger` permission (not available on Firefox).
 
-Each edition is a WXT build mode (`wxt build --mode base|extended`). The source is never rewritten, so what is tested is what ships. The browser comes from `-b chrome|edge|firefox`; Chrome and Edge build MV3 and Firefox builds MV2.
+Each edition is a WXT build mode (`wxt build --mode base|extended`). The source is never rewritten, so what is tested is what ships. The browser comes from `-b chrome|edge|firefox`; Chrome and Edge build MV3 and Firefox builds MV2. Firefox ships only the Base edition: `wxt.config.ts` rejects `--mode extended -b firefox`, so there is no Firefox Extended build or release.
 
 - **Code:** `IS_EXTENDED_EDITION` in `src/utils/edition.ts` is `import.meta.env.MODE === "extended"`. Any other mode means Base. Branch on it where the editions differ; search for it to find every such place. The background handler must check the edition itself for the minifier to drop its debugger code from Base.
 - **Manifest:** the `EDITIONS` map in `wxt.config.ts` holds the name, Firefox add-on id and permissions for each mode. The manifest function writes them; there are no env files. `pnpm check:editions` fails when a built manifest or bundle does not match its edition.
@@ -58,7 +58,7 @@ pnpm package:base     # zips build/<target>-base
 pnpm package:extended # `pnpm package` is the same
 ```
 
-Pass `-b chrome|edge|firefox` as usual. Chrome and Edge build MV3, Firefox builds MV2. Sourcemaps are always written next to the bundles in `build/<browser>-mv<n>-<edition>` and left out of the zips.
+Pass `-b chrome|edge|firefox` as usual. Chrome and Edge build MV3, Firefox builds MV2. Firefox is Base-only; Extended builds target Chrome and Edge. Sourcemaps are always written next to the bundles in `build/<browser>-mv<n>-<edition>` and left out of the zips.
 
 ### Edition Check
 

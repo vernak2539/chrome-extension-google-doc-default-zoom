@@ -25,7 +25,7 @@ pnpm build:extended -b chrome
 pnpm check:editions
 ```
 
-`-b chrome|edge|firefox` picks the browser; Chrome and Edge build MV3, Firefox builds MV2. This creates a production bundle for each edition in `build/<browser>-mv<n>-<edition>` (for example `build/chrome-mv3-base`), ready to be zipped (`pnpm package:base`, `pnpm package:extended`) and published to the stores. `pnpm build` and `pnpm package` are short for the Extended edition. `pnpm check:editions` fails when a built manifest or bundle does not match its edition. See "Base vs Extended Editions" in [AGENTS.md](../AGENTS.md).
+`-b chrome|edge|firefox` picks the browser; Chrome and Edge build MV3, Firefox builds MV2. Firefox is Base-only: `wxt.config.ts` rejects an Extended Firefox build, so the Extended edition targets Chrome and Edge. This creates a production bundle for each edition in `build/<browser>-mv<n>-<edition>` (for example `build/chrome-mv3-base`), ready to be zipped (`pnpm package:base`, `pnpm package:extended`) and published to the stores. `pnpm build` and `pnpm package` are short for the Extended edition. `pnpm check:editions` fails when a built manifest or bundle does not match its edition. See "Base vs Extended Editions" in [AGENTS.md](../AGENTS.md).
 
 ## Storage
 

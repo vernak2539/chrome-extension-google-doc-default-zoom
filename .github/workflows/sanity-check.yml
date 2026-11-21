@@ -33,6 +33,7 @@ jobs:
       - name: Run Tests
         run: pnpm test
       # `wxt zip` writes sourcemaps into the build directory and leaves them out of the zip
+      # Firefox has no Extended edition, so only Base builds it
       - name: Build and package both editions
         run: |
           pnpm package:base -b chrome
@@ -40,7 +41,6 @@ jobs:
           pnpm package:base -b firefox
           pnpm package:extended -b chrome
           pnpm package:extended -b edge
-          pnpm package:extended -b firefox
       - name: Check the built editions
         run: pnpm check:editions
       - name: Typecheck

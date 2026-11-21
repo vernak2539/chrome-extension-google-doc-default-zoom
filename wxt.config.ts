@@ -57,7 +57,11 @@ export default defineConfig({
       : {};
   },
   manifest: ({ browser, mode }) => {
-    const edition = EDITIONS[EDITION_BY_MODE[mode] ?? "base"];
+    const editionName = EDITION_BY_MODE[mode] ?? "base";
+    if (browser === "firefox" && editionName === "extended") {
+      throw new Error("Firefox ships only the Base edition; build it with --mode base.");
+    }
+    const edition = EDITIONS[editionName];
     return {
       name: edition.name,
       default_locale: "en",
