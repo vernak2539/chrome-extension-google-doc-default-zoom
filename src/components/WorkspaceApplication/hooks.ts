@@ -4,59 +4,33 @@ import type { AppStorageState, StorageKey } from "src/types";
 import { appStateKey } from "src/utils/storage";
 import { useStoredValue } from "src/utils/use-stored-value";
 
-export interface UseWorkspaceStorage {
-  zoom: string;
-  viewOnly: boolean;
-  classroomSupport: boolean;
-  updateZoomValue: (value: string) => void;
-  updateDocsViewOnlyValue: (value: boolean) => void;
-  updateClassroomSupportValue: (value: boolean) => void;
+export interface UseAppSettings {
+  settings: AppStorageState;
+  updateSettings: (patch: Partial<AppStorageState>) => void;
   isLoading: boolean;
 }
 
-export const useWorkspaceStorage = (storageKey: StorageKey): UseWorkspaceStorage => {
+/** Keeps the popup from showing or writing an empty zoom: an empty zoom means the default */
+const withZoom = (storageKey: StorageKey, state: AppStorageState): AppStorageState => ({
+  ...state,
+  zoomValue: state.zoomValue || getDefaultAppState(storageKey).zoomValue
+});
+
+export const useAppSettings = (storageKey: StorageKey): UseAppSettings => {
   const [appState, setAppState, { isLoading }] = useStoredValue<Partial<AppStorageState>>(
     appStateKey(storageKey)
   );
 
   // Nothing is stored until the user changes a setting, so the stored state and the setter's
   // `prev` can be `undefined`, or an object that lacks a field. `fillAppState` fills both in.
-  const state = fillAppState(storageKey, appState);
+  const settings = withZoom(storageKey, fillAppState(storageKey, appState));
 
-  const updateZoomValue = useCallback(
-    (value: string) => {
-      setAppState((prev) => ({
-        ...fillAppState(storageKey, prev),
-        zoomValue: value || getDefaultAppState(storageKey).zoomValue
-      }));
+  const updateSettings = useCallback(
+    (patch: Partial<AppStorageState>) => {
+      setAppState((prev) => withZoom(storageKey, { ...fillAppState(storageKey, prev), ...patch }));
     },
     [setAppState, storageKey]
   );
 
-  const updateDocsViewOnlyValue = useCallback(
-    (value: boolean) => {
-      setAppState((prev) => ({ ...fillAppState(storageKey, prev), viewOnly: value ?? false }));
-    },
-    [setAppState, storageKey]
-  );
-
-  const updateClassroomSupportValue = useCallback(
-    (value: boolean) => {
-      setAppState((prev) => ({
-        ...fillAppState(storageKey, prev),
-        classroomSupport: value ?? false
-      }));
-    },
-    [setAppState, storageKey]
-  );
-
-  return {
-    zoom: state.zoomValue,
-    viewOnly: state.viewOnly,
-    classroomSupport: state.classroomSupport,
-    updateZoomValue,
-    updateDocsViewOnlyValue,
-    updateClassroomSupportValue,
-    isLoading
-  };
+  return { settings, updateSettings, isLoading };
 };

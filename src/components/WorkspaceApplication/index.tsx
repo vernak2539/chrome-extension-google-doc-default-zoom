@@ -1,43 +1,19 @@
 import type { WorkspaceApp } from "src/types";
 
 import WorkspaceApplicationComponent from "./component";
-import { useWorkspaceStorage } from "./hooks";
+import { useAppSettings } from "./hooks";
 
-type Props = Omit<WorkspaceApp, "isEnabled" | "uiElements">;
+type Props = { app: WorkspaceApp };
 
-const WorkspaceApplication = ({ name, zoomValues, defaultZoom, storageKey, features }: Props) => {
-  const {
-    zoom,
-    viewOnly,
-    classroomSupport,
-    updateZoomValue,
-    updateDocsViewOnlyValue,
-    updateClassroomSupportValue,
-    isLoading
-  } = useWorkspaceStorage(storageKey);
+const WorkspaceApplication = ({ app }: Props) => {
+  const { settings, updateSettings, isLoading } = useAppSettings(app.storageKey);
 
   // we have not fetched the values required to render from storage, so we're not ready to render yet
   if (isLoading) {
     return null;
   }
 
-  const isCustomZoom = Boolean(zoom) && !zoomValues.includes(zoom as any);
-
-  return (
-    <WorkspaceApplicationComponent
-      applicationName={name}
-      isCustomZoomLevel={isCustomZoom}
-      updateZoomLevel={updateZoomValue}
-      zoomLevel={zoom || defaultZoom}
-      zoomLevelCustom={zoom}
-      zoomValues={zoomValues}
-      features={features}
-      featureDocsViewOnlyEnabled={name === "Docs" ? viewOnly : false}
-      updateDocsViewOnly={updateDocsViewOnlyValue}
-      featureClassroomSupportEnabled={classroomSupport}
-      updateClassroomSupport={updateClassroomSupportValue}
-    />
-  );
+  return <WorkspaceApplicationComponent app={app} settings={settings} onChange={updateSettings} />;
 };
 
 export default WorkspaceApplication;
