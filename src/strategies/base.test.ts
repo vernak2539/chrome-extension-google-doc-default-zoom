@@ -3,7 +3,7 @@ import { workspaceAppUiStrategyConfigs } from "src/constants";
 import type { AppStorageState } from "src/types";
 import { IS_EXTENDED_EDITION } from "src/utils/edition";
 import getAppStorageStateFromStorage from "src/utils/get-app-storage-state-from-storage";
-import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, type MockInstance, test, vi } from "vitest";
 
 import { createZoomDriver } from "./base";
 
@@ -223,6 +223,123 @@ describe("closing the zoom dropdown", () => {
   });
 });
 
+describe("keyboard focus after the zoom", () => {
+  // On the live pages Google moves focus into the zoom box when the control is pressed, and leaves it there once the
+  // zoom is applied, so typing went into the zoom box instead of the document
+  const focusZoomBoxOnPress = () => {
+    const input = document.querySelector<HTMLInputElement>("#zoomSelect input")!;
+    document.querySelector("#zoomSelect")!.addEventListener("mousedown", () => input.focus());
+  };
+
+  // stands in for the element that takes the document's keys (Docs: an iframe, Sheets: the cell editor)
+  const renderFocusedEditor = () => {
+    document.body.insertAdjacentHTML("beforeend", `<textarea id="editor"></textarea>`);
+    const editor = document.querySelector<HTMLTextAreaElement>("#editor")!;
+    editor.focus();
+    return editor;
+  };
+
+  beforeEach(() => {
+    vi.useFakeTimers();
+    getStoredState.mockReset();
+    document.body.innerHTML = "";
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  test("should put focus back in the document after a preset is applied", async () => {
+    renderZoomMenu();
+    focusZoomBoxOnPress();
+    const editor = renderFocusedEditor();
+
+    expect(await zoomTo("150%")).toEqual({ status: "applied" });
+    await vi.runAllTimersAsync();
+
+    expect(document.activeElement).toBe(editor);
+  });
+
+  test("should put focus back in the document when no row matches", async () => {
+    renderZoomMenu();
+    focusZoomBoxOnPress();
+    const editor = renderFocusedEditor();
+
+    await zoomTo("200%");
+    await vi.runAllTimersAsync();
+
+    expect(document.activeElement).toBe(editor);
+  });
+
+  test.runIf(IS_EXTENDED_EDITION)(
+    "should put focus back in the document after a custom zoom is typed",
+    async () => {
+      renderZoomMenu();
+      focusZoomBoxOnPress();
+      const editor = renderFocusedEditor();
+
+      expect(await zoomTo(CUSTOM_ZOOM)).toEqual({ status: "applied" });
+      await vi.runAllTimersAsync();
+
+      expect(document.activeElement).toBe(editor);
+    }
+  );
+
+  // On the live pages, focusing the document in the task of the outside press made Google reopen the menu
+  test("should put focus back in a later task than the outside press", async () => {
+    renderZoomMenu();
+    focusZoomBoxOnPress();
+    const editor = renderFocusedEditor();
+    const events: string[] = [];
+    document.body.addEventListener("mousedown", (event) => {
+      if (event.target === document.body) {
+        events.push("outside press");
+      }
+    });
+    editor.addEventListener("focus", () => events.push("focus back"));
+
+    await zoomTo("150%");
+    await vi.advanceTimersToNextTimerAsync();
+    expect(events).toEqual(["outside press"]);
+
+    await vi.advanceTimersToNextTimerAsync();
+    expect(events).toEqual(["outside press", "focus back"]);
+  });
+
+  test("should leave focus off the zoom box when nothing had focus before", async () => {
+    renderZoomMenu();
+    focusZoomBoxOnPress();
+
+    await zoomTo("150%");
+    await vi.runAllTimersAsync();
+
+    expect(document.activeElement).toBe(document.body);
+  });
+
+  // Docs takes the document's keys in an element inside a hidden iframe, and clears that element's focus while the zoom
+  // box has it. Focusing the iframe alone would leave the keys on the iframe's body.
+  test("should put focus back on the element inside a frame that had it", async () => {
+    renderZoomMenu();
+    document.body.insertAdjacentHTML("beforeend", "<iframe></iframe>");
+    const frame = document.querySelector("iframe")!;
+    const frameDocument = frame.contentDocument!;
+    frameDocument.body.innerHTML = `<div contenteditable="true" tabindex="-1"></div>`;
+    const editor = frameDocument.querySelector("div")!;
+    frame.focus();
+    editor.focus();
+    const input = document.querySelector<HTMLInputElement>("#zoomSelect input")!;
+    document.querySelector("#zoomSelect")!.addEventListener("mousedown", () => {
+      editor.blur();
+      input.focus();
+    });
+
+    await zoomTo("150%");
+    await vi.runAllTimersAsync();
+
+    expect(frameDocument.activeElement).toBe(editor);
+  });
+});
+
 describe("page loading", () => {
   const { uiElements } = DOCS_CONFIG;
   const driver = createDriver;
@@ -318,5 +435,99 @@ describe.runIf(IS_EXTENDED_EDITION)("custom zoom flow", () => {
     await zoomAndSettle();
 
     expect(clickedRows).toEqual([NEAREST_PRESET]);
+  });
+});
+
+// A background tab, or the selected tab of a window that is not focused. There Chrome fires no focus events, and
+// Google ignores a typed zoom (#77).
+describe("zoom in a page without focus", () => {
+  let hasFocus: MockInstance<() => boolean>;
+  let clickedRows: string[];
+
+  const recordZoomControl = () => {
+    const events: string[] = [];
+    document
+      .querySelector("#zoomSelect")!
+      .addEventListener("mousedown", () => events.push("press"));
+    document
+      .querySelector("#zoomSelect input")!
+      .addEventListener("keydown", () => events.push("keydown"));
+    return events;
+  };
+
+  const giveFocus = () => {
+    hasFocus.mockReturnValue(true);
+    window.dispatchEvent(new FocusEvent("focus"));
+  };
+
+  // the outcome, or "pending" while the flow still waits
+  const track = (execution: Promise<unknown>) => {
+    let outcome: unknown = "pending";
+    void execution.then((value) => (outcome = value));
+    return () => outcome;
+  };
+
+  beforeEach(() => {
+    vi.useFakeTimers();
+    getStoredState.mockReset();
+    clickedRows = renderZoomMenu();
+    hasFocus = vi.spyOn(document, "hasFocus").mockReturnValue(false);
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+    vi.restoreAllMocks();
+  });
+
+  test("should apply a preset at once, since picking a row works without focus", async () => {
+    expect(await zoomTo("150%")).toEqual({ status: "applied" });
+    expect(clickedRows).toEqual(["150%"]);
+  });
+
+  describe.runIf(IS_EXTENDED_EDITION)("custom zoom", () => {
+    test("should not touch the zoom control until the page has focus, then type the zoom", async () => {
+      const events = recordZoomControl();
+      const outcome = track(zoomTo(CUSTOM_ZOOM));
+
+      await vi.advanceTimersByTimeAsync(5000);
+      expect(events).toEqual([]);
+      expect(outcome()).toBe("pending");
+
+      giveFocus();
+      await vi.advanceTimersByTimeAsync(0);
+
+      expect(outcome()).toEqual({ status: "applied" });
+      expect(events).toEqual(["press", "keydown"]);
+    });
+
+    test("should keep waiting when a focus event comes while the page still has no focus", async () => {
+      const events = recordZoomControl();
+      const outcome = track(zoomTo(CUSTOM_ZOOM));
+
+      window.dispatchEvent(new FocusEvent("focus"));
+      await vi.advanceTimersByTimeAsync(1000);
+
+      expect(events).toEqual([]);
+      expect(outcome()).toBe("pending");
+
+      // finish here, or the waiting flow would wake up in the next test
+      giveFocus();
+      await vi.advanceTimersByTimeAsync(0);
+      expect(outcome()).toEqual({ status: "applied" });
+    });
+
+    test("should read the saved zoom again once the page has focus", async () => {
+      getStoredState
+        .mockResolvedValueOnce(storedState(CUSTOM_ZOOM))
+        .mockResolvedValueOnce(storedState("150%"));
+      const outcome = track(createDriver().execute());
+      await vi.advanceTimersByTimeAsync(0);
+
+      giveFocus();
+      await vi.advanceTimersByTimeAsync(0);
+
+      expect(outcome()).toEqual({ status: "applied" });
+      expect(clickedRows).toEqual(["150%"]);
+    });
   });
 });
