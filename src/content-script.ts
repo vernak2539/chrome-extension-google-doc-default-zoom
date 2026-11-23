@@ -3,9 +3,9 @@ import {
   SELECTOR_PAGE_HEADER,
   workspaceAppUiStrategyConfigs
 } from "src/constants";
-import { AbstractBaseStrategy } from "src/strategies/base";
-import DocsStrategy from "src/strategies/docs";
-import SheetsStrategy from "src/strategies/sheets";
+import type { ZoomDriver } from "src/strategies/base";
+import { createDocsDriver } from "src/strategies/docs";
+import { createSheetsDriver } from "src/strategies/sheets";
 import type {
   ReportContentErrorRequestBody,
   WorkspaceAppName,
@@ -63,12 +63,12 @@ const handleOutcome = (outcome: ZoomOutcome) => {
   }
 };
 
-const createStrategy = (currentApp: WorkspaceAppName | null): AbstractBaseStrategy | undefined => {
+const createDriver = (currentApp: WorkspaceAppName | null): ZoomDriver | undefined => {
   switch (currentApp) {
     case "Docs":
-      return new DocsStrategy(workspaceAppUiStrategyConfigs["Docs"]);
+      return createDocsDriver(workspaceAppUiStrategyConfigs["Docs"]);
     case "Sheets":
-      return new SheetsStrategy(workspaceAppUiStrategyConfigs["Sheets"]);
+      return createSheetsDriver(workspaceAppUiStrategyConfigs["Sheets"]);
   }
 };
 
@@ -85,25 +85,25 @@ const main = () => {
     return;
   }
 
-  const strategy = createStrategy(currentApp);
+  const driver = createDriver(currentApp);
 
   // Do not execute if there's no supported strategy or the URL indicates the "doc" being previewed
-  if (!strategy || strategy.isUIPreview(window.location.href)) {
+  if (!driver || driver.isUIPreview(window.location.href)) {
     logger.info(`Skipping execution - preview mode or unsupported strategy`);
     return;
   }
 
-  const elementToWatchSelector = strategy.getIsPageLoadingElementToWatch();
-  const executeStrategy = () => {
+  const elementToWatchSelector = driver.getIsPageLoadingElementToWatch();
+  const executeDriver = () => {
     // execute() never rejects: every failure comes back as an outcome
-    strategy.execute().then(handleOutcome);
+    driver.execute().then(handleOutcome);
   };
 
   try {
-    const isPageLoading = strategy.getIsPageLoading();
+    const isPageLoading = driver.getIsPageLoading();
     if (!isPageLoading) {
       logger.info("Page ready, executing immediately");
-      executeStrategy();
+      executeDriver();
       return;
     }
     logger.info("Page still loading, waiting for ready state");
@@ -117,9 +117,9 @@ const main = () => {
     elementToWatchSelector,
     {
       shouldStop: (executionCount) => executionCount > OBSERVE_EXECUTION_LIMIT,
-      shouldExecute: () => !strategy.getIsPageLoading()
+      shouldExecute: () => !driver.getIsPageLoading()
     },
-    executeStrategy,
+    executeDriver,
     (reason) => handleOutcome({ status: "failed", reason })
   );
 };

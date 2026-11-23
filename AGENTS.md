@@ -18,8 +18,8 @@ A browser extension (Chrome, Edge, Firefox) designed to set a default zoom level
 
 The project follows a strategy-based architecture to handle different Google Workspace applications:
 
-- **`src/entrypoints/`:** WXT entrypoints: `background.ts`, `content.ts` (which calls `src/content-script.ts`), `popup/index.html`, and the two unlisted pages (`ext-versions`, `experimental-features`). `src/content-script.ts` detects the current application (Docs or Sheets) and executes the appropriate strategy.
-- **`src/strategies/`:** Zoom decisions are made by the pure `planZoom` in `plan-zoom.ts` (no DOM, unit tested). `DocsStrategy` and `SheetsStrategy`, both inheriting from `AbstractBaseStrategy`, read the page, ask `planZoom` for a plan and run it by finding and interacting with the zoom UI elements.
+- **`src/entrypoints/`:** WXT entrypoints: `background.ts`, `content.ts` (which calls `src/content-script.ts`), `popup/index.html`, and the two unlisted pages (`ext-versions`, `experimental-features`). `src/content-script.ts` detects the current application (Docs or Sheets) and runs the matching driver.
+- **`src/strategies/`:** Zoom decisions are made by the pure `planZoom` in `plan-zoom.ts` (no DOM, unit tested). `createDocsDriver` and `createSheetsDriver`, both built from `createZoomDriver` in `base.ts`, read the page, ask `planZoom` for a plan and run it by finding and interacting with the zoom UI elements. A driver holds no zoom decision; Docs passes its View-menu flow as an option.
 - **`src/background/`:** Handles background tasks: storage reads and Sentry reporting. Custom zoom is applied by the content script with synthetic key events.
 - **`src/utils/`:** Provides helper functions for DOM manipulation (`ui-helpers.ts`), localization (`localize.ts`), and storage.
 

@@ -5,22 +5,10 @@ import { IS_EXTENDED_EDITION } from "src/utils/edition";
 import getAppStorageStateFromStorage from "src/utils/get-app-storage-state-from-storage";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 
-import { AbstractBaseStrategy } from "./base";
+import { createZoomDriver } from "./base";
 
 vi.mock("src/utils/localize", () => ({ default: (key: string) => key }));
 vi.mock("src/utils/get-app-storage-state-from-storage", () => ({ default: vi.fn() }));
-
-class TestStrategy extends AbstractBaseStrategy {
-  protected performZoom(appState: AppStorageState) {
-    return this.uiExecuteFlow(appState.zoomValue);
-  }
-  public isUIPreview() {
-    return false;
-  }
-  public zoomTo(zoomValue: string) {
-    return this.uiExecuteFlow(zoomValue);
-  }
-}
 
 const getStoredState = vi.mocked(getAppStorageStateFromStorage);
 
@@ -51,6 +39,12 @@ const storedState = (zoomValue: string): AppStorageState => ({
   classroomSupport: false
 });
 
+const createDriver = () => createZoomDriver(DOCS_CONFIG, { isUIPreview: () => false });
+const zoomTo = (zoomValue: string) => {
+  getStoredState.mockResolvedValue(storedState(zoomValue));
+  return createDriver().execute();
+};
+
 describe("zoom outcome", () => {
   beforeEach(() => {
     vi.useFakeTimers();
@@ -67,7 +61,7 @@ describe("zoom outcome", () => {
   test("should be applied when the preset row is clicked", async () => {
     renderZoomMenu();
 
-    expect(await new TestStrategy(DOCS_CONFIG).zoomTo("150%")).toEqual({ status: "applied" });
+    expect(await zoomTo("150%")).toEqual({ status: "applied" });
   });
 
   test.each(["", DOCS_CONFIG.zoom.defaultZoom])(
@@ -75,7 +69,7 @@ describe("zoom outcome", () => {
     async (zoomValue) => {
       renderZoomMenu();
 
-      expect(await new TestStrategy(DOCS_CONFIG).zoomTo(zoomValue)).toEqual({
+      expect(await zoomTo(zoomValue)).toEqual({
         status: "skipped",
         reason: "default_zoom"
       });
@@ -83,7 +77,7 @@ describe("zoom outcome", () => {
   );
 
   test("should fail with zoom_select_missing when the zoom select is not on the page", async () => {
-    expect(await new TestStrategy(DOCS_CONFIG).zoomTo("150%")).toEqual({
+    expect(await zoomTo("150%")).toEqual({
       status: "failed",
       reason: "zoom_select_missing"
     });
@@ -92,7 +86,7 @@ describe("zoom outcome", () => {
   test("should fail with zoom_menu_missing when the select does not own a menu", async () => {
     document.body.innerHTML = `<div id="zoomSelect"></div>`;
 
-    expect(await new TestStrategy(DOCS_CONFIG).zoomTo("150%")).toEqual({
+    expect(await zoomTo("150%")).toEqual({
       status: "failed",
       reason: "zoom_menu_missing"
     });
@@ -101,7 +95,7 @@ describe("zoom outcome", () => {
   test("should fail with zoom_option_missing when no row has the value", async () => {
     renderZoomMenu();
 
-    expect(await new TestStrategy(DOCS_CONFIG).zoomTo("200%")).toEqual({
+    expect(await zoomTo("200%")).toEqual({
       status: "failed",
       reason: "zoom_option_missing"
     });
@@ -112,7 +106,7 @@ describe("zoom outcome", () => {
     async () => {
       document.body.innerHTML = `<div id="zoomSelect" aria-owns="zoom-menu"></div>`;
 
-      expect(await new TestStrategy(DOCS_CONFIG).zoomTo(CUSTOM_ZOOM)).toEqual({
+      expect(await zoomTo(CUSTOM_ZOOM)).toEqual({
         status: "failed",
         reason: "zoom_input_missing"
       });
@@ -128,7 +122,7 @@ describe("zoom outcome", () => {
         .querySelector("#zoomSelect input")
         ?.addEventListener("keydown", () => keydowns.push("keydown"));
 
-      expect(await new TestStrategy(DOCS_CONFIG).zoomTo(CUSTOM_ZOOM)).toEqual({
+      expect(await zoomTo(CUSTOM_ZOOM)).toEqual({
         status: "failed",
         reason: "zoom_option_missing"
       });
@@ -140,7 +134,7 @@ describe("zoom outcome", () => {
     window.history.pushState({}, "", "/document/d/abc/grading");
     getStoredState.mockResolvedValue({ ...storedState("150%"), classroomSupport: false });
 
-    expect(await new TestStrategy(DOCS_CONFIG).execute()).toEqual({
+    expect(await createDriver().execute()).toEqual({
       status: "skipped",
       reason: "classroom_support_disabled"
     });
@@ -150,7 +144,7 @@ describe("zoom outcome", () => {
     const error = new Error("Extension context invalidated");
     getStoredState.mockRejectedValue(error);
 
-    expect(await new TestStrategy(DOCS_CONFIG).execute()).toEqual({
+    expect(await createDriver().execute()).toEqual({
       status: "failed",
       reason: "exception",
       error
@@ -165,7 +159,7 @@ describe("zoom outcome", () => {
       throw error;
     });
 
-    expect(await new TestStrategy(DOCS_CONFIG).execute()).toEqual({
+    expect(await createDriver().execute()).toEqual({
       status: "failed",
       reason: "exception",
       error
@@ -197,7 +191,7 @@ describe("closing the zoom dropdown", () => {
     document.body.insertAdjacentHTML("beforeend", "<canvas></canvas>");
     const mousedownTargets = recordMousedownTargets();
 
-    await new TestStrategy(DOCS_CONFIG).zoomTo("200%");
+    await zoomTo("200%");
     // A canvas press behind a timer, as the old flow did, would land here
     await vi.advanceTimersByTimeAsync(1000);
 
@@ -211,7 +205,7 @@ describe("closing the zoom dropdown", () => {
     renderZoomMenu();
     const mousedownTargets = recordMousedownTargets();
 
-    await new TestStrategy(DOCS_CONFIG).zoomTo("150%");
+    await zoomTo("150%");
     expect(mousedownTargets).not.toContain("body");
 
     await vi.advanceTimersByTimeAsync(0);
@@ -223,9 +217,45 @@ describe("closing the zoom dropdown", () => {
     const input = document.querySelector<HTMLInputElement>("#zoomSelect input")!;
     input.focus();
 
-    await new TestStrategy(DOCS_CONFIG).zoomTo("150%");
+    await zoomTo("150%");
 
     expect(document.activeElement).not.toBe(input);
+  });
+});
+
+describe("page loading", () => {
+  const { uiElements } = DOCS_CONFIG;
+  const driver = createDriver;
+
+  beforeEach(() => {
+    document.body.innerHTML = "";
+  });
+
+  test("should watch the toolbar and read the zoom select when the page has one", () => {
+    document.body.innerHTML = `<div id="zoomSelect" class="goog-toolbar-combo-button-disabled"></div>`;
+
+    expect(driver().getIsPageLoadingElementToWatch()).toBe(uiElements.toolbarId);
+    expect(driver().getIsPageLoading()).toBe(true);
+  });
+
+  test("should be ready once the zoom select is no longer disabled", () => {
+    document.body.innerHTML = `<div id="zoomSelect"></div>`;
+
+    expect(driver().getIsPageLoading()).toBe(false);
+  });
+
+  test("should watch the View tab and read it when there is no zoom select", () => {
+    document.body.innerHTML = `<div id="docs-view-menu" class="goog-control-disabled"></div>`;
+
+    expect(driver().getIsPageLoadingElementToWatch()).toBe(uiElements.menubarViewTabId);
+    expect(driver().getIsPageLoading()).toBe(true);
+
+    document.body.innerHTML = `<div id="docs-view-menu"></div>`;
+    expect(driver().getIsPageLoading()).toBe(false);
+  });
+
+  test("should be loading when neither the zoom select nor the View tab exists", () => {
+    expect(driver().getIsPageLoading()).toBe(true);
   });
 });
 
@@ -242,7 +272,7 @@ describe.runIf(IS_EXTENDED_EDITION)("custom zoom flow", () => {
   });
 
   const zoomAndSettle = async () => {
-    const outcome = await new TestStrategy(workspaceAppUiStrategyConfigs.Docs).zoomTo(CUSTOM_ZOOM);
+    const outcome = await zoomTo(CUSTOM_ZOOM);
     await vi.advanceTimersByTimeAsync(1000);
     return outcome;
   };

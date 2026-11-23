@@ -4,7 +4,7 @@ import type { AppStorageState } from "src/types";
 import getAppStorageStateFromStorage from "src/utils/get-app-storage-state-from-storage";
 import { describe, expect, test, vi } from "vitest";
 
-import SheetsStrategy from "./sheets";
+import { createSheetsDriver } from "./sheets";
 
 vi.mock("src/utils/messaging", () => ({ sendMessage: vi.fn() }));
 vi.mock("src/utils/localize", () => ({ default: (key: string) => key }));
@@ -23,7 +23,7 @@ describe("Sheets zoom outcome", () => {
     document.body.innerHTML = "";
     vi.mocked(getAppStorageStateFromStorage).mockResolvedValue(state);
 
-    expect(await new SheetsStrategy(viewOnlyConfig).execute()).toEqual({
+    expect(await createSheetsDriver(viewOnlyConfig).execute()).toEqual({
       status: "skipped",
       reason: "view_only"
     });
@@ -33,9 +33,21 @@ describe("Sheets zoom outcome", () => {
     document.body.innerHTML = "";
     vi.mocked(getAppStorageStateFromStorage).mockResolvedValue(state);
 
-    expect(await new SheetsStrategy(workspaceAppUiStrategyConfigs.Sheets).execute()).toEqual({
+    expect(await createSheetsDriver(workspaceAppUiStrategyConfigs.Sheets).execute()).toEqual({
       status: "failed",
       reason: "zoom_select_missing"
     });
+  });
+});
+
+describe("Sheets preview detection", () => {
+  test.each([
+    ["https://docs.google.com/spreadsheets/u/0/d/ID/preview", true],
+    ["https://docs.google.com/spreadsheets/u/0/d/ID/preview/sheet", true],
+    ["https://docs.google.com/spreadsheets/d/ID/edit", false]
+  ])("should treat %s as preview: %s", (href, expected) => {
+    expect(createSheetsDriver(workspaceAppUiStrategyConfigs.Sheets).isUIPreview(href)).toBe(
+      expected
+    );
   });
 });
