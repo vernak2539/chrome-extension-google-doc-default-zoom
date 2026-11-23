@@ -17,7 +17,15 @@ export const SENTRY_BASE_CONFIG = {
     // `chrome.debugger.attach` rejects with these when the tab holds a frame the extension can't access. The content
     // script falls back to a preset, so there is nothing for us to fix.
     /^Cannot access a chrome-extension:\/\/ URL of different extension$/,
-    /^Cannot access a chrome:\/\/ URL$/
+    /^Cannot access a chrome:\/\/ URL$/,
+    // Chrome's LevelDB store behind `chrome.storage` is corrupt or locked in the user's profile (for example
+    // `MANIFEST-000001: Unable to create sequential file` or `LOCK: Access denied`). The background falls back to
+    // the default state, and every page load on that profile would send another event.
+    /^IO error: .*\(ChromeMethodBFE: \d+::\w+::\d+\)$/,
+    // The host has no sync storage (Electron). It isn't a supported browser, and the background falls back to the
+    // default state. The first message comes from the browser API, the second from WXT's storage area lookup.
+    /^"sync" is not available in this instance of Chrome$/,
+    /^"browser\.storage\.sync" is undefined$/
   ]
 };
 
