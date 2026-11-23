@@ -30,6 +30,7 @@ The file is a list of announcements. Every active one is shown, in file order. A
   {
     "id": "2026-12-new-feature",
     "active": true,
+    "editions": ["base"],
     "messages": { "en": "Another message" }
   }
 ]
@@ -37,14 +38,15 @@ The file is a list of announcements. Every active one is shown, in file order. A
 
 An entry that fails validation (e.g. missing `id` or `messages.en`) is skipped without affecting the others. If two entries share an `id`, only the first is used.
 
-| Field         | Required | Description                                                                                                                                       |
-| ------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `id`          | yes      | Unique ID. Dismissals are stored against this, so **use a new ID for a new message** or users who dismissed an old one with that ID won't see it. |
-| `active`      | yes      | `false` hides the message without deleting it.                                                                                                    |
-| `level`       | no       | `"info"` (default) or `"warning"`. Changes the border colour.                                                                                     |
-| `dismissible` | no       | Defaults to `true`. When `true`, users can close the message and won't see that `id` again on this device.                                        |
-| `maxVersion`  | no       | Only show to installed versions less than or equal to this. Set it to the last broken version so users who already have the fix don't see it.     |
-| `messages`    | yes      | Locale code → plain text. `en` is required. Line breaks (`\n`) are kept; HTML is not rendered.                                                    |
+| Field         | Required | Description                                                                                                                                              |
+| ------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`          | yes      | Unique ID. Dismissals are stored against this, so **use a new ID for a new message** or users who dismissed an old one with that ID won't see it.        |
+| `active`      | yes      | `false` hides the message without deleting it.                                                                                                           |
+| `level`       | no       | `"info"` (default) or `"warning"`. Changes the border colour.                                                                                            |
+| `dismissible` | no       | Defaults to `true`. When `true`, users can close the message and won't see that `id` again on this device.                                               |
+| `maxVersion`  | no       | Only show to installed versions less than or equal to this. Set it to the last broken version so users who already have the fix don't see it.            |
+| `editions`    | no       | Which editions show the message: `["base"]`, `["extended"]` or both. Omit it to show in both editions. An empty list or an unknown name skips the entry. |
+| `messages`    | yes      | Locale code → plain text. `en` is required. Line breaks (`\n`) are kept; HTML is not rendered.                                                           |
 
 ## Languages
 
