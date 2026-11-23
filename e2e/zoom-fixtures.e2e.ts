@@ -87,6 +87,10 @@ describe(`zoom flow against saved Docs and Sheets markup (${edition} edition)`, 
       expect(recorded.enters).toEqual(["140%"]);
       expect(recorded.clicks).toEqual([]);
       expect(await page.inputValue("#zoomSelect input")).toBe("140%");
+      // the dropdown closes by blurring the zoom box, so focus has left it
+      await expect
+        .poll(() => page.evaluate(() => !!document.activeElement?.closest("#zoomSelect")))
+        .toBe(false);
     })
   );
 
@@ -106,6 +110,8 @@ describe(`zoom flow against saved Docs and Sheets markup (${edition} edition)`, 
         expect(recorded.controlClicks).toEqual(["zoomSelect"]);
         expect(recorded.clicks).toEqual([]);
         expect(recorded.enters).toEqual([]);
+        // the input was never focused, so the flow closes the menu it opened with an outside press on body
+        expect(recorded.dismissals).toEqual(["body"]);
       })
   );
 
@@ -134,12 +140,11 @@ describe(`zoom flow against saved Docs and Sheets markup (${edition} edition)`, 
       await page.waitForTimeout(1500);
       expect((await readRecorded(page)).clicks).toEqual([]);
 
-      // the content script only watches #docs-toolbar itself (no subtree), so the toolbar has to mutate too
+      // only the class of the zoom control changes, which is a descendant of the watched toolbar
       await page.evaluate(() => {
         document
           .querySelector("#zoomSelect")
           ?.classList.remove("goog-toolbar-combo-button-disabled");
-        document.querySelector("#docs-toolbar")?.setAttribute("data-e2e-ready", "true");
       });
       await waitForClicks(page, 1);
 

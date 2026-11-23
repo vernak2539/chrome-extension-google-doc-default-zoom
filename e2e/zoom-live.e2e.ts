@@ -8,6 +8,7 @@ import {
   installRecorder,
   readRecorded,
   setAppState,
+  waitForDismissals,
   withExtension
 } from "./harness";
 import { LIVE_DOC_URL, LIVE_PAGE_SELECTORS, LIVE_SHEET_URL } from "./targets";
@@ -49,6 +50,27 @@ const waitForZoomClick = async (page: Page, zoomValue: string) => {
   }
 };
 
+// The zoom dropdown is closed once no visible menu still lists the zoom value as a row
+const expectZoomMenuClosed = async (page: Page, zoomValue: string) => {
+  await expect
+    .poll(
+      () =>
+        page.evaluate(
+          (value) =>
+            Array.from(document.querySelectorAll(".goog-menu")).some(
+              (menu) =>
+                menu.getClientRects().length > 0 &&
+                Array.from(menu.querySelectorAll(".goog-menuitem")).some(
+                  (row) => row.firstChild?.textContent === value
+                )
+            ),
+          zoomValue
+        ),
+      { timeout: PAGE_TIMEOUT_MS }
+    )
+    .toBe(false);
+};
+
 const expectZoomBoxValue = async (page: Page, selector: string, zoomValue: string) => {
   if (await page.$(selector)) {
     await expect
@@ -74,6 +96,7 @@ describe(`zoom flow on the live Docs and Sheets pages (${edition} edition)`, () 
       await waitForChrome(page);
       await waitForZoomClick(page, "150%");
       await expectZoomBoxValue(page, "#zoomSelect input", "150%");
+      await expectZoomMenuClosed(page, "150%");
     }));
 
   test("Sheets applies 125%", () =>
@@ -90,5 +113,27 @@ describe(`zoom flow on the live Docs and Sheets pages (${edition} edition)`, () 
       await waitForChrome(page);
       await waitForZoomClick(page, "125%");
       await expectZoomBoxValue(page, "#t-zoom input", "125%");
+      await expectZoomMenuClosed(page, "125%");
     }));
+
+  // No row is clicked here, so only the outside press can close the menu the flow opened. Base cannot
+  // type a custom value, so it opens the menu, finds no "140%" row and gives up.
+  test.skipIf(edition === "extended")(
+    "Sheets closes the zoom menu it opened when no row matches",
+    () =>
+      withExtension("live-sheets-no-row", async ({ context, serviceWorker }) => {
+        await setAppState(serviceWorker, "sheets", {
+          zoomValue: "140%",
+          viewOnly: false,
+          classroomSupport: false
+        });
+        await installRecorder(context);
+        const page = await context.newPage();
+        await page.goto(LIVE_SHEET_URL);
+
+        await waitForChrome(page);
+        await waitForDismissals(page, 1);
+        await expectZoomMenuClosed(page, "125%");
+      })
+  );
 });

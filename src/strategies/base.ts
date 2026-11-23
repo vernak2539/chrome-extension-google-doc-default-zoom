@@ -72,7 +72,7 @@ export abstract class AbstractBaseStrategy {
     const zoomInputSelect = findZoomMenu(zoomInputContainer);
 
     if (!zoomInputSelect) {
-      this.closeDropdown();
+      this.closeDropdown(zoomInputContainer);
       return failed("zoom_menu_missing");
     }
 
@@ -89,14 +89,14 @@ export abstract class AbstractBaseStrategy {
 
     // somehow we may not have matched the right element
     if (!newZoomLevelElement) {
-      this.closeDropdown();
+      this.closeDropdown(zoomInputContainer);
       return failed("zoom_option_missing");
     }
 
     // select new zoom level
     clickDOMElement(newZoomLevelElement);
 
-    this.closeDropdown();
+    this.closeDropdown(zoomInputContainer);
     return APPLIED;
   }
 
@@ -129,15 +129,19 @@ export abstract class AbstractBaseStrategy {
       return fallback();
     }
 
-    this.closeDropdown();
+    this.closeDropdown(zoomInputContainer);
     return APPLIED;
   }
 
-  private closeDropdown() {
-    // close dropdown with blur event (may need to check again to see if it's closed)
-    setTimeout(() => {
-      getDOMElementAndClick("canvas");
-    }, 500);
+  // Only the custom flow focuses the zoom input, and we open the menu with synthetic events that don't move focus. So
+  // the blur closes the menu after typing, and a click on `body` is the outside click that closes it on every other
+  // path. Neither touches the editor: document.activeElement can be the editor, and a click on a canvas can move the
+  // caret or the selected cell.
+  // Google's menu ignores an outside press made in the same task that opened it (the live e2e shows it staying open),
+  // so the press runs in the next task. This yields to the event loop once; it is not a fixed wait.
+  private closeDropdown(zoomInputContainer: Element) {
+    zoomInputContainer.querySelector("input")?.blur();
+    setTimeout(() => getDOMElementAndClick("body"), 0);
   }
 
   protected isUIViewOnly() {
