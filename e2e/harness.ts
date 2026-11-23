@@ -79,7 +79,7 @@ export const getEdition = (): Edition => {
   const expected = getExpectedEdition();
   const buildDir = getBuildDir();
   const manifest = JSON.parse(readFileSync(path.join(buildDir, "manifest.json"), "utf8"));
-  const built: Edition = manifest.permissions?.includes("debugger") ? "extended" : "base";
+  const built: Edition = manifest.name === "__MSG_extensionNameExtended__" ? "extended" : "base";
 
   if (built !== expected) {
     throw new Error(`${buildDir} holds the ${built} edition, but this run tests ${expected}`);

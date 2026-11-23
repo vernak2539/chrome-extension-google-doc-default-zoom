@@ -1,10 +1,14 @@
 import getAppStorageStateFromStorage from "src/utils/get-app-storage-state-from-storage";
-import { sendMessage } from "src/utils/messaging";
 
-import type { ExecuteEnterResponseBody, UiStrategyConfig, ZoomOutcome } from "../types";
+import type { UiStrategyConfig, ZoomOutcome } from "../types";
 import { isGoogleClassroomSubmittedAssignment } from "../utils/classroom-helpers";
 import { findZoomMenu } from "../utils/find-zoom-menu";
-import { clickDOMElement, getDOMElement, getDOMElementAndClick } from "../utils/ui-helpers";
+import {
+  clickDOMElement,
+  getDOMElement,
+  getDOMElementAndClick,
+  simulateEnter
+} from "../utils/ui-helpers";
 import { APPLIED, failed, skipped } from "../utils/zoom-outcome";
 import { planToolbarZoom, planZoom, type ZoomPlan } from "./plan-zoom";
 
@@ -100,11 +104,11 @@ export abstract class AbstractBaseStrategy {
     return APPLIED;
   }
 
-  private async uiExecuteCustomZoomFlow(
+  private uiExecuteCustomZoomFlow(
     zoomInputContainer: Element,
     zoomValue: string,
     fallbackZoomValue: string
-  ): Promise<ZoomOutcome> {
+  ): ZoomOutcome {
     const fallback = () => this.uiExecuteDefinedZoomFlow(zoomInputContainer, fallbackZoomValue);
 
     const zoomInput = zoomInputContainer.querySelector("input");
@@ -117,17 +121,8 @@ export abstract class AbstractBaseStrategy {
 
     zoomInput.focus();
     zoomInput.select();
-
-    let response: ExecuteEnterResponseBody | null = null;
-    try {
-      response = await sendMessage("executeEnter", { zoomValue });
-    } catch {
-      // the message failed, so nothing was typed: use the nearest preset instead
-    }
-
-    if (!response || response.err) {
-      return fallback();
-    }
+    zoomInput.value = zoomValue;
+    simulateEnter(zoomInput);
 
     this.closeDropdown(zoomInputContainer);
     return APPLIED;

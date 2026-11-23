@@ -3,12 +3,10 @@ import { workspaceAppUiStrategyConfigs } from "src/constants";
 import type { AppStorageState } from "src/types";
 import { IS_EXTENDED_EDITION } from "src/utils/edition";
 import getAppStorageStateFromStorage from "src/utils/get-app-storage-state-from-storage";
-import { sendMessage } from "src/utils/messaging";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 
 import { AbstractBaseStrategy } from "./base";
 
-vi.mock("src/utils/messaging", () => ({ sendMessage: vi.fn() }));
 vi.mock("src/utils/localize", () => ({ default: (key: string) => key }));
 vi.mock("src/utils/get-app-storage-state-from-storage", () => ({ default: vi.fn() }));
 
@@ -24,7 +22,6 @@ class TestStrategy extends AbstractBaseStrategy {
   }
 }
 
-const sendMessageMock = vi.mocked(sendMessage);
 const getStoredState = vi.mocked(getAppStorageStateFromStorage);
 
 // "130%" is not a Docs preset, so it takes the custom zoom flow; the nearest preset is "125%"
@@ -57,7 +54,6 @@ const storedState = (zoomValue: string): AppStorageState => ({
 describe("zoom outcome", () => {
   beforeEach(() => {
     vi.useFakeTimers();
-    sendMessageMock.mockReset();
     getStoredState.mockReset();
     document.body.innerHTML = "";
   });
@@ -120,20 +116,23 @@ describe("zoom outcome", () => {
         status: "failed",
         reason: "zoom_input_missing"
       });
-      expect(sendMessageMock).not.toHaveBeenCalled();
     }
   );
 
   test.runIf(!IS_EXTENDED_EDITION)(
-    "should not use the debugger for a custom zoom, and fail with zoom_option_missing",
+    "should not type a custom zoom, and fail with zoom_option_missing",
     async () => {
       renderZoomMenu();
+      const keydowns: string[] = [];
+      document
+        .querySelector("#zoomSelect input")
+        ?.addEventListener("keydown", () => keydowns.push("keydown"));
 
       expect(await new TestStrategy(DOCS_CONFIG).zoomTo(CUSTOM_ZOOM)).toEqual({
         status: "failed",
         reason: "zoom_option_missing"
       });
-      expect(sendMessageMock).not.toHaveBeenCalled();
+      expect(keydowns).toEqual([]);
     }
   );
 
@@ -235,7 +234,6 @@ describe.runIf(IS_EXTENDED_EDITION)("custom zoom flow", () => {
 
   beforeEach(() => {
     vi.useFakeTimers();
-    sendMessageMock.mockReset();
     clickedRows = renderZoomMenu();
   });
 
@@ -249,34 +247,26 @@ describe.runIf(IS_EXTENDED_EDITION)("custom zoom flow", () => {
     return outcome;
   };
 
-  test("should not select a preset when the debugger typed the value", async () => {
-    sendMessageMock.mockResolvedValue({ err: null });
+  test("should type the zoom value and press Enter without selecting a preset", async () => {
+    const input = document.querySelector<HTMLInputElement>("#zoomSelect input")!;
+    const events: string[] = [];
+    let valueAtKeydown = "";
 
-    const outcome = await zoomAndSettle();
-
-    expect(outcome).toEqual({ status: "applied" });
-    expect(clickedRows).toEqual([]);
-  });
-
-  test.each(["no_debugger", "debugger_failed"] as const)(
-    "should select the nearest preset when the handler replies %s",
-    async (err) => {
-      sendMessageMock.mockResolvedValue({ err });
-
-      const outcome = await zoomAndSettle();
-
-      expect(outcome).toEqual({ status: "applied" });
-      expect(clickedRows).toEqual([NEAREST_PRESET]);
+    for (const type of ["keydown", "keypress", "keyup"]) {
+      input.addEventListener(type, (event) => {
+        events.push(`${type}:${(event as KeyboardEvent).keyCode}`);
+        if (type === "keydown") {
+          valueAtKeydown = input.value;
+        }
+      });
     }
-  );
-
-  test("should select the nearest preset when the message rejects", async () => {
-    sendMessageMock.mockRejectedValue(new Error("Could not establish connection"));
 
     const outcome = await zoomAndSettle();
 
     expect(outcome).toEqual({ status: "applied" });
-    expect(clickedRows).toEqual([NEAREST_PRESET]);
+    expect(events).toEqual(["keydown:13", "keypress:13", "keyup:13"]);
+    expect(valueAtKeydown).toBe(CUSTOM_ZOOM);
+    expect(clickedRows).toEqual([]);
   });
 
   test("should select the nearest preset when the zoom combobox has no input", async () => {
@@ -284,7 +274,6 @@ describe.runIf(IS_EXTENDED_EDITION)("custom zoom flow", () => {
 
     await zoomAndSettle();
 
-    expect(sendMessageMock).not.toHaveBeenCalled();
     expect(clickedRows).toEqual([NEAREST_PRESET]);
   });
 });

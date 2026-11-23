@@ -112,3 +112,19 @@ export const clickDOMElement = (element: Element) => {
 
   simulateClick(element, x, y);
 };
+
+// Docs and Sheets apply a typed zoom on a keydown followed by a keypress, and they read `keyCode` from both, so set
+// it in the init dict. A keydown alone, a keypress alone, or a keypress without a keyCode does nothing (#110).
+export const simulateEnter = (element: Element) => {
+  const init: KeyboardEventInit = {
+    key: "Enter",
+    code: "Enter",
+    keyCode: 13,
+    which: 13,
+    bubbles: true,
+    cancelable: true
+  };
+  element.dispatchEvent(new KeyboardEvent("keydown", init));
+  element.dispatchEvent(new KeyboardEvent("keypress", { ...init, charCode: 13 }));
+  element.dispatchEvent(new KeyboardEvent("keyup", init));
+};

@@ -79,6 +79,19 @@ const expectZoomBoxValue = async (page: Page, selector: string, zoomValue: strin
   }
 };
 
+// The content script sets the zoom box value before pressing Enter, so the value alone proves nothing. Once focus
+// leaves the box, Docs and Sheets show the zoom they applied and drop a value they ignored (#110).
+const expectAppliedCustomZoom = async (page: Page, inputSelector: string, zoomValue: string) => {
+  await expect
+    .poll(async () => (await readRecorded(page)).enters.at(-1) ?? "", { timeout: PAGE_TIMEOUT_MS })
+    .toBe(zoomValue);
+  // closeDropdown runs after 500 ms; Sheets keeps focus in the box, so blur explicitly
+  await page.waitForTimeout(2_000);
+  await page.evaluate(() => (document.activeElement as HTMLElement | null)?.blur());
+  await page.waitForTimeout(500);
+  expect(await page.inputValue(inputSelector)).toBe(zoomValue);
+};
+
 // These open the maintainer's public documents signed out. Nothing here signs in to Google.
 describe(`zoom flow on the live Docs and Sheets pages (${edition} edition)`, () => {
   test("Docs applies 150%", () =>
@@ -115,6 +128,38 @@ describe(`zoom flow on the live Docs and Sheets pages (${edition} edition)`, () 
       await expectZoomBoxValue(page, "#t-zoom input", "125%");
       await expectZoomMenuClosed(page, "125%");
     }));
+
+  test.skipIf(edition === "base")("Docs applies a custom 137% zoom", () =>
+    withExtension("live-docs-custom", async ({ context, serviceWorker }) => {
+      await setAppState(serviceWorker, "docs", {
+        zoomValue: "137%",
+        viewOnly: false,
+        classroomSupport: false
+      });
+      await installRecorder(context);
+      const page = await context.newPage();
+      await page.goto(LIVE_DOC_URL);
+
+      await waitForChrome(page);
+      await expectAppliedCustomZoom(page, "#zoomSelect input", "137%");
+    })
+  );
+
+  test.skipIf(edition === "base")("Sheets applies a custom 137% zoom", () =>
+    withExtension("live-sheets-custom", async ({ context, serviceWorker }) => {
+      await setAppState(serviceWorker, "sheets", {
+        zoomValue: "137%",
+        viewOnly: false,
+        classroomSupport: false
+      });
+      await installRecorder(context);
+      const page = await context.newPage();
+      await page.goto(LIVE_SHEET_URL);
+
+      await waitForChrome(page);
+      await expectAppliedCustomZoom(page, "#t-zoom input", "137%");
+    })
+  );
 
   // No row is clicked here, so only the outside press can close the menu the flow opened. Base cannot
   // type a custom value, so it opens the menu, finds no "140%" row and gives up.
