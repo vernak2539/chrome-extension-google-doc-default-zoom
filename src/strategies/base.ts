@@ -125,7 +125,11 @@ export abstract class AbstractBaseStrategy {
     simulateEnter(zoomInput);
 
     this.closeDropdown(zoomInputContainer);
-    return APPLIED;
+
+    // Docs and Sheets drop a value they did not apply when the box loses focus, so a value that survived the blur is
+    // the zoom the app now shows (#110). If it changed, Google ignored the keys: report that instead of claiming the
+    // zoom was applied, so a silent regression reaches Sentry and not only the live e2e.
+    return zoomInput.value === zoomValue ? APPLIED : failed("custom_zoom_not_applied");
   }
 
   // Only the custom flow focuses the zoom input, and we open the menu with synthetic events that don't move focus. So

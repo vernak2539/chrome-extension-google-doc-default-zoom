@@ -269,6 +269,19 @@ describe.runIf(IS_EXTENDED_EDITION)("custom zoom flow", () => {
     expect(clickedRows).toEqual([]);
   });
 
+  test("should fail with custom_zoom_not_applied when the page drops the value on blur", async () => {
+    const input = document.querySelector<HTMLInputElement>("#zoomSelect input")!;
+    input.addEventListener("blur", () => {
+      input.value = "100%";
+    });
+
+    expect(await zoomAndSettle()).toEqual({
+      status: "failed",
+      reason: "custom_zoom_not_applied"
+    });
+    expect(clickedRows).toEqual([]);
+  });
+
   test("should select the nearest preset when the zoom combobox has no input", async () => {
     document.querySelector("#zoomSelect input")?.remove();
 

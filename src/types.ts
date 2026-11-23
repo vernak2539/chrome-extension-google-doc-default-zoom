@@ -10,6 +10,7 @@ export type ZoomFailReason =
   | "zoom_menu_missing"
   | "zoom_option_missing"
   | "zoom_input_missing"
+  | "custom_zoom_not_applied"
   | "view_menu_missing"
   | "view_zoom_item_missing"
   | "view_zoom_menu_missing"

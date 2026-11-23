@@ -20,7 +20,7 @@ The project follows a strategy-based architecture to handle different Google Wor
 
 - **`src/entrypoints/`:** WXT entrypoints: `background.ts`, `content.ts` (which calls `src/content-script.ts`), `popup/index.html`, and the two unlisted pages (`ext-versions`, `experimental-features`). `src/content-script.ts` detects the current application (Docs or Sheets) and executes the appropriate strategy.
 - **`src/strategies/`:** Zoom decisions are made by the pure `planZoom` in `plan-zoom.ts` (no DOM, unit tested). `DocsStrategy` and `SheetsStrategy`, both inheriting from `AbstractBaseStrategy`, read the page, ask `planZoom` for a plan and run it by finding and interacting with the zoom UI elements.
-- **`src/background/`:** Handles background tasks, notably using the `chrome.debugger` API in the "Extended" version to simulate keyboard events for custom zoom values.
+- **`src/background/`:** Handles background tasks: storage reads and Sentry reporting. Custom zoom is applied by the content script with synthetic key events.
 - **`src/utils/`:** Provides helper functions for DOM manipulation (`ui-helpers.ts`), localization (`localize.ts`), and storage.
 
 ### "Base" vs "Extended" Editions
@@ -28,14 +28,14 @@ The project follows a strategy-based architecture to handle different Google Wor
 The project maintains a single codebase for two editions of the extension:
 
 1.  **Base:** Supports only predefined zoom levels.
-2.  **Extended:** Supports custom zoom levels by using the `debugger` permission (not available on Firefox).
+2.  **Extended:** Supports custom zoom levels by typing the value into the zoom control with synthetic key events. Firefox ships Base only.
 
 Each edition is a WXT build mode (`wxt build --mode base|extended`). The source is never rewritten, so what is tested is what ships. The browser comes from `-b chrome|edge|firefox`; Chrome and Edge build MV3 and Firefox builds MV2. Firefox ships only the Base edition: `wxt.config.ts` rejects `--mode extended -b firefox`, so there is no Firefox Extended build or release.
 
-- **Code:** `IS_EXTENDED_EDITION` in `src/utils/edition.ts` is `import.meta.env.MODE === "extended"`. Any other mode means Base. Branch on it where the editions differ; search for it to find every such place. The background handler must check the edition itself for the minifier to drop its debugger code from Base.
-- **Manifest:** the `EDITIONS` map in `wxt.config.ts` holds the name, Firefox add-on id and permissions for each mode. The manifest function writes them; there are no env files. `pnpm check:editions` fails when a built manifest or bundle does not match its edition.
+- **Code:** `IS_EXTENDED_EDITION` in `src/utils/edition.ts` is `import.meta.env.MODE === "extended"`. Any other mode means Base. Branch on it where the editions differ; search for it to find every such place.
+- **Manifest:** the `EDITIONS` map in `wxt.config.ts` holds the name, Firefox add-on id and permissions for each mode. The manifest function writes them; there are no env files. `pnpm check:editions` fails when a built manifest does not match its edition.
 - **Icons:** `assets/icons/<edition>/<size>.png` at 16, 32, 48, 64 and 128 px, supplied by the `build:publicAssets` hook. `assets/icon.base.png` and `assets/icon.extended.png` are the 662 px masters.
-- **Output:** `build/<browser>-mv<n>-<edition>` (for example `build/chrome-mv3-base`) and `build/<browser>-mv<n>-<edition>.zip`. `wxt` dev uses the same mode and writes to the same directory, so a dev build overwrites a production build. Always rebuild (`pnpm build:<edition>`) before `pnpm package:<edition>` or `pnpm check:editions`: a dev bundle is unminified and keeps debugger code that the minifier removes from Base. `wxt zip` always builds, and it leaves sourcemaps out of the zip.
+- **Output:** `build/<browser>-mv<n>-<edition>` (for example `build/chrome-mv3-base`) and `build/<browser>-mv<n>-<edition>.zip`. `wxt` dev uses the same mode and writes to the same directory, so a dev build overwrites a production build. Always rebuild (`pnpm build:<edition>`) before `pnpm package:<edition>` or `pnpm check:editions`: a dev build is unminified and writes the same directory. `wxt zip` always builds, and it leaves sourcemaps out of the zip.
 - **Tests:** Vitest runs every test file once per edition (the `base` and `extended` projects in `vite.config.ts` set the mode). Tests for Extended-only code use `describe.runIf(IS_EXTENDED_EDITION)` or `test.runIf(IS_EXTENDED_EDITION)`. Storybook defines `MODE` as `extended`.
 
 ## Building and Running
@@ -66,7 +66,7 @@ Pass `-b chrome|edge|firefox` as usual. Chrome and Edge build MV3, Firefox build
 pnpm check:editions
 ```
 
-Run it after building. It fails when a built manifest or bundle in `build/<target>-<edition>` doesn't match its edition (permissions, name, Firefox add-on id, debugger code), or when it finds no build.
+Run it after building. It fails when a built manifest in `build/<target>-<edition>` doesn't match its edition (name, Firefox add-on id, a `debugger` or host permission), or when it finds no build.
 
 ### Type Checking and Bundle Size
 
