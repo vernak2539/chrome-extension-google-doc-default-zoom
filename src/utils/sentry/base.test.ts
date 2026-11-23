@@ -36,7 +36,7 @@ const cases = [
   }
 ];
 
-const captureEvent = async (href: string) => {
+const captureEventItems = async (href: string, error: Error) => {
   vi.stubGlobal("chrome", { i18n: { getUILanguage: () => "en" } });
   vi.stubGlobal("location", { href });
   vi.stubGlobal("document", {
@@ -59,12 +59,18 @@ const captureEvent = async (href: string) => {
     })
   });
 
-  scope.captureException(new Error("boom"));
+  scope.captureException(error);
   await scope.getClient()!.flush(1000);
 
-  const items = envelopes.flatMap((envelope) => [...envelope[1]]);
-  const eventItem = items.find(([header]) => header.type === "event");
-  return eventItem![1] as {
+  return envelopes
+    .flatMap((envelope) => [...envelope[1]])
+    .filter(([header]) => header.type === "event")
+    .map(([, event]) => event);
+};
+
+const captureEvent = async (href: string, error = new Error("boom")) => {
+  const [event] = await captureEventItems(href, error);
+  return event as {
     request?: { url?: string; headers?: Record<string, string> };
     tags?: Record<string, string>;
   };
@@ -120,6 +126,23 @@ describe("createSentryClient", () => {
         expect(serialized).not.toContain(leak);
       }
       expect(event.request?.url).not.toContain("?");
+    });
+  });
+
+  describe("unactionable storage errors", () => {
+    const href = cases[0].href;
+
+    test.each([
+      "IO error: /profile/Sync Extension Settings/abc/MANIFEST-000001: Unable to create sequential file (ChromeMethodBFE: 7::NewSequentialFile::4)",
+      "IO error: /profile/Sync Extension Settings/abc/LOCK: Access denied. (ChromeMethodBFE: 15::LockFile::5)",
+      '"sync" is not available in this instance of Chrome',
+      '"browser.storage.sync" is undefined'
+    ])("should drop %s", async (message) => {
+      expect(await captureEventItems(href, new Error(message))).toHaveLength(0);
+    });
+
+    test("should still send any other error", async () => {
+      expect(await captureEventItems(href, new Error("boom"))).toHaveLength(1);
     });
   });
 });
