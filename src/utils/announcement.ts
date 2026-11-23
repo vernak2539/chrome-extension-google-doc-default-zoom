@@ -3,6 +3,7 @@
 // The source file lives in this repo at `announcements/announcement.json` and is served from
 // the default branch via raw.githubusercontent.com, which allows CORS from any origin, so no
 // extra host permissions are required. See docs/announcements.md for the file format.
+import type { Edition } from "src/utils/edition";
 
 // Note: raw.githubusercontent.com caches for up to 5 minutes and ignores query strings, so a
 // cache-busting parameter has no effect. Changes take up to 5 minutes to reach users.
@@ -24,6 +25,8 @@ export interface RemoteAnnouncement {
   // Only show to installed versions <= maxVersion (inclusive). Useful for hiding a
   // "fix is coming" message from users who already have the fix.
   maxVersion?: string;
+  // Omitted means every edition.
+  editions?: Edition[];
   // Locale code (e.g. "en", "de", "pt_BR") -> message. "en" is required.
   messages: Record<string, string>;
 }
@@ -34,6 +37,13 @@ export interface Announcement {
   dismissible: boolean;
   message: string;
 }
+
+const EDITIONS: readonly Edition[] = ["base", "extended"];
+
+const isEditionList = (value: unknown): value is Edition[] =>
+  Array.isArray(value) &&
+  value.length > 0 &&
+  value.every((edition) => EDITIONS.includes(edition as Edition));
 
 const isRecordOfStrings = (value: unknown): value is Record<string, string> =>
   typeof value === "object" &&
@@ -47,16 +57,20 @@ export const parseAnnouncement = (data: unknown): RemoteAnnouncement | null => {
     return null;
   }
 
-  const { id, active, level, dismissible, maxVersion, messages } = data as Record<string, unknown>;
+  const { id, active, level, dismissible, maxVersion, editions, messages } = data as Record<
+    string,
+    unknown
+  >;
 
   if (typeof id !== "string" || id.length === 0) return null;
   if (typeof active !== "boolean") return null;
   if (level !== undefined && level !== "info" && level !== "warning") return null;
   if (dismissible !== undefined && typeof dismissible !== "boolean") return null;
   if (maxVersion !== undefined && typeof maxVersion !== "string") return null;
+  if (editions !== undefined && !isEditionList(editions)) return null;
   if (!isRecordOfStrings(messages) || !messages[DEFAULT_LOCALE]) return null;
 
-  return { id, active, level, dismissible, maxVersion, messages };
+  return { id, active, level, dismissible, maxVersion, editions, messages };
 };
 
 // Normalises "pt-BR" / "pt_br" to "pt_BR" to match the public/_locales/ folder naming
@@ -105,15 +119,17 @@ export const compareVersions = (a: string, b: string) => {
 interface ResolveOptions {
   uiLocale: string;
   extensionVersion: string;
+  edition: Edition;
   dismissedIds?: string[] | null;
 }
 
 // Decides whether, and what, to show the user for a single announcement
 export const resolveAnnouncement = (
   remote: RemoteAnnouncement | null,
-  { uiLocale, extensionVersion, dismissedIds }: ResolveOptions
+  { uiLocale, extensionVersion, edition, dismissedIds }: ResolveOptions
 ): Announcement | null => {
   if (!remote || !remote.active) return null;
+  if (remote.editions && !remote.editions.includes(edition)) return null;
   if (remote.maxVersion && compareVersions(extensionVersion, remote.maxVersion) > 0) return null;
 
   const dismissible = remote.dismissible ?? true;

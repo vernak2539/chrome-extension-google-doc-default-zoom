@@ -33,9 +33,19 @@ describe("parseAnnouncement", () => {
     ["unknown level", { id: "a", active: true, level: "error", messages: { en: "Hi" } }],
     ["missing en message", { id: "a", active: true, messages: { de: "Hallo" } }],
     ["non-string message", { id: "a", active: true, messages: { en: 1 } }],
-    ["array messages", { id: "a", active: true, messages: ["Hi"] }]
+    ["array messages", { id: "a", active: true, messages: ["Hi"] }],
+    ["editions that is not an array", { ...remote(), editions: "base" }],
+    ["an unknown edition", { ...remote(), editions: ["base", "pro"] }],
+    ["an empty editions list", { ...remote(), editions: [] }]
   ])("rejects %s", (_, data) => {
     expect(parseAnnouncement(data)).toBeNull();
+  });
+
+  it("accepts editions", () => {
+    expect(parseAnnouncement(remote({ editions: ["base", "extended"] }))?.editions).toEqual([
+      "base",
+      "extended"
+    ]);
   });
 });
 
@@ -57,6 +67,12 @@ describe("parseAnnouncements", () => {
 
   it("accepts a single object", () => {
     expect(parseAnnouncements(remote())).toEqual([remote()]);
+  });
+
+  it("skips an entry with invalid editions without affecting the others", () => {
+    expect(
+      parseAnnouncements([remote({ id: "a" }), { ...remote({ id: "bad" }), editions: [] }])
+    ).toEqual([remote({ id: "a" })]);
   });
 
   it("returns an empty list for invalid data", () => {
@@ -91,7 +107,7 @@ describe("compareVersions", () => {
 });
 
 describe("resolveAnnouncement", () => {
-  const options = { uiLocale: "de", extensionVersion: "0.15.3" };
+  const options = { uiLocale: "de", extensionVersion: "0.15.3", edition: "base" as const };
 
   it("returns the localized announcement with defaults", () => {
     expect(resolveAnnouncement(remote(), options)).toEqual({
@@ -110,6 +126,24 @@ describe("resolveAnnouncement", () => {
   it("hides announcements from versions newer than maxVersion", () => {
     expect(resolveAnnouncement(remote({ maxVersion: "0.15.3" }), options)).not.toBeNull();
     expect(resolveAnnouncement(remote({ maxVersion: "0.15.2" }), options)).toBeNull();
+  });
+
+  it("shows an announcement without editions in both editions", () => {
+    expect(resolveAnnouncement(remote(), { ...options, edition: "base" })).not.toBeNull();
+    expect(resolveAnnouncement(remote(), { ...options, edition: "extended" })).not.toBeNull();
+  });
+
+  it("shows an announcement only in the editions it lists", () => {
+    const baseOnly = remote({ editions: ["base"] });
+    const extendedOnly = remote({ editions: ["extended"] });
+    const both = remote({ editions: ["base", "extended"] });
+
+    expect(resolveAnnouncement(baseOnly, { ...options, edition: "base" })).not.toBeNull();
+    expect(resolveAnnouncement(baseOnly, { ...options, edition: "extended" })).toBeNull();
+    expect(resolveAnnouncement(extendedOnly, { ...options, edition: "base" })).toBeNull();
+    expect(resolveAnnouncement(extendedOnly, { ...options, edition: "extended" })).not.toBeNull();
+    expect(resolveAnnouncement(both, { ...options, edition: "base" })).not.toBeNull();
+    expect(resolveAnnouncement(both, { ...options, edition: "extended" })).not.toBeNull();
   });
 
   it("hides a dismissed announcement, but not a new one", () => {
@@ -135,7 +169,7 @@ describe("resolveAnnouncements", () => {
         remote({ id: "dismissed" }),
         remote({ id: "b" })
       ],
-      { uiLocale: "en", extensionVersion: "0.15.3", dismissedIds: ["dismissed"] }
+      { uiLocale: "en", extensionVersion: "0.15.3", edition: "base", dismissedIds: ["dismissed"] }
     );
     expect(result.map((announcement) => announcement.id)).toEqual(["a", "b"]);
   });

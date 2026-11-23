@@ -5,6 +5,7 @@ import {
   resolveAnnouncements,
   type Announcement
 } from "src/utils/announcement";
+import { EDITION } from "src/utils/edition";
 import { LoggerContext } from "src/utils/logger/context";
 import { readStoredValue } from "src/utils/storage";
 import { storage } from "wxt/utils/storage";
@@ -33,6 +34,7 @@ export const useAnnouncements = () => {
             resolveAnnouncements(remote, {
               uiLocale: getUiLocale(),
               extensionVersion: getExtensionVersion(),
+              edition: EDITION,
               dismissedIds
             })
           );
