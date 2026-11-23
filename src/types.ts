@@ -2,14 +2,6 @@ export interface GetAppStorageStateRequestBody {
   storageKey: string;
 }
 
-export interface ExecuteEnterRequestBody {
-  zoomValue: string;
-}
-
-export interface ExecuteEnterResponseBody {
-  err: null | "no_debugger" | "debugger_failed";
-}
-
 export type ZoomSkipReason = "classroom_support_disabled" | "default_zoom" | "view_only";
 
 // Each reason names a step and a selector of the zoom flow. None of them hold document data.
@@ -18,6 +10,7 @@ export type ZoomFailReason =
   | "zoom_menu_missing"
   | "zoom_option_missing"
   | "zoom_input_missing"
+  | "custom_zoom_not_applied"
   | "view_menu_missing"
   | "view_zoom_item_missing"
   | "view_zoom_menu_missing"

@@ -14,7 +14,7 @@ const EDITIONS = {
   extended: {
     name: "__MSG_extensionNameExtended__",
     geckoId: "google-workspace-zoom-extended@vernacchia.dev",
-    permissions: ["storage", "debugger"]
+    permissions: ["storage"]
   }
 } as const;
 

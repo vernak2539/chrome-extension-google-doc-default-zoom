@@ -31,19 +31,19 @@ Supported Google Workspace Products:
 
 - [Default zoom for Google Workspace][chrome-webstore-default]
 - [Default zoom for Google Workspace (Extended)][chrome-webstore-extended]
-  - In exchange for allowing elevated permissions, this extension provides ability to set custom zoom levels (as opposed to only predefined values)
+  - Provides the ability to set custom zoom levels (as opposed to only predefined values)
 
 ### Find it on Microsoft Edge Add-ons
 
 - [Default zoom for Google Workspace][edge-addons-default]
 - [Default zoom for Google Workspace (Extended)][edge-addons-extended]
-  - In exchange for allowing elevated permissions, this extension provides ability to set custom zoom levels (as opposed to only predefined values)
+  - Provides the ability to set custom zoom levels (as opposed to only predefined values)
 
 ### Find it on Firefox Add-ons
 
 - [Default zoom for Google Workspace][firefox-addons-default]
 
-:rotating_light: **NOTE:** Firefox does not support the "debugger" permission, meaning custom zoom values are not supported
+:rotating_light: **NOTE:** Firefox ships only the Base edition, so custom zoom values are not supported there
 
 ## Localisation
 

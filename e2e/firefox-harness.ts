@@ -34,7 +34,7 @@ export const assertFirefoxBuild = () => {
   if (!existsSync(path.join(BUILD_DIR, "manifest.json"))) {
     throw new Error(`No extension build in ${BUILD_DIR}: run \`pnpm build:base -b firefox\` first`);
   }
-  if (readManifest().permissions?.includes("debugger")) {
+  if (readManifest().name === "__MSG_extensionNameExtended__") {
     throw new Error(`${BUILD_DIR} holds the Extended edition, but Firefox only ships Base`);
   }
   // Test runs must never report to the real Sentry project. The background page's requests can't be routed
