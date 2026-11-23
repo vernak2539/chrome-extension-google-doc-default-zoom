@@ -1,15 +1,14 @@
-import { AbstractBaseStrategy } from "./base";
+import type { UiStrategyConfig } from "src/types";
 
-class SheetsStrategy extends AbstractBaseStrategy {
-  /**
-   * This function tells us if the sheets is in preview mode. There is no menu in preview mode, so we can't zoom
-   *
-   * example preview URL: "/spreadsheets/u/0/d/XXXX-XX/preview/sheet";
-   * example preview URL: "/spreadsheets/u/0/d/XXXX-XX/preview";
-   */
-  public isUIPreview(href: string): boolean {
-    return /\/preview(\/sheet)?$/.test(new URL(href).pathname);
-  }
-}
+import { createZoomDriver } from "./base";
 
-export default SheetsStrategy;
+/**
+ * This function tells us if the sheets is in preview mode. There is no menu in preview mode, so we can't zoom
+ *
+ * example preview URL: "/spreadsheets/u/0/d/XXXX-XX/preview/sheet";
+ * example preview URL: "/spreadsheets/u/0/d/XXXX-XX/preview";
+ */
+const isUIPreview = (href: string): boolean => /\/preview(\/sheet)?$/.test(new URL(href).pathname);
+
+export const createSheetsDriver = (config: UiStrategyConfig) =>
+  createZoomDriver(config, { isUIPreview });

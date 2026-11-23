@@ -4,7 +4,7 @@ import type { AppStorageState } from "src/types";
 import getAppStorageStateFromStorage from "src/utils/get-app-storage-state-from-storage";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 
-import DocsStrategy from "./docs";
+import { createDocsDriver } from "./docs";
 
 vi.mock("src/utils/messaging", () => ({ sendMessage: vi.fn() }));
 vi.mock("src/utils/localize", () => ({ default: (key: string) => key }));
@@ -28,7 +28,7 @@ const ZOOM_MENU = `
   </div>`;
 
 const runViewOnlyFlow = async () => {
-  const outcome = new DocsStrategy(workspaceAppUiStrategyConfigs.Docs).execute();
+  const outcome = createDocsDriver(workspaceAppUiStrategyConfigs.Docs).execute();
   await vi.advanceTimersByTimeAsync(1000);
   return outcome;
 };
@@ -79,5 +79,14 @@ describe("Docs view-only zoom outcome", () => {
       status: "failed",
       reason: "view_zoom_option_missing"
     });
+  });
+});
+
+describe("Docs preview detection", () => {
+  test.each([
+    ["https://docs.google.com/document/d/ID/preview", true],
+    ["https://docs.google.com/document/d/ID/edit", false]
+  ])("should treat %s as preview: %s", (href, expected) => {
+    expect(createDocsDriver(workspaceAppUiStrategyConfigs.Docs).isUIPreview(href)).toBe(expected);
   });
 });

@@ -20,14 +20,14 @@ vi.mock("src/utils/walk-dom", async (importOriginal) => {
   return { walkDOM: mocks.walkDOM };
 });
 vi.mock("src/strategies/docs", () => ({
-  default: class {
-    isUIPreview = mocks.isUIPreview;
-    getIsPageLoadingElementToWatch = () => "#docs-toolbar";
-    getIsPageLoading = () => false;
-    execute = mocks.execute;
-  }
+  createDocsDriver: () => ({
+    isUIPreview: mocks.isUIPreview,
+    getIsPageLoadingElementToWatch: () => "#docs-toolbar",
+    getIsPageLoading: () => false,
+    execute: mocks.execute
+  })
 }));
-vi.mock("src/strategies/sheets", () => ({ default: class {} }));
+vi.mock("src/strategies/sheets", () => ({ createSheetsDriver: () => undefined }));
 
 const startContentScript = async () => {
   document.body.innerHTML = `<div id="docs-chrome" class="chrome"><div id="docs-toolbar"></div></div>`;
