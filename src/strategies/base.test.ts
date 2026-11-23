@@ -184,7 +184,12 @@ describe("closing the zoom dropdown", () => {
   };
 
   beforeEach(() => {
+    vi.useFakeTimers();
     document.body.innerHTML = "";
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
   // The menu is opened with synthetic events, which don't focus the input, so a blur alone would leave it open
@@ -192,15 +197,26 @@ describe("closing the zoom dropdown", () => {
     renderZoomMenu();
     document.body.insertAdjacentHTML("beforeend", "<canvas></canvas>");
     const mousedownTargets = recordMousedownTargets();
-    vi.useFakeTimers();
 
     await new TestStrategy(DOCS_CONFIG).zoomTo("200%");
     // A canvas press behind a timer, as the old flow did, would land here
     await vi.advanceTimersByTimeAsync(1000);
-    vi.useRealTimers();
 
     expect(mousedownTargets.at(-1)).toBe("body");
     expect(mousedownTargets).not.toContain("canvas");
+  });
+
+  // Google's menu ignores an outside press in the task that opened it, so on the live pages a same-task press left
+  // the menu open
+  test("should press outside in a later task than the one that opened the menu", async () => {
+    renderZoomMenu();
+    const mousedownTargets = recordMousedownTargets();
+
+    await new TestStrategy(DOCS_CONFIG).zoomTo("150%");
+    expect(mousedownTargets).not.toContain("body");
+
+    await vi.advanceTimersByTimeAsync(0);
+    expect(mousedownTargets.at(-1)).toBe("body");
   });
 
   test("should blur the zoom input when a row is applied", async () => {

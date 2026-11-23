@@ -137,9 +137,11 @@ export abstract class AbstractBaseStrategy {
   // the blur closes the menu after typing, and a click on `body` is the outside click that closes it on every other
   // path. Neither touches the editor: document.activeElement can be the editor, and a click on a canvas can move the
   // caret or the selected cell.
+  // Google's menu ignores an outside press made in the same task that opened it (the live e2e shows it staying open),
+  // so the press runs in the next task. This yields to the event loop once; it is not a fixed wait.
   private closeDropdown(zoomInputContainer: Element) {
     zoomInputContainer.querySelector("input")?.blur();
-    getDOMElementAndClick("body");
+    setTimeout(() => getDOMElementAndClick("body"), 0);
   }
 
   protected isUIViewOnly() {
