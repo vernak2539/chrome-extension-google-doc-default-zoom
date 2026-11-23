@@ -3,4 +3,4 @@ topic: content script flow
 source_issue: 103
 ---
 
-`observeElementAndExecute` in `src/utils/mutation-observer-helpers.ts` observes its element with `{ attributes: true, childList: true }` and no `subtree`. When the page is still loading it watches `#docs-toolbar` (or `#docs-view-menu`), so a class change on `#zoomSelect` alone does not wake it. The toolbar itself must mutate. `onElementAvailable` (used first, for `#docs-chrome`) observes `document.body` with `childList` and `subtree`.
+`observeElementAndExecute` in `src/utils/mutation-observer-helpers.ts` observes its element with `{ attributes: true, childList: true, subtree: true }`, so a class change on `#zoomSelect` inside `#docs-toolbar` wakes it. `src/utils/wait-for.ts` `waitFor(selector, timeoutMs)` resolves with the first match or `null` after the timeout; the Docs view-only flow uses it instead of the removed `pause`.
