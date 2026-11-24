@@ -1,6 +1,7 @@
 /// <reference types="node" />
 import path from "node:path";
 
+import { LANGUAGES } from "../bin/translate-config.mjs";
 import type { FixtureMode } from "./fixture-sanitize";
 
 // relative to the repository root, where every e2e command runs
@@ -8,6 +9,10 @@ export const FIXTURES_DIR = path.resolve("e2e/fixtures");
 export const RESULTS_DIR = path.resolve("e2e/results");
 // unsanitized captures: gitignored, never committed or uploaded
 export const RAW_DIR = path.join(RESULTS_DIR, "raw");
+// The text of Docs' Fit zoom row in each language, as live Docs shows it (written by `pnpm e2e:capture`)
+export const FIT_LABELS_PATH = path.join(FIXTURES_DIR, "docs-fit-labels.json");
+// Every language the extension ships
+export const LOCALE_CODES: string[] = ["en", ...LANGUAGES.map(({ code }) => code)];
 
 // Public documents owned by the maintainer. They are only ever opened signed out.
 export const LIVE_DOC_URL =

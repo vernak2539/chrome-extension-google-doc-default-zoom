@@ -413,12 +413,17 @@ export const withExtension = async (
   }
 };
 
-// A plain browser without the extension, for capturing pages
-export const withPublicPage = async (testName: string, run: (page: Page) => Promise<void>) => {
+// A plain browser without the extension, for capturing pages. Signed out, Docs takes its language from the
+// browser's (Accept-Language), so `locale` picks the language Docs shows on every platform.
+export const withPublicPage = async (
+  testName: string,
+  run: (page: Page) => Promise<void>,
+  { locale = "en-US" }: { locale?: string } = {}
+) => {
   const browser = await chromium.launch({ channel: "chromium", headless: true });
 
   try {
-    const context = await browser.newContext({ locale: "en-US" });
+    const context = await browser.newContext({ locale });
     const page = await context.newPage();
 
     try {

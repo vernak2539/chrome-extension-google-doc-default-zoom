@@ -74,6 +74,7 @@ The fixtures that ship with this change are **synthetic**: written from the sele
 
 1. `pnpm exec playwright install --with-deps chromium` (once).
 2. `pnpm e2e:capture`. This opens the public Doc and Sheet signed out, waits for the zoom control to be enabled, opens the zoom menu (View > Zoom for the view-only fixture), and saves the raw page to `e2e/results/raw/` (gitignored, never uploaded). It then sanitizes each page into `e2e/fixtures/<name>.html`.
+   It also opens View > Zoom on the view-only Doc once per shipped language (`en` and `bin/translate-config.mjs`), with the browser in that language, and records the text of the Fit row into `e2e/fixtures/docs-fit-labels.json`. Both zoom flows find that row by `popupDocsDropdownFitSelection`, so the message has to be this text ([localization.md](./localization.md#2-record-docs-fit-label)). A language fails when Docs now shows another label than the file has. The file is updated anyway, so review it and correct the message.
 3. Review `git diff e2e/fixtures`. Look for anything that is not UI markup.
 4. `pnpm exec vitest run e2e/fixture-sanitize.test.ts` (checks that each fixture has what the extension needs and no leaks).
 5. Commit `e2e/fixtures/`.

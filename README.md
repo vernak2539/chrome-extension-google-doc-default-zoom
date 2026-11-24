@@ -80,6 +80,8 @@ To re-translate the listings of specific languages, which overwrites them:
 GOOGLE_APPLICATION_CREDENTIALS=./path-to-creds.json node bin/translate-store-listing-translate.mjs --listing=base --force=de,fr
 ```
 
+The Docs "Fit" label (`popupDocsDropdownFitSelection`) is never machine-translated: it is recorded from live Docs. See [docs/localization.md](./docs/localization.md).
+
 If you feel like helping me out, would be much appreciated if you could submit a new issue, using the
 "[Update/Add Locale Information](https://github.com/vernak2539/chrome-extension-google-doc-default-zoom/issues/new/choose)"
 issue template. Or, reach out to me, and we can have a chat!
