@@ -111,7 +111,7 @@ export const assertNoSentryDsn = () => {
 const waitForServiceWorker = async (context: BrowserContext): Promise<Worker> =>
   context.serviceWorkers()[0] ?? (await context.waitForEvent("serviceworker"));
 
-export const launchExtension = async (userDataDir: string) => {
+export const launchExtension = async (userDataDir: string, { language }: LaunchOptions = {}) => {
   const buildDir = getBuildDir();
   const context = await chromium.launchPersistentContext(userDataDir, {
     channel: "chromium",
@@ -119,8 +119,9 @@ export const launchExtension = async (userDataDir: string) => {
     args: [
       `--disable-extensions-except=${buildDir}`,
       `--load-extension=${buildDir}`,
-      "--lang=en-US"
-    ]
+      `--lang=${language ?? "en-US"}`
+    ],
+    ...(language && { env: { ...process.env, LANGUAGE: language } })
   });
 
   await context.route(/^https?:\/\/[^/]*sentry\.io\//, (route) => route.abort());
@@ -368,7 +369,8 @@ const saveScreenshot = async (page: Page | undefined, testName: string) => {
   }
 
   await mkdir(path.join(RESULTS_DIR, "screenshots"), { recursive: true });
-  const fileName = `${testName.replace(/[^a-z0-9]+/gi, "-")}.png`;
+  // Both editions run the same test names into the same directory
+  const fileName = `${getEdition()}-${testName.replace(/[^a-z0-9]+/gi, "-")}.png`;
   await page
     .screenshot({ path: path.join(RESULTS_DIR, "screenshots", fileName) })
     .catch(() => undefined);
@@ -379,18 +381,27 @@ export interface ExtensionSession {
   serviceWorker: Worker;
 }
 
-// Runs `run` against the built extension in a fresh browser, and keeps a screenshot when it fails
+export interface LaunchOptions {
+  // Browser UI language, e.g. "fa". Chromium on Linux takes it from LANGUAGE: `--lang` alone leaves
+  // chrome.i18n.getUILanguage() at the system language. macOS ignores both.
+  language?: string;
+}
+
+// Runs `run` against the built extension in a fresh browser, and keeps a screenshot of the last page,
+// whether the test passed or failed: CI uploads them so a reviewer can see what each test saw
 export const withExtension = async (
   testName: string,
-  run: (session: ExtensionSession) => Promise<void>
+  run: (session: ExtensionSession) => Promise<void>,
+  options: LaunchOptions = {}
 ) => {
   assertNoSentryDsn();
 
   const userDataDir = await mkdtemp(path.join(tmpdir(), "zoom-e2e-"));
-  const session = await launchExtension(userDataDir);
+  const session = await launchExtension(userDataDir, options);
 
   try {
     await run(session);
+    await saveScreenshot(session.context.pages().at(-1), testName);
   } catch (error) {
     await saveScreenshot(session.context.pages().at(-1), testName);
     throw error;

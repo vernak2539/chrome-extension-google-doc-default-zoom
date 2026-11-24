@@ -175,7 +175,8 @@ const saveScreenshot = async (firefox: Browser, testName: string) => {
     .catch(() => undefined);
 };
 
-// Runs `run` against the built extension in a fresh Firefox profile, and keeps a screenshot when it fails
+// Runs `run` against the built extension in a fresh Firefox profile, and keeps a screenshot of the last
+// page, whether the test passed or failed: CI uploads them so a reviewer can see what each test saw
 export const withFirefox = async (testName: string, run: (firefox: Browser) => Promise<void>) => {
   const firefox = await puppeteer.launch({
     browser: "firefox",
@@ -196,6 +197,7 @@ export const withFirefox = async (testName: string, run: (firefox: Browser) => P
   try {
     await firefox.installExtension(BUILD_DIR);
     await run(firefox);
+    await saveScreenshot(firefox, testName);
   } catch (error) {
     await saveScreenshot(firefox, testName);
     throw error;

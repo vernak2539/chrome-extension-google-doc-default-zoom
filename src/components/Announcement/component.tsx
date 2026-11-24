@@ -16,14 +16,18 @@ const AnnouncementComponent = ({ announcement, onDismiss }: Props) => (
       [styles.announcementWarning]: announcement.level === "warning"
     })}>
     {/* Rendered as text, never HTML: the message and link text come from a remote file */}
+    {/* dir="auto" keeps an English fallback reading left-to-right inside an RTL popup */}
     <div className={styles.announcementBody}>
-      <p className={styles.announcementMessage}>{announcement.message}</p>
+      <p className={styles.announcementMessage} dir="auto">
+        {announcement.message}
+      </p>
       {announcement.link && (
         <a
           href={announcement.link.url}
           target="_blank"
           rel="noopener noreferrer"
-          className={styles.announcementLink}>
+          className={styles.announcementLink}
+          dir="auto">
           {announcement.link.text}
         </a>
       )}

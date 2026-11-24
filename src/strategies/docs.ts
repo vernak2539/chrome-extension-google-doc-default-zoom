@@ -12,6 +12,10 @@ const ZOOM_ITEM_SELECTOR = "span[aria-label^='Zoom']";
 // fallback selector (trying to account for potential translation differences)
 const ZOOM_ITEM_FALLBACK_SELECTOR =
   ".docs-icon-img-container.docs-icon-img.docs-icon-editors-ia-zoom-in";
+const ZOOM_ROW_SELECTOR = ".goog-menuitem.apps-menuitem";
+
+const getRowTexts = (menu: Element) =>
+  Array.from(menu.querySelectorAll(ZOOM_ROW_SELECTOR), (row) => row.firstChild?.textContent);
 
 /**
  * This function tells us if the doc is in preview mode. There is no menu in preview mode, so we can't zoom
@@ -39,7 +43,13 @@ const viewMenuFlow = async (config: UiStrategyConfig, zoomValue: string): Promis
 
   // This is hacky, not sure a better way to do this...
   const fitValue = localize("popupDocsDropdownFitSelection");
-  const fitRow = await waitFor(`[aria-label^="${fitValue}"]`, ZOOM_MENU_WAIT_MS);
+  // Another menu can have an item starting with the same word as Fit (Hebrew File > "Make available offline"
+  // starts with התאמה), so only accept a Fit row whose menu lists the zoom presets
+  const fitRow = await waitFor(`[aria-label^="${fitValue}"]`, ZOOM_MENU_WAIT_MS, (row) => {
+    const menu = row.closest(".goog-menu");
+
+    return !!menu && findZoomRowIndex(getRowTexts(menu), config.zoom.defaultZoom) !== -1;
+  });
   const zoomValueContainer = fitRow?.closest(".goog-menu");
 
   if (!zoomValueContainer) {
@@ -47,12 +57,9 @@ const viewMenuFlow = async (config: UiStrategyConfig, zoomValue: string): Promis
     return failed("view_zoom_menu_missing");
   }
 
-  const zoomValueRows = zoomValueContainer.querySelectorAll(".goog-menuitem.apps-menuitem");
+  const zoomValueRows = zoomValueContainer.querySelectorAll(ZOOM_ROW_SELECTOR);
 
-  const rowIndex = findZoomRowIndex(
-    Array.from(zoomValueRows, (row) => row.firstChild?.textContent),
-    zoomValue
-  );
+  const rowIndex = findZoomRowIndex(getRowTexts(zoomValueContainer), zoomValue);
 
   if (rowIndex === -1) {
     getDOMElementAndClick("body");

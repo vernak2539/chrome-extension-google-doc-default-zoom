@@ -34,6 +34,15 @@ describe("waitFor", () => {
     expect(await result).toBe(document.querySelector("#item"));
   });
 
+  test("should skip an existing element that fails the predicate and resolve with a matching one", async () => {
+    document.body.innerHTML = `<div class="row">decoy</div><div class="row">50%</div>`;
+    const result = waitFor(".row", 1000, (element) => element.textContent === "150%");
+
+    document.body.innerHTML += `<div class="row">150%</div>`;
+
+    expect(await result).toBe(document.querySelectorAll(".row")[2]);
+  });
+
   test("should resolve with null when nothing matches within the timeout", async () => {
     const result = waitFor("#target", 1000);
     await vi.advanceTimersByTimeAsync(1000);

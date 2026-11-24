@@ -22,8 +22,10 @@ const containsWholeValue = (text: string, value: string): boolean => {
 };
 
 /**
- * Finds the first menu row whose text contains the whole zoom value. Only digits are checked at
- * the edges, so localized "Fit" labels in any script still match.
+ * Finds the first menu row that contains the zoom value. A percent value is matched by its number
+ * alone, because Docs writes the sign after it (`50%`, `50 %`), before it in Arabic (`%50`) or as
+ * `٪` in Persian. Only digits are checked at the edges, so `50` never matches inside `150` and
+ * localized "Fit" labels in any script still match.
  *
  * Returns -1 when no row matches.
  */
@@ -32,6 +34,7 @@ export const findZoomRowIndex = (
   zoomValue: string
 ): number => {
   const value = zoomValue.trim();
+  const target = value.endsWith("%") ? value.slice(0, -1) : value;
 
-  return rowContents.findIndex((content) => !!content && containsWholeValue(content, value));
+  return rowContents.findIndex((content) => !!content && containsWholeValue(content, target));
 };
