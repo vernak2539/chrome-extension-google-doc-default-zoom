@@ -369,7 +369,8 @@ const saveScreenshot = async (page: Page | undefined, testName: string) => {
   }
 
   await mkdir(path.join(RESULTS_DIR, "screenshots"), { recursive: true });
-  const fileName = `${testName.replace(/[^a-z0-9]+/gi, "-")}.png`;
+  // Both editions run the same test names into the same directory
+  const fileName = `${getEdition()}-${testName.replace(/[^a-z0-9]+/gi, "-")}.png`;
   await page
     .screenshot({ path: path.join(RESULTS_DIR, "screenshots", fileName) })
     .catch(() => undefined);
@@ -386,7 +387,8 @@ export interface LaunchOptions {
   language?: string;
 }
 
-// Runs `run` against the built extension in a fresh browser, and keeps a screenshot when it fails
+// Runs `run` against the built extension in a fresh browser, and keeps a screenshot of the last page,
+// whether the test passed or failed: CI uploads them so a reviewer can see what each test saw
 export const withExtension = async (
   testName: string,
   run: (session: ExtensionSession) => Promise<void>,
@@ -399,6 +401,7 @@ export const withExtension = async (
 
   try {
     await run(session);
+    await saveScreenshot(session.context.pages().at(-1), testName);
   } catch (error) {
     await saveScreenshot(session.context.pages().at(-1), testName);
     throw error;

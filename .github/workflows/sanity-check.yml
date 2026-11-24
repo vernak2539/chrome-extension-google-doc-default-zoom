@@ -64,8 +64,10 @@ jobs:
       # Loads build/firefox-mv2-base (Firefox ships Base only) against the same saved markup
       - name: Browser tests (Firefox)
         run: pnpm test:e2e:firefox
+      # Every browser test leaves a screenshot of its last page, passed or failed, so a reviewer can
+      # see what it saw (the two jobs run in sequence, so both sets are here)
       - name: Upload browser test screenshots
-        if: failure()
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: e2e-screenshots

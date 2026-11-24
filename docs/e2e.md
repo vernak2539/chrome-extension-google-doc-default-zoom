@@ -30,7 +30,7 @@ pnpm test:e2e --project extended                     # one edition
 - The build must not contain the Sentry DSN. The harness refuses to start when a built file does, so a test run never reports to the real Sentry project.
 - Each project checks that its build is the edition it expects (the manifest name names the edition). A dev build (`pnpm dev`) writes to the same directory, so rebuild after one.
 - Set `E2E_EXTENSION_DIR` to test a build in another directory, together with `--project` for its edition. The default is `build/chrome-mv3-<edition>`.
-- Screenshots of failed tests go to `e2e/results/screenshots/`.
+- Every test leaves a screenshot of its last page in `e2e/results/screenshots/`, passed or failed. The `Sanity Check` workflow uploads them as the `e2e-screenshots` artifact.
 
 ### Live mode
 
@@ -66,7 +66,7 @@ pnpm test:e2e:firefox
 pnpm test:e2e:live:firefox             # the live pages; needs the network
 ```
 
-Screenshots of failed tests go to `e2e/results/screenshots/firefox-<test>.png` (`firefox-live-docs.png` and `firefox-live-sheets.png` for the live tests).
+Every test leaves a screenshot of its last page in `e2e/results/screenshots/firefox-<test>.png`, passed or failed (`firefox-live-docs.png` and `firefox-live-sheets.png` for the live tests).
 
 ## Capture and refresh the fixtures
 
