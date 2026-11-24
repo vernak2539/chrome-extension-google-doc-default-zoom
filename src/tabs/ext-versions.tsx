@@ -21,7 +21,7 @@ const CheckList = ({ title, data }) => {
       <p>
         <strong>{title}:</strong>
       </p>
-      <ul style={{ listStyle: "none", margin: 0, padding: "0 0 0 15px" }}>
+      <ul style={{ listStyle: "none", margin: 0, padding: 0, paddingInlineStart: "15px" }}>
         {data.map((d) => (
           <li>
             {d.supported ? "✅" : "❌"} {d.name}

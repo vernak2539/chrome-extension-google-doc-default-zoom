@@ -54,6 +54,21 @@ describe("Docs view-only zoom outcome", () => {
     expect(clicked).toEqual(["150%"]);
   });
 
+  test("should ignore a menu whose item merely starts with the Fit label", async () => {
+    document.body.innerHTML =
+      VIEW_MENU +
+      ZOOM_ITEM +
+      `<div class="goog-menu"><div class="goog-menuitem apps-menuitem"><div aria-label="${FIT_LABEL} offline">${FIT_LABEL} offline</div></div></div>` +
+      ZOOM_MENU;
+    const clicked: string[] = [];
+    document.querySelectorAll(".goog-menuitem").forEach((row) => {
+      row.firstElementChild?.addEventListener("click", () => clicked.push(row.textContent ?? ""));
+    });
+
+    expect(await runViewOnlyFlow()).toEqual({ status: "applied" });
+    expect(clicked).toEqual(["150%"]);
+  });
+
   test("should fail with view_menu_missing when the View menu is not on the page", async () => {
     document.body.innerHTML = ZOOM_ITEM + ZOOM_MENU;
 

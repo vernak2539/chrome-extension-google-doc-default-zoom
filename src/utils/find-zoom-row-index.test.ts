@@ -48,5 +48,35 @@ describe("Docs", () => {
     test("should select the first match", () => {
       expect(findZoomRowIndex(["75%", "50%", "50%"], "50%")).toBe(1);
     });
+
+    test("should match Arabic rows that write the sign before the number", () => {
+      const rows = [
+        "ملاءمة(F)⌘+الخيار+[",
+        "%50(1)",
+        "%75(2)",
+        "%90(3)",
+        "%100(4)⌘0",
+        "%125",
+        "%150(6)",
+        "%200(7)"
+      ];
+
+      expect(findZoomRowIndex(rows, "50%")).toBe(1);
+      expect(findZoomRowIndex(rows, "150%")).toBe(6);
+      expect(findZoomRowIndex(rows, "ملاءمة")).toBe(0);
+    });
+
+    test("should match Persian rows that use the Arabic percent sign", () => {
+      const rows = ["پر کردن پنجره", "50٪(1)", "150٪(6)"];
+
+      expect(findZoomRowIndex(rows, "50%")).toBe(1);
+      expect(findZoomRowIndex(rows, "150%")).toBe(2);
+    });
+
+    test("should match rows with a non-breaking space before the sign", () => {
+      const rows = ["Ajuster(F)", "50\u00a0%(1)", "150\u00a0%(6)"];
+
+      expect(findZoomRowIndex(rows, "150%")).toBe(2);
+    });
   });
 });

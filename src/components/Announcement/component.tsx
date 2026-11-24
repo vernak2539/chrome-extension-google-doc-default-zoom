@@ -16,7 +16,9 @@ const AnnouncementComponent = ({ announcement, onDismiss }: Props) => (
       [styles.announcementWarning]: announcement.level === "warning"
     })}>
     {/* Rendered as text, never HTML: the message comes from a remote file */}
-    <p className={styles.announcementMessage}>{announcement.message}</p>
+    <p className={styles.announcementMessage} dir="auto">
+      {announcement.message}
+    </p>
     {announcement.dismissible && onDismiss && (
       <button
         type="button"

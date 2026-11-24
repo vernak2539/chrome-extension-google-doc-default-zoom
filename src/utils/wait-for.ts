@@ -1,28 +1,37 @@
-// Resolves with the first element that matches, or null once timeoutMs has passed
-export const waitFor = (selector: string, timeoutMs: number): Promise<Element | null> => {
-  const existing = document.querySelector(selector);
+// Resolves with the first element that matches the selector and passes `matches`, or null once
+// timeoutMs has passed
+export const waitFor = (
+  selector: string,
+  timeoutMs: number,
+  matches: (element: Element) => boolean = () => true
+): Promise<Element | null> => {
+  const find = () => Array.from(document.querySelectorAll(selector)).find(matches) ?? null;
+
+  const existing = find();
 
   if (existing) {
     return Promise.resolve(existing);
   }
 
-  return new Promise((resolve) => {
-    const finish = (element: Element | null) => {
-      observer.disconnect();
-      clearTimeout(timer);
-      resolve(element);
-    };
+  const { promise, resolve } = Promise.withResolvers<Element | null>();
 
-    // attributes too: the selectors can match on `aria-label` and `class`
-    const observer = new MutationObserver(() => {
-      const element = document.querySelector(selector);
+  const finish = (element: Element | null) => {
+    observer.disconnect();
+    clearTimeout(timer);
+    resolve(element);
+  };
 
-      if (element) {
-        finish(element);
-      }
-    });
-    const timer = setTimeout(() => finish(null), timeoutMs);
+  // attributes too: the selectors can match on `aria-label` and `class`
+  const observer = new MutationObserver(() => {
+    const element = find();
 
-    observer.observe(document.body, { childList: true, subtree: true, attributes: true });
+    if (element) {
+      finish(element);
+    }
   });
+  const timer = setTimeout(() => finish(null), timeoutMs);
+
+  observer.observe(document.body, { childList: true, subtree: true, attributes: true });
+
+  return promise;
 };
