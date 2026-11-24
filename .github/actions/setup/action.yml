@@ -1,0 +1,16 @@
+name: Set up pnpm and dependencies
+description: Installs pnpm and the Node.js version in .node-version, restores the pnpm store cache and runs pnpm install
+runs:
+  using: composite
+  steps:
+    - uses: pnpm/action-setup@v6
+      with:
+        run_install: false
+    - name: Use Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version-file: .node-version
+        cache: "pnpm"
+    - name: Install dependencies
+      shell: bash
+      run: pnpm install

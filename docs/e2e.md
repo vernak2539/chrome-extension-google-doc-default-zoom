@@ -30,7 +30,7 @@ pnpm test:e2e --project extended                     # one edition
 - The build must not contain the Sentry DSN. The harness refuses to start when a built file does, so a test run never reports to the real Sentry project.
 - Each project checks that its build is the edition it expects (the manifest name names the edition). A dev build (`pnpm dev`) writes to the same directory, so rebuild after one.
 - Set `E2E_EXTENSION_DIR` to test a build in another directory, together with `--project` for its edition. The default is `build/chrome-mv3-<edition>`.
-- Every test leaves a screenshot of its last page in `e2e/results/screenshots/`, passed or failed. The `Sanity Check` workflow uploads them as the `e2e-screenshots` artifact.
+- Every test leaves a screenshot of its last page in `e2e/results/screenshots/`, passed or failed. The `Sanity Check` workflow uploads them as one artifact per job: `e2e-screenshots-chromium-base`, `e2e-screenshots-chromium-extended` and `e2e-screenshots-firefox`.
 
 ### Live mode
 
