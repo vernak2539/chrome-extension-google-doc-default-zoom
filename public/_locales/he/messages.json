@@ -36,7 +36,7 @@
     "description": "Link from popup to tab that details different versions of extension"
   },
   "popupViewOnlyDocsExperimentalLabel": {
-    "message": "נִסיוֹנִי",
+    "message": "ניסיוני",
     "description": "Label for view only docs experimental feature"
   },
   "popupViewOnlyDocsExperimentalContent": {
@@ -44,7 +44,7 @@
     "description": "Content for view only docs experimental feature"
   },
   "popupClassroomSupportExperimentalLabel": {
-    "message": "נִסיוֹנִי",
+    "message": "ניסיוני",
     "description": "Label for classroom support experimental feature"
   },
   "popupClassroomSupportExperimentalContent": {
@@ -140,7 +140,7 @@
     "description": "Text in settings footer denoting current storage schema version"
   },
   "popupNavHome": {
-    "message": "בַּיִת",
+    "message": "דף הבית",
     "description": "Label for the Home navigation tab"
   },
   "popupNavSettings": {

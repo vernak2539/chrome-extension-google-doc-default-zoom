@@ -144,7 +144,7 @@
     "description": "Text in settings footer denoting current storage schema version"
   },
   "popupNavHome": {
-    "message": "Casa",
+    "message": "Home",
     "description": "Label for the Home navigation tab"
   },
   "popupNavSettings": {
