@@ -10,7 +10,7 @@
     "dev": "wxt --mode extended",
     "dev:base": "wxt --mode base",
     "test": "vitest",
-    "test:e2e": "vitest run --config e2e/vitest.config.ts e2e/zoom-fixtures",
+    "test:e2e": "vitest run --config e2e/vitest.config.ts e2e/zoom-fixtures e2e/text-direction",
     "test:e2e:live": "vitest run --config e2e/vitest.config.ts e2e/zoom-live",
     "test:e2e:firefox": "vitest run --config e2e/vitest.config.ts --project firefox",
     "test:e2e:live:firefox": "vitest run --config e2e/vitest.config.ts --project firefox-live",

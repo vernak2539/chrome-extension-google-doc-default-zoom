@@ -3,7 +3,11 @@ import { defineConfig } from "vitest/config";
 // The zoom flow runs once per edition, against build/chrome-mv3-<edition>. Pick one with `--project`.
 const editionProject = (edition: "base" | "extended") => ({
   extends: true,
-  test: { name: edition, include: ["e2e/zoom-*.e2e.ts"], env: { E2E_EDITION: edition } }
+  test: {
+    name: edition,
+    include: ["e2e/zoom-*.e2e.ts", "e2e/text-direction.e2e.ts"],
+    env: { E2E_EDITION: edition }
+  }
 });
 
 // Browser tests are kept out of the default `vitest run` (it only collects *.test.ts)

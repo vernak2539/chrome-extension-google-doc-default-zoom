@@ -111,7 +111,7 @@ export const assertNoSentryDsn = () => {
 const waitForServiceWorker = async (context: BrowserContext): Promise<Worker> =>
   context.serviceWorkers()[0] ?? (await context.waitForEvent("serviceworker"));
 
-export const launchExtension = async (userDataDir: string) => {
+export const launchExtension = async (userDataDir: string, { language }: LaunchOptions = {}) => {
   const buildDir = getBuildDir();
   const context = await chromium.launchPersistentContext(userDataDir, {
     channel: "chromium",
@@ -119,8 +119,9 @@ export const launchExtension = async (userDataDir: string) => {
     args: [
       `--disable-extensions-except=${buildDir}`,
       `--load-extension=${buildDir}`,
-      "--lang=en-US"
-    ]
+      `--lang=${language ?? "en-US"}`
+    ],
+    ...(language && { env: { ...process.env, LANGUAGE: language } })
   });
 
   await context.route(/^https?:\/\/[^/]*sentry\.io\//, (route) => route.abort());
@@ -379,15 +380,22 @@ export interface ExtensionSession {
   serviceWorker: Worker;
 }
 
+export interface LaunchOptions {
+  // Browser UI language, e.g. "fa". Chromium on Linux takes it from LANGUAGE: `--lang` alone leaves
+  // chrome.i18n.getUILanguage() at the system language. macOS ignores both.
+  language?: string;
+}
+
 // Runs `run` against the built extension in a fresh browser, and keeps a screenshot when it fails
 export const withExtension = async (
   testName: string,
-  run: (session: ExtensionSession) => Promise<void>
+  run: (session: ExtensionSession) => Promise<void>,
+  options: LaunchOptions = {}
 ) => {
   assertNoSentryDsn();
 
   const userDataDir = await mkdtemp(path.join(tmpdir(), "zoom-e2e-"));
-  const session = await launchExtension(userDataDir);
+  const session = await launchExtension(userDataDir, options);
 
   try {
     await run(session);
