@@ -55,7 +55,9 @@ export type DocsZoomValueFit =
   | "Ajuster"
   | "Подогнать"
   | "フィット"
-  | "Ajustar";
+  | "Ajustar"
+  | "ملاءمة"
+  | "התאמה";
 
 export type DocsStorageKey = "docs";
 export type DocsZoomValues = [DocsZoomValueFit, "50%", "75%", "100%", "125%", "150%", "200%"];
