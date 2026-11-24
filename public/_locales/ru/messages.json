@@ -28,7 +28,7 @@
     "description": "Подсказка в поле ввода пользовательского уровня масштаба"
   },
   "popupDocsDropdownFitSelection": {
-    "message": "Подогнать",
+    "message": "По ширине страницы",
     "description": "Значение 'Подогнать' в раскрывающемся списке для масштабирования Google Документов"
   },
   "popupToExtensionVersionsTab": {

@@ -48,13 +48,14 @@ export interface AppStorageState {
   viewOnly: boolean;
   classroomSupport: boolean;
 }
+// The label of Docs' Fit zoom row in each locale (e2e/fixtures/docs-fit-labels.json)
 export type DocsZoomValueFit =
   | "Fit"
   | "Adatta"
-  | "Anpassen"
-  | "Ajuster"
-  | "Подогнать"
-  | "フィット"
+  | "An Fenstergröße anpassen"
+  | "Ajuster à la fenêtre"
+  | "По ширине страницы"
+  | "合わせる"
   | "Ajustar"
   | "ملاءمة"
   | "התאמה";

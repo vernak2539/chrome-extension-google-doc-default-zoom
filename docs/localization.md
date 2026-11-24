@@ -69,7 +69,7 @@ Machine translations can be imperfect. You can manually edit the generated JSON 
   GOOGLE_APPLICATION_CREDENTIALS=./creds.json node bin/translate-messages.mjs --key="yourKeyName"
   ```
 
-- **Don't edit the Fit label:** `src/strategies/docs-fit-label.test.ts` fails when a locale's `popupDocsDropdownFitSelection` is not the label in `e2e/fixtures/docs-fit-labels.json`. de, fr, ja and ru still ship labels Docs doesn't show. Correcting them changes the Fit value users have saved, so [#106](https://github.com/vernak2539/chrome-extension-google-doc-default-zoom/issues/106) fixes them with its migration. Until then the test pins them as they are.
+- **Don't edit the Fit label:** `src/strategies/docs-fit-label.test.ts` fails when a locale's `popupDocsDropdownFitSelection` is not the label in `e2e/fixtures/docs-fit-labels.json`. The label is also the Fit value saved in storage until [#106](https://github.com/vernak2539/chrome-extension-google-doc-default-zoom/issues/106), so changing it leaves a saved Fit unmatched.
 
 ## Developer Notes
 

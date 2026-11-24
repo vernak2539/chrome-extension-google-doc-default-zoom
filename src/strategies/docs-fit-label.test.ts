@@ -14,15 +14,6 @@ const DOCS_FIT_LABELS: Record<string, string> = JSON.parse(
   readFileSync(path.join(ROOT, "e2e/fixtures/docs-fit-labels.json"), "utf8")
 );
 
-// Docs shows another label in these locales, so Fit doesn't work there. Correcting them changes the Fit value users
-// have saved, so #106 fixes them together with its migration. Until then they are pinned, so they don't change either.
-const KNOWN_WRONG: Record<string, string> = {
-  de: "Anpassen",
-  fr: "Ajuster",
-  ja: "フィット",
-  ru: "Подогнать"
-};
-
 const SHIPPED_LOCALES = readdirSync(LOCALES_DIR, { withFileTypes: true })
   .filter((entry) => entry.isDirectory())
   .map((entry) => entry.name);
@@ -42,10 +33,6 @@ describe(FIT_KEY, () => {
     expect(
       readFitMessage(locale),
       `public/_locales/${locale}/messages.json must keep ${FIT_KEY} as the label Docs shows`
-    ).toBe(KNOWN_WRONG[locale] ?? DOCS_FIT_LABELS[locale]);
-  });
-
-  test.each(Object.keys(KNOWN_WRONG))("%s still differs from Docs (#106)", (locale) => {
-    expect(KNOWN_WRONG[locale]).not.toBe(DOCS_FIT_LABELS[locale]);
+    ).toBe(DOCS_FIT_LABELS[locale]);
   });
 });

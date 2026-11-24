@@ -33,7 +33,7 @@ describe("Docs", () => {
     });
 
     test("should match localized fit labels", () => {
-      expect(findZoomRowIndex(["フィット", "50%", "75%"], "フィット")).toBe(0);
+      expect(findZoomRowIndex(["合わせる", "50%", "75%"], "合わせる")).toBe(0);
       expect(findZoomRowIndex(["Ajustar", "50%", "75%"], "Ajustar")).toBe(0);
     });
 

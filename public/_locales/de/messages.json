@@ -28,7 +28,7 @@
     "description": "Placeholder used in the custom zoom input box"
   },
   "popupDocsDropdownFitSelection": {
-    "message": "Anpassen",
+    "message": "An Fenstergröße anpassen",
     "description": "Wert 'Anpassen' im Dropdown für den Zoom von Google Docs"
   },
   "popupToExtensionVersionsTab": {
