@@ -36,9 +36,36 @@ describe("parseAnnouncement", () => {
     ["array messages", { id: "a", active: true, messages: ["Hi"] }],
     ["editions that is not an array", { ...remote(), editions: "base" }],
     ["an unknown edition", { ...remote(), editions: ["base", "pro"] }],
-    ["an empty editions list", { ...remote(), editions: [] }]
+    ["an empty editions list", { ...remote(), editions: [] }],
+    [
+      "a javascript: link",
+      { ...remote(), link: { url: "javascript:alert(1)", text: { en: "Go" } } }
+    ],
+    ["an http: link", { ...remote(), link: { url: "http://example.com", text: { en: "Go" } } }],
+    [
+      "a link URL that is not a URL",
+      { ...remote(), link: { url: "example.com", text: { en: "Go" } } }
+    ],
+    ["a link without a URL", { ...remote(), link: { text: { en: "Go" } } }],
+    [
+      "a link without en text",
+      { ...remote(), link: { url: "https://example.com", text: { de: "Los" } } }
+    ],
+    [
+      "a link with plain string text",
+      { ...remote(), link: { url: "https://example.com", text: "Go" } }
+    ],
+    ["a link that is not an object", { ...remote(), link: "https://example.com" }]
   ])("rejects %s", (_, data) => {
     expect(parseAnnouncement(data)).toBeNull();
+  });
+
+  it("accepts an https link and drops unknown link keys", () => {
+    const link = { url: "https://example.com/more", text: { en: "More", de: "Mehr" } };
+
+    expect(
+      parseAnnouncement({ ...remote(), link: { ...link, onclick: "evil()" } })?.link
+    ).toStrictEqual(link);
   });
 
   it("accepts editions", () => {
@@ -116,6 +143,22 @@ describe("resolveAnnouncement", () => {
       dismissible: true,
       message: "Hallo"
     });
+  });
+
+  it("localizes the link text and falls back to English", () => {
+    const link = { url: "https://example.com", text: { en: "More", de: "Mehr" } };
+
+    expect(resolveAnnouncement(remote({ link }), options)?.link).toEqual({
+      url: "https://example.com",
+      text: "Mehr"
+    });
+    expect(resolveAnnouncement(remote({ link }), { ...options, uiLocale: "ja" })?.link?.text).toBe(
+      "More"
+    );
+  });
+
+  it("omits the link when the announcement has none", () => {
+    expect(resolveAnnouncement(remote(), options)).not.toHaveProperty("link");
   });
 
   it("hides inactive or missing announcements", () => {

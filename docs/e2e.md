@@ -12,7 +12,7 @@ There are two modes:
 | Firefox live | `pnpm test:e2e:live:firefox` | The same public Doc and Sheet as live mode, signed out, in Firefox stable with `build/firefox-mv2-base`. | Every pull request and by hand (`e2e-live.yml`) |
 | Capture      | `pnpm e2e:capture`           | Opens the same public pages signed out, saves them, and sanitizes them into `e2e/fixtures/`.             | By hand, or in `e2e-live.yml`                   |
 
-The fixture tests cover a preset zoom (Docs and Sheets), a custom zoom (Extended only), the Docs view-only flow, a page that is still loading, and a zoom picked in the popup and then changed. Every browser test runs once per edition, like `pnpm test`: `e2e/vitest.config.ts` has a `base` and an `extended` project, each loading `build/chrome-mv3-<edition>`. In the Base edition the custom-zoom test is replaced by one that checks nothing is clicked or typed.
+The fixture tests cover a preset zoom (Docs and Sheets), a custom zoom (Extended only), the Docs view-only flow, a page that is still loading, a page without focus (a background tab), and a zoom picked in the popup and then changed. Every browser test runs once per edition, like `pnpm test`: `e2e/vitest.config.ts` has a `base` and an `extended` project, each loading `build/chrome-mv3-<edition>`. In the Base edition the custom-zoom test is replaced by one that checks nothing is clicked or typed.
 
 The browser tests are named `*.e2e.ts` and use their own config (`e2e/vitest.config.ts`), so `pnpm test` does not collect them. `e2e/fixture-sanitize.test.ts` is a normal unit test and runs with `pnpm test`.
 
@@ -47,7 +47,7 @@ Set `E2E_LIVE_DOC_URL` and `E2E_LIVE_SHEET_URL` to use other public documents. I
 
 Playwright can't load an extension into Firefox, so [`e2e/firefox-harness.ts`](../e2e/firefox-harness.ts) drives Firefox with Puppeteer over WebDriver BiDi instead of using `e2e/harness.ts`. Two files use it:
 
-- [`e2e/firefox.e2e.ts`](../e2e/firefox.e2e.ts) repeats the Base fixture tests except the popup round trip. When you change a fixture test in `e2e/zoom-fixtures.e2e.ts`, change it there too.
+- [`e2e/firefox.e2e.ts`](../e2e/firefox.e2e.ts) repeats the Base fixture tests except the popup round trip and the page without focus (that one turns off Chromium's focus emulation over CDP). When you change a fixture test in `e2e/zoom-fixtures.e2e.ts`, change it there too.
 - [`e2e/firefox-live.e2e.ts`](../e2e/firefox-live.e2e.ts) repeats the live tests in `e2e/zoom-live.e2e.ts`, against the same documents (`E2E_LIVE_DOC_URL` and `E2E_LIVE_SHEET_URL` apply). It checks that the extension works on the markup Google sends to Firefox, which the fixtures (captured in Chromium) can't show.
 
 What differs from Chromium:
@@ -116,3 +116,4 @@ To check the popup side, make the `onChange` of the dropdown in `src/components/
 - A recorder script in the page's main world observes events, and does not model Google: it records the text of every menu row that gets a `click`, the value of the focused input when Enter is pressed, and the target of every `mousedown` outside the zoom control and its menu (the outside press that closes a menu the flow opened without focusing the input).
 - A fixture is inserted into the page 500 ms after load. The insert is a DOM mutation, which is what makes the content script start (`onElementAvailable`).
 - The page-still-loading test disables the zoom control, waits, then enables it by removing the disabled class from the zoom control only. The content script watches `#docs-toolbar` including its subtree, so that class change on a descendant is enough to start the zoom.
+- Playwright makes every page act as if it had focus. The tests for a background tab (#77) open their page with `openUnfocusedPage`, which turns that emulation off over CDP and opens another page in front. Playwright turns the emulation back on when the page navigates to another site, so it is turned off again once the navigation commits. `page.bringToFront()` then gives the page focus, as selecting its tab does. The helper throws if the page still has focus, so such a test can't pass without proving anything.

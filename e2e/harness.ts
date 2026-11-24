@@ -317,6 +317,34 @@ export const waitForEnters = (page: Page, count: number) =>
     timeout: 15_000
   });
 
+// Opens `url` in a page that does not have focus, like a background tab or the selected tab of a window that is not
+// focused. Chrome fires no focus events there, so Google ignores a typed zoom (#77).
+// Playwright makes every page act as if it had focus ("focus emulation"), which would hide that. This turns it off for
+// the page and opens another page in front. Playwright turns it back on when the page navigates to another site, so it
+// is turned off again once the navigation commits, before the page has a zoom control for the content script to use.
+// `page.bringToFront()` gives the page focus, as selecting the tab does.
+export const openUnfocusedPage = async (context: BrowserContext, url: string): Promise<Page> => {
+  const page = await context.newPage();
+  const cdp = await context.newCDPSession(page);
+  const disableFocusEmulation = () =>
+    cdp.send("Emulation.setFocusEmulationEnabled", { enabled: false });
+
+  await disableFocusEmulation();
+  await context.newPage();
+  await page.goto(url, { waitUntil: "commit" });
+  await disableFocusEmulation();
+  await page.waitForLoadState("load");
+
+  // a page with focus would make the test prove nothing
+  if (await page.evaluate(() => document.hasFocus())) {
+    throw new Error("The page has focus: Playwright's focus emulation is still on");
+  }
+
+  return page;
+};
+
+export const hasFocus = (page: Page): Promise<boolean> => page.evaluate(() => document.hasFocus());
+
 // Where the page ended up, without the query string (a sign-in URL carries the document URL)
 // Takes a Playwright or a Puppeteer page
 export const describeLocation = (page: Pick<Page, "url">): string => {
