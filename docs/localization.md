@@ -20,7 +20,7 @@ export const LANGUAGES = [...{ code: "pt", name: "Portuguese" }];
 
 ### 2. Record Docs' Fit Label
 
-`popupDocsDropdownFitSelection` is not a translation. Both zoom flows find the Fit row of the Docs zoom menu by this text, so it has to be the label Docs itself shows in that language (Docs shows "An Fenstergröße anpassen" in German, not "Anpassen"). A translation service can't know it.
+`popupDocsDropdownFitSelection` is not a translation. Until [#106](https://github.com/vernak2539/chrome-extension-google-doc-default-zoom/issues/106) it is also the saved Fit value, so it has to be the label Docs itself shows in that language (Docs shows "An Fenstergröße anpassen" in German, not "Anpassen"). A translation service can't know it.
 
 `pnpm e2e:capture` records it from live Docs, signed out, in every language in `bin/translate-config.mjs`, into `src/strategies/docs-fit-labels.json` ([e2e.md](./e2e.md#capture-and-refresh-the-fixtures)). It needs no Google account or build. To record only the Fit labels:
 
