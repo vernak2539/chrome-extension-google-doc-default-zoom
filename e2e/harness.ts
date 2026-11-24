@@ -369,8 +369,10 @@ const saveScreenshot = async (page: Page | undefined, testName: string) => {
   }
 
   await mkdir(path.join(RESULTS_DIR, "screenshots"), { recursive: true });
-  // Both editions run the same test names into the same directory
-  const fileName = `${getEdition()}-${testName.replace(/[^a-z0-9]+/gi, "-")}.png`;
+  // Both editions run the same test names into the same directory. The capture loads no extension and runs once,
+  // without an edition (getEdition would throw there and hide the capture's own error).
+  const prefix = process.env.E2E_EDITION ? `${getEdition()}-` : "";
+  const fileName = `${prefix}${testName.replace(/[^a-z0-9]+/gi, "-")}.png`;
   await page
     .screenshot({ path: path.join(RESULTS_DIR, "screenshots", fileName) })
     .catch(() => undefined);
