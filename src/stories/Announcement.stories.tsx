@@ -37,6 +37,19 @@ export const Warning: Story = {
   }
 };
 
+export const WithLink: Story = {
+  args: {
+    announcement: {
+      id: "link",
+      level: "info",
+      dismissible: true,
+      message,
+      link: { url: "https://example.com/details", text: "Read more" }
+    },
+    onDismiss: fn()
+  }
+};
+
 export const NotDismissible: Story = {
   args: {
     announcement: { id: "fixed", level: "warning", dismissible: false, message }
