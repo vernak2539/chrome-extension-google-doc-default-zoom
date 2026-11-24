@@ -5,6 +5,9 @@ import { fileURLToPath } from "node:url";
 import pkg from "@google-cloud/translate";
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
+
+import { LANGUAGES } from "./translate-config.mjs";
+
 const { Translate } = pkg.v2;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -19,17 +22,34 @@ const argv = yargs(hideBin(process.argv))
     demandOption: true,
     type: "string"
   })
-  .usage("Usage: $0 --listing=<value>")
-  .example("$0 --listing=base", "Translate docs/store-listings/base/en.md")
-  .example("$0 --listing=extended", "Translate docs/store-listings/extended/en.md")
+  .option("force", {
+    describe: "Language code(s) to re-translate even though their listing exists",
+    type: "string",
+    array: true,
+    default: []
+  })
+  .usage("Usage: $0 --listing=<value> [--force=<code>[,<code>]]")
+  .example(
+    "$0 --listing=base",
+    "Translate docs/store-listings/base/en.md into each missing language"
+  )
+  .example("$0 --listing=extended --force=he", "Also re-translate the existing Hebrew listing")
   .help()
   .alias("help", "h")
   .version(false).argv;
 
-import { LANGUAGES } from "./translate-config.mjs";
-
 async function main() {
   const { listing } = argv;
+  const force = new Set(argv.force.flatMap((value) => value.split(",")).filter(Boolean));
+
+  const unknownCodes = [...force].filter((code) => !LANGUAGES.some((lang) => lang.code === code));
+  if (unknownCodes.length > 0) {
+    console.error(
+      `Error: --force got ${unknownCodes.join(", ")}, which bin/translate-config.mjs does not list ` +
+        `(${LANGUAGES.map((lang) => lang.code).join(", ")})`
+    );
+    process.exit(1);
+  }
 
   // Set source file and output directory based on listing type
   const sourceFile = path.resolve(__dirname, `../docs/store-listings/${listing}/en.md`);
@@ -50,11 +70,25 @@ async function main() {
   console.log("🚀 Starting translation of store listing...");
   console.log(`📄 Source: docs/store-listings/${listing}/en.md`);
   console.log(`📁 Output directory: docs/store-listings/${listing}`);
+  console.log(
+    force.size > 0
+      ? `🎯 Re-translating: ${[...force].join(", ")}, plus any missing language`
+      : "🔍 Mode: missing languages only"
+  );
   console.log("");
 
-  // Translate to each target language
+  const written = [];
+
+  // Translate to each target language that has no listing yet, or that --force names
   for (const lang of LANGUAGES) {
     const outputFile = path.join(outputDir, `${lang.code}.md`);
+
+    if (fs.existsSync(outputFile) && !force.has(lang.code)) {
+      console.log(
+        `✅ ${lang.name} (${lang.code}) already has a listing. Pass --force=${lang.code} to re-translate it.`
+      );
+      continue;
+    }
 
     console.log(`🔄 Translating to ${lang.name} (${lang.code})...`);
 
@@ -63,6 +97,7 @@ async function main() {
 
       // Write translated content to file
       fs.writeFileSync(outputFile, result, "utf8");
+      written.push(`docs/store-listings/${listing}/${lang.code}.md`);
 
       console.log(`✅ Successfully translated to ${lang.code}.md`);
     } catch (error) {
@@ -73,14 +108,17 @@ async function main() {
     console.log("");
   }
 
+  console.log("");
+  if (written.length === 0) {
+    console.log("🎉 Every language already has a listing. Nothing was translated.");
+    return;
+  }
+
   console.log("🎉 All translations completed!");
   console.log("");
   console.log("📁 Generated files:");
-  for (const lang of LANGUAGES) {
-    const outputFile = path.join(outputDir, `${lang.code}.md`);
-    if (fs.existsSync(outputFile)) {
-      console.log(`   - docs/store-listings/${listing}/${lang.code}.md`);
-    }
+  for (const file of written) {
+    console.log(`   - ${file}`);
   }
 }
 

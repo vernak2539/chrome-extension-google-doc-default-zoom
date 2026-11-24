@@ -30,7 +30,7 @@ The translation script works in "diff mode" by default, meaning it will only tra
 
 ### 3. Generate Store Listing Translations
 
-The store listing script translates the contents of `docs/store-listings/`.
+The store listing script translates `docs/store-listings/<listing>/en.md` into each language that has no `<code>.md` yet. It leaves existing listings alone.
 
 1.  **Run for both versions:**
     ```bash
@@ -38,6 +38,11 @@ The store listing script translates the contents of `docs/store-listings/`.
     GOOGLE_APPLICATION_CREDENTIALS=./creds.json node bin/translate-store-listing-translate.mjs --listing=extended
     ```
     This will create `pt.md` files in `docs/store-listings/base/` and `docs/store-listings/extended/`.
+2.  **Re-translate an existing listing** (after changing `en.md`, for example) with `--force`. It takes one or more language codes and overwrites those files:
+    ```bash
+    GOOGLE_APPLICATION_CREDENTIALS=./creds.json node bin/translate-store-listing-translate.mjs --listing=base --force=pt
+    GOOGLE_APPLICATION_CREDENTIALS=./creds.json node bin/translate-store-listing-translate.mjs --listing=base --force=de,fr
+    ```
 
 ### 4. Manual Refinement
 

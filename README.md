@@ -68,10 +68,16 @@ GOOGLE_APPLICATION_CREDENTIALS=./path-to-creds.json node bin/translate-messages.
 
 ### Translate Store Listings
 
-To translate the store listings:
+To translate the store listings into each language that has none yet:
 
 ```bash
 GOOGLE_APPLICATION_CREDENTIALS=./path-to-creds.json node bin/translate-store-listing-translate.mjs --listing=base
+```
+
+To re-translate the listings of specific languages, which overwrites them:
+
+```bash
+GOOGLE_APPLICATION_CREDENTIALS=./path-to-creds.json node bin/translate-store-listing-translate.mjs --listing=base --force=de,fr
 ```
 
 If you feel like helping me out, would be much appreciated if you could submit a new issue, using the
