@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { workspaceAppUiStrategyConfigs } from "src/constants";
+import { DOCS_ZOOM_VALUES, workspaceAppUiStrategyConfigs } from "src/constants";
 import type { AppStorageState } from "src/types";
 import { IS_EXTENDED_EDITION } from "src/utils/edition";
 import getAppStorageStateFromStorage from "src/utils/get-app-storage-state-from-storage";
@@ -164,6 +164,60 @@ describe("zoom outcome", () => {
       reason: "exception",
       error
     });
+  });
+});
+
+// The saved Fit value is the extension's label (the localize mock returns its key), while Docs shows its own text
+describe("Fit when Docs is shown in another language than the extension", () => {
+  const FIT_VALUE = DOCS_ZOOM_VALUES[0];
+
+  const renderToolbarMenu = (rowTexts: string[]) => {
+    document.body.innerHTML = `
+      <div id="zoomSelect" aria-owns="zoom-menu"><input /></div>
+      <div class="goog-menu goog-menu-vertical" id="zoom-menu">
+        ${rowTexts.map((text) => `<div class="goog-menuitem"><div>${text}</div></div>`).join("")}
+      </div>`;
+
+    const clicked: string[] = [];
+    document.querySelectorAll(".goog-menuitem").forEach((row) => {
+      row.firstElementChild?.addEventListener("click", () => clicked.push(row.textContent ?? ""));
+    });
+    const mousedownTargets: string[] = [];
+    document.addEventListener("mousedown", (event) => {
+      mousedownTargets.push((event.target as Element).tagName.toLowerCase());
+    });
+    return { clicked, mousedownTargets };
+  };
+
+  beforeEach(() => {
+    vi.useFakeTimers();
+    getStoredState.mockReset();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  test("should click the row without a digit, whatever its text", async () => {
+    const { clicked } = renderToolbarMenu(["Ajustar", "50%", "100%", "150%"]);
+
+    expect(await zoomTo(FIT_VALUE)).toEqual({ status: "applied" });
+    expect(clicked).toEqual(["Ajustar"]);
+  });
+
+  test("should fail with zoom_option_missing, click nothing and close the menu when two rows have no digit", async () => {
+    const { clicked, mousedownTargets } = renderToolbarMenu([
+      "New feature",
+      "Other",
+      "50%",
+      "150%"
+    ]);
+
+    expect(await zoomTo(FIT_VALUE)).toEqual({ status: "failed", reason: "zoom_option_missing" });
+    await vi.advanceTimersByTimeAsync(0);
+
+    expect(clicked).toEqual([]);
+    expect(mousedownTargets.at(-1)).toBe("body");
   });
 });
 

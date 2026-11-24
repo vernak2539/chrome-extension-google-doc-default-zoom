@@ -1,6 +1,7 @@
+import { DOCS_FIT_LABELS, isFitZoomValue } from "src/constants";
 import type { UiStrategyConfig, ZoomOutcome } from "src/types";
+import { findFitRowIndex, readZoomRowFacts } from "src/utils/find-fit-row";
 import { findZoomRowIndex } from "src/utils/find-zoom-row-index";
-import localize from "src/utils/localize";
 import { clickDOMElement, getDOMElement, getDOMElementAndClick } from "src/utils/ui-helpers";
 import { waitFor } from "src/utils/wait-for";
 import { APPLIED, failed } from "src/utils/zoom-outcome";
@@ -16,6 +17,13 @@ const ZOOM_ROW_SELECTOR = ".goog-menuitem.apps-menuitem";
 
 const getRowTexts = (menu: Element) =>
   Array.from(menu.querySelectorAll(ZOOM_ROW_SELECTOR), (row) => row.firstChild?.textContent);
+
+// Computed style and not layout: it is what jsdom can answer, and Docs hides a closed menu with it
+const isShown = (element: Element): boolean => {
+  const { display, visibility } = getComputedStyle(element);
+
+  return display !== "none" && visibility !== "hidden";
+};
 
 /**
  * This function tells us if the doc is in preview mode. There is no menu in preview mode, so we can't zoom
@@ -41,25 +49,22 @@ const viewMenuFlow = async (config: UiStrategyConfig, zoomValue: string): Promis
   // a combined selector returns the first match in document order, so look for the span first
   clickDOMElement(getDOMElement(ZOOM_ITEM_SELECTOR) ?? zoomItem);
 
-  // This is hacky, not sure a better way to do this...
-  const fitValue = localize("popupDocsDropdownFitSelection");
-  // Another menu can have an item starting with the same word as Fit (Hebrew File > "Make available offline"
-  // starts with התאמה), so only accept a Fit row whose menu lists the zoom presets
-  const fitRow = await waitFor(`[aria-label^="${fitValue}"]`, ZOOM_MENU_WAIT_MS, (row) => {
-    const menu = row.closest(".goog-menu");
-
-    return !!menu && findZoomRowIndex(getRowTexts(menu), config.zoom.defaultZoom) !== -1;
+  // The zoom submenu is the shown menu that lists the default zoom. Menus are found by that, and not by the Fit
+  // label, which is in the language Docs is shown in. Other menus stay in the page, hidden.
+  const zoomValueContainer = await waitFor(".goog-menu", ZOOM_MENU_WAIT_MS, (menu) => {
+    return isShown(menu) && findZoomRowIndex(getRowTexts(menu), config.zoom.defaultZoom) !== -1;
   });
-  const zoomValueContainer = fitRow?.closest(".goog-menu");
 
   if (!zoomValueContainer) {
     getDOMElementAndClick("body");
     return failed("view_zoom_menu_missing");
   }
 
-  const zoomValueRows = zoomValueContainer.querySelectorAll(ZOOM_ROW_SELECTOR);
+  const zoomValueRows = Array.from(zoomValueContainer.querySelectorAll(ZOOM_ROW_SELECTOR));
 
-  const rowIndex = findZoomRowIndex(getRowTexts(zoomValueContainer), zoomValue);
+  const rowIndex = isFitZoomValue(zoomValue)
+    ? findFitRowIndex(zoomValueRows.map(readZoomRowFacts), DOCS_FIT_LABELS)
+    : findZoomRowIndex(getRowTexts(zoomValueContainer), zoomValue);
 
   if (rowIndex === -1) {
     getDOMElementAndClick("body");

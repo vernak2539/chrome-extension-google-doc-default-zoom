@@ -13,6 +13,8 @@ import type {
 import { IS_EXTENDED_EDITION } from "src/utils/edition";
 import localize from "src/utils/localize";
 
+import docsFitLabels from "./strategies/docs-fit-labels.json";
+
 export const GOOGLE_CLASSROOM_DOMAIN = "classroom.google.com";
 
 export const OBSERVE_EXECUTION_LIMIT = 1000;
@@ -31,6 +33,10 @@ export const DOCS_ZOOM_VALUES: DocsZoomValues = [
   "200%"
 ];
 export const DOCS_DEFAULT_ZOOM = DOCS_ZOOM_VALUES[3];
+// The text Docs shows on its Fit row in each language: it tells Fit from a new row Google adds
+export const DOCS_FIT_LABELS: string[] = Object.values(docsFitLabels);
+// Until #106 stores "fit", the saved Fit value is the extension's label
+export const isFitZoomValue = (zoomValue: string): boolean => zoomValue === DOCS_ZOOM_VALUES[0];
 /**  Workspace Application: Docs - End **/
 
 /**  Workspace Application: Sheets - Start **/

@@ -1,8 +1,10 @@
 import getAppStorageStateFromStorage from "src/utils/get-app-storage-state-from-storage";
 
+import { DOCS_FIT_LABELS, isFitZoomValue } from "../constants";
 import type { UiStrategyConfig, ZoomOutcome } from "../types";
 import { isGoogleClassroomSubmittedAssignment } from "../utils/classroom-helpers";
 import { IS_EXTENDED_EDITION } from "../utils/edition";
+import { findFitRowIndex, readZoomRowFacts } from "../utils/find-fit-row";
 import { findZoomMenu } from "../utils/find-zoom-menu";
 import {
   clickDOMElement,
@@ -120,15 +122,14 @@ const uiExecuteDefinedZoomFlow = (
   }
 
   // figure out zoom value to select
-  const zoomInputSelectOptions = zoomInputSelect.querySelectorAll(
-    config.uiElements.clickableZoomOptionClass
+  const rows = Array.from(
+    zoomInputSelect.querySelectorAll(config.uiElements.clickableZoomOptionClass)
   );
-  let newZoomLevelElement: Element | null = null;
-  for (let i = 0; i < zoomInputSelectOptions.length; i++) {
-    if (zoomInputSelectOptions[i].firstChild?.textContent === zoomValue) {
-      newZoomLevelElement = zoomInputSelectOptions[i].firstChild as Element;
-    }
-  }
+  // Fit is told apart by its structure: its text is in the language Docs is shown in, not the extension's
+  const rowIndex = isFitZoomValue(zoomValue)
+    ? findFitRowIndex(rows.map(readZoomRowFacts), DOCS_FIT_LABELS)
+    : rows.findLastIndex((row) => row.firstChild?.textContent === zoomValue);
+  const newZoomLevelElement = rowIndex === -1 ? null : (rows[rowIndex].firstChild as Element);
 
   // somehow we may not have matched the right element
   if (!newZoomLevelElement) {

@@ -3,9 +3,11 @@ import { existsSync, readFileSync } from "node:fs";
 import { mkdir, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 
+import { JSDOM } from "jsdom";
 import type { Page } from "playwright";
 import { afterAll, describe, expect, test } from "vitest";
 
+import { findFitRowIndex, FIT_MNEMONIC, readZoomRowFacts } from "../src/utils/find-fit-row";
 import { describeLocation, findSelectors, withPublicPage } from "./harness";
 import {
   CAPTURE_TARGETS,
@@ -84,11 +86,9 @@ describe("capture the raw pages (signed out)", () => {
 
 // The Zoom item's label is translated, its icon is not (the content script falls back to the same icon)
 const ZOOM_ITEM_WITH_ICON = ".goog-menuitem:has(.docs-icon-editors-ia-zoom-in):visible";
-// Docs ends the Fit row's aria-label with its accelerator key: "Fit f", "התאמה f"
-const FIT_ACCELERATOR = / f$/i;
-
-// The aria-label of the first row of the open menu that lists the zoom presets: the Fit row
-const waitForFitRowLabel = async (page: Page): Promise<string> => {
+// The markup of the open menu that lists the zoom presets. It is read here and parsed in Node, so the Fit row is found
+// by the same code as in the extension.
+const waitForZoomMenuHtml = async (page: Page): Promise<string> => {
   const handle = await page.waitForFunction(
     () => {
       for (const menu of Array.from(document.querySelectorAll(".goog-menu"))) {
@@ -98,10 +98,7 @@ const waitForFitRowLabel = async (page: Page): Promise<string> => {
           menu.getClientRects().length > 0 &&
           rows.some((row) => /(^|\D)50(\D|$)/.test(row.textContent ?? ""))
         ) {
-          const label =
-            rows[0].getAttribute("aria-label") ??
-            rows[0].querySelector("[aria-label]")?.getAttribute("aria-label");
-          return label || null;
+          return menu.outerHTML;
         }
       }
 
@@ -114,7 +111,30 @@ const waitForFitRowLabel = async (page: Page): Promise<string> => {
   return handle.jsonValue() as Promise<string>;
 };
 
-const readFitLabel = async (page: Page): Promise<string> => {
+const findFitLabel = (menuHtml: string, knownLabels: string[]): string => {
+  const rows: Element[] = Array.from(
+    new JSDOM(menuHtml).window.document.querySelectorAll(".goog-menuitem.apps-menuitem")
+  );
+  const facts = rows.map(readZoomRowFacts);
+  const index = findFitRowIndex(facts, knownLabels);
+
+  if (index === -1) {
+    throw new Error(
+      `No single row of the zoom menu is the Fit row. Rows: ${facts.map(({ label }) => `"${label}"`).join(", ")}`
+    );
+  }
+
+  const ariaLabel = rows[index].querySelector(".goog-menuitem-label")?.getAttribute("aria-label");
+  if (!ariaLabel || !FIT_MNEMONIC.test(ariaLabel)) {
+    throw new Error(
+      `The Fit row's aria-label "${ariaLabel}" no longer ends with its accelerator key (" f")`
+    );
+  }
+
+  return facts[index].label;
+};
+
+const readFitLabel = async (page: Page, knownLabels: string[]): Promise<string> => {
   await page.goto(LIVE_VIEW_ONLY_DOC_URL);
   await waitForEnabled(page, "#docs-view-menu:not(.goog-control-disabled)");
   await page.click("#docs-view-menu");
@@ -131,22 +151,15 @@ const readFitLabel = async (page: Page): Promise<string> => {
   await zoomItem.hover();
   await zoomItem.click();
 
-  const ariaLabel = await waitForFitRowLabel(page);
-  if (!FIT_ACCELERATOR.test(ariaLabel)) {
-    throw new Error(
-      `The Fit row's aria-label "${ariaLabel}" no longer ends with its accelerator key (" f")`
-    );
-  }
-
-  return ariaLabel.replace(FIT_ACCELERATOR, "");
+  return findFitLabel(await waitForZoomMenuHtml(page), knownLabels);
 };
 
 const readRecordedFitLabels = (): Record<string, string> =>
   existsSync(FIT_LABELS_PATH) ? JSON.parse(readFileSync(FIT_LABELS_PATH, "utf8")) : {};
 
-// Both zoom flows find Docs' Fit row by popupDocsDropdownFitSelection, so that message has to be the text Docs shows,
-// which a translation service can't know. This records it from live Docs in every language the extension ships, and
-// fails when Docs changed it. A language that fails keeps the label it had.
+// Until #106 the saved Fit value is popupDocsDropdownFitSelection, so that message has to be the text Docs shows, which
+// a translation service can't know. This records it from live Docs in every language the extension ships, and fails
+// when Docs changed it. A language that fails keeps the label it had.
 describe("capture Docs' Fit label in each language (signed out)", () => {
   const recorded = readRecordedFitLabels();
   const captured: Record<string, string> = {};
@@ -169,7 +182,7 @@ describe("capture Docs' Fit label in each language (signed out)", () => {
     withPublicPage(
       `capture-fit-${code}`,
       async (page) => {
-        const label = await readFitLabel(page);
+        const label = await readFitLabel(page, Object.values(recorded));
         captured[code] = label;
 
         if (code in recorded) {
