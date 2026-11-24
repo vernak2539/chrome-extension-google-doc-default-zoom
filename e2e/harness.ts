@@ -121,7 +121,8 @@ export const launchExtension = async (userDataDir: string, { language }: LaunchO
       `--load-extension=${buildDir}`,
       `--lang=${language ?? "en-US"}`
     ],
-    ...(language && { env: { ...process.env, LANGUAGE: language } })
+    // `locale` sets Accept-Language, which a signed-out Docs takes its language from
+    ...(language && { env: { ...process.env, LANGUAGE: language }, locale: language })
   });
 
   await context.route(/^https?:\/\/[^/]*sentry\.io\//, (route) => route.abort());
@@ -384,8 +385,9 @@ export interface ExtensionSession {
 }
 
 export interface LaunchOptions {
-  // Browser UI language, e.g. "fa". Chromium on Linux takes it from LANGUAGE: `--lang` alone leaves
-  // chrome.i18n.getUILanguage() at the system language. macOS ignores both.
+  // Browser UI language, e.g. "fa", for the extension's strings and for the language Docs serves. Chromium on Linux
+  // takes it from LANGUAGE: `--lang` alone leaves chrome.i18n.getUILanguage() at the system language. macOS ignores
+  // both, so only the pages follow it there.
   language?: string;
 }
 
