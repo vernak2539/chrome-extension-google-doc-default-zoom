@@ -16,5 +16,3 @@
 لا تقلق! إذا كنت لا ترغب في منح الصلاحيات الإضافية، يمكنك استخدام إضافتي الأخرى التي تتيح استخدام قيم تكبير/تصغير مُحددة مسبقًا. متوفر هنا (https://chrome.google.com/webstore/detail/google-workspace-zoom-def/nflkcdlimipkgbacnfnhfecjgmojhklo).
 
 يمكنك دعمي عبر "شراء قهوة لي" على الرابط التالي: https://buymeacoffee.com/vernacchia.
-...
-يمكنك دعمي عبر "شراء قهوة لي" على الرابط التالي: https://buymeacoffee.com/vernacchia.

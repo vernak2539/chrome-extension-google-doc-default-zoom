@@ -12,5 +12,3 @@
 إذا كنت ترغب في استخدام قيم تكبير/تصغير مخصصة، يمكنك الاطلاع على إضافتي الأخرى (https://chrome.google.com/webstore/detail/google-workspace-zoom-def/mdgikencgfhineaememjagpkiclbdkka).
 
 يمكنك دعمي عبر شراء قهوة لي على الرابط التالي: https://buymeacoffee.com/vernacchia.
-
-يمكنك دعمي عبر شراء قهوة لي على الرابط التالي: https://buymeacoffee.com/vernacchia.
