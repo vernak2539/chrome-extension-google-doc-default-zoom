@@ -17,6 +17,12 @@ const FETCH_TIMEOUT_MS = 5000;
 
 export type AnnouncementLevel = "info" | "warning";
 
+export interface AnnouncementLink {
+  url: string;
+  // Locale code -> button text. "en" is required.
+  text: Record<string, string>;
+}
+
 export interface RemoteAnnouncement {
   id: string;
   active: boolean;
@@ -27,6 +33,7 @@ export interface RemoteAnnouncement {
   maxVersion?: string;
   // Omitted means every edition.
   editions?: Edition[];
+  link?: AnnouncementLink;
   // Locale code (e.g. "en", "de", "pt_BR") -> message. "en" is required.
   messages: Record<string, string>;
 }
@@ -36,6 +43,7 @@ export interface Announcement {
   level: AnnouncementLevel;
   dismissible: boolean;
   message: string;
+  link?: { url: string; text: string };
 }
 
 const EDITIONS: readonly Edition[] = ["base", "extended"];
@@ -51,13 +59,28 @@ const isRecordOfStrings = (value: unknown): value is Record<string, string> =>
   !Array.isArray(value) &&
   Object.values(value).every((v) => typeof v === "string");
 
+const isHttpsUrl = (value: unknown): value is string => {
+  if (typeof value !== "string") return false;
+  try {
+    return new URL(value).protocol === "https:";
+  } catch {
+    return false;
+  }
+};
+
+const isLink = (value: unknown): value is AnnouncementLink => {
+  if (typeof value !== "object" || value === null || Array.isArray(value)) return false;
+  const { url, text } = value as Record<string, unknown>;
+  return isHttpsUrl(url) && isRecordOfStrings(text) && Boolean(text[DEFAULT_LOCALE]);
+};
+
 // The remote file is outside of the extension's control, so validate everything before use
 export const parseAnnouncement = (data: unknown): RemoteAnnouncement | null => {
   if (typeof data !== "object" || data === null) {
     return null;
   }
 
-  const { id, active, level, dismissible, maxVersion, editions, messages } = data as Record<
+  const { id, active, level, dismissible, maxVersion, editions, link, messages } = data as Record<
     string,
     unknown
   >;
@@ -68,9 +91,20 @@ export const parseAnnouncement = (data: unknown): RemoteAnnouncement | null => {
   if (dismissible !== undefined && typeof dismissible !== "boolean") return null;
   if (maxVersion !== undefined && typeof maxVersion !== "string") return null;
   if (editions !== undefined && !isEditionList(editions)) return null;
+  if (link !== undefined && !isLink(link)) return null;
   if (!isRecordOfStrings(messages) || !messages[DEFAULT_LOCALE]) return null;
 
-  return { id, active, level, dismissible, maxVersion, editions, messages };
+  return {
+    id,
+    active,
+    level,
+    dismissible,
+    maxVersion,
+    editions,
+    // Copy only known keys so unknown remote fields never reach the UI
+    link: link && { url: link.url, text: link.text },
+    messages
+  };
 };
 
 // Normalises "pt-BR" / "pt_br" to "pt_BR" to match the public/_locales/ folder naming
@@ -139,7 +173,10 @@ export const resolveAnnouncement = (
     id: remote.id,
     level: remote.level ?? "info",
     dismissible,
-    message: pickLocalizedMessage(remote.messages, uiLocale)
+    message: pickLocalizedMessage(remote.messages, uiLocale),
+    ...(remote.link && {
+      link: { url: remote.link.url, text: pickLocalizedMessage(remote.link.text, uiLocale) }
+    })
   };
 };
 

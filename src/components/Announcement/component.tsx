@@ -15,8 +15,19 @@ const AnnouncementComponent = ({ announcement, onDismiss }: Props) => (
     className={classnames(styles.announcement, {
       [styles.announcementWarning]: announcement.level === "warning"
     })}>
-    {/* Rendered as text, never HTML: the message comes from a remote file */}
-    <p className={styles.announcementMessage}>{announcement.message}</p>
+    {/* Rendered as text, never HTML: the message and link text come from a remote file */}
+    <div className={styles.announcementBody}>
+      <p className={styles.announcementMessage}>{announcement.message}</p>
+      {announcement.link && (
+        <a
+          href={announcement.link.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={styles.announcementLink}>
+          {announcement.link.text}
+        </a>
+      )}
+    </div>
     {announcement.dismissible && onDismiss && (
       <button
         type="button"

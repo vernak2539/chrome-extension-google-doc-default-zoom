@@ -230,10 +230,18 @@
   border-color: #c98a00;
 }
 
-.announcementMessage {
+.announcementBody {
   flex: 1;
+}
+
+.announcementMessage {
   margin: 0;
   white-space: pre-line;
+}
+
+.announcementLink {
+  display: inline-block;
+  margin-top: 6px;
 }
 
 .popupContainer .announcementDismiss {
