@@ -1,0 +1,154 @@
+{
+  "extensionName": {
+    "message": "التكبير الافتراضي لـ Google Workspace",
+    "description": "Name of the extension."
+  },
+  "extensionNameExtended": {
+    "message": "التكبير الافتراضي لـ Google Workspace (الموسع)",
+    "description": "Name of the extension with extra features requiring higher permissions"
+  },
+  "extensionDescription": {
+    "message": "قم بتعيين مستوى التكبير/التصغير الافتراضي لتطبيق Google Workspace عند تحميله لأول مرة.",
+    "description": "Description of extension"
+  },
+  "popupMainSectionDescription": {
+    "message": "حدد مستوى التكبير/التصغير الذي ترغب في أن تستخدمه تطبيقات Google Workspace عند تحميلها لأول مرة.",
+    "description": "Tells the user to select their zoom level for individual applications."
+  },
+  "popupApplicationsSectionTitle": {
+    "message": "التطبيقات",
+    "description": "Header for the 'Applications' section"
+  },
+  "popupApplicationZoomSelectAriaLabel": {
+    "message": "قيم التكبير/التصغير المتاحة",
+    "description": "Possible zoom values from which to select"
+  },
+  "popupApplicationCustomZoomInputPlaceholder": {
+    "message": "تكبير/تصغير مخصص",
+    "description": "Placeholder used in the custom zoom input box"
+  },
+  "popupDocsDropdownFitSelection": {
+    "message": "ملائم",
+    "description": "'Fit' value in the dropdown for Google Docs zoom"
+  },
+  "popupToExtensionVersionsTab": {
+    "message": "تعرف على الإصدارات المختلفة لهذا الملحق",
+    "description": "Link from popup to tab that details different versions of extension"
+  },
+  "popupViewOnlyDocsExperimentalLabel": {
+    "message": "تجريبي",
+    "description": "Label for view only docs experimental feature"
+  },
+  "popupViewOnlyDocsExperimentalContent": {
+    "message": "تفعيل لعرض المستندات فقط",
+    "description": "Content for view only docs experimental feature"
+  },
+  "popupClassroomSupportExperimentalLabel": {
+    "message": "تجريبي",
+    "description": "Label for classroom support experimental feature"
+  },
+  "popupClassroomSupportExperimentalContent": {
+    "message": "تفعيل لـ Google Classroom",
+    "description": "Content for classroom support experimental feature"
+  },
+  "popupSupportMeLabel": {
+    "message": "ادعموني",
+    "description": "Label for support me button"
+  },
+  "ExtVersionsTabHeader": {
+    "message": "إصدارات هذا الامتداد",
+    "description": "Header for tab page explaining different versions of the extension"
+  },
+  "ExtVersionsTabAppsSupportedHeader": {
+    "message": "تطبيقات Google Workspace المدعومة",
+    "description": "Header for supported Google Workspace Application section"
+  },
+  "ExtVersionsTabFunctionalityIncludedHeader": {
+    "message": "الوظائف المضمنة",
+    "description": "Header for what functionality is included in each extension"
+  },
+  "ExtVersionsTabFunctionalityIncludedStandardZoom": {
+    "message": "مستويات التكبير القياسية",
+    "description": "standard zoom level functionality"
+  },
+  "ExtVersionsTabFunctionalityIncludedCustomZoom": {
+    "message": "مستويات تكبير/تصغير مخصصة",
+    "description": "custom zoom level functionality"
+  },
+  "ExtVersionsTabFunctionalityRequiredPermissionsHeader": {
+    "message": "أذونات إضافة كروم المطلوبة:",
+    "description": "Header for what permissions are required for the extension"
+  },
+  "ExperimentalFeaturesTabHeader": {
+    "message": "الميزات التجريبية",
+    "description": "Header for tab page explaining experimental features"
+  },
+  "ExperimentalFeaturesTabDocsViewOnlyHeader": {
+    "message": "مستندات للعرض فقط",
+    "description": "Header for view only docs experimental feature"
+  },
+  "ExperimentalFeaturesTabDocsViewOnlyContent1": {
+    "message": "ستتيح هذه الميزة وظائف الإضافة لمستندات جوجل حيث لا يملك المستخدم سوى أذونات العرض.",
+    "description": "Content 1 for view only docs experimental feature"
+  },
+  "ExperimentalFeaturesTabDocsViewOnlyContent2": {
+    "message": "هذه الميزة تجريبية لأن الإضافة تعتمد على وجود عناصر معينة في الصفحة. إذا تمت إزالة هذه العناصر، فستتوقف الميزة عن العمل.",
+    "description": "Content 2 for view only docs experimental feature"
+  },
+  "ExperimentalFeaturesTabDocsViewOnlyContent3": {
+    "message": "يختلف هذا عن السلوك الافتراضي لأن جوجل تسمح بوجود \"رابط\" بين العناصر التي تتطلب النقر. بينما لا يوجد مثل هذا الرابط في شريط أدوات القائمة.",
+    "description": "Content 3 for view only docs experimental feature"
+  },
+  "ExperimentalFeaturesTabDocsViewOnlyContent4": {
+    "message": "يدعم هذا الملحق بالفعل أذونات العرض على جداول بيانات جوجل. وذلك لأن خيار التكبير/التصغير يظل ظاهرًا حتى عندما يكون المستخدم مجرد عارض.",
+    "description": "Content 4 for view only docs experimental feature"
+  },
+  "ExperimentalFeaturesTabClassroomSupportHeader": {
+    "message": "دعم جوجل كلاس روم",
+    "description": "Header for classroom support experimental feature"
+  },
+  "ExperimentalFeaturesTabClassroomSupportContent1": {
+    "message": "ستُمكّن هذه الميزة وظائف الإضافة لتطبيق Google Classroom.",
+    "description": "Content 1 for classroom support experimental feature"
+  },
+  "ExperimentalFeaturesTabClassroomSupportContent2": {
+    "message": "هذه الميزة تجريبية لأنها تعتمد على بنية صفحة Google Classroom وطريقة تحميل الواجبات فيها. حاليًا، يتم تحميل الواجبات باستخدام إطارات iframe، وإذا غيّرت Google هذه الطريقة، فقد تتوقف هذه الخاصية عن العمل.",
+    "description": "Content 2 for classroom support experimental feature"
+  },
+  "popupSettingsTitle": {
+    "message": "إعدادات الإضافة",
+    "description": "The title for the settings page"
+  },
+  "popupSettingsResetToFactoryTitle": {
+    "message": "إعادة ضبط المصنع",
+    "description": "Title for functionality that resets to factory defaults (i.e. removes all values from storage)"
+  },
+  "popupSettingsResetToFactoryDescription": {
+    "message": "أحيانًا تحدث بعض المشاكل. إذا استنفدت جميع الخيارات الأخرى ولم ينجح أي شيء، يمكنك النقر على الزر أدناه لإعادة ضبط هذا الامتداد إلى حالته الأصلية عند تثبيته لأول مرة.",
+    "description": "Description for what happens when you execute the reset to factory functionality"
+  },
+  "popupSettingsResetToFactoryAction": {
+    "message": "إعادة ضبط إعدادات التكبير/التصغير إلى الوضع الافتراضي",
+    "description": "Text for button that executes reset to factory functionality"
+  },
+  "popupSettingsExit": {
+    "message": "إعدادات الخروج",
+    "description": "Button text allowing user to exit settings and return to main part of extension"
+  },
+  "popupSettingsStorageVersion": {
+    "message": "إصدار التخزين v{schemaVersion}",
+    "description": "Text in settings footer denoting current storage schema version"
+  },
+  "popupNavHome": {
+    "message": "بيت",
+    "description": "Label for the Home navigation tab"
+  },
+  "popupNavSettings": {
+    "message": "إعدادات",
+    "description": "Label for the Settings navigation tab"
+  },
+  "popupAnnouncementDismissLabel": {
+    "message": "تجاهل الرسالة",
+    "description": "Accessible label for the button that dismisses the announcement message shown at the top of the popup"
+  }
+}

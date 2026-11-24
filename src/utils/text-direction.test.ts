@@ -9,7 +9,7 @@ import { getTextDirection, RTL_LANGUAGES } from "./text-direction";
 
 const LOCALES_DIR = fileURLToPath(new URL("../../public/_locales", import.meta.url));
 
-// A list of RTL languages to exercise the RTL branch with, since the shipped list is empty until a locale ships
+// A fixed list of RTL languages to exercise the RTL branch with, independent of which locales ship
 const RTL = { ar: true, he: true } as const;
 
 describe("getTextDirection", () => {
