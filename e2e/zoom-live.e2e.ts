@@ -1,4 +1,4 @@
-import type { Page } from "playwright";
+import type { Page, Worker } from "playwright";
 import { describe, expect, test } from "vitest";
 
 import {
@@ -13,7 +13,13 @@ import {
   waitForDismissals,
   withExtension
 } from "./harness";
-import { LIVE_DOC_URL, LIVE_PAGE_SELECTORS, LIVE_SHEET_URL } from "./targets";
+import {
+  LIVE_DOC_URL,
+  LIVE_PAGE_SELECTORS,
+  LIVE_SHEET_URL,
+  LIVE_VIEW_ONLY_DOC_URL,
+  LOCALE_CODES
+} from "./targets";
 
 const edition = getEdition();
 const PAGE_TIMEOUT_MS = 30_000;
@@ -59,6 +65,35 @@ const waitForZoomClick = async (page: Page, zoomValue: string) => {
       cause: error
     });
   }
+};
+
+// Waits for a click on the Fit row. In View > Zoom the row's text goes on with its shortcut ("Fit⌘+Option+[").
+const waitForFitClick = async (page: Page, fitLabel: string) => {
+  try {
+    await expect
+      .poll(async () => (await readRecorded(page)).clicks.at(-1) ?? "", {
+        timeout: PAGE_TIMEOUT_MS
+      })
+      .toMatch(new RegExp(`^${RegExp.escape(fitLabel)}`));
+  } catch (error) {
+    const pageLanguage = await page.evaluate(() => document.documentElement.lang);
+    throw new Error(
+      `no click on the "${fitLabel}" row (the page is in "${pageLanguage}"); ${await describeFoundSelectors(page)}`,
+      { cause: error }
+    );
+  }
+};
+
+// The Fit label the extension uses, as the popup would save it. Fails when the browser did not start in `language`,
+// because the test would then check the English label.
+const readExtensionFitLabel = async (serviceWorker: Worker, language: string) => {
+  const { uiLanguage, fitLabel } = await serviceWorker.evaluate(() => ({
+    uiLanguage: chrome.i18n.getUILanguage(),
+    fitLabel: chrome.i18n.getMessage("popupDocsDropdownFitSelection")
+  }));
+  expect(uiLanguage, `Chromium did not start in ${language}`).toMatch(new RegExp(`^${language}`));
+
+  return fitLabel;
 };
 
 // The zoom dropdown is closed once no visible menu still lists the zoom value as a row
@@ -271,3 +306,60 @@ describe(`zoom flow on the live Docs and Sheets pages (${edition} edition)`, () 
       })
   );
 });
+
+// Fit is the one zoom value the extension finds by its text, which Docs translates (#172), so it is checked in every
+// language the extension ships. The extension takes the label from its own locale, and Docs serves the browser's
+// language. Only Chromium on Linux takes its UI language from LANGUAGE (macOS ignores it), so these run in CI or a
+// Linux container.
+describe.runIf(process.platform === "linux")(
+  `Fit on the live Docs pages in each language (${edition} edition)`,
+  () => {
+    // The toolbar flow differs by edition: Extended types a value that is not in its zoom list
+    test.each(LOCALE_CODES)("Docs applies Fit in %s", (language) =>
+      withExtension(
+        `live-docs-fit-${language}`,
+        async ({ context, serviceWorker }) => {
+          const fitLabel = await readExtensionFitLabel(serviceWorker, language);
+          await setAppState(serviceWorker, "docs", {
+            zoomValue: fitLabel,
+            viewOnly: false,
+            classroomSupport: false
+          });
+          await installRecorder(context);
+          const page = await context.newPage();
+          await page.goto(LIVE_DOC_URL);
+
+          await waitForChrome(page);
+          await waitForFitClick(page, fitLabel);
+          await expectZoomMenuClosed(page, fitLabel);
+          expect((await readRecorded(page)).enters).toEqual([]);
+        },
+        { language }
+      )
+    );
+
+    // View > Zoom is the same in both editions, so Base checks it once
+    test.skipIf(edition === "extended").each(LOCALE_CODES)(
+      "view-only Docs applies Fit in %s",
+      (language) =>
+        withExtension(
+          `live-docs-view-only-fit-${language}`,
+          async ({ context, serviceWorker }) => {
+            const fitLabel = await readExtensionFitLabel(serviceWorker, language);
+            await setAppState(serviceWorker, "docs", {
+              zoomValue: fitLabel,
+              viewOnly: true,
+              classroomSupport: false
+            });
+            await installRecorder(context);
+            const page = await context.newPage();
+            await page.goto(LIVE_VIEW_ONLY_DOC_URL);
+
+            await waitForChrome(page);
+            await waitForFitClick(page, fitLabel);
+          },
+          { language }
+        )
+    );
+  }
+);

@@ -121,7 +121,8 @@ export const launchExtension = async (userDataDir: string, { language }: LaunchO
       `--load-extension=${buildDir}`,
       `--lang=${language ?? "en-US"}`
     ],
-    ...(language && { env: { ...process.env, LANGUAGE: language } })
+    // `locale` sets Accept-Language, which a signed-out Docs takes its language from
+    ...(language && { env: { ...process.env, LANGUAGE: language }, locale: language })
   });
 
   await context.route(/^https?:\/\/[^/]*sentry\.io\//, (route) => route.abort());
@@ -369,8 +370,10 @@ const saveScreenshot = async (page: Page | undefined, testName: string) => {
   }
 
   await mkdir(path.join(RESULTS_DIR, "screenshots"), { recursive: true });
-  // Both editions run the same test names into the same directory
-  const fileName = `${getEdition()}-${testName.replace(/[^a-z0-9]+/gi, "-")}.png`;
+  // Both editions run the same test names into the same directory. The capture loads no extension and runs once,
+  // without an edition (getEdition would throw there and hide the capture's own error).
+  const prefix = process.env.E2E_EDITION ? `${getEdition()}-` : "";
+  const fileName = `${prefix}${testName.replace(/[^a-z0-9]+/gi, "-")}.png`;
   await page
     .screenshot({ path: path.join(RESULTS_DIR, "screenshots", fileName) })
     .catch(() => undefined);
@@ -382,8 +385,9 @@ export interface ExtensionSession {
 }
 
 export interface LaunchOptions {
-  // Browser UI language, e.g. "fa". Chromium on Linux takes it from LANGUAGE: `--lang` alone leaves
-  // chrome.i18n.getUILanguage() at the system language. macOS ignores both.
+  // Browser UI language, e.g. "fa", for the extension's strings and for the language Docs serves. Chromium on Linux
+  // takes it from LANGUAGE: `--lang` alone leaves chrome.i18n.getUILanguage() at the system language. macOS ignores
+  // both, so only the pages follow it there.
   language?: string;
 }
 
@@ -411,12 +415,17 @@ export const withExtension = async (
   }
 };
 
-// A plain browser without the extension, for capturing pages
-export const withPublicPage = async (testName: string, run: (page: Page) => Promise<void>) => {
+// A plain browser without the extension, for capturing pages. Signed out, Docs takes its language from the
+// browser's (Accept-Language), so `locale` picks the language Docs shows on every platform.
+export const withPublicPage = async (
+  testName: string,
+  run: (page: Page) => Promise<void>,
+  { locale = "en-US" }: { locale?: string } = {}
+) => {
   const browser = await chromium.launch({ channel: "chromium", headless: true });
 
   try {
-    const context = await browser.newContext({ locale: "en-US" });
+    const context = await browser.newContext({ locale });
     const page = await context.newPage();
 
     try {

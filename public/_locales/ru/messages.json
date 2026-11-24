@@ -28,7 +28,7 @@
     "description": "Подсказка в поле ввода пользовательского уровня масштаба"
   },
   "popupDocsDropdownFitSelection": {
-    "message": "Подогнать",
+    "message": "По ширине страницы",
     "description": "Значение 'Подогнать' в раскрывающемся списке для масштабирования Google Документов"
   },
   "popupToExtensionVersionsTab": {
@@ -138,5 +138,17 @@
   "popupAnnouncementDismissLabel": {
     "message": "Закрыть сообщение",
     "description": "Accessible label for the button that dismisses the announcement message shown at the top of the popup"
+  },
+  "popupSettingsStorageVersion": {
+    "message": "Хранилище v{schemaVersion}",
+    "description": "Text in settings footer denoting current storage schema version"
+  },
+  "popupNavHome": {
+    "message": "Главная",
+    "description": "Label for the Home navigation tab"
+  },
+  "popupNavSettings": {
+    "message": "Настройки",
+    "description": "Label for the Settings navigation tab"
   }
 }

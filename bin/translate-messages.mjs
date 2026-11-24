@@ -14,6 +14,11 @@ const __dirname = dirname(__filename);
 
 const translate = new Translate();
 
+// Both zoom flows find Docs' Fit row by this message, so it must be the text Docs shows, not a translation of "Fit".
+// `pnpm e2e:capture` records that text from live Docs in each language.
+const FIT_KEY = "popupDocsDropdownFitSelection";
+const FIT_LABELS_FILE = path.resolve(__dirname, "../e2e/fixtures/docs-fit-labels.json");
+
 // Configure yargs for argument parsing
 const argv = yargs(hideBin(process.argv))
   .option("key", {
@@ -38,6 +43,19 @@ async function main() {
   const sourceMessages = JSON.parse(fs.readFileSync(sourceFile, "utf8"));
 
   console.log("🚀 Starting translation of extension messages...");
+  if (targetKey === FIT_KEY) {
+    console.error(
+      `Error: ${FIT_KEY} is never machine-translated. A missing one is copied from ` +
+        "e2e/fixtures/docs-fit-labels.json, which `pnpm e2e:capture` records from live Docs."
+    );
+    process.exit(1);
+  }
+
+  const fitLabels = fs.existsSync(FIT_LABELS_FILE)
+    ? JSON.parse(fs.readFileSync(FIT_LABELS_FILE, "utf8"))
+    : {};
+  const missingFitLabels = [];
+
   if (targetKey) {
     console.log(`🎯 Targeted key: ${targetKey}`);
     if (!sourceMessages[targetKey]) {
@@ -67,18 +85,37 @@ async function main() {
       keysToTranslate.push(targetKey);
     } else {
       for (const key of Object.keys(sourceMessages)) {
-        if (!targetMessages[key]) {
+        if (!targetMessages[key] && key !== FIT_KEY) {
           keysToTranslate.push(key);
         }
       }
     }
 
-    if (keysToTranslate.length === 0) {
+    // A Fit label that exists is never replaced, so a run can't change the Fit value users have saved (#106)
+    let addedFitLabel = false;
+    if (!targetMessages[FIT_KEY]) {
+      if (fitLabels[lang.code]) {
+        targetMessages[FIT_KEY] = {
+          message: fitLabels[lang.code],
+          description: sourceMessages[FIT_KEY].description
+        };
+        addedFitLabel = true;
+        console.log(`   - [${FIT_KEY}] copied from e2e/fixtures/docs-fit-labels.json.`);
+      } else {
+        missingFitLabels.push(lang.code);
+      }
+    }
+
+    if (keysToTranslate.length === 0 && !addedFitLabel) {
       console.log(`✅ ${lang.name} (${lang.code}) is up to date.`);
       continue;
     }
 
-    console.log(`🔄 Translating ${keysToTranslate.length} keys to ${lang.name} (${lang.code})...`);
+    if (keysToTranslate.length > 0) {
+      console.log(
+        `🔄 Translating ${keysToTranslate.length} keys to ${lang.name} (${lang.code})...`
+      );
+    }
 
     for (const key of keysToTranslate) {
       const sourceEntry = sourceMessages[key];
@@ -98,6 +135,14 @@ async function main() {
     fs.writeFileSync(targetFilePath, JSON.stringify(targetMessages, null, 2), "utf8");
     console.log(`✅ Successfully updated ${lang.code}/messages.json`);
     console.log("");
+  }
+
+  if (missingFitLabels.length > 0) {
+    console.warn(
+      `⚠️  No Docs Fit label recorded for ${missingFitLabels.join(", ")}, so ${FIT_KEY} was left out. ` +
+        "Run `pnpm e2e:capture`, then run this script again."
+    );
+    process.exitCode = 1;
   }
 
   console.log("🎉 All translations completed!");

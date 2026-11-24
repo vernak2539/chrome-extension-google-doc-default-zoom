@@ -41,6 +41,17 @@ pnpm test:e2e:live --project base     # one edition
 
 Set `E2E_LIVE_DOC_URL` and `E2E_LIVE_SHEET_URL` to use other public documents. If a page is blocked or has no zoom control, the failure message says where the page went (a Google sign-in page means the document is not shared publicly) and lists the selectors that were found (`#docs-chrome`, `#zoomSelect`, `#t-zoom`, `#docs-view-menu`, ...).
 
+Fit is the one zoom value the extension finds by its text, which Docs translates. So the live tests also save Fit in every language the extension ships (`en` and `bin/translate-config.mjs`), with the browser in that language, and check that the extension clicks Docs' Fit row:
+
+- on the editable Doc (the toolbar flow), in both editions;
+- on the view-only Doc (`E2E_LIVE_VIEW_ONLY_DOC_URL`, View > Zoom), in Base only, because that flow is the same in both editions.
+
+They run only on Linux, where Chromium takes its UI language from `LANGUAGE` (macOS ignores it), so they run in the `E2E live` workflow. On a Mac, run them in a Linux container:
+
+```bash
+pnpm test:e2e:live -t "Fit"
+```
+
 ## Firefox
 
 `sanity-check.yml` installs Mozilla's Firefox stable with `@puppeteer/browsers` and runs `pnpm test:e2e:firefox` against `build/firefox-mv2-base`. `e2e-live.yml` does the same and runs `pnpm test:e2e:live:firefox`. Firefox ships only the Base edition, so there is no Extended run.
@@ -74,6 +85,7 @@ The fixtures that ship with this change are **synthetic**: written from the sele
 
 1. `pnpm exec playwright install --with-deps chromium` (once).
 2. `pnpm e2e:capture`. This opens the public Doc and Sheet signed out, waits for the zoom control to be enabled, opens the zoom menu (View > Zoom for the view-only fixture), and saves the raw page to `e2e/results/raw/` (gitignored, never uploaded). It then sanitizes each page into `e2e/fixtures/<name>.html`.
+   It also opens View > Zoom on the view-only Doc once per shipped language (`en` and `bin/translate-config.mjs`), with the browser in that language, and records the text of the Fit row into `e2e/fixtures/docs-fit-labels.json`. Both zoom flows find that row by `popupDocsDropdownFitSelection`, so the message has to be this text ([localization.md](./localization.md#2-record-docs-fit-label)). A language fails when Docs now shows another label than the file has. The file is updated anyway, so review it and correct the message.
 3. Review `git diff e2e/fixtures`. Look for anything that is not UI markup.
 4. `pnpm exec vitest run e2e/fixture-sanitize.test.ts` (checks that each fixture has what the extension needs and no leaks).
 5. Commit `e2e/fixtures/`.

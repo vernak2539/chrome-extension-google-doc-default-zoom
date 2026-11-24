@@ -28,7 +28,7 @@
     "description": "Placeholder used in the custom zoom input box"
   },
   "popupDocsDropdownFitSelection": {
-    "message": "フィット",
+    "message": "合わせる",
     "description": "Google ドキュメントのズームのドロップダウンリストにある「フィット」の値"
   },
   "popupToExtensionVersionsTab": {
@@ -138,5 +138,17 @@
   "popupAnnouncementDismissLabel": {
     "message": "メッセージを閉じる",
     "description": "Accessible label for the button that dismisses the announcement message shown at the top of the popup"
+  },
+  "popupSettingsStorageVersion": {
+    "message": "ストレージ v{schemaVersion}",
+    "description": "Text in settings footer denoting current storage schema version"
+  },
+  "popupNavHome": {
+    "message": "ホーム",
+    "description": "Label for the Home navigation tab"
+  },
+  "popupNavSettings": {
+    "message": "設定",
+    "description": "Label for the Settings navigation tab"
   }
 }

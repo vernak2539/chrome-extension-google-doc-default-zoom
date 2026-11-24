@@ -1,0 +1,154 @@
+{
+  "extensionName": {
+    "message": "זום ברירת מחדל עבור Google Workspace",
+    "description": "Name of the extension."
+  },
+  "extensionNameExtended": {
+    "message": "זום ברירת מחדל עבור Google Workspace (מורחב)",
+    "description": "Name of the extension with extra features requiring higher permissions"
+  },
+  "extensionDescription": {
+    "message": "הגדר את זווית התצוגה המוגדרת כברירת מחדל של אפליקציית Google Workspace שלך בעת טעינתה הראשונה.",
+    "description": "Description of extension"
+  },
+  "popupMainSectionDescription": {
+    "message": "בחר את רמת הזום שבה תרצה שיישומי Google Workspace שלך ישתמשו בעת הטעינה הראשונה שלהם.",
+    "description": "Tells the user to select their zoom level for individual applications."
+  },
+  "popupApplicationsSectionTitle": {
+    "message": "יישומים",
+    "description": "Header for the 'Applications' section"
+  },
+  "popupApplicationZoomSelectAriaLabel": {
+    "message": "ערכי זום זמינים",
+    "description": "Possible zoom values from which to select"
+  },
+  "popupApplicationCustomZoomInputPlaceholder": {
+    "message": "זום מותאם אישית",
+    "description": "Placeholder used in the custom zoom input box"
+  },
+  "popupDocsDropdownFitSelection": {
+    "message": "התאמה",
+    "description": "'Fit' value in the dropdown for Google Docs zoom"
+  },
+  "popupToExtensionVersionsTab": {
+    "message": "למד על הגרסאות השונות של תוסף זה",
+    "description": "Link from popup to tab that details different versions of extension"
+  },
+  "popupViewOnlyDocsExperimentalLabel": {
+    "message": "ניסיוני",
+    "description": "Label for view only docs experimental feature"
+  },
+  "popupViewOnlyDocsExperimentalContent": {
+    "message": "הפעל עבור מסמכים לצפייה בלבד",
+    "description": "Content for view only docs experimental feature"
+  },
+  "popupClassroomSupportExperimentalLabel": {
+    "message": "ניסיוני",
+    "description": "Label for classroom support experimental feature"
+  },
+  "popupClassroomSupportExperimentalContent": {
+    "message": "הפעל עבור Google Classroom",
+    "description": "Content for classroom support experimental feature"
+  },
+  "popupSupportMeLabel": {
+    "message": "תמכו בי",
+    "description": "Label for support me button"
+  },
+  "ExtVersionsTabHeader": {
+    "message": "גרסאות של הרחבה זו",
+    "description": "Header for tab page explaining different versions of the extension"
+  },
+  "ExtVersionsTabAppsSupportedHeader": {
+    "message": "אפליקציות Google Workspace נתמכות",
+    "description": "Header for supported Google Workspace Application section"
+  },
+  "ExtVersionsTabFunctionalityIncludedHeader": {
+    "message": "פונקציונליות כלולה",
+    "description": "Header for what functionality is included in each extension"
+  },
+  "ExtVersionsTabFunctionalityIncludedStandardZoom": {
+    "message": "רמות זום סטנדרטיות",
+    "description": "standard zoom level functionality"
+  },
+  "ExtVersionsTabFunctionalityIncludedCustomZoom": {
+    "message": "רמות זום מותאמות אישית",
+    "description": "custom zoom level functionality"
+  },
+  "ExtVersionsTabFunctionalityRequiredPermissionsHeader": {
+    "message": "הרשאות נדרשות לתוסף Chrome:",
+    "description": "Header for what permissions are required for the extension"
+  },
+  "ExperimentalFeaturesTabHeader": {
+    "message": "תכונות ניסיוניות",
+    "description": "Header for tab page explaining experimental features"
+  },
+  "ExperimentalFeaturesTabDocsViewOnlyHeader": {
+    "message": "מסמכים לצפייה בלבד",
+    "description": "Header for view only docs experimental feature"
+  },
+  "ExperimentalFeaturesTabDocsViewOnlyContent1": {
+    "message": "תכונה זו תאפשר את הפונקציונליות של התוסף עבור Google Docs שבהם למשתמש יש הרשאות צפייה בלבד.",
+    "description": "Content 1 for view only docs experimental feature"
+  },
+  "ExperimentalFeaturesTabDocsViewOnlyContent2": {
+    "message": "תכונה זו היא ניסיונית מכיוון שהתוסף מסתמך על הימצאות אלמנטים מסוימים בדף. אם הם יוסרו, היא תפסיק לתפקד.",
+    "description": "Content 2 for view only docs experimental feature"
+  },
+  "ExperimentalFeaturesTabDocsViewOnlyContent3": {
+    "message": "זה שונה מההתנהגות המוגדרת כברירת מחדל מכיוון שגוגל מאפשרת \"קישור\" בין אלמנטים שיש ללחוץ עליהם. בעוד שבסרגל הכלים של התפריט, אין קישור כזה.",
+    "description": "Content 3 for view only docs experimental feature"
+  },
+  "ExperimentalFeaturesTabDocsViewOnlyContent4": {
+    "message": "תוסף זה כבר תומך בהרשאות צפייה ב-Google Sheets. הסיבה לכך היא שקלט הזום עדיין מוצג גם כאשר משתמש הוא רק צופה.",
+    "description": "Content 4 for view only docs experimental feature"
+  },
+  "ExperimentalFeaturesTabClassroomSupportHeader": {
+    "message": "תמיכה בגוגל לכיתה",
+    "description": "Header for classroom support experimental feature"
+  },
+  "ExperimentalFeaturesTabClassroomSupportContent1": {
+    "message": "תכונה זו תאפשר את הפונקציונליות של התוסף עבור אפליקציית Google Classroom.",
+    "description": "Content 1 for classroom support experimental feature"
+  },
+  "ExperimentalFeaturesTabClassroomSupportContent2": {
+    "message": "תכונה זו היא ניסיונית מכיוון שהיא תלויה במבנה הדף של Google Classroom ובשיטת טעינת המטלות שלו. נכון לעכשיו, המטלות נטענות באמצעות iframes, ואם גוגל תשנה גישה זו, הפונקציונליות עשויה להפסיק לפעול.",
+    "description": "Content 2 for classroom support experimental feature"
+  },
+  "popupSettingsTitle": {
+    "message": "הגדרות התוסף",
+    "description": "The title for the settings page"
+  },
+  "popupSettingsResetToFactoryTitle": {
+    "message": "איפוס להגדרות היצרן",
+    "description": "Title for functionality that resets to factory defaults (i.e. removes all values from storage)"
+  },
+  "popupSettingsResetToFactoryDescription": {
+    "message": "לפעמים דברים משתבשים. אם מיציתם את כל האפשרויות האחרות ונראה ששום דבר לא עובד, תוכלו ללחוץ על הכפתור למטה כדי לאפס את התוסף למצבו המקורי בעת התקנתו לראשונה.",
+    "description": "Description for what happens when you execute the reset to factory functionality"
+  },
+  "popupSettingsResetToFactoryAction": {
+    "message": "איפוס הגדרות הזום לברירת המחדל",
+    "description": "Text for button that executes reset to factory functionality"
+  },
+  "popupSettingsExit": {
+    "message": "יציאה מהגדרות",
+    "description": "Button text allowing user to exit settings and return to main part of extension"
+  },
+  "popupSettingsStorageVersion": {
+    "message": "אחסון v{schemaVersion}",
+    "description": "Text in settings footer denoting current storage schema version"
+  },
+  "popupNavHome": {
+    "message": "דף הבית",
+    "description": "Label for the Home navigation tab"
+  },
+  "popupNavSettings": {
+    "message": "הגדרות",
+    "description": "Label for the Settings navigation tab"
+  },
+  "popupAnnouncementDismissLabel": {
+    "message": "סגור הודעה",
+    "description": "Accessible label for the button that dismisses the announcement message shown at the top of the popup"
+  }
+}

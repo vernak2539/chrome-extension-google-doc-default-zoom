@@ -28,7 +28,7 @@
     "description": "Placeholder used in the custom zoom input box"
   },
   "popupDocsDropdownFitSelection": {
-    "message": "Ajuster",
+    "message": "Ajuster à la fenêtre",
     "description": "Valeur 'Ajuster' dans le menu déroulant pour le zoom de Google Docs"
   },
   "popupToExtensionVersionsTab": {
@@ -138,5 +138,17 @@
   "popupAnnouncementDismissLabel": {
     "message": "Fermer le message",
     "description": "Accessible label for the button that dismisses the announcement message shown at the top of the popup"
+  },
+  "popupSettingsStorageVersion": {
+    "message": "Stockage v{schemaVersion}",
+    "description": "Text in settings footer denoting current storage schema version"
+  },
+  "popupNavHome": {
+    "message": "Accueil",
+    "description": "Label for the Home navigation tab"
+  },
+  "popupNavSettings": {
+    "message": "Paramètres",
+    "description": "Label for the Settings navigation tab"
   }
 }
