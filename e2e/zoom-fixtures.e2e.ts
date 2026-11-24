@@ -1,4 +1,5 @@
 /// <reference types="node" />
+import type { Page } from "playwright";
 import { describe, expect, test } from "vitest";
 
 import {
@@ -7,10 +8,12 @@ import {
   FIXTURE_DOC_URL,
   FIXTURE_SHEET_URL,
   getEdition,
+  hasFocus,
   insertFixture,
   installRecorder,
   installStorageRecorder,
   openPopup,
+  openUnfocusedPage,
   popupZoomSelect,
   readRecorded,
   readStorageWrites,
@@ -33,6 +36,23 @@ const openPage = async ({ context }: ExtensionSession, url: string) => {
   await page.goto(url);
   return page;
 };
+
+// A background tab: see openUnfocusedPage
+const openPageWithoutFocus = async ({ context }: ExtensionSession, url: string) => {
+  await installRecorder(context);
+  await serveFixture(context);
+  return openUnfocusedPage(context, url);
+};
+
+// The fixtures leave out the element that takes the document's keys (in Docs an iframe), so a test that checks where
+// focus goes adds a focused stand-in before the fixture
+const focusStandInEditor = (page: Page) =>
+  page.evaluate(() => {
+    const editor = document.createElement("textarea");
+    editor.id = "e2e-editor";
+    document.body.append(editor);
+    editor.focus();
+  });
 
 const state = (zoomValue: string, viewOnly = false): AppState => ({
   zoomValue,
@@ -80,6 +100,7 @@ describe(`zoom flow against saved Docs and Sheets markup (${edition} edition)`, 
       await setAppState(session.serviceWorker, "docs", state("140%"));
       const page = await openPage(session, FIXTURE_DOC_URL);
 
+      await focusStandInEditor(page);
       await insertFixture(page, "docs-editor");
       await waitForEnters(page, 1);
 
@@ -87,12 +108,40 @@ describe(`zoom flow against saved Docs and Sheets markup (${edition} edition)`, 
       expect(recorded.enters).toEqual(["140%"]);
       expect(recorded.clicks).toEqual([]);
       expect(await page.inputValue("#zoomSelect input")).toBe("140%");
-      // the dropdown closes by blurring the zoom box, so focus has left it
-      await expect
-        .poll(() => page.evaluate(() => !!document.activeElement?.closest("#zoomSelect")))
-        .toBe(false);
+      // focus goes back to the document, so typing doesn't land in the zoom box
+      await expect.poll(() => page.evaluate(() => document.activeElement?.id)).toBe("e2e-editor");
     })
   );
+
+  test.skipIf(edition === "base")("Docs types a custom zoom only once the page has focus", () =>
+    withExtension("docs-custom-unfocused", async (session) => {
+      await setAppState(session.serviceWorker, "docs", state("140%"));
+      const page = await openPageWithoutFocus(session, FIXTURE_DOC_URL);
+
+      await insertFixture(page, "docs-editor");
+      await page.waitForTimeout(2000);
+      expect(await readRecorded(page)).toMatchObject({ controlClicks: [], enters: [] });
+      expect(await hasFocus(page)).toBe(false);
+
+      await page.bringToFront();
+      await waitForEnters(page, 1);
+
+      expect((await readRecorded(page)).enters).toEqual(["140%"]);
+    })
+  );
+
+  // Picking a row works without focus, so a preset does not wait
+  test("Docs applies a preset zoom in a page without focus", () =>
+    withExtension("docs-preset-unfocused", async (session) => {
+      await setAppState(session.serviceWorker, "docs", state("150%"));
+      const page = await openPageWithoutFocus(session, FIXTURE_DOC_URL);
+
+      await insertFixture(page, "docs-editor");
+      await waitForClicks(page, 1);
+
+      expect((await readRecorded(page)).clicks).toEqual(["150%"]);
+      expect(await hasFocus(page)).toBe(false);
+    }));
 
   test.skipIf(edition === "extended")(
     "Docs opens the zoom menu for a custom zoom but selects no row and types nothing",

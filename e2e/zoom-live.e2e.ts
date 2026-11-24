@@ -5,7 +5,9 @@ import {
   describeLocation,
   findSelectors,
   getEdition,
+  hasFocus,
   installRecorder,
+  openUnfocusedPage,
   readRecorded,
   setAppState,
   waitForDismissals,
@@ -15,6 +17,15 @@ import { LIVE_DOC_URL, LIVE_PAGE_SELECTORS, LIVE_SHEET_URL } from "./targets";
 
 const edition = getEdition();
 const PAGE_TIMEOUT_MS = 30_000;
+
+type LiveApp = "docs" | "sheets";
+
+// Where each app takes the document's keys: Docs in a hidden iframe, Sheets in the cell editor. Inside the Docs iframe
+// the focused element varies even without the extension: selecting a background tab moves it to the iframe's body.
+const DOCUMENT_FOCUS_SELECTOR: Record<LiveApp, string> = {
+  docs: ".docs-texteventtarget-iframe",
+  sheets: "#waffle-rich-text-editor"
+};
 
 const describeFoundSelectors = async (page: Page) =>
   `${describeLocation(page)}; selectors found on the page: ${(await findSelectors(page, LIVE_PAGE_SELECTORS)).join(", ") || "none"}`;
@@ -79,17 +90,39 @@ const expectZoomBoxValue = async (page: Page, selector: string, zoomValue: strin
   }
 };
 
+// Google leaves focus in the zoom box after a zoom, so the flow puts it back where the document takes its keys
+const expectDocumentFocused = async (page: Page, app: LiveApp) => {
+  await expect
+    .poll(
+      () =>
+        page.evaluate(
+          (selector) => !!document.activeElement?.matches(selector),
+          DOCUMENT_FOCUS_SELECTOR[app]
+        ),
+      { timeout: PAGE_TIMEOUT_MS }
+    )
+    .toBe(true);
+};
+
+// The control is enabled once the page has loaded: from then on the content script acts, or waits
+const waitForZoomControl = async (page: Page, selector: string) => {
+  await page.waitForSelector(`${selector}:not(.goog-toolbar-combo-button-disabled)`, {
+    timeout: PAGE_TIMEOUT_MS
+  });
+};
+
 // The content script sets the zoom box value before pressing Enter, so the value alone proves nothing. Once focus
-// leaves the box, Docs and Sheets show the zoom they applied and drop a value they ignored (#110).
-const expectAppliedCustomZoom = async (page: Page, inputSelector: string, zoomValue: string) => {
+// leaves the box, Docs and Sheets show the zoom they applied and drop a value they ignored (#110). The flow moves
+// focus back to the document, which takes it out of the box.
+const expectAppliedCustomZoom = async (page: Page, app: LiveApp, zoomValue: string) => {
   await expect
     .poll(async () => (await readRecorded(page)).enters.at(-1) ?? "", { timeout: PAGE_TIMEOUT_MS })
     .toBe(zoomValue);
-  // closeDropdown runs after 500 ms; Sheets keeps focus in the box, so blur explicitly
-  await page.waitForTimeout(2_000);
-  await page.evaluate(() => (document.activeElement as HTMLElement | null)?.blur());
+  await expectDocumentFocused(page, app);
   await page.waitForTimeout(500);
-  expect(await page.inputValue(inputSelector)).toBe(zoomValue);
+  expect(await page.inputValue(app === "docs" ? "#zoomSelect input" : "#t-zoom input")).toBe(
+    zoomValue
+  );
 };
 
 // These open the maintainer's public documents signed out. Nothing here signs in to Google.
@@ -110,6 +143,31 @@ describe(`zoom flow on the live Docs and Sheets pages (${edition} edition)`, () 
       await waitForZoomClick(page, "150%");
       await expectZoomBoxValue(page, "#zoomSelect input", "150%");
       await expectZoomMenuClosed(page, "150%");
+      // only the toolbar flow uses the zoom box; the view-only flow has no document to type in
+      if (await page.$("#zoomSelect input")) {
+        await expectDocumentFocused(page, "docs");
+      }
+    }));
+
+  // Picking a row works without focus, which is why a preset doesn't wait for it
+  test("Docs applies 150% in a background tab", () =>
+    withExtension("live-docs-unfocused", async ({ context, serviceWorker }) => {
+      await setAppState(serviceWorker, "docs", {
+        zoomValue: "150%",
+        viewOnly: false,
+        classroomSupport: false
+      });
+      await installRecorder(context);
+      const page = await openUnfocusedPage(context, LIVE_DOC_URL);
+
+      await waitForChrome(page);
+      await waitForZoomClick(page, "150%");
+      await expectZoomBoxValue(page, "#zoomSelect input", "150%");
+      expect(await hasFocus(page)).toBe(false);
+
+      // selecting the tab gives the document its keys (Docs does this itself; the flow must not undo it)
+      await page.bringToFront();
+      await expectDocumentFocused(page, "docs");
     }));
 
   test("Sheets applies 125%", () =>
@@ -127,6 +185,7 @@ describe(`zoom flow on the live Docs and Sheets pages (${edition} edition)`, () 
       await waitForZoomClick(page, "125%");
       await expectZoomBoxValue(page, "#t-zoom input", "125%");
       await expectZoomMenuClosed(page, "125%");
+      await expectDocumentFocused(page, "sheets");
     }));
 
   test.skipIf(edition === "base")("Docs applies a custom 137% zoom", () =>
@@ -141,7 +200,7 @@ describe(`zoom flow on the live Docs and Sheets pages (${edition} edition)`, () 
       await page.goto(LIVE_DOC_URL);
 
       await waitForChrome(page);
-      await expectAppliedCustomZoom(page, "#zoomSelect input", "137%");
+      await expectAppliedCustomZoom(page, "docs", "137%");
     })
   );
 
@@ -157,9 +216,38 @@ describe(`zoom flow on the live Docs and Sheets pages (${edition} edition)`, () 
       await page.goto(LIVE_SHEET_URL);
 
       await waitForChrome(page);
-      await expectAppliedCustomZoom(page, "#t-zoom input", "137%");
+      await expectAppliedCustomZoom(page, "sheets", "137%");
     })
   );
+
+  // #77: in a background tab Google ignores a typed zoom, so the flow waits until the tab is selected
+  for (const app of ["docs", "sheets"] as const) {
+    test.skipIf(edition === "base")(
+      `${app === "docs" ? "Docs" : "Sheets"} types a custom 137% zoom once a background tab is selected`,
+      () =>
+        withExtension(`live-${app}-custom-unfocused`, async ({ context, serviceWorker }) => {
+          await setAppState(serviceWorker, app, {
+            zoomValue: "137%",
+            viewOnly: false,
+            classroomSupport: false
+          });
+          await installRecorder(context);
+          const page = await openUnfocusedPage(
+            context,
+            app === "docs" ? LIVE_DOC_URL : LIVE_SHEET_URL
+          );
+
+          await waitForChrome(page);
+          await waitForZoomControl(page, app === "docs" ? "#zoomSelect" : "#t-zoom");
+          await page.waitForTimeout(3_000);
+          expect((await readRecorded(page)).enters).toEqual([]);
+          expect(await hasFocus(page)).toBe(false);
+
+          await page.bringToFront();
+          await expectAppliedCustomZoom(page, app, "137%");
+        })
+    );
+  }
 
   // No row is clicked here, so only the outside press can close the menu the flow opened. Base cannot
   // type a custom value, so it opens the menu, finds no "140%" row and gives up.
@@ -179,6 +267,7 @@ describe(`zoom flow on the live Docs and Sheets pages (${edition} edition)`, () 
         await waitForChrome(page);
         await waitForDismissals(page, 1);
         await expectZoomMenuClosed(page, "125%");
+        await expectDocumentFocused(page, "sheets");
       })
   );
 });
