@@ -48,7 +48,7 @@ const createArea = (data: Record<string, unknown>) => {
 };
 
 export interface FakeChromeStorage {
-  /** What `chrome.storage.sync` holds: plain values, or JSON text left by the Plasmo versions */
+  /** What `chrome.storage.sync` holds: JSON text, which every released version writes, or plain values */
   data: Record<string, unknown>;
   /** Every `chrome.storage.sync.set` call, in order */
   setCalls: Record<string, unknown>[];

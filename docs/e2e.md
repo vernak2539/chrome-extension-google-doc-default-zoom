@@ -120,8 +120,8 @@ To check the popup side, make the `onChange` of the dropdown in `src/components/
 ## How it works
 
 - `e2e/harness.ts` launches Chromium with `launchPersistentContext` and the build loaded as an extension. It aborts requests to `*.sentry.io`, and in fixture mode it serves an empty page for `docs.google.com` and aborts every other `http(s)` request (it filters on the protocol, so the extension's own files still load).
-- Most tests write saved settings from the extension's service worker, to `chrome.storage.sync`, as the popup would. Values are plain (`schemaVersion: 2`), the format the current build writes.
-- One test seeds the format the Plasmo versions wrote (`JSON.stringify(state)` and `schemaVersion: "2"`) and checks that the new build migrates it and still applies the saved zoom. That is the upgrade path users get when they update.
+- Most tests write saved settings from the extension's service worker, to `chrome.storage.sync`, as the popup would: JSON text (`JSON.stringify(state)` and `schemaVersion: "2"`), the format the current build writes and the Plasmo versions wrote. See `docs/STORAGE_SCHEMA.md` for why.
+- One test seeds plain values (`schemaVersion: 2`), which builds wrote before settings went back to JSON text, and checks that the extension still applies the saved zoom.
 - The popup test saves them through the popup instead. It opens `popup.html` as a tab, picks a zoom in the Docs dropdown, and checks that the Docs page applies it. Then it picks another and checks the reloaded page applies that one.
   - `installStorageRecorder` wraps the `chrome.storage` write calls on extension pages. The test uses it to check that opening the popup writes nothing, and that each pick writes the whole Docs state once.
   - It counts calls rather than `chrome.storage.onChanged` events, because Chrome sends no event when a value is rewritten unchanged.

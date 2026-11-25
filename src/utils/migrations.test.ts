@@ -31,7 +31,7 @@ describe("storage migrations", () => {
     vi.restoreAllMocks();
   });
 
-  test("should migrate V1 keys in one plain-value write and then remove them", async () => {
+  test("should migrate V1 keys in one JSON-text write and then remove them", async () => {
     const fake = await runMigrationsAgainst({
       zoomValue: json("150%"),
       "zoomValue:viewOnly": json(true),
@@ -40,17 +40,11 @@ describe("storage migrations", () => {
 
     expect(fake.setCalls).toEqual([
       {
-        docs: { zoomValue: "150%", viewOnly: true, classroomSupport: false },
-        sheets: { zoomValue: "75%", viewOnly: false, classroomSupport: false },
-        schemaVersion: 2
+        docs: json({ zoomValue: "150%", viewOnly: true, classroomSupport: false }),
+        sheets: json({ zoomValue: "75%", viewOnly: false, classroomSupport: false }),
+        schemaVersion: json(2)
       }
     ]);
-    expect(fake.data.docs).toEqual({
-      zoomValue: "150%",
-      viewOnly: true,
-      classroomSupport: false
-    });
-    expect(fake.data.schemaVersion).toBe(2);
     expect(Object.keys(fake.data).sort()).toEqual(["docs", "schemaVersion", "sheets"]);
   });
 
@@ -62,46 +56,56 @@ describe("storage migrations", () => {
       "zoomValue:viewOnly": json(false)
     });
 
-    expect(fake.data.docs).toEqual(DOCS_150);
-    expect(fake.data.sheets).toEqual({
-      zoomValue: "75%",
-      viewOnly: false,
-      classroomSupport: false
-    });
-    expect(fake.data.schemaVersion).toBe(2);
+    expect(fake.data.docs).toBe(json(DOCS_150));
+    expect(fake.data.sheets).toBe(
+      json({ zoomValue: "75%", viewOnly: false, classroomSupport: false })
+    );
+    expect(fake.data.schemaVersion).toBe(json(2));
     expect(Object.keys(fake.data).sort()).toEqual(["docs", "schemaVersion", "sheets"]);
   });
 
   test("should only remove leftover V1 keys once the schema version is current", async () => {
     const fake = await runMigrationsAgainst({
-      schemaVersion: 2,
-      docs: DOCS_150,
+      schemaVersion: json(2),
+      docs: json(DOCS_150),
       "sheets:zoomValue": json("75%")
     });
 
     expect(fake.setCalls).toEqual([]);
     expect(fake.removeCalls).toEqual([["sheets:zoomValue"]]);
-    expect(fake.data.docs).toEqual(DOCS_150);
+    expect(fake.data.docs).toBe(json(DOCS_150));
   });
 
   test("should write only the schema version on a fresh install", async () => {
     const fake = await runMigrationsAgainst({});
 
-    expect(fake.setCalls).toEqual([{ schemaVersion: 2 }]);
+    expect(fake.setCalls).toEqual([{ schemaVersion: json(2) }]);
     expect(fake.removeCalls).toEqual([]);
   });
 
-  test("should not write when storage is already current", async () => {
-    const fake = await runMigrationsAgainst({ schemaVersion: 2, docs: DOCS_150 });
+  // What the Plasmo versions wrote, and what every write of this build sends too
+  test("should not write when storage already holds JSON text", async () => {
+    const fake = await runMigrationsAgainst({ schemaVersion: json(2), docs: json(DOCS_150) });
 
     expect(fake.setCalls).toEqual([]);
     expect(fake.removeCalls).toEqual([]);
   });
 
-  test("should rewrite values the Plasmo versions saved as JSON text", async () => {
-    const fake = await runMigrationsAgainst({ schemaVersion: json(2), docs: json(DOCS_150) });
+  // A synced device that hasn't updated reads every value with JSON.parse, so a plain object would reset it
+  test("should rewrite plain values as JSON text", async () => {
+    const fake = await runMigrationsAgainst({ schemaVersion: 2, docs: DOCS_150 });
 
-    expect(fake.setCalls).toEqual([{ docs: DOCS_150, schemaVersion: 2 }]);
+    expect(fake.setCalls).toEqual([{ docs: json(DOCS_150), schemaVersion: json(2) }]);
     expect(fake.removeCalls).toEqual([]);
+  });
+
+  test("should rewrite only the values that are plain", async () => {
+    const fake = await runMigrationsAgainst({
+      schemaVersion: json(2),
+      docs: DOCS_150,
+      sheets: json({ zoomValue: "75%", viewOnly: false, classroomSupport: false })
+    });
+
+    expect(fake.setCalls).toEqual([{ docs: json(DOCS_150) }]);
   });
 });

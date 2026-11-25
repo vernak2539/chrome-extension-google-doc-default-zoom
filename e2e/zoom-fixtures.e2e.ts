@@ -19,7 +19,7 @@ import {
   readStorageWrites,
   serveFixture,
   setAppState,
-  setLegacyAppState,
+  setPlainAppState,
   waitForClicks,
   waitForControlClicks,
   waitForEnters,
@@ -72,10 +72,10 @@ describe(`zoom flow against saved Docs and Sheets markup (${edition} edition)`, 
       expect((await readRecorded(page)).clicks).toEqual(["150%"]);
     }));
 
-  // The upgrade path: values written by a build that still uses Plasmo's JSON text
-  test("Docs applies a preset zoom saved as JSON text by the Plasmo versions", () =>
-    withExtension("docs-legacy-format", async (session) => {
-      await setLegacyAppState(session.serviceWorker, "docs", state("150%"));
+  // Every other test seeds JSON text. Builds from before settings went back to JSON text wrote plain values.
+  test("Docs applies a preset zoom saved as plain values", () =>
+    withExtension("docs-plain-values", async (session) => {
+      await setPlainAppState(session.serviceWorker, "docs", state("150%"));
       const page = await openPage(session, FIXTURE_DOC_URL);
 
       await insertFixture(page, "docs-editor");
@@ -212,10 +212,11 @@ describe(`zoom flow against saved Docs and Sheets markup (${edition} edition)`, 
       const popup = await openPopup(session);
       expect(await readStorageWrites(popup)).toEqual([]);
 
+      // JSON text, which a synced device still on a Plasmo version can read
       await popupZoomSelect(popup, "Docs").selectOption("150%");
       await waitForStorageWrites(popup, 1);
       expect(await readStorageWrites(popup)).toEqual([
-        { area: "sync", method: "set", arg: { docs: state("150%") } }
+        { area: "sync", method: "set", arg: { docs: JSON.stringify(state("150%")) } }
       ]);
 
       const docsPage = await session.context.newPage();
@@ -227,8 +228,8 @@ describe(`zoom flow against saved Docs and Sheets markup (${edition} edition)`, 
       await popupZoomSelect(popup, "Docs").selectOption("75%");
       await waitForStorageWrites(popup, 2);
       expect(await readStorageWrites(popup)).toEqual([
-        { area: "sync", method: "set", arg: { docs: state("150%") } },
-        { area: "sync", method: "set", arg: { docs: state("75%") } }
+        { area: "sync", method: "set", arg: { docs: JSON.stringify(state("150%")) } },
+        { area: "sync", method: "set", arg: { docs: JSON.stringify(state("75%")) } }
       ]);
 
       await docsPage.reload();

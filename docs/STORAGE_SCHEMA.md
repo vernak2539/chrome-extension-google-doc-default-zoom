@@ -7,14 +7,15 @@ Over time, this extension has migrated its Chrome storage structure to improve m
 - **Settings** (everything below) live in `chrome.storage.sync`. All code reaches them through `src/utils/storage.ts`, which uses WXT storage keys.
 - Because WXT includes the area in the key, the keys in code are `sync:docs`, `sync:sheets` and `sync:schemaVersion`; `chrome.storage.sync` itself holds the part after the colon.
 - **Announcement dismissals** live in `chrome.storage.local` under `dismissedAnnouncementIds`, because they are per-device UI state (`src/components/Announcement/hooks.ts`, key `local:dismissedAnnouncementIds`).
-- Values are stored as **plain values**: `schemaVersion` is the number `2` and each app object is an object.
+- Settings are stored as **JSON text**: `schemaVersion` is the string `"2"` and each app is a JSON string. Every write goes through `writeStoredValue` / `writeStoredValues` in `src/utils/storage.ts`, which encode the value.
 
-### Values written by older builds
+### Why JSON text
 
-Builds that used [Plasmo](https://docs.plasmo.com/) wrote every value as JSON text: `schemaVersion` was the string `"2"` and each app was a JSON string. A synced device that has not updated can still write those values, so:
+The versions built with [Plasmo](https://docs.plasmo.com/) (v0.15.4 and earlier) wrote every value as JSON text, and they read every value with `JSON.parse`. Sync carries each write to the user's other devices, and one that hasn't updated yet still runs that code. `JSON.parse` of a plain object fails, and Plasmo drops the error, so that device would see no settings at all: it applies the default zoom, and opening its popup saves the defaults (Plasmo's `useStorage` writes its initial value), which then sync back over the user's settings on every device. Writing JSON text keeps those devices working until they update.
 
-- **Every read decodes JSON text** (`readStoredValue` / `watchStoredValue` in `src/utils/storage.ts`). The popup and the content script therefore work even before the migration runs.
-- **The background migration rewrites old values** as plain values on startup (`src/utils/migrations.ts`). It sends every changed key in one `chrome.storage.sync.set` call, so an interrupted run is safe to repeat.
+- **Every read decodes JSON text** (`readStoredValue` / `watchStoredValue`), and accepts a plain value too.
+- **The background migration rewrites plain values as JSON text** on startup (`src/utils/migrations.ts`). Builds from before this rule wrote plain values; none of them was released, but a developer's synced devices may hold them. It sends every changed key in one `chrome.storage.sync.set` call, so an interrupted run is safe to repeat.
+- **Switching to plain values** is safe once no Plasmo version is still in use: make `encodeStoredValue` return the value, and turn the migration's rewrite around.
 
 ## Who reads and writes
 
@@ -31,7 +32,7 @@ Implemented around April 2026. This version groups configurations under per-appl
 **Why we migrated:**
 The legacy flat-key structure created massive clutter in the root storage space. By encapsulating state within top-level application boundaries, we pave the way for supporting future tools (like Slides) without risking key conflicts or having to parse delimited string keys constantly. V1 keys are automatically migrated to this structure dynamically within the background script upon startup.
 
-**Schema Shape:**
+**Schema Shape** (decoded; each value is stored as its JSON text):
 
 ```json
 {
@@ -62,12 +63,14 @@ The migration can be interrupted (for example when the service worker stops) and
 1. `schemaVersion` below 2 and V1 keys exist: `docs`, `sheets` and `schemaVersion` are written in one `chrome.storage.sync.set` call, then all V1 keys are removed in one call. An app object that is already stored is kept; V1 values only fill in an app that has none, and defaults fill in any field the V1 keys lack. The migration builds each app object with `fillAppState`, so a V1 Fit label is written as `"fit"`.
 2. `schemaVersion` below 2 and no V1 keys (a fresh install): only `schemaVersion` is written.
 3. `schemaVersion` is 2 and V1 keys are left over from an interrupted run: only those keys are removed.
-4. `schemaVersion` is 2 and any of `docs`, `sheets` or `schemaVersion` is still JSON text (a Plasmo build wrote it): those values are rewritten as plain values in one call.
-5. `schemaVersion` is 2 and the values are already plain: nothing is written.
+4. `schemaVersion` is 2 and any of `docs`, `sheets` or `schemaVersion` is a plain value: those values are rewritten as JSON text in one call.
+5. `schemaVersion` is 2 and the values are already JSON text: nothing is written.
 
-**Testing the upgrade locally:**
+Every value the migration writes is JSON text, in each of these cases.
 
-The settings page has a Dev Tools section in development builds. "Write Settings in Plasmo Format" rewrites the current settings as JSON text with `schemaVersion: "2"`, the way the old build stored them. Restart the extension and confirm the popup still shows the same zoom and that `chrome.storage.sync` now holds plain values. The same path is covered by unit tests (`src/utils/storage-dev-tools.test.ts`, `src/utils/migrations.test.ts`) and by one browser test (`e2e/zoom-fixtures.e2e.ts`, "Docs applies a preset zoom saved as JSON text by the Plasmo versions").
+**Testing the format locally:**
+
+The settings page has a Dev Tools section in development builds. "Write Settings as Plain Values" rewrites the current settings as plain values with `schemaVersion: 2`. Restart the extension and confirm the popup still shows the same zoom and that `chrome.storage.sync` holds JSON text again. The same path is covered by unit tests (`src/utils/storage-dev-tools.test.ts`, `src/utils/migrations.test.ts`) and by one browser test (`e2e/zoom-fixtures.e2e.ts`, "Docs applies a preset zoom saved as plain values"). Every other browser test seeds JSON text, and the popup test checks that the popup writes it.
 
 ---
 
@@ -90,4 +93,4 @@ The original flat-key structure used before schema versioning was introduced.
 
 _Note: In V1, missing keys were interpreted as standard disabled values or `100%` zoom defaults by the runtime, rather than being explicitly stored._
 
-The Dev Tools section also has "Downgrade to V1 Format", which removes the V2 keys and recreates these flat keys. Restart the extension to test the V1 → V2 migration.
+The Dev Tools section also has "Downgrade to V1 Format", which removes the V2 keys and recreates these flat keys as JSON text, the way the Plasmo versions stored them. Restart the extension to test the V1 → V2 migration.

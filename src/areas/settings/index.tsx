@@ -9,9 +9,10 @@ import {
   appStateKey,
   readStoredValue,
   SCHEMA_VERSION_KEY,
-  CURRENT_SCHEMA_VERSION
+  CURRENT_SCHEMA_VERSION,
+  writeStoredValues
 } from "src/utils/storage";
-import { resetStorageToDefaults, writeStorageInLegacyFormat } from "src/utils/storage-dev-tools";
+import { resetStorageToDefaults, writeStorageAsPlainValues } from "src/utils/storage-dev-tools";
 import { useStoredValue } from "src/utils/use-stored-value";
 import { storage, type StorageItemKey } from "wxt/utils/storage";
 
@@ -55,7 +56,7 @@ const SettingsView = () => {
       // Delete V2 keys
       await storage.removeItems([appStateKey("docs"), appStateKey("sheets"), SCHEMA_VERSION_KEY]);
 
-      // Recreate V1 flat keys from the current state
+      // Recreate V1 flat keys from the current state, as JSON text like the Plasmo versions wrote them
       const v1Writes: { key: StorageItemKey; value: unknown }[] = [];
       if (docsState) {
         v1Writes.push(
@@ -72,7 +73,7 @@ const SettingsView = () => {
         );
       }
       if (v1Writes.length > 0) {
-        await storage.setItems(v1Writes);
+        await writeStoredValues(v1Writes);
       }
 
       alert(
@@ -90,18 +91,20 @@ const SettingsView = () => {
       }
     }
   };
-  const onWriteLegacyFormatClick = async () => {
+  const onWritePlainValuesClick = async () => {
     setIsBusy(true);
 
     try {
-      await writeStorageInLegacyFormat();
+      await writeStorageAsPlainValues();
       alert(
-        'Wrote the settings as the old format (JSON text and schemaVersion "2"). Restart the extension (e.g. from chrome://extensions) to see the background migrate them to plain values.'
+        "Wrote the settings as plain values (schemaVersion 2). Restart the extension (e.g. from chrome://extensions) to see the background rewrite them as JSON text."
       );
     } catch (error) {
       sentryScope.captureException(error);
-      console.error("Failed to write storage in the legacy format", error);
-      alert("Failed to write the legacy storage format. Check the extension console for details.");
+      console.error("Failed to write storage as plain values", error);
+      alert(
+        "Failed to write the settings as plain values. Check the extension console for details."
+      );
     } finally {
       if (isMounted.current) {
         setIsBusy(false);
@@ -142,16 +145,16 @@ const SettingsView = () => {
               Downgrade to V1 Format
             </Button>
             <p>
-              Write the current settings as JSON text with schemaVersion "2", the way the Plasmo
-              versions stored them. Reload the extension and check that it still applies the same
+              Write the current settings as plain values, the way builds stored them before settings
+              went back to JSON text. Reload the extension and check that it still applies the same
               zoom.
             </p>
             <Button
               variant="danger"
-              onPress={onWriteLegacyFormatClick}
+              onPress={onWritePlainValuesClick}
               isDisabled={isBusy}
               size="small">
-              Write Settings in Plasmo Format
+              Write Settings as Plain Values
             </Button>
           </section>
         </>

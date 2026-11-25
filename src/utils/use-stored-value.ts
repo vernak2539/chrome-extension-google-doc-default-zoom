@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { storage, type StorageItemKey } from "wxt/utils/storage";
+import type { StorageItemKey } from "wxt/utils/storage";
 
-import { readStoredValue, watchStoredValue } from "./storage";
+import { readStoredValue, watchStoredValue, writeStoredValue } from "./storage";
 
 /**
  * Reads a storage value and keeps it in sync with changes, like Plasmo's `useStorage` did.
@@ -50,7 +50,7 @@ export const useStoredValue = <T>(key: StorageItemKey) => {
       // Read from the ref, so several updates in a row build on each other
       const next = updater(valueRef.current);
       apply(next);
-      return storage.setItem(key, next);
+      return writeStoredValue(key, next);
     },
     [key, apply]
   );
