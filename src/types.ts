@@ -48,17 +48,8 @@ export interface AppStorageState {
   viewOnly: boolean;
   classroomSupport: boolean;
 }
-// The label of Docs' Fit zoom row in each locale (src/strategies/docs-fit-labels.json)
-export type DocsZoomValueFit =
-  | "Fit"
-  | "Adatta"
-  | "An Fenstergröße anpassen"
-  | "Ajuster à la fenêtre"
-  | "По ширине страницы"
-  | "合わせる"
-  | "Ajustar"
-  | "ملاءمة"
-  | "התאמה";
+// The stored Docs zoom value for Fit: it does not depend on a language
+export type DocsZoomValueFit = "fit";
 
 export type DocsStorageKey = "docs";
 export type DocsZoomValues = [DocsZoomValueFit, "50%", "75%", "100%", "125%", "150%", "200%"];

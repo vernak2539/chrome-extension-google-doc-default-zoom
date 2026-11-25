@@ -49,11 +49,17 @@ The legacy flat-key structure created massive clutter in the root storage space.
 }
 ```
 
+**The Docs Fit value:**
+
+`"fit"` is a valid Docs `zoomValue`. It is the same in every language, so a changed browser language or a synced device in another language does not break it. The popup shows it with the localized `popupDocsDropdownFitSelection` text and stores only `"fit"`.
+
+Earlier versions stored the translated label (for example `"Fit"`, `"Ajustar"` or `"Anpassen"`). `fillAppState` maps those legacy labels (`LEGACY_FIT_LABELS` in `src/constants.ts`) to `"fit"` for `docs` when it reads. There is no write-back: the old label stays in storage until the user changes a setting in the popup. The schema version stays `2`. A device that still runs an earlier version treats a saved `"fit"` as a custom zoom until it updates.
+
 **Migration from V1:**
 
 The migration can be interrupted (for example when the service worker stops) and is safe to run again. On each startup:
 
-1. `schemaVersion` below 2 and V1 keys exist: `docs`, `sheets` and `schemaVersion` are written in one `chrome.storage.sync.set` call, then all V1 keys are removed in one call. An app object that is already stored is kept; V1 values only fill in an app that has none, and defaults fill in any field the V1 keys lack.
+1. `schemaVersion` below 2 and V1 keys exist: `docs`, `sheets` and `schemaVersion` are written in one `chrome.storage.sync.set` call, then all V1 keys are removed in one call. An app object that is already stored is kept; V1 values only fill in an app that has none, and defaults fill in any field the V1 keys lack. The migration builds each app object with `fillAppState`, so a V1 Fit label is written as `"fit"`.
 2. `schemaVersion` below 2 and no V1 keys (a fresh install): only `schemaVersion` is written.
 3. `schemaVersion` is 2 and V1 keys are left over from an interrupted run: only those keys are removed.
 4. `schemaVersion` is 2 and any of `docs`, `sheets` or `schemaVersion` is still JSON text (a Plasmo build wrote it): those values are rewritten as plain values in one call.

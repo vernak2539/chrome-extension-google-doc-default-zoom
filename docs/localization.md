@@ -20,7 +20,7 @@ export const LANGUAGES = [...{ code: "pt", name: "Portuguese" }];
 
 ### 2. Record Docs' Fit Label
 
-`popupDocsDropdownFitSelection` is not a translation. Until [#106](https://github.com/vernak2539/chrome-extension-google-doc-default-zoom/issues/106) it is also the saved Fit value, so it has to be the label Docs itself shows in that language (Docs shows "An Fenstergröße anpassen" in German, not "Anpassen"). A translation service can't know it.
+`popupDocsDropdownFitSelection` is not a translation. It is display text only (the popup stores `"fit"`), but it should be the label Docs itself shows in that language (Docs shows "An Fenstergröße anpassen" in German, not "Anpassen"). A translation service can't know it.
 
 `pnpm e2e:capture` records it from live Docs, signed out, in every language in `bin/translate-config.mjs`, into `src/strategies/docs-fit-labels.json` ([e2e.md](./e2e.md#capture-and-refresh-the-fixtures)). It needs no Google account or build. To record only the Fit labels:
 
@@ -69,7 +69,7 @@ Machine translations can be imperfect. You can manually edit the generated JSON 
   GOOGLE_APPLICATION_CREDENTIALS=./creds.json node bin/translate-messages.mjs --key="yourKeyName"
   ```
 
-- **Don't edit the Fit label:** `src/strategies/docs-fit-label.test.ts` fails when a locale's `popupDocsDropdownFitSelection` is not the label in `src/strategies/docs-fit-labels.json`. The label is also the Fit value saved in storage until [#106](https://github.com/vernak2539/chrome-extension-google-doc-default-zoom/issues/106), so changing it leaves a saved Fit unmatched.
+- **Don't edit the Fit label:** `src/strategies/docs-fit-label.test.ts` fails when a locale's `popupDocsDropdownFitSelection` is not the label in `src/strategies/docs-fit-labels.json`. The label is display text only: the saved Fit value is `"fit"`, so changing it does not affect saved settings.
 
 ## Developer Notes
 

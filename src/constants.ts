@@ -1,7 +1,6 @@
 import type {
   AppStorageState,
   DocsStorageKey,
-  DocsZoomValueFit,
   DocsZoomValues,
   SheetsStorageKey,
   StorageKey,
@@ -11,7 +10,6 @@ import type {
   WorkspaceAppName
 } from "src/types";
 import { IS_EXTENDED_EDITION } from "src/utils/edition";
-import localize from "src/utils/localize";
 
 import docsFitLabels from "./strategies/docs-fit-labels.json";
 
@@ -24,7 +22,7 @@ export const SELECTOR_PAGE_HEADER = "#docs-chrome";
 /**  Workspace Application: Docs - Start **/
 export const DOCS_STORAGE_KEY: DocsStorageKey = "docs";
 export const DOCS_ZOOM_VALUES: DocsZoomValues = [
-  localize("popupDocsDropdownFitSelection") as DocsZoomValueFit,
+  "fit",
   "50%",
   "75%",
   "100%",
@@ -35,8 +33,24 @@ export const DOCS_ZOOM_VALUES: DocsZoomValues = [
 export const DOCS_DEFAULT_ZOOM = DOCS_ZOOM_VALUES[3];
 // The text Docs shows on its Fit row in each language: it tells Fit from a new row Google adds
 export const DOCS_FIT_LABELS: string[] = Object.values(docsFitLabels);
-// Until #106 stores "fit", the saved Fit value is the extension's label
-export const isFitZoomValue = (zoomValue: string): boolean => zoomValue === DOCS_ZOOM_VALUES[0];
+export const isFitZoomValue = (zoomValue: string): boolean => zoomValue === "fit";
+// The translated labels earlier versions saved as the Fit value. They are read as "fit" (see
+// fillAppState). Never add new languages here: new builds save "fit".
+const LEGACY_FIT_LABELS: readonly string[] = Object.freeze([
+  "Fit",
+  "Ajustar",
+  "Adatta",
+  "Ajuster",
+  "Anpassen",
+  "フィット",
+  "Подогнать",
+  "An Fenstergröße anpassen",
+  "Ajuster à la fenêtre",
+  "合わせる",
+  "По ширине страницы",
+  "ملاءمة",
+  "התאמה"
+]);
 /**  Workspace Application: Docs - End **/
 
 /**  Workspace Application: Sheets - Start **/
@@ -102,14 +116,17 @@ export const getDefaultAppState = (storageKey?: string): AppStorageState => ({
 /**
  * The one place a stored app state is filled in from the defaults: all of it when nothing is
  * stored, or each field a stored object lacks (for example one saved before the field existed).
+ * A Docs zoom saved as a translated Fit label is read as "fit"; nothing is written back.
  */
 export const fillAppState = (
   storageKey: string | undefined,
   stored?: Partial<AppStorageState> | null
 ): AppStorageState => {
   const defaults = getDefaultAppState(storageKey);
+  const zoomValue = stored?.zoomValue ?? defaults.zoomValue;
   return {
-    zoomValue: stored?.zoomValue ?? defaults.zoomValue,
+    zoomValue:
+      storageKey === DOCS_STORAGE_KEY && LEGACY_FIT_LABELS.includes(zoomValue) ? "fit" : zoomValue,
     viewOnly: stored?.viewOnly ?? defaults.viewOnly,
     classroomSupport: stored?.classroomSupport ?? defaults.classroomSupport
   };

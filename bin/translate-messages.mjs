@@ -14,7 +14,7 @@ const __dirname = dirname(__filename);
 
 const translate = new Translate();
 
-// Until #106 the saved Fit value is this message, so it must be the text Docs shows, not a translation of "Fit".
+// This message is display text only (the popup stores "fit"), but it should be the text Docs shows, not a translation of "Fit".
 // `pnpm e2e:capture` records that text from live Docs in each language.
 const FIT_KEY = "popupDocsDropdownFitSelection";
 const FIT_LABELS_FILE = path.resolve(__dirname, "../src/strategies/docs-fit-labels.json");
@@ -91,7 +91,7 @@ async function main() {
       }
     }
 
-    // A Fit label that exists is never replaced, so a run can't change the Fit value users have saved (#106)
+    // A Fit label that exists is never replaced, so a run can't replace a label that was checked against Docs
     let addedFitLabel = false;
     if (!targetMessages[FIT_KEY]) {
       if (fitLabels[lang.code]) {

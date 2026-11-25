@@ -10,8 +10,8 @@ vi.mock("src/utils/messaging", () => ({ sendMessage: vi.fn() }));
 vi.mock("src/utils/localize", () => ({ default: (key: string) => key }));
 vi.mock("src/utils/get-app-storage-state-from-storage", () => ({ default: vi.fn() }));
 
-// The localize mock returns the key, so this is the Fit value the extension saves. Docs shows FIT_ROW_TEXT.
-const EXTENSION_FIT_LABEL = "popupDocsDropdownFitSelection";
+// The extension saves Fit as "fit". Docs shows FIT_ROW_TEXT.
+const FIT_VALUE = "fit";
 const FIT_ROW_TEXT = "Ajustar";
 
 const stateWith = (zoomValue: string): AppStorageState => ({
@@ -69,7 +69,7 @@ describe("Docs view-only zoom outcome", () => {
   // The menu is found by the presets it lists, and the Fit row by its structure: the text is in Docs' language, not
   // the extension's
   test("should click the Fit row in the language Docs is shown in", async () => {
-    vi.mocked(getAppStorageStateFromStorage).mockResolvedValue(stateWith(EXTENSION_FIT_LABEL));
+    vi.mocked(getAppStorageStateFromStorage).mockResolvedValue(stateWith(FIT_VALUE));
     document.body.innerHTML = VIEW_MENU + ZOOM_ITEM + ZOOM_MENU;
     const clicked = recordClicks();
 
@@ -99,7 +99,7 @@ describe("Docs view-only zoom outcome", () => {
   });
 
   test("should fail with view_zoom_option_missing and click nothing when Fit can't be told from another row", async () => {
-    vi.mocked(getAppStorageStateFromStorage).mockResolvedValue(stateWith(EXTENSION_FIT_LABEL));
+    vi.mocked(getAppStorageStateFromStorage).mockResolvedValue(stateWith(FIT_VALUE));
     document.body.innerHTML =
       VIEW_MENU +
       ZOOM_ITEM +

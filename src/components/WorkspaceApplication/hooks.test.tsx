@@ -9,9 +9,6 @@ import {
 } from "../../test-support/fake-chrome-storage";
 import type { UseAppSettings } from "./hooks";
 
-// src/constants calls localize at import time, and jsdom has no chrome global
-vi.mock("src/utils/localize", () => ({ default: (key: string) => key }));
-
 declare global {
   // React reads this to enable act() outside a test runner integration
   var IS_REACT_ACT_ENVIRONMENT: boolean | undefined;
@@ -131,6 +128,21 @@ describe("useAppSettings", () => {
 
     expect(fake.setCalls).toEqual([
       { docs: { zoomValue: "100%", viewOnly: true, classroomSupport: false } }
+    ]);
+  });
+
+  test("should show a legacy translated Fit label as fit, and write fit on a change", async () => {
+    await mountHook({ docs: { ...SAVED_DOCS, zoomValue: "Anpassen" } });
+
+    expect(latest.settings.zoomValue).toBe("fit");
+    expect(fake.setCalls).toEqual([]);
+
+    await act(async () => {
+      latest.updateSettings({ viewOnly: false });
+    });
+
+    expect(fake.setCalls).toEqual([
+      { docs: { zoomValue: "fit", viewOnly: false, classroomSupport: false } }
     ]);
   });
 });

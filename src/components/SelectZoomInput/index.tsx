@@ -1,5 +1,6 @@
 import type { ChangeEvent } from "react";
 
+import { isFitZoomValue } from "../../constants";
 import localize from "../../utils/localize";
 import type { ZoomInputProps } from "../shared-props";
 
@@ -7,7 +8,9 @@ const SelectOptions = ({ zoomValues }) => {
   return (
     <>
       {zoomValues.map((value) => (
-        <option key={value}>{value}</option>
+        <option key={value} value={value}>
+          {isFitZoomValue(value) ? localize("popupDocsDropdownFitSelection") : value}
+        </option>
       ))}
     </>
   );
