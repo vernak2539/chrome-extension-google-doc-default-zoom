@@ -143,6 +143,10 @@
     "message": "Almacenamiento v{schemaVersion}",
     "description": "Text in settings footer denoting current storage schema version"
   },
+  "popupSettingsExtensionVersion": {
+    "message": "Versión {version}",
+    "description": "Text in settings footer denoting the installed extension version"
+  },
   "popupNavHome": {
     "message": "Inicio",
     "description": "Label for the Home navigation tab"

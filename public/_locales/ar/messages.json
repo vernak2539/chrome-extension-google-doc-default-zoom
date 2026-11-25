@@ -139,6 +139,10 @@
     "message": "إصدار التخزين v{schemaVersion}",
     "description": "Text in settings footer denoting current storage schema version"
   },
+  "popupSettingsExtensionVersion": {
+    "message": "الإصدار {version}",
+    "description": "Text in settings footer denoting the installed extension version"
+  },
   "popupNavHome": {
     "message": "الرئيسية",
     "description": "Label for the Home navigation tab"
