@@ -61,6 +61,14 @@ jobs:
       SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
       SENTRY_ORG: ${{ vars.SENTRY_ORG }}
       SENTRY_PROJECT: ${{ vars.SENTRY_PROJECT }}
+      # Chrome and Edge publish settings, the same for both editions. `wxt submit` takes a key from `.env.submit`
+      # (SUBMIT_ENV) only when it isn't set already, so these win over the secret. The dry run validates them too.
+      CHROME_PUBLISH_TYPE: DEFAULT_PUBLISH
+      CHROME_DEPLOY_PERCENTAGE: "100"
+      CHROME_CANCEL_PENDING: "true"
+      CHROME_SKIP_REVIEW: "false"
+      CHROME_SKIP_SUBMIT_REVIEW: "false"
+      EDGE_SKIP_SUBMIT_REVIEW: "false"
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v6
