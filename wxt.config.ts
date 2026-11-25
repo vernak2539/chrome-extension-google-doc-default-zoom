@@ -1,3 +1,4 @@
+import { execFileSync } from "node:child_process";
 import path from "node:path";
 
 import { defineConfig } from "wxt";
@@ -26,6 +27,19 @@ const EDITION_BY_MODE: Record<string, keyof typeof EDITIONS> = { extended: "exte
 const ICON_SIZES = [16, 32, 48, 64, 128] as const;
 const icons = Object.fromEntries(ICON_SIZES.map((size) => [size, `/icon/${size}.png`]));
 
+// A missing git binary or a checkout without .git must not break the dev server
+const readGit = (args: string[]): string | undefined => {
+  try {
+    const output = execFileSync("git", args, {
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "ignore"]
+    }).trim();
+    return output || undefined;
+  } catch {
+    return undefined;
+  }
+};
+
 export default defineConfig({
   srcDir: "src",
   publicDir: "public",
@@ -51,12 +65,24 @@ export default defineConfig({
       process.env.NODE_ENV = "production";
     }
 
-    return command === "build"
-      ? {
-          define: { "process.env.NODE_ENV": JSON.stringify("production") },
-          build: { sourcemap: true }
-        }
-      : {};
+    if (command === "build") {
+      return {
+        define: { "process.env.NODE_ENV": JSON.stringify("production") },
+        build: { sourcemap: true }
+      };
+    }
+
+    // Dev only: production builds never run git or embed the branch and commit
+    return {
+      define: {
+        "import.meta.env.GIT_BRANCH": JSON.stringify(
+          readGit(["rev-parse", "--abbrev-ref", "HEAD"]) ?? ""
+        ),
+        "import.meta.env.GIT_COMMIT": JSON.stringify(
+          readGit(["rev-parse", "--short", "HEAD"]) ?? ""
+        )
+      }
+    };
   },
   manifest: ({ browser, mode }) => {
     const editionName = EDITION_BY_MODE[mode] ?? "base";

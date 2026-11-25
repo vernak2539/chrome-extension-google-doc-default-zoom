@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "src/components/Button";
+import VersionInfo from "src/components/VersionInfo";
 import type { AppStorageState } from "src/types";
 import localize from "src/utils/localize";
 import { createSentryClient } from "src/utils/sentry/base";
@@ -166,18 +167,21 @@ const SettingsView = () => {
         </Button>
       </section>
 
-      <p
+      <footer
         style={{
           marginTop: 16,
           fontSize: 12,
           color: "var(--pico-muted-color)",
           textAlign: "center"
         }}>
-        {localize("popupSettingsStorageVersion").replace(
-          "{schemaVersion}",
-          String(schemaVersion ?? 1)
-        )}
-      </p>
+        <p style={{ margin: 0 }}>
+          {localize("popupSettingsStorageVersion").replace(
+            "{schemaVersion}",
+            String(schemaVersion ?? 1)
+          )}
+        </p>
+        <VersionInfo />
+      </footer>
     </div>
   );
 };

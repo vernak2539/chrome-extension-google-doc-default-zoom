@@ -139,6 +139,14 @@
     "message": "Storage v{schemaVersion}",
     "description": "Text in settings footer denoting current storage schema version"
   },
+  "popupSettingsExtensionVersion": {
+    "message": "Version {version}",
+    "description": "Text in settings footer denoting the installed extension version"
+  },
+  "popupSettingsBuildGitInfo": {
+    "message": "{branch} @ {commit}",
+    "description": "Dev-only text in settings footer denoting the git branch and commit of the build"
+  },
   "popupNavHome": {
     "message": "Home",
     "description": "Label for the Home navigation tab"
