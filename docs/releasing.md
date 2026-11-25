@@ -67,6 +67,19 @@ If an [announcement](./announcements.md) is warning users about the bug the rele
 
 Each environment has a `SUBMIT_ENV` secret holding that edition's credentials file, in the format `wxt submit init` writes. Keep the files locally as `.env.submit.base` and `.env.submit.extended`; `.gitignore` covers `.env*`. The run writes the secret to `.env.submit`, the only file `wxt submit` reads by itself.
 
+The Chrome and Edge publish settings are not in these files: `submit-reusable.yml` sets them in the job's `env`, the same for both editions, and `wxt submit` reads a key from `.env.submit` only when the environment doesn't already set it. Change them there:
+
+| Setting                     | Value             | What it does                                                                |
+| --------------------------- | ----------------- | --------------------------------------------------------------------------- |
+| `CHROME_PUBLISH_TYPE`       | `DEFAULT_PUBLISH` | Publishes as soon as review passes (`STAGED_PUBLISH` waits for you)         |
+| `CHROME_DEPLOY_PERCENTAGE`  | `100`             | Rolls the new version out to every user                                     |
+| `CHROME_CANCEL_PENDING`     | `true`            | Cancels a submission still in review, so the new version replaces it        |
+| `CHROME_SKIP_REVIEW`        | `false`           | Goes through review (only some updates, like ad-blocker rules, may skip it) |
+| `CHROME_SKIP_SUBMIT_REVIEW` | `false`           | Submits for review after the upload                                         |
+| `EDGE_SKIP_SUBMIT_REVIEW`   | `false`           | Submits for review after the upload                                         |
+
+A local `node --env-file=.env.submit.<edition>` run doesn't see the workflow's values, so leave these keys out of the files rather than keeping a second copy that can drift.
+
 Don't keep a plain `.env.submit` locally. Without one, a bare `wxt submit` has no credentials and fails its config check instead of publishing. `pnpm exec wxt submit init` walks through every store and writes `.env.submit`: rename it to `.env.submit.<edition>` afterwards.
 
 | Environment              | File (local)           | `CHROME_EXTENSION_ID`              | `EDGE_PRODUCT_ID`                      | `FIREFOX_*`                                                                   |
