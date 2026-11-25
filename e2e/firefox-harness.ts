@@ -95,10 +95,11 @@ export const setAppState = async (
   await popup.waitForFunction(() => typeof browser !== "undefined" && !!browser.storage?.sync, {
     timeout: WAIT_TIMEOUT_MS
   });
+  // JSON text and schemaVersion "2", the format the popup writes (see setAppState in e2e/harness.ts)
   await popup.evaluate(
-    (key, value) => browser.storage.sync.set({ [key]: value, schemaVersion: 2 }),
+    (key, value) => browser.storage.sync.set({ [key]: value, schemaVersion: "2" }),
     storageKey,
-    state
+    JSON.stringify(state)
   );
   await popup.close();
 };

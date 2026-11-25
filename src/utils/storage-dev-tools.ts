@@ -1,13 +1,19 @@
 import { APPS, getDefaultAppState } from "src/constants";
 import type { AppStorageState } from "src/types";
-import { appStateKey, readStoredValue, SCHEMA_VERSION_KEY } from "src/utils/storage";
+import {
+  appStateKey,
+  CURRENT_SCHEMA_VERSION,
+  readStoredValue,
+  SCHEMA_VERSION_KEY,
+  writeStoredValues
+} from "src/utils/storage";
 import { storage, type StorageItemKey } from "wxt/utils/storage";
 
 const appStorageKeys = Object.keys(APPS) as (keyof typeof APPS)[];
 
 /** Writes the defaults for every app, the same state the settings reset button leaves. */
 export const resetStorageToDefaults = () =>
-  storage.setItems(
+  writeStoredValues(
     appStorageKeys.map((key) => ({
       key: appStateKey(key),
       value: getDefaultAppState(key)
@@ -15,20 +21,21 @@ export const resetStorageToDefaults = () =>
   );
 
 /**
- * Rewrites the current settings in the format the Plasmo versions used: every sync value is JSON
- * text and the schema version is the string "2". Reloading the extension then exercises the
- * upgrade path (decode on read, then the background migration writes plain values).
+ * Rewrites the current settings as plain values, the format builds wrote before settings went back to JSON text (see
+ * `encodeStoredValue`). Reloading the extension then exercises the conversion: reads still decode them, and the
+ * background migration writes them as JSON text again.
  */
-export const writeStorageInLegacyFormat = async () => {
+export const writeStorageAsPlainValues = async () => {
   const currentStates = await Promise.all(
     appStorageKeys.map((key) => readStoredValue<AppStorageState>(appStateKey(key)))
   );
 
-  const writes: { key: StorageItemKey; value: string }[] = appStorageKeys.map((key, index) => ({
+  const writes: { key: StorageItemKey; value: unknown }[] = appStorageKeys.map((key, index) => ({
     key: appStateKey(key),
-    value: JSON.stringify(currentStates[index] ?? getDefaultAppState(key))
+    value: currentStates[index] ?? getDefaultAppState(key)
   }));
-  writes.push({ key: SCHEMA_VERSION_KEY, value: JSON.stringify(2) });
+  writes.push({ key: SCHEMA_VERSION_KEY, value: CURRENT_SCHEMA_VERSION });
 
+  // Bypasses `writeStoredValues` on purpose: it would encode them
   await storage.setItems(writes);
 };

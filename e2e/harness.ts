@@ -130,19 +130,8 @@ export const launchExtension = async (userDataDir: string, { language }: LaunchO
   return { context, serviceWorker: await waitForServiceWorker(context) };
 };
 
+// JSON text and schemaVersion "2": what the popup writes, and what the Plasmo versions wrote
 export const setAppState = async (
-  serviceWorker: Worker,
-  storageKey: "docs" | "sheets",
-  state: AppState
-) => {
-  await serviceWorker.evaluate(
-    ({ key, value }) => chrome.storage.sync.set({ [key]: value, schemaVersion: 2 }),
-    { key: storageKey, value: state }
-  );
-};
-
-// What the Plasmo versions left behind: JSON text and schemaVersion "2"
-export const setLegacyAppState = async (
   serviceWorker: Worker,
   storageKey: "docs" | "sheets",
   state: AppState
@@ -150,6 +139,18 @@ export const setLegacyAppState = async (
   await serviceWorker.evaluate(
     ({ key, value }) => chrome.storage.sync.set({ [key]: value, schemaVersion: "2" }),
     { key: storageKey, value: JSON.stringify(state) }
+  );
+};
+
+// Plain values and schemaVersion 2: what builds wrote before settings went back to JSON text. Reads still accept them.
+export const setPlainAppState = async (
+  serviceWorker: Worker,
+  storageKey: "docs" | "sheets",
+  state: AppState
+) => {
+  await serviceWorker.evaluate(
+    ({ key, value }) => chrome.storage.sync.set({ [key]: value, schemaVersion: 2 }),
+    { key: storageKey, value: state }
   );
 };
 

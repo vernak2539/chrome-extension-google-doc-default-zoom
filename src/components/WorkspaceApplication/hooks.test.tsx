@@ -14,6 +14,7 @@ declare global {
   var IS_REACT_ACT_ENVIRONMENT: boolean | undefined;
 }
 
+const json = JSON.stringify;
 const SAVED_DOCS = { zoomValue: "150%", viewOnly: true, classroomSupport: false };
 
 describe("useAppSettings", () => {
@@ -68,8 +69,8 @@ describe("useAppSettings", () => {
     expect(fake.setCalls).toEqual([]);
   });
 
-  test("should decode a state saved as JSON text by the Plasmo versions", async () => {
-    await mountHook({ docs: JSON.stringify(SAVED_DOCS) });
+  test("should decode a state saved as JSON text", async () => {
+    await mountHook({ docs: json(SAVED_DOCS) });
 
     expect(latest.isLoading).toBe(false);
     expect(latest.settings.zoomValue).toBe("150%");
@@ -77,7 +78,8 @@ describe("useAppSettings", () => {
     expect(fake.setCalls).toEqual([]);
   });
 
-  test("should write the whole app state when the user changes a setting", async () => {
+  // JSON text, so a synced device still on a Plasmo version (which JSON.parses every value) can read it
+  test("should write the whole app state as JSON text when the user changes a setting", async () => {
     await mountHook({});
 
     await act(async () => {
@@ -85,7 +87,7 @@ describe("useAppSettings", () => {
     });
 
     expect(fake.setCalls).toEqual([
-      { docs: { zoomValue: "75%", viewOnly: false, classroomSupport: false } }
+      { docs: json({ zoomValue: "75%", viewOnly: false, classroomSupport: false }) }
     ]);
     expect(latest.settings.zoomValue).toBe("75%");
   });
@@ -103,7 +105,7 @@ describe("useAppSettings", () => {
     });
 
     expect(fake.setCalls).toEqual([
-      { docs: { zoomValue: "150%", viewOnly: false, classroomSupport: true } }
+      { docs: json({ zoomValue: "150%", viewOnly: false, classroomSupport: true }) }
     ]);
   });
 
@@ -127,7 +129,7 @@ describe("useAppSettings", () => {
     });
 
     expect(fake.setCalls).toEqual([
-      { docs: { zoomValue: "100%", viewOnly: true, classroomSupport: false } }
+      { docs: json({ zoomValue: "100%", viewOnly: true, classroomSupport: false }) }
     ]);
   });
 
@@ -142,7 +144,7 @@ describe("useAppSettings", () => {
     });
 
     expect(fake.setCalls).toEqual([
-      { docs: { zoomValue: "fit", viewOnly: false, classroomSupport: false } }
+      { docs: json({ zoomValue: "fit", viewOnly: false, classroomSupport: false }) }
     ]);
   });
 });

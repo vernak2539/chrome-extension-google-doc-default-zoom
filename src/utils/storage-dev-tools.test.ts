@@ -7,6 +7,7 @@ vi.mock("src/utils/sentry/base", () => ({
   createSentryClient: () => ({ captureException: vi.fn() })
 }));
 
+const json = JSON.stringify;
 const DEFAULT_DOCS = { zoomValue: "100%", viewOnly: false, classroomSupport: false };
 
 const stubChrome = (initial: Record<string, unknown>) => {
@@ -37,40 +38,38 @@ describe("storage dev tools", () => {
 
     expect(fake.setCalls).toEqual([
       {
-        docs: DEFAULT_DOCS,
-        sheets: DEFAULT_DOCS
+        docs: json(DEFAULT_DOCS),
+        sheets: json(DEFAULT_DOCS)
       }
     ]);
   });
 
-  test("should write the current settings as the JSON text Plasmo used", async () => {
+  test("should write the current settings as plain values", async () => {
     const savedDocs = { zoomValue: "150%", viewOnly: true, classroomSupport: false };
-    const fake = stubChrome({ docs: savedDocs });
+    const fake = stubChrome({ docs: json(savedDocs) });
 
-    const { writeStorageInLegacyFormat } = await import("./storage-dev-tools");
-    await writeStorageInLegacyFormat();
+    const { writeStorageAsPlainValues } = await import("./storage-dev-tools");
+    await writeStorageAsPlainValues();
 
-    const [write] = fake.setCalls;
-    expect(JSON.parse(write.docs as string)).toEqual(savedDocs);
-    expect(JSON.parse(write.sheets as string)).toEqual(DEFAULT_DOCS);
-    expect(write.schemaVersion).toBe(JSON.stringify(2));
+    expect(fake.setCalls).toEqual([{ docs: savedDocs, sheets: DEFAULT_DOCS, schemaVersion: 2 }]);
   });
 
-  test("should let the migration read settings written in the legacy format", async () => {
+  test("should let the migration turn the plain values back into JSON text", async () => {
     const savedDocs = { zoomValue: "150%", viewOnly: true, classroomSupport: false };
-    const fake = stubChrome({ docs: savedDocs });
+    const fake = stubChrome({ docs: json(savedDocs) });
 
-    const { writeStorageInLegacyFormat } = await import("./storage-dev-tools");
-    await writeStorageInLegacyFormat();
+    const { writeStorageAsPlainValues } = await import("./storage-dev-tools");
+    await writeStorageAsPlainValues();
 
-    // What happens when the new build starts against the values the old build left behind
+    // What happens when the background starts against plain values
     vi.resetModules();
     await (
       await import("./migrations")
     ).migrationsReady;
 
-    expect(fake.data.docs).toEqual(savedDocs);
-    expect(fake.data.sheets).toEqual(DEFAULT_DOCS);
-    expect(fake.data.schemaVersion).toBe(2);
+    // Plasmo's own read: JSON.parse of every value
+    expect(JSON.parse(fake.data.docs as string)).toEqual(savedDocs);
+    expect(JSON.parse(fake.data.sheets as string)).toEqual(DEFAULT_DOCS);
+    expect(JSON.parse(fake.data.schemaVersion as string)).toBe(2);
   });
 });
