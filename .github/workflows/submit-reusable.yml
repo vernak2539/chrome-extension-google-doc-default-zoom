@@ -15,9 +15,19 @@ on:
         description: "Build, release, package and publish the Firefox target"
         type: boolean
         required: true
-      chrome_url_prefix:
+      chrome_extension_id:
+        description: "Chrome Web Store item ID. SUBMIT_ENV's CHROME_EXTENSION_ID must match it."
         type: string
         required: true
+      edge_product_id:
+        description: "Edge Add-ons product ID. SUBMIT_ENV's EDGE_PRODUCT_ID must match it."
+        type: string
+        required: true
+      firefox_extension_id:
+        description: "Firefox add-on ID. Only used when include_firefox is true; SUBMIT_ENV's FIREFOX_EXTENSION_ID must match it."
+        type: string
+        required: false
+        default: ""
       edge_url_prefix:
         type: string
         required: true
@@ -31,9 +41,9 @@ on:
         type: string
         required: true
     secrets:
-      submit_keys:
-        description: "Store credentials JSON for this edition, read by bin/wxt-submit-credentials.mjs"
-        required: true
+      SUBMIT_ENV:
+        description: "Not passed by the callers. The value is the secret of the job's environment: the contents of that edition's .env.submit.<edition> file."
+        required: false
       SENTRY_AUTH_TOKEN:
         description: "Not passed by the callers. The value is the secret of the job's environment, which takes precedence."
         required: false
@@ -79,6 +89,31 @@ jobs:
         run: pnpm package:${{ inputs.edition }} -b firefox
       - name: Check the built edition
         run: pnpm check:editions
+      - name: Write the store credentials
+        env:
+          SUBMIT_ENV: ${{ secrets.SUBMIT_ENV }}
+          ENVIRONMENT: ${{ inputs.environment }}
+          EDITION: ${{ inputs.edition }}
+          INCLUDE_FIREFOX: ${{ inputs.include_firefox }}
+          EXPECTED_CHROME_EXTENSION_ID: ${{ inputs.chrome_extension_id }}
+          EXPECTED_EDGE_PRODUCT_ID: ${{ inputs.edge_product_id }}
+          EXPECTED_FIREFOX_EXTENSION_ID: ${{ inputs.firefox_extension_id }}
+        run: node bin/write-submit-env.mjs
+      - name: List the zips to submit
+        id: zips
+        shell: bash
+        run: |
+          args="--chrome-zip build/chrome-mv3-${{ inputs.edition }}.zip --edge-zip build/edge-mv3-${{ inputs.edition }}.zip"
+          if [[ "${{ inputs.include_firefox && inputs.edition == 'base' }}" == "true" ]]; then
+            args+=" --firefox-zip build/firefox-mv2-${{ inputs.edition }}.zip"
+          fi
+          echo "args=$args" >> "$GITHUB_OUTPUT"
+      # Signs in to the Chrome Web Store and AMO and reads the listings, without uploading.
+      # Edge has no such check. A failure here stops the job before the Sentry release.
+      - name: Check the store credentials
+        env:
+          DRY_RUN: "true"
+        run: pnpm exec wxt submit --dry-run ${{ steps.zips.outputs.args }}
       - name: get-npm-version
         id: package-version
         uses: martinbeentjes/npm-get-version-action@v1.3.1
@@ -87,7 +122,7 @@ jobs:
         with:
           environment: production
           sourcemaps: "./build/chrome-mv3-${{ inputs.edition }}"
-          url_prefix: ${{ inputs.chrome_url_prefix }}
+          url_prefix: "chrome-extension://${{ inputs.chrome_extension_id }}"
           ignore_empty: true
           ignore_missing: true
           version: ${{ steps.package-version.outputs.current-version }}
@@ -110,22 +145,8 @@ jobs:
           ignore_empty: true
           ignore_missing: true
           version: ${{ steps.package-version.outputs.current-version }}
-      - name: Prepare the store credentials
-        env:
-          SUBMIT_KEYS: ${{ secrets.submit_keys }}
-          INCLUDE_FIREFOX: ${{ inputs.include_firefox }}
-        run: node bin/wxt-submit-credentials.mjs
       - name: Submit to the stores
-        shell: bash
-        run: |
-          args=(
-            --chrome-zip "build/chrome-mv3-${{ inputs.edition }}.zip"
-            --edge-zip "build/edge-mv3-${{ inputs.edition }}.zip"
-          )
-          if [[ "${{ inputs.include_firefox && inputs.edition == 'base' }}" == "true" ]]; then
-            args+=(--firefox-zip "build/firefox-mv2-${{ inputs.edition }}.zip")
-          fi
-          pnpm exec wxt submit "${args[@]}"
+        run: pnpm exec wxt submit ${{ steps.zips.outputs.args }}
       - uses: actions/upload-artifact@v4
         if: always()
         with:

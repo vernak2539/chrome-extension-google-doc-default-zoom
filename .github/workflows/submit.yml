@@ -11,13 +11,13 @@ permissions:
 jobs:
   submit:
     uses: ./.github/workflows/submit-reusable.yml
-    secrets:
-      submit_keys: ${{ secrets.SUBMIT_KEYS }}
     with:
       environment: build-package
       edition: base
       include_firefox: true
-      chrome_url_prefix: "chrome-extension://nflkcdlimipkgbacnfnhfecjgmojhklo"
+      chrome_extension_id: "nflkcdlimipkgbacnfnhfecjgmojhklo"
+      edge_product_id: "f8b7c29f-87dc-41de-8e27-ee45f0f3715c"
+      firefox_extension_id: "google-workspace-zoom-default@vernacchia.dev"
       edge_url_prefix: "chrome-extension://hnilnnalkgihkfnegpcbcgpgailgjbnn"
       firefox_url_prefix: "moz-extension://2ea8253c-b2cc-415f-8d0e-8af14a5d29fe"
       artifact_prefix: google-workspace-zoom-default
