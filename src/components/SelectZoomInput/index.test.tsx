@@ -69,4 +69,12 @@ describe("SelectZoomInput", () => {
     expect(() => render(["50%", "75%", "100%"], true)).not.toThrow();
     expect(optionTexts()).toEqual(["N/A", "50%", "75%", "100%"]);
   });
+
+  it("stores fit as the Fit option's value and shows the localized label", () => {
+    render(["fit", "100%"]);
+    const [fit, preset] = Array.from(container.querySelectorAll("option"));
+    expect(fit.value).toBe("fit");
+    expect(fit.textContent).toBe("popupDocsDropdownFitSelection");
+    expect(preset.value).toBe("100%");
+  });
 });

@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { DOCS_ZOOM_VALUES, workspaceAppUiStrategyConfigs } from "src/constants";
+import { workspaceAppUiStrategyConfigs } from "src/constants";
 import type { AppStorageState } from "src/types";
 import { IS_EXTENDED_EDITION } from "src/utils/edition";
 import getAppStorageStateFromStorage from "src/utils/get-app-storage-state-from-storage";
@@ -167,9 +167,9 @@ describe("zoom outcome", () => {
   });
 });
 
-// The saved Fit value is the extension's label (the localize mock returns its key), while Docs shows its own text
+// The saved Fit value is "fit", whatever language the extension or Docs is shown in
 describe("Fit when Docs is shown in another language than the extension", () => {
-  const FIT_VALUE = DOCS_ZOOM_VALUES[0];
+  const FIT_VALUE = "fit";
 
   const renderToolbarMenu = (rowTexts: string[]) => {
     document.body.innerHTML = `

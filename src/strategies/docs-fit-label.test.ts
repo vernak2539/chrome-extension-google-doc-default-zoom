@@ -22,7 +22,7 @@ const readFitMessage = (locale: string): string | undefined =>
   JSON.parse(readFileSync(path.join(LOCALES_DIR, locale, "messages.json"), "utf8"))[FIT_KEY]
     ?.message;
 
-// Until #106 the saved Fit value is this message, so it is the text Docs shows, not a translation of "Fit"
+// This message is display text only (the popup stores "fit"), and it is the text Docs shows, not a translation of "Fit"
 describe(FIT_KEY, () => {
   test.each(SHIPPED_LOCALES)("%s is the label Docs shows", (locale) => {
     expect(

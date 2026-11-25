@@ -86,16 +86,10 @@ const waitForFitClick = async (page: Page, fitLabel: string) => {
   }
 };
 
-// The Fit label the extension uses, as the popup would save it. Fails when the browser did not start in `language`,
-// because the test would then check the English label.
-const readExtensionFitLabel = async (serviceWorker: Worker, language: string) => {
-  const { uiLanguage, fitLabel } = await serviceWorker.evaluate(() => ({
-    uiLanguage: chrome.i18n.getUILanguage(),
-    fitLabel: chrome.i18n.getMessage("popupDocsDropdownFitSelection")
-  }));
+// Fails when the browser did not start in `language`, because the test would then run in English.
+const expectUiLanguage = async (serviceWorker: Worker, language: string) => {
+  const uiLanguage = await serviceWorker.evaluate(() => chrome.i18n.getUILanguage());
   expect(uiLanguage, `Chromium did not start in ${language}`).toMatch(new RegExp(`^${language}`));
-
-  return fitLabel;
 };
 
 // The zoom dropdown is closed once no visible menu still lists the zoom value as a row
@@ -184,6 +178,26 @@ describe(`zoom flow on the live Docs and Sheets pages (${edition} edition)`, () 
       if (await page.$("#zoomSelect input")) {
         await expectDocumentFocused(page, "docs");
       }
+    }));
+
+  // A German label saved by an earlier version: it is read as Fit in any language, and no value is typed
+  test("Docs applies a Fit label saved by an earlier version", () =>
+    withExtension("live-docs-fit-legacy-label", async ({ context, serviceWorker }) => {
+      await setAppState(serviceWorker, "docs", {
+        zoomValue: "Anpassen",
+        viewOnly: false,
+        classroomSupport: false
+      });
+      await installRecorder(context);
+      const page = await context.newPage();
+      await page.goto(LIVE_DOC_URL);
+
+      await waitForChrome(page);
+      await waitForClicks(page, 1);
+      const recorded = await readRecorded(page);
+      expect(recorded.clicks).toHaveLength(1);
+      expect(recorded.clicks[0], "the row clicked is Docs' Fit row").toMatch(/^\D+$/);
+      expect(recorded.enters).toEqual([]);
     }));
 
   // Picking a row works without focus, which is why a preset doesn't wait for it
@@ -317,21 +331,12 @@ describe.each(["pt-BR", "ko"])(
   (language) => {
     const NO_DIGIT = /^\D+$/;
 
-    const readEnglishFitLabel = async (serviceWorker: Worker) => {
-      const fitLabel = await serviceWorker.evaluate(() =>
-        chrome.i18n.getMessage("popupDocsDropdownFitSelection")
-      );
-      expect(fitLabel).toBe(docsFitLabels.en);
-
-      return fitLabel;
-    };
-
     test(`toolbar Docs applies Fit in ${language}`, () =>
       withExtension(
         `live-docs-fit-unshipped-${language}`,
         async ({ context, serviceWorker }) => {
           await setAppState(serviceWorker, "docs", {
-            zoomValue: await readEnglishFitLabel(serviceWorker),
+            zoomValue: "fit",
             viewOnly: false,
             classroomSupport: false
           });
@@ -375,7 +380,7 @@ describe.each(["pt-BR", "ko"])(
         `live-docs-view-only-fit-unshipped-${language}`,
         async ({ context, serviceWorker }) => {
           await setAppState(serviceWorker, "docs", {
-            zoomValue: await readEnglishFitLabel(serviceWorker),
+            zoomValue: "fit",
             viewOnly: true,
             classroomSupport: false
           });
@@ -407,11 +412,11 @@ describe.runIf(process.platform === "linux")(
       withExtension(
         `live-docs-fit-${language}`,
         async ({ context, serviceWorker }) => {
-          const fitLabel = await readExtensionFitLabel(serviceWorker, language);
-          // the row Docs shows, which is also the saved value until #106
+          await expectUiLanguage(serviceWorker, language);
+          // the row Docs shows: the saved value is "fit" in every language
           const shownLabel = docsFitLabels[language];
           await setAppState(serviceWorker, "docs", {
-            zoomValue: fitLabel,
+            zoomValue: "fit",
             viewOnly: false,
             classroomSupport: false
           });
@@ -435,9 +440,9 @@ describe.runIf(process.platform === "linux")(
         withExtension(
           `live-docs-view-only-fit-${language}`,
           async ({ context, serviceWorker }) => {
-            const fitLabel = await readExtensionFitLabel(serviceWorker, language);
+            await expectUiLanguage(serviceWorker, language);
             await setAppState(serviceWorker, "docs", {
-              zoomValue: fitLabel,
+              zoomValue: "fit",
               viewOnly: true,
               classroomSupport: false
             });

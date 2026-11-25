@@ -157,7 +157,7 @@ const readFitLabel = async (page: Page, knownLabels: string[]): Promise<string> 
 const readRecordedFitLabels = (): Record<string, string> =>
   existsSync(FIT_LABELS_PATH) ? JSON.parse(readFileSync(FIT_LABELS_PATH, "utf8")) : {};
 
-// Until #106 the saved Fit value is popupDocsDropdownFitSelection, so that message has to be the text Docs shows, which
+// popupDocsDropdownFitSelection is display text only (the popup stores "fit"), but it should be the text Docs shows, which
 // a translation service can't know. This records it from live Docs in every language the extension ships, and fails
 // when Docs changed it. A language that fails keeps the label it had.
 describe("capture Docs' Fit label in each language (signed out)", () => {
