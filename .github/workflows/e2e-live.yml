@@ -1,11 +1,13 @@
 name: E2E live
 
 # Opens the maintainer's public Docs and Sheet signed out, checks both editions against them in Chromium and Base
-# in Firefox, and captures fresh fixtures (docs/e2e.md), so a change on Google's side shows up on the next pull request.
-# Nothing here signs in to Google or uses a secret. Run it by hand from the Actions tab ("Run workflow").
+# in Firefox, and captures fresh fixtures (docs/e2e.md), so a change on Google's side shows up within a day or on the
+# next pull request. Nothing here signs in to Google or uses a secret. Run it by hand from the Actions tab ("Run workflow").
 on:
   pull_request:
     branches: [main]
+  schedule:
+    - cron: "17 5 * * *"
   workflow_dispatch:
 
 permissions:
@@ -88,7 +90,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: fixtures
-          path: e2e/fixtures
+          path: |
+            e2e/fixtures
+            src/strategies/docs-fit-labels.json
           if-no-files-found: ignore
       - name: Upload screenshots
         if: always()
