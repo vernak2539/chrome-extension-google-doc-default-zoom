@@ -11,13 +11,12 @@ permissions:
 jobs:
   submit:
     uses: ./.github/workflows/submit-reusable.yml
-    secrets:
-      submit_keys: ${{ secrets.SUBMIT_KEYS_EXTENDED }}
     with:
       environment: build-package-extended
       edition: extended
       # Firefox has no Extended edition
       include_firefox: false
-      chrome_url_prefix: "chrome-extension://mdgikencgfhineaememjagpkiclbdkka"
+      chrome_extension_id: "mdgikencgfhineaememjagpkiclbdkka"
+      edge_product_id: "237141ed-f089-4011-a4d4-ac0811df79ef"
       edge_url_prefix: "chrome-extension://fhjmigdmbgbiodkejhmahfnaebdgnmjb"
       artifact_prefix: google-workspace-zoom-extended
