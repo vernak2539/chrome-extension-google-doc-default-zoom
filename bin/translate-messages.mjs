@@ -14,10 +14,10 @@ const __dirname = dirname(__filename);
 
 const translate = new Translate();
 
-// Both zoom flows find Docs' Fit row by this message, so it must be the text Docs shows, not a translation of "Fit".
+// Until #106 the saved Fit value is this message, so it must be the text Docs shows, not a translation of "Fit".
 // `pnpm e2e:capture` records that text from live Docs in each language.
 const FIT_KEY = "popupDocsDropdownFitSelection";
-const FIT_LABELS_FILE = path.resolve(__dirname, "../e2e/fixtures/docs-fit-labels.json");
+const FIT_LABELS_FILE = path.resolve(__dirname, "../src/strategies/docs-fit-labels.json");
 
 // Configure yargs for argument parsing
 const argv = yargs(hideBin(process.argv))
@@ -46,7 +46,7 @@ async function main() {
   if (targetKey === FIT_KEY) {
     console.error(
       `Error: ${FIT_KEY} is never machine-translated. A missing one is copied from ` +
-        "e2e/fixtures/docs-fit-labels.json, which `pnpm e2e:capture` records from live Docs."
+        "src/strategies/docs-fit-labels.json, which `pnpm e2e:capture` records from live Docs."
     );
     process.exit(1);
   }
@@ -100,7 +100,7 @@ async function main() {
           description: sourceMessages[FIT_KEY].description
         };
         addedFitLabel = true;
-        console.log(`   - [${FIT_KEY}] copied from e2e/fixtures/docs-fit-labels.json.`);
+        console.log(`   - [${FIT_KEY}] copied from src/strategies/docs-fit-labels.json.`);
       } else {
         missingFitLabels.push(lang.code);
       }

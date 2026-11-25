@@ -10,22 +10,37 @@ vi.mock("src/utils/messaging", () => ({ sendMessage: vi.fn() }));
 vi.mock("src/utils/localize", () => ({ default: (key: string) => key }));
 vi.mock("src/utils/get-app-storage-state-from-storage", () => ({ default: vi.fn() }));
 
-const FIT_LABEL = "popupDocsDropdownFitSelection";
+// The localize mock returns the key, so this is the Fit value the extension saves. Docs shows FIT_ROW_TEXT.
+const EXTENSION_FIT_LABEL = "popupDocsDropdownFitSelection";
+const FIT_ROW_TEXT = "Ajustar";
 
-const viewOnlyState: AppStorageState = {
-  zoomValue: "150%",
+const stateWith = (zoomValue: string): AppStorageState => ({
+  zoomValue,
   viewOnly: true,
   classroomSupport: false
-};
+});
 
 const VIEW_MENU = `<div id="docs-view-menu"></div>`;
 const ZOOM_ITEM = `<span aria-label="Zoom"></span>`;
-const ZOOM_MENU = `
-  <div class="goog-menu">
-    <div class="goog-menuitem apps-menuitem"><div aria-label="${FIT_LABEL}">${FIT_LABEL}</div></div>
-    <div class="goog-menuitem apps-menuitem"><div>100%</div></div>
-    <div class="goog-menuitem apps-menuitem"><div>150%</div></div>
-  </div>`;
+
+// The structure of Docs' View > Zoom menu: Fit is no checkbox and has a shortcut, the presets are checkboxes
+const fitRow = (text: string, shortcut = "⌘+Option+[") =>
+  `<div class="goog-menuitem apps-menuitem" role="menuitem"><div class="goog-menuitem-content"><span class="goog-menuitem-label" aria-label="${text} f">${text}</span><span class="goog-menuitem-accel">${shortcut}</span></div></div>`;
+const presetRow = (text: string) =>
+  `<div class="goog-menuitem apps-menuitem goog-option" role="menuitemcheckbox"><div class="goog-menuitem-content">${text}</div></div>`;
+const zoomMenu = (rows: string[], attributes = "") =>
+  `<div class="goog-menu" ${attributes}>${rows.join("")}</div>`;
+
+const ZOOM_MENU = zoomMenu([fitRow(FIT_ROW_TEXT), presetRow("100%"), presetRow("150%")]);
+
+// Records the text of each clicked row
+const recordClicks = () => {
+  const clicked: string[] = [];
+  document.querySelectorAll(".goog-menuitem").forEach((row) => {
+    row.firstElementChild?.addEventListener("click", () => clicked.push(row.textContent ?? ""));
+  });
+  return clicked;
+};
 
 const runViewOnlyFlow = async () => {
   const outcome = createDocsDriver(workspaceAppUiStrategyConfigs.Docs).execute();
@@ -36,7 +51,7 @@ const runViewOnlyFlow = async () => {
 describe("Docs view-only zoom outcome", () => {
   beforeEach(() => {
     vi.useFakeTimers();
-    vi.mocked(getAppStorageStateFromStorage).mockResolvedValue(viewOnlyState);
+    vi.mocked(getAppStorageStateFromStorage).mockResolvedValue(stateWith("150%"));
   });
 
   afterEach(() => {
@@ -45,28 +60,57 @@ describe("Docs view-only zoom outcome", () => {
 
   test("should be applied when the row is clicked", async () => {
     document.body.innerHTML = VIEW_MENU + ZOOM_ITEM + ZOOM_MENU;
-    const clicked: string[] = [];
-    document.querySelectorAll(".goog-menuitem").forEach((row) => {
-      row.firstElementChild?.addEventListener("click", () => clicked.push(row.textContent ?? ""));
-    });
+    const clicked = recordClicks();
 
     expect(await runViewOnlyFlow()).toEqual({ status: "applied" });
     expect(clicked).toEqual(["150%"]);
   });
 
-  test("should ignore a menu whose item merely starts with the Fit label", async () => {
+  // The menu is found by the presets it lists, and the Fit row by its structure: the text is in Docs' language, not
+  // the extension's
+  test("should click the Fit row in the language Docs is shown in", async () => {
+    vi.mocked(getAppStorageStateFromStorage).mockResolvedValue(stateWith(EXTENSION_FIT_LABEL));
+    document.body.innerHTML = VIEW_MENU + ZOOM_ITEM + ZOOM_MENU;
+    const clicked = recordClicks();
+
+    expect(await runViewOnlyFlow()).toEqual({ status: "applied" });
+    expect(clicked).toEqual([`${FIT_ROW_TEXT}⌘+Option+[`]);
+  });
+
+  test("should ignore a menu that lists no zoom presets", async () => {
     document.body.innerHTML =
-      VIEW_MENU +
-      ZOOM_ITEM +
-      `<div class="goog-menu"><div class="goog-menuitem apps-menuitem"><div aria-label="${FIT_LABEL} offline">${FIT_LABEL} offline</div></div></div>` +
-      ZOOM_MENU;
-    const clicked: string[] = [];
-    document.querySelectorAll(".goog-menuitem").forEach((row) => {
-      row.firstElementChild?.addEventListener("click", () => clicked.push(row.textContent ?? ""));
-    });
+      VIEW_MENU + ZOOM_ITEM + zoomMenu([fitRow("Make available offline", "")]) + ZOOM_MENU;
+    const clicked = recordClicks();
 
     expect(await runViewOnlyFlow()).toEqual({ status: "applied" });
     expect(clicked).toEqual(["150%"]);
+  });
+
+  test("should ignore a hidden menu that lists the zoom presets", async () => {
+    document.body.innerHTML =
+      VIEW_MENU +
+      ZOOM_ITEM +
+      zoomMenu([fitRow("Hidden"), presetRow("100%"), presetRow("150%")], 'style="display: none"') +
+      ZOOM_MENU;
+    const clicked = recordClicks();
+
+    expect(await runViewOnlyFlow()).toEqual({ status: "applied" });
+    expect(clicked).toEqual(["150%"]);
+  });
+
+  test("should fail with view_zoom_option_missing and click nothing when Fit can't be told from another row", async () => {
+    vi.mocked(getAppStorageStateFromStorage).mockResolvedValue(stateWith(EXTENSION_FIT_LABEL));
+    document.body.innerHTML =
+      VIEW_MENU +
+      ZOOM_ITEM +
+      zoomMenu([fitRow("Nueva opción"), fitRow("Otra cosa"), presetRow("100%"), presetRow("150%")]);
+    const clicked = recordClicks();
+
+    expect(await runViewOnlyFlow()).toEqual({
+      status: "failed",
+      reason: "view_zoom_option_missing"
+    });
+    expect(clicked).toEqual([]);
   });
 
   test("should fail with view_menu_missing when the View menu is not on the page", async () => {

@@ -48,7 +48,7 @@ export interface AppStorageState {
   viewOnly: boolean;
   classroomSupport: boolean;
 }
-// The label of Docs' Fit zoom row in each locale (e2e/fixtures/docs-fit-labels.json)
+// The label of Docs' Fit zoom row in each locale (src/strategies/docs-fit-labels.json)
 export type DocsZoomValueFit =
   | "Fit"
   | "Adatta"

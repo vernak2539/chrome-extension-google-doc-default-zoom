@@ -10,7 +10,7 @@ export const RESULTS_DIR = path.resolve("e2e/results");
 // unsanitized captures: gitignored, never committed or uploaded
 export const RAW_DIR = path.join(RESULTS_DIR, "raw");
 // The text of Docs' Fit zoom row in each language, as live Docs shows it (written by `pnpm e2e:capture`)
-export const FIT_LABELS_PATH = path.join(FIXTURES_DIR, "docs-fit-labels.json");
+export const FIT_LABELS_PATH = path.resolve("src/strategies/docs-fit-labels.json");
 // Every language the extension ships
 export const LOCALE_CODES: string[] = ["en", ...LANGUAGES.map(({ code }) => code)];
 

@@ -1,6 +1,7 @@
 import type { Page, Worker } from "playwright";
 import { describe, expect, test } from "vitest";
 
+import docsFitLabels from "../src/strategies/docs-fit-labels.json";
 import {
   describeLocation,
   findSelectors,
@@ -10,6 +11,7 @@ import {
   openUnfocusedPage,
   readRecorded,
   setAppState,
+  waitForClicks,
   waitForDismissals,
   withExtension
 } from "./harness";
@@ -307,10 +309,96 @@ describe(`zoom flow on the live Docs and Sheets pages (${edition} edition)`, () 
   );
 });
 
-// Fit is the one zoom value the extension finds by its text, which Docs translates (#172), so it is checked in every
-// language the extension ships. The extension takes the label from its own locale, and Docs serves the browser's
-// language. Only Chromium on Linux takes its UI language from LANGUAGE (macOS ignores it), so these run in CI or a
-// Linux container.
+// A language Docs serves and the extension doesn't ship: chrome.i18n falls back to the English "Fit" while Docs shows
+// its own label. The flows find Fit by its structure, so this works on every platform: macOS keeps the extension in
+// English whatever `language` says, and Linux falls back because there is no such locale.
+describe.each(["pt-BR", "ko"])(
+  `Docs in %s, a language the extension doesn't ship (${edition} edition)`,
+  (language) => {
+    const NO_DIGIT = /^\D+$/;
+
+    const readEnglishFitLabel = async (serviceWorker: Worker) => {
+      const fitLabel = await serviceWorker.evaluate(() =>
+        chrome.i18n.getMessage("popupDocsDropdownFitSelection")
+      );
+      expect(fitLabel).toBe(docsFitLabels.en);
+
+      return fitLabel;
+    };
+
+    test(`toolbar Docs applies Fit in ${language}`, () =>
+      withExtension(
+        `live-docs-fit-unshipped-${language}`,
+        async ({ context, serviceWorker }) => {
+          await setAppState(serviceWorker, "docs", {
+            zoomValue: await readEnglishFitLabel(serviceWorker),
+            viewOnly: false,
+            classroomSupport: false
+          });
+          await installRecorder(context);
+          const page = await context.newPage();
+          await page.goto(LIVE_DOC_URL);
+
+          await waitForChrome(page);
+          await waitForClicks(page, 1);
+          const [clicked] = (await readRecorded(page)).clicks;
+          expect(clicked, "the row clicked is Docs' Fit row, in Docs' language").toMatch(NO_DIGIT);
+          expect(clicked.startsWith(docsFitLabels.en)).toBe(false);
+          await expectZoomMenuClosed(page, clicked);
+        },
+        { language }
+      ));
+
+    // View > Zoom is the same in both editions, so Base checks it once
+    test.skipIf(edition === "extended")(`view-only Docs applies 150% in ${language}`, () =>
+      withExtension(
+        `live-docs-view-only-150-unshipped-${language}`,
+        async ({ context, serviceWorker }) => {
+          await setAppState(serviceWorker, "docs", {
+            zoomValue: "150%",
+            viewOnly: true,
+            classroomSupport: false
+          });
+          await installRecorder(context);
+          const page = await context.newPage();
+          await page.goto(LIVE_VIEW_ONLY_DOC_URL);
+
+          await waitForChrome(page);
+          await waitForZoomClick(page, "150%");
+        },
+        { language }
+      )
+    );
+
+    test.skipIf(edition === "extended")(`view-only Docs applies Fit in ${language}`, () =>
+      withExtension(
+        `live-docs-view-only-fit-unshipped-${language}`,
+        async ({ context, serviceWorker }) => {
+          await setAppState(serviceWorker, "docs", {
+            zoomValue: await readEnglishFitLabel(serviceWorker),
+            viewOnly: true,
+            classroomSupport: false
+          });
+          await installRecorder(context);
+          const page = await context.newPage();
+          await page.goto(LIVE_VIEW_ONLY_DOC_URL);
+
+          await waitForChrome(page);
+          // the first click is View > Zoom, the second is the zoom row: its text goes on with its shortcut ("Fit⌘+Option+[")
+          await waitForClicks(page, 2);
+          const [, clicked] = (await readRecorded(page)).clicks;
+          expect(clicked).toMatch(NO_DIGIT);
+          expect(clicked.endsWith("[")).toBe(true);
+        },
+        { language }
+      )
+    );
+  }
+);
+
+// Fit is the one zoom value whose row Docs translates (#172), so it is checked in every language the extension ships.
+// The extension takes the label from its own locale, and Docs serves the browser's language. Only Chromium on Linux
+// takes its UI language from LANGUAGE (macOS ignores it), so these run in CI or a Linux container.
 describe.runIf(process.platform === "linux")(
   `Fit on the live Docs pages in each language (${edition} edition)`,
   () => {
@@ -320,6 +408,8 @@ describe.runIf(process.platform === "linux")(
         `live-docs-fit-${language}`,
         async ({ context, serviceWorker }) => {
           const fitLabel = await readExtensionFitLabel(serviceWorker, language);
+          // the row Docs shows, which is also the saved value until #106
+          const shownLabel = docsFitLabels[language];
           await setAppState(serviceWorker, "docs", {
             zoomValue: fitLabel,
             viewOnly: false,
@@ -330,8 +420,8 @@ describe.runIf(process.platform === "linux")(
           await page.goto(LIVE_DOC_URL);
 
           await waitForChrome(page);
-          await waitForFitClick(page, fitLabel);
-          await expectZoomMenuClosed(page, fitLabel);
+          await waitForFitClick(page, shownLabel);
+          await expectZoomMenuClosed(page, shownLabel);
           expect((await readRecorded(page)).enters).toEqual([]);
         },
         { language }
@@ -356,7 +446,7 @@ describe.runIf(process.platform === "linux")(
             await page.goto(LIVE_VIEW_ONLY_DOC_URL);
 
             await waitForChrome(page);
-            await waitForFitClick(page, fitLabel);
+            await waitForFitClick(page, docsFitLabels[language]);
           },
           { language }
         )
