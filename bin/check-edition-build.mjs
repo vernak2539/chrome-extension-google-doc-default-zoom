@@ -2,8 +2,8 @@
  * Checks the output of `pnpm build:base` and `pnpm build:extended` (`build/<target>-<edition>`).
  *
  * The editions differ only by the build mode (the `EDITIONS` map in wxt.config.ts), and a wrong mode silently
- * changes the manifest instead of failing the build. This fails when a built edition has the wrong name or Firefox
- * add-on id, or when it requests a `debugger` or host permission.
+ * changes the manifest instead of failing the build. This fails when a built edition has the wrong name, Firefox
+ * add-on id or `debugger` permission, or when it requests a host permission.
  *
  * Run it after building: `pnpm check:editions`
  */
@@ -17,11 +17,13 @@ const buildDirectory = path.resolve(path.dirname(fileURLToPath(import.meta.url))
 const EDITIONS = {
   base: {
     name: "__MSG_extensionName__",
-    geckoId: "google-workspace-zoom-default@vernacchia.dev"
+    geckoId: "google-workspace-zoom-default@vernacchia.dev",
+    hasDebugger: false
   },
   extended: {
     name: "__MSG_extensionNameExtended__",
-    geckoId: "google-workspace-zoom-extended@vernacchia.dev"
+    geckoId: "google-workspace-zoom-extended@vernacchia.dev",
+    hasDebugger: true
   }
 };
 
@@ -30,10 +32,13 @@ const checkBuild = (directory, target, edition) => {
   const manifest = JSON.parse(readFileSync(path.join(directory, "manifest.json"), "utf8"));
   const problems = [];
 
-  // Neither edition needs the "debugger" permission since custom zoom types with synthetic key events (#110).
-  // Adding it back would disable the extension for every user until they accept the new permission.
-  if ((manifest.permissions ?? []).includes("debugger")) {
-    problems.push(`manifest requests the "debugger" permission`);
+  // Custom zoom no longer uses the "debugger" permission (#110), but released Extended versions request it. Dropping
+  // it and adding it back later would disable Extended for every user until they accept it again, so Extended keeps
+  // it for now. Base has never requested it.
+  if ((manifest.permissions ?? []).includes("debugger") !== expected.hasDebugger) {
+    problems.push(
+      `manifest ${expected.hasDebugger ? "is missing" : "requests"} the "debugger" permission`
+    );
   }
   // The content script needs no host permission: its `matches` already inject it. A host permission adds an
   // install warning, and adding one back later would ask every user to accept it. Firefox MV2 lists host

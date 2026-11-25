@@ -114,7 +114,7 @@ const ExtensionVersionsPage = () => {
             title={localize("ExtVersionsTabFunctionalityIncludedHeader")}
             data={extExtendedFunctionality}
           />
-          <RequiredPermissions permissions={[]} />
+          <RequiredPermissions permissions={["`debugger` (this is an elevated permission)"]} />
         </>
       )}
     </>

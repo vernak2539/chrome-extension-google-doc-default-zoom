@@ -14,7 +14,9 @@ const EDITIONS = {
   extended: {
     name: "__MSG_extensionNameExtended__",
     geckoId: "google-workspace-zoom-extended@vernacchia.dev",
-    permissions: ["storage"]
+    // Custom zoom no longer uses `chrome.debugger` (#110), but released versions request it. Dropping it and adding
+    // it back later would disable the extension for every user until they accept it again, so it stays for now.
+    permissions: ["storage", "debugger"]
   }
 } as const;
 
