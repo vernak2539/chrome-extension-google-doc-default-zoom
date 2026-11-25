@@ -66,7 +66,7 @@ Pass `-b chrome|edge|firefox` as usual. Chrome and Edge build MV3, Firefox build
 pnpm check:editions
 ```
 
-Run it after building. It fails when a built manifest in `build/<target>-<edition>` doesn't match its edition (name, Firefox add-on id, a `debugger` or host permission), or when it finds no build.
+Run it after building. It fails when a built manifest in `build/<target>-<edition>` doesn't match its edition (name, Firefox add-on id, `debugger` permission, or a host permission), or when it finds no build.
 
 ### Type Checking and Bundle Size
 
